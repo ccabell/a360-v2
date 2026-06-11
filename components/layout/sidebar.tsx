@@ -20,6 +20,7 @@ const menuItems = [
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
+  { name: "Components", href: "/dashboard/components", icon: Settings },
 ];
 
 export function Sidebar() {
