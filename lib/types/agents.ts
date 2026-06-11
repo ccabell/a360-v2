@@ -67,8 +67,8 @@ export interface AgentVersion {
   source_policies: Record<string, string[]> // table → allowed fields
   output_schema: Record<string, any> | null
   constraints: AgentConstraints
-  knowledge_config: Record<string, any> | null
-  fuel_contract: Record<string, any> | null
+  knowledge_config: LayerRecipe | null
+  fuel_contract: Record<string, any> | null // Legacy — see LAYERED_CONTEXT_MODEL.md §8
   eval_profile: string | null
   guardrail_config: Record<string, any> | null
   notes: string | null
@@ -83,6 +83,41 @@ export interface AgentConstraints {
   approval_required?: boolean
   temperature?: number
   max_tokens?: number
+}
+
+// --- Layer Recipe (populates knowledge_config on agent_versions) ---
+// See docs/LAYERED_CONTEXT_MODEL.md for full specification
+
+export interface LayerRecipe {
+  layers: {
+    task: true
+    procedural?: {
+      task_tags: string[]
+      load_mode: "whole" | "sections"
+    }
+    domain?: {
+      depth: "full" | "thin" | "filters_only"
+      include_guardrails: boolean
+      include_relationships: boolean
+      include_anatomy: boolean
+      taxonomy_walk: boolean
+    }
+    situational?: {
+      include: ("patient" | "extraction" | "opportunities" | "transcript" | "run_history")[]
+    }
+    practice?: {
+      include: ("catalog" | "pricing" | "tone" | "preferences" | "compliance" | "send_windows")[]
+      override_domain: boolean
+    }
+    evidence?: {
+      enabled: boolean
+      corpora?: string[]
+      filters?: {
+        patient_safe?: boolean
+      }
+      trigger: "always" | "on_demand" | "if_claim_needs_citing"
+    }
+  }
 }
 
 // --- Tools ---

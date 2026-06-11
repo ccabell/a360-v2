@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft, Save } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { AgentStatusBadge } from "@/components/agents/status-badge"
@@ -10,7 +10,8 @@ import { OverviewTab } from "@/components/agents/tabs/overview-tab"
 import { ConfigTab } from "@/components/agents/tabs/config-tab"
 import { VersionsTab } from "@/components/agents/tabs/versions-tab"
 import { ToolsTab } from "@/components/agents/tabs/tools-tab"
-import type { Agent, AgentVersion } from "@/lib/types"
+import { TestTab } from "@/components/agents/tabs/test-tab"
+import type { Agent, AgentVersion, ToolBinding } from "@/lib/types"
 
 export default function AgentDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -20,6 +21,10 @@ export default function AgentDetailPage() {
   const [loading, setLoading] = React.useState(true)
   const [error, setError] = React.useState<string | null>(null)
 
+  // Lifted tool_config state — shared between Tools tab (editing) and Config tab (saving)
+  const [toolConfig, setToolConfig] = React.useState<ToolBinding[]>([])
+  const toolConfigInitialized = React.useRef(false)
+
   const fetchAgent = React.useCallback(async () => {
     try {
       const res = await fetch(`/api/agents/${id}`)
@@ -28,6 +33,13 @@ export default function AgentDetailPage() {
       const { versions: v, ...agentData } = data
       setAgent(agentData)
       setVersions(v ?? [])
+
+      // Initialize tool_config from active version on first load
+      if (!toolConfigInitialized.current) {
+        const active = (v ?? []).find((ver: AgentVersion) => ver.id === agentData.active_version_id)
+        setToolConfig(active?.tool_config ?? [])
+        toolConfigInitialized.current = true
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load agent")
     } finally {
@@ -84,6 +96,7 @@ export default function AgentDetailPage() {
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="config">Config</TabsTrigger>
           <TabsTrigger value="tools">Tools</TabsTrigger>
+          <TabsTrigger value="test">Test</TabsTrigger>
           <TabsTrigger value="versions">
             Versions
             {versions.length > 0 && (
@@ -97,11 +110,15 @@ export default function AgentDetailPage() {
         </TabsContent>
 
         <TabsContent value="config">
-          <ConfigTab agent={agent} activeVersion={activeVersion} onSaved={fetchAgent} />
+          <ConfigTab agent={agent} activeVersion={activeVersion} toolConfig={toolConfig} onSaved={fetchAgent} />
         </TabsContent>
 
         <TabsContent value="tools">
-          <ToolsTab agent={agent} activeVersion={activeVersion} />
+          <ToolsTab agent={agent} toolConfig={toolConfig} onToolConfigChange={setToolConfig} />
+        </TabsContent>
+
+        <TabsContent value="test">
+          <TestTab agent={agent} activeVersion={activeVersion} />
         </TabsContent>
 
         <TabsContent value="versions">

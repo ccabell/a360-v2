@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listTools } from "@/lib/api/tools";
+import { listTools, createTool } from "@/lib/api/tools";
 
 export const dynamic = "force-dynamic";
 
@@ -11,5 +11,16 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 502 });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const tool = await createTool(body);
+    return NextResponse.json(tool, { status: 201 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

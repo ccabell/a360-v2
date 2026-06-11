@@ -15,6 +15,8 @@ Read in this order:
 | Doc | What it tells you | Status |
 |-----|-------------------|--------|
 | `DATA_SOURCES_v2.md` | **Source of truth.** Three Supabase projects + Prompt Runner. 529K vectorized chunks. No legacy. | Active |
+| `DATA_SOURCE_MAP.md` | Complete inventory: every table, API endpoint, tool, and type mapped to context layers | Active |
+| `LAYERED_CONTEXT_MODEL.md` | Six-layer context assembly model: Task, Procedural, Domain, Situational, Practice, Evidence. Layer recipes, entity resolution, precedence rules. | Active |
 | `RETRIEVAL_ARCHITECTURE.md` | Key architectural decisions: retrieval-born citations, deep-link offsets, cross-corpus fusion, query rewriting | Active |
 | `RETRIEVAL_SERVICE.md` | Full retrieval service spec: request/response schemas, fusion logic, SSE protocol, run logging, eval hooks | Active |
 | `CONTEXT_ASSEMBLY.md` | Three retrieval patterns: SQL for exact, playbooks for procedural, RAG for unknown. Document registry. | Active |
@@ -84,11 +86,13 @@ npm run dev
 - `/dashboard/tcp` — Treatment care planning
 - `/dashboard/patients` — Live patient list from Prompt Runner
 
-### Agent Manager Pages (to be built)
-- `/dashboard/agents` — Agent registry, detail, versions, tools, playground, runs
-- `/dashboard/agents/corpus` — Corpus dashboard with live counts
-- `/dashboard/agents/workflows` — Workflow builder
-- `/dashboard/agents/runs` — Run logs
+### Agent Manager Pages
+- `/dashboard/agents` — Agent registry with filters, create dialog (built)
+- `/dashboard/agents/[id]` — Agent detail with tabs: Overview, Config, Tools (interactive toggles), Test (playground), Versions (built)
+- `/dashboard/agents/tools` — Tool registry with DataTable, detail dialogs, create form (built)
+- `/dashboard/agents/corpus` — Corpus dashboard with live counts (Phase 6 — next)
+- `/dashboard/agents/workflows` — Workflow builder (Phase 8)
+- `/dashboard/agents/runs` — Run logs (Phase 7)
 
 See `BUILD_PLAN.md` for the full task list.
 

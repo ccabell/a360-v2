@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Save } from "lucide-react"
-import type { Agent, AgentVersion, AgentRuntimeType, AgentConstraints } from "@/lib/types"
+import type { Agent, AgentVersion, AgentRuntimeType, AgentConstraints, ToolBinding } from "@/lib/types"
 
 const models = [
   "claude-sonnet-4-20250514",
@@ -31,6 +31,7 @@ const runtimes: AgentRuntimeType[] = [
 interface ConfigTabProps {
   agent: Agent
   activeVersion?: AgentVersion
+  toolConfig: ToolBinding[]
   onSaved: () => void
 }
 
@@ -41,7 +42,7 @@ const defaultConstraints: AgentConstraints = {
   citation_required: true,
 }
 
-export function ConfigTab({ agent, activeVersion, onSaved }: ConfigTabProps) {
+export function ConfigTab({ agent, activeVersion, toolConfig, onSaved }: ConfigTabProps) {
   const [systemPrompt, setSystemPrompt] = React.useState(activeVersion?.system_prompt ?? "")
   const [model, setModel] = React.useState(activeVersion?.model ?? models[0])
   const [runtime, setRuntime] = React.useState<AgentRuntimeType>(activeVersion?.runtime_type ?? "prompt_runner")
@@ -88,7 +89,7 @@ export function ConfigTab({ agent, activeVersion, onSaved }: ConfigTabProps) {
           system_prompt: systemPrompt || null,
           model,
           runtime_type: runtime,
-          tool_config: activeVersion?.tool_config ?? [],
+          tool_config: toolConfig,
           constraints,
           output_schema: parsedSchema,
           notes: notes.trim() || null,

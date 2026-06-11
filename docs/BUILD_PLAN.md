@@ -3,7 +3,7 @@
 Task list for building the Agent Manager UI in a360-v2.
 Requirements: `REQUIREMENTS_v2.md`. Data model: `DATA_SOURCES_v2.md`. Retrieval: `RETRIEVAL_SERVICE.md`.
 
-**Status**: In progress — Prerequisites + Phase 1-3 done
+**Status**: In progress — Prerequisites + Phases 1-5 done
 **Last Updated**: 2026-06-11
 
 ---
@@ -61,10 +61,10 @@ Edit an agent, manage versions, edit prompts.
 
 Manage what tools agents can use.
 
-- [ ] **4.1 Tools tab on agent detail** — Checklist of all available tools. Toggle enable/disable per tool for this agent version.
-- [ ] **4.2 Tool detail panel** — Click a tool to see: description, tables accessed (data lineage), data source, parameter schema.
+- [x] **4.1 Tools tab on agent detail** — Checklist of all available tools. Toggle enable/disable per tool for this agent version.
+- [x] **4.2 Tool detail panel** — Click a tool to see: description, tables accessed (data lineage), data source, parameter schema.
 - [ ] **4.3 Per-agent tool config** — Optional per-tool parameters (field filters, max results). Should priority.
-- [ ] **4.4 Tool registry page** — `/dashboard/agents/tools` — standalone list of all 17+ tools. Create custom tool form (with domain allowlist for implementation URL).
+- [x] **4.4 Tool registry page** — `/dashboard/agents/tools` — standalone list of all 17+ tools. Create custom tool form (with domain allowlist for implementation URL).
 
 ---
 
@@ -72,9 +72,9 @@ Manage what tools agents can use.
 
 Run agents and see results.
 
-- [ ] **5.1 Test tab on agent detail** — Inline test panel. Input: text area for paste, or select transcript from Prompt Runner dropdown.
-- [ ] **5.2 Run execution** — POST to appropriate runtime endpoint based on `runtime_type`. Display: formatted output, citations (per citation pipeline), token usage, duration, tool calls.
-- [ ] **5.3 Citation display** — Render citations using existing InlineCitationBadge + ReferenceCard components. Deep links to PubMed/YouTube/etc.
+- [x] **5.1 Test tab on agent detail** — Inline test panel. Input: text area for paste, or select transcript from Prompt Runner dropdown.
+- [x] **5.2 Run execution** — POST to appropriate runtime endpoint based on `runtime_type`. Display: formatted output, citations (per citation pipeline), token usage, duration, tool calls.
+- [x] **5.3 Citation display** — Render citations using existing InlineCitationBadge + ReferenceCard components. Deep links to PubMed/YouTube/etc.
 - [ ] **5.4 Version comparison** — Run same input against two versions side-by-side. Should priority.
 
 ---
