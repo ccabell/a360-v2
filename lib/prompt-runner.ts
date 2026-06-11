@@ -4,7 +4,14 @@
  * List endpoints return { data, total }.
  */
 
-import type { Paged, Patient, PRTranscript, PRRun, Practice } from "@/lib/types";
+import type {
+  Paged,
+  Patient,
+  PatientDetail,
+  PRTranscript,
+  PRRun,
+  Practice,
+} from "@/lib/types";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_PROMPT_RUNNER_URL ||
@@ -47,7 +54,8 @@ export function listPatients(opts: { limit?: number; offset?: number; q?: string
 }
 
 export function getPatient(id: string) {
-  return request<Patient>(`/patients/${id}`);
+  // Single-record endpoint is NOT wrapped in { data } and nests transcripts.
+  return request<PatientDetail>(`/patients/${id}`);
 }
 
 // --- Transcripts ---

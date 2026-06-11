@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableHeader,
@@ -13,43 +12,21 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import type { Paged, Patient } from "@/lib/types";
-import { Search, AlertCircle, Check, User, ChevronRight } from "lucide-react";
-
-function formatDate(value: string | null): string {
-  if (!value) return "—";
-  const d = new Date(value);
-  if (Number.isNaN(d.getTime())) return value;
-  return d.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
-
-function age(dob: string | null): string {
-  if (!dob) return "";
-  const d = new Date(dob);
-  if (Number.isNaN(d.getTime())) return "";
-  const now = new Date();
-  let a = now.getFullYear() - d.getFullYear();
-  const m = now.getMonth() - d.getMonth();
-  if (m < 0 || (m === 0 && now.getDate() < d.getDate())) a--;
-  return a > 0 && a < 130 ? `${a}y` : "";
-}
+import { formatDate, age } from "@/lib/format";
+import { Search, AlertCircle, ChevronRight } from "lucide-react";
 
 function initials(p: Patient): string {
   return `${p.first_name?.[0] ?? ""}${p.last_name?.[0] ?? ""}`.toUpperCase() || "?";
 }
 
 export function PatientsTable() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [patients, setPatients] = useState<Patient[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  // Debounced fetch from the server proxy.
   useEffect(() => {
     let cancelled = false;
     const handle = setTimeout(async () => {
@@ -79,11 +56,6 @@ export function PatientsTable() {
     };
   }, [query]);
 
-  const selected = useMemo(
-    () => patients.find((p) => p.id === selectedId) ?? null,
-    [patients, selectedId],
-  );
-
   return (
     <div className="space-y-4">
       {/* Toolbar */}
@@ -107,12 +79,12 @@ export function PatientsTable() {
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              <TableHead className="w-10" />
               <TableHead>Patient</TableHead>
               <TableHead>DOB</TableHead>
               <TableHead>Prior visits</TableHead>
               <TableHead>Patient ID</TableHead>
               <TableHead>Added</TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -150,85 +122,45 @@ export function PatientsTable() {
 
             {!error &&
               !loading &&
-              patients.map((p) => {
-                const isSelected = p.id === selectedId;
-                return (
-                  <TableRow
-                    key={p.id}
-                    data-state={isSelected ? "selected" : undefined}
-                    className="cursor-pointer"
-                    onClick={() => setSelectedId(isSelected ? null : p.id)}
-                  >
-                    <TableCell>
-                      <div
-                        className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-                          isSelected
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-border"
-                        }`}
-                      >
-                        {isSelected && <Check className="h-3 w-3" />}
+              patients.map((p) => (
+                <TableRow
+                  key={p.id}
+                  className="cursor-pointer"
+                  onClick={() => router.push(`/dashboard/patients/${p.id}`)}
+                >
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
+                        {initials(p)}
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
-                          {initials(p)}
-                        </div>
-                        <span className="font-medium text-foreground">
-                          {p.first_name} {p.last_name}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatDate(p.dob)}
-                      {age(p.dob) && (
-                        <span className="ml-1.5 text-xs">({age(p.dob)})</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {p.prior_visits ?? "—"}
-                    </TableCell>
-                    <TableCell>
-                      <span className="font-mono text-xs text-muted-foreground">
-                        {p.id.slice(0, 8)}
+                      <span className="font-medium text-foreground">
+                        {p.first_name} {p.last_name}
                       </span>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatDate(p.created_at)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {formatDate(p.dob)}
+                    {age(p.dob) && <span className="ml-1.5 text-xs">({age(p.dob)})</span>}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {p.prior_visits ?? "—"}
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {p.id.slice(0, 8)}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {formatDate(p.created_at)}
+                  </TableCell>
+                  <TableCell>
+                    <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>
-
-      {/* Selection footer — entry point for the next step (run a prompt) */}
-      {selected && (
-        <div className="flex items-center justify-between gap-4 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
-          <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <User className="h-4 w-4" />
-            </div>
-            <div>
-              <p className="text-sm font-medium text-foreground">
-                {selected.first_name} {selected.last_name}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                Selected · {selected.prior_visits ?? 0} prior visits
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="secondary">Next: choose transcript / run</Badge>
-            <Button disabled>
-              Run a prompt
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

@@ -31,8 +31,15 @@ export interface PRTranscript {
   duration_minutes: number;
   clinic: string;
   transcript_summary: string;
+  transcript_summary_paragraph?: string;
   consult_type: string;
   created_at: string;
+}
+
+// --- /patients/{id} (single record includes nested transcripts) ---
+export interface PatientDetail extends Patient {
+  transcripts: PRTranscript[];
+  updated_at?: string;
 }
 
 // --- /runs ---
