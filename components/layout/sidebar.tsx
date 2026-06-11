@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Users,
   MessageSquare,
+  Telescope,
   Share2,
   SearchIcon,
   Zap,
@@ -18,6 +19,7 @@ import {
 const menuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
+  { name: "Research", href: "/dashboard/research", icon: Telescope },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
