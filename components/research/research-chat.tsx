@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sparkles, AlertCircle, BookOpen } from "lucide-react";
+import { Send, Sparkles, AlertCircle } from "lucide-react";
 import type {
   RetrievedSource,
   ResearchCitation,
@@ -12,9 +12,8 @@ import type {
 import { streamResearch } from "@/lib/mock/research-stream";
 import { EXAMPLE_QUERIES } from "@/lib/mock/research-data";
 import { StatusIndicator } from "./status-indicator";
-import { SourcePill } from "./source-pill";
-import { AnswerMessage } from "./answer-message";
-import { CitationCard } from "./citation-card";
+import { SourcePill } from "@/components/grounding/source-pill";
+import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 
 interface UserMessage {
   id: string;
@@ -204,28 +203,13 @@ export function ResearchChat() {
                       </div>
                     )}
 
-                    {/* Answer */}
+                    {/* Answer + resolved references (shared, reusable for prompt outputs) */}
                     {m.text && (
-                      <AnswerMessage
+                      <GroundedAnswer
                         text={m.text}
                         displayMap={m.displayMap}
                         citations={m.citations}
                       />
-                    )}
-
-                    {/* References */}
-                    {m.citations.length > 0 && (
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                          <BookOpen className="h-4 w-4" />
-                          References ({m.citations.length})
-                        </div>
-                        <div className="grid gap-3 sm:grid-cols-2">
-                          {m.citations.map((c) => (
-                            <CitationCard key={c.number} citation={c} />
-                          ))}
-                        </div>
-                      </div>
                     )}
                   </div>
                 ),
