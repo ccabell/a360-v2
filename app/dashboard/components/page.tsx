@@ -43,8 +43,7 @@ export default function ComponentsPage() {
       confidence: 0.95,
       metadata: {
         videoId: 'xyz123',
-        channel: 'Aesthetic Medicine Academy',
-        duration: '45:32',
+        duration: 2732,
       },
     },
     {
@@ -56,8 +55,8 @@ export default function ComponentsPage() {
       evidence: 'Recommended dosage: 20-40 units per treatment area',
       confidence: 0.99,
       metadata: {
-        productId: 'prod_botox',
-        category: 'Neurotoxins',
+        table: 'gl_products',
+        recordId: 'prod_botox',
       },
     },
   ]
