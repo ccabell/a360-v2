@@ -12,6 +12,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
+import { TranscriptViewer } from "./transcript-viewer";
 import { pickScenario, type ResearchScenario } from "@/lib/mock/research-data";
 import { formatDate, age, formatDuration } from "@/lib/format";
 import type { PatientDetail, PRTranscript, PRRun, Paged } from "@/lib/types";
@@ -158,13 +159,35 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
             {patient.first_name} {patient.last_name}
           </h2>
           <p className="text-sm text-muted-foreground">
-            DOB {formatDate(patient.dob)}
-            {age(patient.dob) && ` (${age(patient.dob)})`} ·{" "}
-            {patient.prior_visits ?? 0} prior visits ·{" "}
-            <span className="font-mono text-xs">{patient.id.slice(0, 8)}</span>
+            Patient · <span className="font-mono text-xs">{patient.id.slice(0, 8)}</span>
           </p>
         </div>
       </div>
+
+      {/* Patient information (full record) */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Patient information</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+            <Field label="Full name" value={`${patient.first_name} ${patient.last_name}`} />
+            <Field
+              label="Date of birth"
+              value={`${formatDate(patient.dob)}${age(patient.dob) ? ` (${age(patient.dob)})` : ""}`}
+            />
+            <Field label="Prior visits" value={patient.prior_visits ?? "Not recorded"} />
+            <Field label="Practice" value={patient.practice_id ?? "Not recorded"} />
+            <Field label="Patient ID" value={patient.id} mono />
+            <Field label="Added" value={formatDate(patient.created_at)} />
+            <Field
+              label="Medical history"
+              value={patient.medical_history ?? "Not recorded"}
+              full
+            />
+          </dl>
+        </CardContent>
+      </Card>
 
       {/* Transcripts */}
       <section className="space-y-3">
@@ -198,11 +221,6 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
                     {formatDate(t.transcript_date)} · {t.clinic} ·{" "}
                     {formatDuration(t.duration_minutes)}
                   </p>
-                  {t.transcript_summary && (
-                    <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                      {t.transcript_summary}
-                    </p>
-                  )}
                 </button>
               );
             })}
@@ -213,6 +231,9 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
           </p>
         )}
       </section>
+
+      {/* Selected transcript: summary + full transcript */}
+      {selected && <TranscriptViewer transcript={selected} />}
 
       {/* Runs + Run-a-prompt (only once a transcript is selected) */}
       {selected && (
@@ -350,5 +371,33 @@ function BackLink() {
       <ArrowLeft className="h-4 w-4" />
       All patients
     </Link>
+  );
+}
+
+function Field({
+  label,
+  value,
+  mono,
+  full,
+}: {
+  label: string;
+  value: React.ReactNode;
+  mono?: boolean;
+  full?: boolean;
+}) {
+  const isPlaceholder = value === "Not recorded";
+  return (
+    <div className={full ? "col-span-2 sm:col-span-3" : ""}>
+      <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+        {label}
+      </dt>
+      <dd
+        className={`mt-0.5 text-sm ${mono ? "font-mono text-xs" : ""} ${
+          isPlaceholder ? "text-muted-foreground/60 italic" : "text-foreground"
+        }`}
+      >
+        {value}
+      </dd>
+    </div>
   );
 }

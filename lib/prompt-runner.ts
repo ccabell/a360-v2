@@ -9,6 +9,7 @@ import type {
   Patient,
   PatientDetail,
   PRTranscript,
+  PRTranscriptDetail,
   PRRun,
   Practice,
 } from "@/lib/types";
@@ -67,7 +68,8 @@ export function listTranscripts(opts: { limit?: number; offset?: number; patient
 }
 
 export function getTranscript(id: string) {
-  return request<PRTranscript>(`/transcripts/${id}`);
+  // Single-record endpoint includes the full transcript_raw text.
+  return request<PRTranscriptDetail>(`/transcripts/${id}`);
 }
 
 // --- Runs ---

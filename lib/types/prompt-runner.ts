@@ -36,6 +36,11 @@ export interface PRTranscript {
   created_at: string;
 }
 
+// --- /transcripts/{id} (single record includes the full raw transcript) ---
+export interface PRTranscriptDetail extends PRTranscript {
+  transcript_raw: string;
+}
+
 // --- /patients/{id} (single record includes nested transcripts) ---
 export interface PatientDetail extends Patient {
   transcripts: PRTranscript[];
