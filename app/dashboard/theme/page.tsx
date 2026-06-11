@@ -41,64 +41,64 @@ export default function ThemePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {/* Background */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(1 0 0)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
-                    <span className="text-xs font-mono">--background</span>
+                  <div className="h-24 rounded-lg border border-border bg-background flex items-center justify-center">
+                    <span className="text-xs font-mono text-foreground">--background</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Background</p>
                 </div>
 
                 {/* Foreground */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.148 0.004 228.8)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(1 0 0)' }}>
-                    <span className="text-xs font-mono">--foreground</span>
+                  <div className="h-24 rounded-lg border border-border bg-foreground flex items-center justify-center">
+                    <span className="text-xs font-mono text-background">--foreground</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Foreground</p>
                 </div>
 
                 {/* Card */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(1 0 0)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
-                    <span className="text-xs font-mono">--card</span>
+                  <div className="h-24 rounded-lg border border-border bg-card flex items-center justify-center">
+                    <span className="text-xs font-mono text-card-foreground">--card</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Card</p>
                 </div>
 
                 {/* Muted */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.963 0.002 197.1)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
-                    <span className="text-xs font-mono">--muted</span>
+                  <div className="h-24 rounded-lg border border-border bg-muted flex items-center justify-center">
+                    <span className="text-xs font-mono text-muted-foreground">--muted</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Muted</p>
                 </div>
 
                 {/* Primary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.52 0.105 223.128)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.984 0.019 200.873)' }}>
-                    <span className="text-xs font-mono">--primary</span>
+                  <div className="h-24 rounded-lg border border-border bg-primary flex items-center justify-center">
+                    <span className="text-xs font-mono text-primary-foreground">--primary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Primary</p>
                 </div>
 
                 {/* Secondary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.967 0.001 286.375)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.21 0.006 285.885)' }}>
-                    <span className="text-xs font-mono">--secondary</span>
+                  <div className="h-24 rounded-lg border border-border bg-secondary flex items-center justify-center">
+                    <span className="text-xs font-mono text-secondary-foreground">--secondary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Secondary</p>
                 </div>
 
                 {/* Accent */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.963 0.002 197.1)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.218 0.008 223.9)' }}>
-                    <span className="text-xs font-mono">--accent</span>
+                  <div className="h-24 rounded-lg border border-border bg-accent flex items-center justify-center">
+                    <span className="text-xs font-mono text-accent-foreground">--accent</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Accent</p>
                 </div>
 
                 {/* Destructive */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.577 0.245 27.325)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'white' }}>
-                    <span className="text-xs font-mono">--destructive</span>
+                  <div className="h-24 rounded-lg border border-border bg-destructive flex items-center justify-center">
+                    <span className="text-xs font-mono text-white">--destructive</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Destructive</p>
                 </div>
