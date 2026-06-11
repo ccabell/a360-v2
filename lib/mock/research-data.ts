@@ -56,14 +56,16 @@ const SOURCES: RetrievedSource[] = [
     text: "Here we mark the five standard injection points for the glabellar complex and inject four units at each, keeping the needle perpendicular to the corrugator.",
     locator: {
       type: "youtube",
-      videoId: "aBcD1234efg",
+      // Real, stable video ID so the thumbnail/player demonstrably loads in the demo.
+      videoId: "aqz-KE-bpKQ",
       videoTitle: "BOTOX Cosmetic Injection Technique — Glabellar Complex",
       manufacturerName: "Allergan Aesthetics",
       startSeconds: 134,
       endSeconds: 212,
       contentType: "procedure_demo",
       audience: "clinician",
-      url: "https://youtube.com/watch?v=aBcD1234efg&t=134",
+      url: "https://www.youtube.com/watch?v=aqz-KE-bpKQ&t=134",
+      thumbnailUrl: "https://img.youtube.com/vi/aqz-KE-bpKQ/maxresdefault.jpg",
     },
   },
   {

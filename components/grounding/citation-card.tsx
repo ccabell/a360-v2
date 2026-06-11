@@ -6,6 +6,7 @@ import {
   deepLinkLabel,
 } from "@/lib/retrieval/locator";
 import { CORPUS_META } from "./source-meta";
+import { YouTubeViewer } from "./youtube-viewer";
 
 function RelevanceBars({ value }: { value?: number }) {
   if (value == null) return null;
@@ -50,6 +51,18 @@ export function CitationCard({ citation }: { citation: ResearchCitation }) {
           <RelevanceBars value={citation.relevance} />
         </div>
       </div>
+
+      {/* YouTube: thumbnail viewer → embedded player at the cited timestamp */}
+      {citation.locator.type === "youtube" && (
+        <div className="mb-3">
+          <YouTubeViewer
+            videoId={citation.locator.videoId}
+            title={citation.locator.videoTitle}
+            startSeconds={citation.locator.startSeconds}
+            thumbnailUrl={citation.locator.thumbnailUrl}
+          />
+        </div>
+      )}
 
       {/* Title */}
       {url ? (
