@@ -41,7 +41,7 @@ export default function ThemePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {/* Background */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-background flex items-center justify-center">
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--background)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
                     <span className="text-xs font-mono">--background</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Background</p>
@@ -49,15 +49,15 @@ export default function ThemePage() {
 
                 {/* Foreground */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-foreground flex items-center justify-center">
-                    <span className="text-xs font-mono text-background">--foreground</span>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--foreground)', borderColor: 'var(--border)', color: 'var(--background)' }}>
+                    <span className="text-xs font-mono">--foreground</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Foreground</p>
                 </div>
 
                 {/* Card */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-card flex items-center justify-center">
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
                     <span className="text-xs font-mono">--card</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Card</p>
@@ -65,7 +65,7 @@ export default function ThemePage() {
 
                 {/* Muted */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-muted flex items-center justify-center">
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--muted)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
                     <span className="text-xs font-mono">--muted</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Muted</p>
@@ -73,32 +73,32 @@ export default function ThemePage() {
 
                 {/* Primary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-primary flex items-center justify-center">
-                    <span className="text-xs font-mono text-primary-foreground">--primary</span>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--primary)', borderColor: 'var(--border)', color: 'var(--primary-foreground)' }}>
+                    <span className="text-xs font-mono">--primary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Primary</p>
                 </div>
 
                 {/* Secondary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-secondary flex items-center justify-center">
-                    <span className="text-xs font-mono text-secondary-foreground">--secondary</span>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--secondary)', borderColor: 'var(--border)', color: 'var(--secondary-foreground)' }}>
+                    <span className="text-xs font-mono">--secondary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Secondary</p>
                 </div>
 
                 {/* Accent */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-accent flex items-center justify-center">
-                    <span className="text-xs font-mono text-accent-foreground">--accent</span>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--accent)', borderColor: 'var(--border)', color: 'var(--accent-foreground)' }}>
+                    <span className="text-xs font-mono">--accent</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Accent</p>
                 </div>
 
                 {/* Destructive */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border border-border bg-destructive flex items-center justify-center">
-                    <span className="text-xs font-mono text-white">--destructive</span>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--destructive)', borderColor: 'var(--border)', color: 'white' }}>
+                    <span className="text-xs font-mono">--destructive</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Destructive</p>
                 </div>
