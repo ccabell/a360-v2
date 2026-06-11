@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  LayoutDashboard,
   MessageSquare,
   Share2,
   SearchIcon,
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 
 const menuItems = [
+  { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
