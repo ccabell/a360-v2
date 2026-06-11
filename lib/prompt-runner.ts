@@ -1,7 +1,10 @@
 /**
  * Prompt Runner API client — Railway-hosted extraction + agent runtime.
  * Base URL: https://prompt-runner-production.up.railway.app
+ * List endpoints return { data, total }.
  */
+
+import type { Paged, Patient, PRTranscript, PRRun, Practice } from "@/lib/types";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_PROMPT_RUNNER_URL ||
@@ -9,6 +12,7 @@ const BASE_URL =
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, {
+    cache: "no-store",
     ...init,
     headers: {
       "Content-Type": "application/json",
@@ -25,22 +29,49 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json();
 }
 
-// --- Transcripts & Runs ---
+function qs(params: Record<string, string | number | undefined>) {
+  const sp = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== "") sp.set(k, String(v));
+  }
+  const s = sp.toString();
+  return s ? `?${s}` : "";
+}
 
-export function listTranscripts(limit = 50, offset = 0) {
-  return request<any[]>(`/transcripts?limit=${limit}&offset=${offset}`);
+// --- Patients ---
+
+export function listPatients(opts: { limit?: number; offset?: number; q?: string } = {}) {
+  return request<Paged<Patient>>(
+    `/patients${qs({ limit: opts.limit ?? 50, offset: opts.offset ?? 0, q: opts.q })}`,
+  );
+}
+
+export function getPatient(id: string) {
+  return request<Patient>(`/patients/${id}`);
+}
+
+// --- Transcripts ---
+
+export function listTranscripts(opts: { limit?: number; offset?: number; patientId?: string } = {}) {
+  return request<Paged<PRTranscript>>(
+    `/transcripts${qs({ limit: opts.limit ?? 50, offset: opts.offset ?? 0, patient_id: opts.patientId })}`,
+  );
 }
 
 export function getTranscript(id: string) {
-  return request<any>(`/transcripts/${id}`);
+  return request<PRTranscript>(`/transcripts/${id}`);
 }
 
-export function listRuns(limit = 50, offset = 0) {
-  return request<any[]>(`/runs?limit=${limit}&offset=${offset}`);
+// --- Runs ---
+
+export function listRuns(opts: { limit?: number; offset?: number; transcriptId?: string } = {}) {
+  return request<Paged<PRRun>>(
+    `/runs${qs({ limit: opts.limit ?? 50, offset: opts.offset ?? 0, transcript_id: opts.transcriptId })}`,
+  );
 }
 
 export function getRun(runId: string) {
-  return request<any>(`/runs/${runId}`);
+  return request<PRRun>(`/runs/${runId}`);
 }
 
 // --- Extraction ---
@@ -84,7 +115,7 @@ export function listOpportunities(limit = 50) {
 // --- Practices ---
 
 export function listPractices() {
-  return request<any[]>("/practices");
+  return request<Paged<Practice>>("/practices");
 }
 
 // --- Evaluation ---

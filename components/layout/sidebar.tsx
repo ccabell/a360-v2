@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
+  Users,
   MessageSquare,
   Share2,
   SearchIcon,
@@ -16,6 +17,7 @@ import {
 
 const menuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
+  { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
