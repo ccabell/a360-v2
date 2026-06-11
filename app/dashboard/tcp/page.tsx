@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { MessageWithCitations } from "@/components/citations/message-with-citations";
+import { Citation } from "@/components/citations/types";
 import { CheckCircle, AlertCircle, Lightbulb } from "lucide-react";
 
 interface TreatmentPlan {
@@ -15,10 +17,10 @@ interface TreatmentPlan {
   treatments: string[];
   benefits: string[];
   considerations: string[];
-  evidence: string;
+  citations: Citation[];
 }
 
-const mockPlan: TreatmentPlan[] = [
+const mockPlans: TreatmentPlan[] = [
   {
     tier: 1,
     name: "Foundation Plan",
@@ -36,8 +38,22 @@ const mockPlan: TreatmentPlan[] = [
       "Peak effect at 2 weeks",
       "Requires maintenance (every 12 weeks)",
     ],
-    evidence:
-      "FDA-approved for glabellar lines, crow's feet, and forehead lines. 90% of patients see improvement within 2 weeks.",
+    citations: [
+      {
+        id: "cit_1",
+        number: 1,
+        sourceType: "pubmed",
+        sourceId: "12345678",
+        title: "Clinical Efficacy of Botulinum Toxin",
+        evidence:
+          "FDA-approved for glabellar lines, crow's feet, and forehead lines. 90% of patients see improvement within 2 weeks.",
+        confidence: 0.95,
+        metadata: {
+          pmid: "12345678",
+          publicationType: "research",
+        },
+      },
+    ],
   },
   {
     tier: 2,
@@ -61,8 +77,22 @@ const mockPlan: TreatmentPlan[] = [
       "Higher cost but longer-lasting",
       "Maintenance every 12-18 months",
     ],
-    evidence:
-      "Combined treatment shows 85% patient satisfaction in clinical studies. Volumization combined with neurotoxin creates optimal aesthetic outcomes.",
+    citations: [
+      {
+        id: "cit_2",
+        number: 1,
+        sourceType: "pubmed",
+        sourceId: "87654321",
+        title: "Long-term Safety and Efficacy",
+        evidence:
+          "Combined treatment shows 85% patient satisfaction in clinical studies.",
+        confidence: 0.92,
+        metadata: {
+          pmid: "87654321",
+          publicationType: "research",
+        },
+      },
+    ],
   },
   {
     tier: 3,
@@ -85,11 +115,24 @@ const mockPlan: TreatmentPlan[] = [
       "More invasive approach",
       "Requires multiple sessions (3-4)",
       "Longer recovery period",
-      "Significant aesthetic transformation",
       "Annual maintenance recommended",
     ],
-    evidence:
-      "Multi-product approach shows highest patient satisfaction (92%) and longest results. Evidence supports progressive treatment planning.",
+    citations: [
+      {
+        id: "cit_3",
+        number: 1,
+        sourceType: "pubmed",
+        sourceId: "99999999",
+        title: "Multi-product Treatment Approaches",
+        evidence:
+          "Multi-product approach shows highest patient satisfaction (92%) and longest results.",
+        confidence: 0.98,
+        metadata: {
+          pmid: "99999999",
+          publicationType: "practice_guideline",
+        },
+      },
+    ],
   },
 ];
 
@@ -109,101 +152,90 @@ export default function TCPPage() {
   };
 
   return (
-    <div className="p-8 max-w-6xl">
+    <div className="p-8 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-3xl font-bold gradient-text mb-2">TCP - Treatment Care Plans</h2>
-        <p className="text-gray-400">
+        <h2 className="text-2xl font-bold text-slate-900">Treatment Care Planning</h2>
+        <p className="text-sm text-slate-600 mt-1">
           Generate evidence-based 3-tier treatment plans tailored to patient needs
         </p>
       </div>
 
       {/* Input Section */}
       {!showPlan && (
-        <div className="p-8 glass rounded-2xl bg-gradient-to-br from-blue-600/10 via-purple-600/10 to-pink-600/10 border border-white/10 mb-8">
-          <h3 className="text-lg font-semibold text-gray-100 mb-4">Patient Information</h3>
+        <Card className="p-8 mb-8 border-slate-200">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">
+            Patient Information
+          </h3>
           <textarea
             placeholder="Enter patient details: chief complaint, medical history, aesthetic goals, budget considerations..."
             value={patientInfo}
             onChange={(e) => setPatientInfo(e.target.value)}
-            className="w-full p-4 rounded-xl glass bg-slate-800/30 border-white/10 text-gray-100 placeholder-gray-500 mb-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
+            className="w-full p-4 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-500 mb-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
             rows={4}
           />
           <Button
             onClick={handleGeneratePlan}
             disabled={loading || !patientInfo.trim()}
-            className="w-full py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
+            className="w-full py-6 bg-blue-600 hover:bg-blue-700 text-white"
             size="lg"
           >
             {loading ? "Generating Treatment Plan..." : "Generate 3-Tier Plan"}
           </Button>
-        </div>
+        </Card>
       )}
 
       {/* Treatment Plans */}
       {showPlan && (
         <div className="space-y-6">
-          {/* Plan Summary */}
-          <div className="p-6 glass rounded-2xl bg-blue-600/10 border border-blue-500/30">
+          {/* Recommended Approach */}
+          <Card className="p-6 border-blue-200 bg-blue-50">
             <div className="flex items-start gap-4">
-              <Lightbulb className="h-6 w-6 text-blue-400 flex-shrink-0 mt-1" />
+              <Lightbulb className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-gray-100 mb-2">Recommended Approach</h3>
-                <p className="text-sm text-gray-300">
-                  We recommend starting with the Foundation Plan to assess patient response, then
-                  progressing to Advanced or Premium based on goals and satisfaction.
+                <h3 className="font-semibold text-slate-900 mb-2">
+                  Recommended Approach
+                </h3>
+                <p className="text-sm text-slate-700">
+                  Start with the Foundation Plan to assess patient response, then progress
+                  to Advanced or Premium based on goals and satisfaction.
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Treatment Tiers */}
           <div className="grid gap-6">
-            {mockPlan.map((plan) => (
-              <div
-                key={plan.tier}
-                className="glass rounded-2xl border border-white/10 overflow-hidden hover:border-white/20 transition-all fade-in"
-              >
+            {mockPlans.map((plan) => (
+              <Card key={plan.tier} className="border-slate-200 overflow-hidden">
                 {/* Header */}
-                <div
-                  className={`p-6 border-b border-white/10 bg-gradient-to-r ${
-                    plan.tier === 1
-                      ? "from-emerald-600/20 to-emerald-600/5"
-                      : plan.tier === 2
-                        ? "from-blue-600/20 to-blue-600/5"
-                        : "from-purple-600/20 to-purple-600/5"
-                  }`}
-                >
+                <div className="p-6 border-b border-slate-200 bg-slate-50">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="flex items-center gap-3 mb-2">
                         <Badge
-                          className={
-                            plan.tier === 1
-                              ? "glass bg-emerald-600/30 border-emerald-500/30 text-emerald-200"
-                              : plan.tier === 2
-                                ? "glass bg-blue-600/30 border-blue-500/30 text-blue-200"
-                                : "glass bg-purple-600/30 border-purple-500/30 text-purple-200"
+                          variant={
+                            plan.tier === 2 ? "default" : "secondary"
                           }
                         >
                           Tier {plan.tier}
                         </Badge>
                         {plan.tier === 2 && (
-                          <Badge className="glass bg-amber-600/30 border-amber-500/30 text-amber-200">RECOMMENDED</Badge>
+                          <Badge className="bg-amber-100 text-amber-800">
+                            RECOMMENDED
+                          </Badge>
                         )}
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-100">{plan.name}</h3>
+                      <h3 className="text-2xl font-bold text-slate-900">
+                        {plan.name}
+                      </h3>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold gradient-text">{plan.cost}</p>
-                      <p className="text-sm text-gray-400">{plan.timeline}</p>
+                      <p className="text-2xl font-bold text-blue-600">
+                        {plan.cost}
+                      </p>
+                      <p className="text-sm text-slate-600">{plan.timeline}</p>
                     </div>
-                  </div>
-
-                  {/* Evidence */}
-                  <div className="mt-4 p-3 glass rounded-xl border border-white/10 bg-slate-800/30">
-                    <p className="text-xs font-semibold text-gray-300 mb-2">CLINICAL EVIDENCE</p>
-                    <p className="text-sm text-gray-300">{plan.evidence}</p>
                   </div>
                 </div>
 
@@ -211,14 +243,19 @@ export default function TCPPage() {
                 <div className="p-6 grid grid-cols-3 gap-6">
                   {/* Treatments */}
                   <div>
-                    <h4 className="font-semibold text-gray-100 mb-3 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-blue-400" />
+                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-blue-600" />
                       Treatments
                     </h4>
                     <ul className="space-y-2">
                       {plan.treatments.map((treatment, idx) => (
-                        <li key={idx} className="text-sm text-gray-300 flex items-start gap-2">
-                          <span className="text-blue-400 font-bold mt-1">•</span>
+                        <li
+                          key={idx}
+                          className="text-sm text-slate-700 flex items-start gap-2"
+                        >
+                          <span className="text-blue-600 font-bold mt-1">
+                            •
+                          </span>
                           {treatment}
                         </li>
                       ))}
@@ -227,14 +264,19 @@ export default function TCPPage() {
 
                   {/* Benefits */}
                   <div>
-                    <h4 className="font-semibold text-gray-100 mb-3 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-emerald-400" />
+                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-emerald-600" />
                       Benefits
                     </h4>
                     <ul className="space-y-2">
                       {plan.benefits.map((benefit, idx) => (
-                        <li key={idx} className="text-sm text-gray-300 flex items-start gap-2">
-                          <span className="text-emerald-400 font-bold mt-1">•</span>
+                        <li
+                          key={idx}
+                          className="text-sm text-slate-700 flex items-start gap-2"
+                        >
+                          <span className="text-emerald-600 font-bold mt-1">
+                            •
+                          </span>
                           {benefit}
                         </li>
                       ))}
@@ -243,25 +285,44 @@ export default function TCPPage() {
 
                   {/* Considerations */}
                   <div>
-                    <h4 className="font-semibold text-gray-100 mb-3 flex items-center gap-2">
-                      <AlertCircle className="h-4 w-4 text-amber-400" />
+                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                      <AlertCircle className="h-4 w-4 text-amber-600" />
                       Considerations
                     </h4>
                     <ul className="space-y-2">
                       {plan.considerations.map((consideration, idx) => (
-                        <li key={idx} className="text-sm text-gray-300 flex items-start gap-2">
-                          <span className="text-amber-400 font-bold mt-1">•</span>
+                        <li
+                          key={idx}
+                          className="text-sm text-slate-700 flex items-start gap-2"
+                        >
+                          <span className="text-amber-600 font-bold mt-1">
+                            •
+                          </span>
                           {consideration}
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
-              </div>
+
+                {/* Evidence Citations */}
+                {plan.citations.length > 0 && (
+                  <div className="px-6 pb-6 border-t border-slate-200">
+                    <MessageWithCitations
+                      message={
+                        plan.citations[0].evidence +
+                        `[${plan.citations[0].number}]`
+                      }
+                      citations={plan.citations}
+                      role="agent"
+                    />
+                  </div>
+                )}
+              </Card>
             ))}
           </div>
 
-          {/* Action Button */}
+          {/* Action Buttons */}
           <div className="flex gap-4">
             <Button
               onClick={() => {
@@ -269,11 +330,11 @@ export default function TCPPage() {
                 setPatientInfo("");
               }}
               variant="outline"
-              className="flex-1 py-6 glass border-white/10 hover:bg-white/5"
+              className="flex-1 py-6"
             >
               Generate New Plan
             </Button>
-            <Button className="flex-1 py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500">
+            <Button className="flex-1 py-6 bg-blue-600 hover:bg-blue-700 text-white">
               Send Plan to Patient
             </Button>
           </div>

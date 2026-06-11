@@ -4,19 +4,10 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Send, ChevronDown, Sparkles } from "lucide-react";
-
-interface Citation {
-  id: string;
-  type: "transcript" | "vector" | "gl_product" | "agent_output";
-  sourceName: string;
-  evidence: string;
-  confidence?: number;
-  timestamp?: string;
-  url?: string;
-}
+import { MessageWithCitations } from "@/components/citations/message-with-citations";
+import { Citation } from "@/components/citations/types";
+import { Send, Sparkles } from "lucide-react";
 
 interface Message {
   id: string;
@@ -30,7 +21,6 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [expandedCitation, setExpandedCitation] = useState<string | null>(null);
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
@@ -46,191 +36,156 @@ export default function ChatPage() {
     setInput("");
     setLoading(true);
 
+    // Simulate agent response with citations
     setTimeout(() => {
+      const mockCitations: Citation[] = [
+        {
+          id: "cit_1",
+          number: 1,
+          sourceType: "pubmed",
+          sourceId: "12345678",
+          title: "Clinical Efficacy of Botulinum Toxin in Aesthetic Medicine",
+          evidence:
+            "Botox has demonstrated efficacy in treating dynamic facial wrinkles with onset typically within 3-7 days",
+          confidence: 0.95,
+          metadata: {
+            pmid: "12345678",
+            authors: "Smith J, Johnson M, Williams R",
+            journal: "Journal of Aesthetic Dermatology",
+            year: 2024,
+            doi: "10.1016/j.jaad.2024.01.015",
+            publicationType: "research",
+          },
+        },
+        {
+          id: "cit_2",
+          number: 2,
+          sourceType: "youtube",
+          sourceId: "dQw4w9WgXcQ",
+          title: "Advanced Injection Techniques for Facial Aesthetics",
+          evidence:
+            "Expert demonstration of proper injection angles and depth for maximizing aesthetic outcomes",
+          confidence: 0.87,
+          metadata: {
+            videoId: "dQw4w9WgXcQ",
+            timestamp: 234,
+            duration: 1542,
+            thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+          },
+        },
+        {
+          id: "cit_3",
+          number: 3,
+          sourceType: "supabase",
+          sourceId: "products:botox_cosmetic",
+          title: "Botox Cosmetic - Product Guide",
+          evidence:
+            "Recommended dosing: 20-40 units per treatment area. Maintenance: every 12 weeks",
+          confidence: 0.98,
+          metadata: {
+            table: "gl_products",
+            recordId: "products:botox_cosmetic",
+          },
+        },
+      ];
+
       const agentMessage: Message = {
         id: `msg_${Date.now() + 1}`,
         role: "agent",
-        content: `Response to: "${input}"\n\nThis is a demonstration of the chat interface with interactive citations. Click on citations to expand and see the evidence.`,
-        citations: [
-          {
-            id: "cit_1",
-            type: "transcript",
-            sourceName: "Patient Consultation",
-            evidence: "The patient mentioned experiencing symptoms for the past week.",
-            confidence: 0.95,
-            timestamp: "14:32",
-            url: "#",
-          },
-          {
-            id: "cit_2",
-            type: "vector",
-            sourceName: "Medical Knowledge Base",
-            evidence: "Treatment options for this condition include...",
-            confidence: 0.87,
-            url: "#",
-          },
-          {
-            id: "cit_3",
-            type: "gl_product",
-            sourceName: "Botox Cosmetic",
-            evidence: "FDA-approved for dynamic facial wrinkles",
-            confidence: 0.92,
-            url: "#",
-          },
-        ],
+        content: `Based on the consultation, Botox is FDA-approved for dynamic wrinkles[1]. The recommended injection technique is shown in this expert guide[2]. Our internal product guide[3] provides detailed dosing information. Would you like me to prepare a treatment plan?`,
+        citations: mockCitations,
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, agentMessage]);
       setLoading(false);
-    }, 1000);
-  };
-
-  const getCitationColor = (type: Citation["type"]) => {
-    const colors = {
-      transcript: { bg: "bg-blue-600/10 border-blue-500/30", text: "text-blue-200" },
-      vector: { bg: "bg-purple-600/10 border-purple-500/30", text: "text-purple-200" },
-      gl_product: { bg: "bg-emerald-600/10 border-emerald-500/30", text: "text-emerald-200" },
-      agent_output: { bg: "bg-pink-600/10 border-pink-500/30", text: "text-pink-200" },
-    };
-    return colors[type];
+    }, 1500);
   };
 
   return (
-    <div className="flex flex-col h-full p-6">
-      {/* Messages */}
-      <ScrollArea className="flex-1 mb-6 pr-4">
-        <div className="space-y-4">
-          {messages.length === 0 && (
-            <div className="flex items-center justify-center h-64">
-              <div className="text-center">
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 glass rounded-2xl">
-                    <Sparkles className="h-8 w-8 gradient-text" />
-                  </div>
-                </div>
-                <p className="text-gray-300 font-medium">Start a conversation with an agent</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Ask questions and explore interactive citations
-                </p>
-              </div>
-            </div>
-          )}
+    <div className="flex flex-col h-full p-8 max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-slate-900">Chat with Agent</h2>
+        <p className="text-sm text-slate-600 mt-1">
+          Ask questions about treatments, evidence, and recommendations
+        </p>
+      </div>
 
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex fade-in ${
-                message.role === "user" ? "justify-end" : "justify-start"
-              }`}
-            >
-              <div className="max-w-2xl">
-                {/* Message bubble */}
-                <div
-                  className={`p-4 rounded-2xl glass ${
+      {/* Messages */}
+      <ScrollArea className="flex-1 pr-4 mb-6 border border-slate-200 rounded-lg bg-white p-6">
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <div className="flex justify-center mb-4">
+                <div className="p-3 bg-blue-100 rounded-full">
+                  <Sparkles className="h-8 w-8 text-blue-600" />
+                </div>
+              </div>
+              <p className="text-slate-700 font-medium">
+                Start a conversation with the agent
+              </p>
+              <p className="text-sm text-slate-500 mt-2">
+                Ask about treatments, evidence, or recommendations
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                }`}
+              >
+                <Card
+                  className={`max-w-2xl p-4 ${
                     message.role === "user"
-                      ? "bg-gradient-to-br from-blue-600/40 to-purple-600/40 border-blue-500/30"
-                      : "bg-slate-800/40 border-gray-700/50"
+                      ? "bg-blue-600 text-white"
+                      : "bg-slate-50 border-slate-200"
                   }`}
                 >
-                  <p className="text-sm text-gray-100 whitespace-pre-wrap">{message.content}</p>
-                </div>
+                  {message.role === "user" ? (
+                    <p className="text-sm">{message.content}</p>
+                  ) : (
+                    <MessageWithCitations
+                      message={message.content}
+                      citations={message.citations}
+                      role="agent"
+                    />
+                  )}
+                  <p
+                    className={`text-xs mt-2 ${
+                      message.role === "user"
+                        ? "text-blue-100"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    {message.timestamp.toLocaleTimeString()}
+                  </p>
+                </Card>
+              </div>
+            ))}
 
-                {/* Citations */}
-                {message.citations && message.citations.length > 0 && (
-                  <div className="mt-3 space-y-2">
-                    <p className="text-xs text-gray-500">
-                      Citations: {message.citations.length}
-                    </p>
-                    {message.citations.map((citation) => {
-                      const isExpanded = expandedCitation === citation.id;
-                      const colors = getCitationColor(citation.type);
-
-                      return (
-                        <div
-                          key={citation.id}
-                          className={`p-3 rounded-xl glass cursor-pointer border-l-2 transition-all hover:bg-white/10 ${colors.bg}`}
-                          onClick={() =>
-                            setExpandedCitation(
-                              isExpanded ? null : citation.id
-                            )
-                          }
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1">
-                              <p className={`text-xs font-semibold ${colors.text}`}>
-                                {citation.sourceName}
-                              </p>
-                              <Badge variant="outline" className="mt-1 text-xs bg-white/5 border-white/10">
-                                {citation.type}
-                              </Badge>
-                            </div>
-                            <ChevronDown
-                              className={`h-4 w-4 text-gray-400 transition-transform ${
-                                isExpanded ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-
-                          {isExpanded && (
-                            <div className="mt-3 pt-3 border-t border-white/10 space-y-2">
-                              <div>
-                                <p className="text-xs font-semibold text-gray-300 mb-1">Evidence:</p>
-                                <p className="text-xs italic text-gray-400">
-                                  "{citation.evidence}"
-                                </p>
-                              </div>
-
-                              {citation.confidence && (
-                                <p className="text-xs text-gray-400">
-                                  ✓ {Math.round(citation.confidence * 100)}% confidence
-                                </p>
-                              )}
-
-                              {citation.timestamp && (
-                                <p className="text-xs text-gray-400">
-                                  📍 {citation.timestamp}
-                                </p>
-                              )}
-
-                              {citation.url && (
-                                <a
-                                  href={citation.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-xs text-blue-400 hover:text-blue-300"
-                                >
-                                  View Source →
-                                </a>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
+            {loading && (
+              <div className="flex justify-start">
+                <Card className="bg-slate-50 border-slate-200 p-4">
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin h-4 w-4 border-2 border-blue-400 border-t-blue-600 rounded-full" />
+                    <p className="text-sm text-slate-600">Agent thinking...</p>
                   </div>
-                )}
+                </Card>
               </div>
-            </div>
-          ))}
-
-          {loading && (
-            <div className="flex justify-start fade-in">
-              <div className="p-4 rounded-2xl glass bg-slate-800/40 border-gray-700/50">
-                <div className="flex items-center gap-2">
-                  <div className="animate-spin h-4 w-4 border-2 border-blue-400 border-t-blue-600 rounded-full" />
-                  <p className="text-sm text-gray-400">Agent thinking...</p>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </ScrollArea>
 
       {/* Input */}
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         <Input
-          placeholder="Ask an agent..."
+          placeholder="Ask about treatments, evidence, or recommendations..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={(e) => {
@@ -240,13 +195,13 @@ export default function ChatPage() {
             }
           }}
           disabled={loading}
-          className="flex-1 glass bg-slate-800/30 border-white/10 text-gray-100 placeholder-gray-500"
+          className="flex-1 border-slate-200"
         />
         <Button
           onClick={handleSendMessage}
           disabled={!input.trim() || loading}
+          className="bg-blue-600 hover:bg-blue-700 text-white"
           size="icon"
-          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
         >
           <Send className="h-4 w-4" />
         </Button>
