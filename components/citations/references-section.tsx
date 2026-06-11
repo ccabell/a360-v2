@@ -28,10 +28,10 @@ export function ReferencesSection({
   }
 
   return (
-    <div className="mt-6 border-t border-slate-200 dark:border-slate-700 pt-4">
+    <div className="mt-6 border-t border-border pt-4">
       <button
         onClick={() => handleToggle(!isExpanded)}
-        className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+        className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3 hover:text-foreground/80 transition-colors"
       >
         <ListIcon className="h-4 w-4" />
         References ({citations.length})

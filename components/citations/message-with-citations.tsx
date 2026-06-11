@@ -46,7 +46,7 @@ export function MessageWithCitations({
 
   return (
     <div className={className}>
-      <p className="text-slate-900 dark:text-slate-100 leading-relaxed">
+      <p className="text-foreground leading-relaxed">
         {renderMessageWithCitations()}
       </p>
 

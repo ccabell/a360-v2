@@ -15,11 +15,11 @@ export function Sources({ citations, defaultExpanded = false, className = '' }: 
   if (!citations || citations.length === 0) return null
 
   return (
-    <Card className={`bg-white border-oklch(0.925 0.005 214.3) ${className}`}>
+    <Card className={`bg-card border-border ${className}`}>
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <LinkIcon className="h-4 w-4 text-oklch(0.52 0.105 223.128)" />
-          <CardTitle className="text-sm">Sources ({citations.length})</CardTitle>
+          <LinkIcon className="h-4 w-4 text-primary" />
+          <CardTitle className="text-sm text-foreground">Sources ({citations.length})</CardTitle>
         </div>
       </CardHeader>
       <CardContent>

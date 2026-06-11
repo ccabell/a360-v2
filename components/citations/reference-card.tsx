@@ -60,11 +60,11 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
     >
       {/* Header: Number + Title */}
       <div className="flex items-start gap-3 mb-2">
-        <span className="text-sm font-bold text-slate-500 dark:text-slate-400 min-w-fit">
+        <span className="text-sm font-bold text-muted-foreground min-w-fit">
           [{number}]
         </span>
         <div className="flex-1">
-          <p className="font-semibold text-slate-900 dark:text-slate-100 mb-1">
+          <p className="font-semibold text-foreground mb-1">
             {renderCitationLink(citation)}
           </p>
         </div>
@@ -72,14 +72,14 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
 
       {/* Authors + Journal (for PubMed) */}
       {citation.sourceType === "pubmed" && citation.metadata?.authors && (
-        <p className="text-xs text-slate-600 dark:text-slate-400 mb-2">
+        <p className="text-xs text-muted-foreground mb-2">
           {citation.metadata.authors}
         </p>
       )}
 
       {/* Journal info */}
       {citation.metadata?.journal && (
-        <p className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+        <p className="text-xs text-muted-foreground mb-3">
           {citation.metadata.journal}
           {citation.metadata.year && ` • ${citation.metadata.year}`}
         </p>
@@ -105,7 +105,7 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
             href={`https://doi.org/${citation.metadata.doi}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="text-primary hover:underline flex items-center gap-1"
           >
             DOI
             <ExternalLink className="h-3 w-3" />
@@ -119,7 +119,7 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
             }`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-red-600 dark:text-red-400 hover:underline flex items-center gap-1"
+            className="text-primary hover:underline flex items-center gap-1"
           >
             Watch Video
             <ExternalLink className="h-3 w-3" />
@@ -129,7 +129,7 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
         {citation.sourceType === "supabase" && citation.metadata?.recordId && (
           <Link
             href={`/dashboard/products/${citation.metadata.recordId}`}
-            className="text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
+            className="text-primary hover:underline flex items-center gap-1"
           >
             View Product
             <ExternalLink className="h-3 w-3" />
@@ -141,7 +141,7 @@ export function ReferenceCard({ citation, number }: ReferenceCardProps) {
             href={citation.metadata.pdfUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-orange-600 dark:text-orange-400 hover:underline flex items-center gap-1"
+            className="text-primary hover:underline flex items-center gap-1"
           >
             Open PDF
             <ExternalLink className="h-3 w-3" />
@@ -160,7 +160,7 @@ function renderCitationLink(citation: Citation): React.ReactNode {
           href={`https://pubmed.ncbi.nlm.nih.gov/${citation.metadata?.pmid}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+          className="hover:text-primary hover:underline transition-colors"
         >
           {citation.title}
         </a>
@@ -171,7 +171,7 @@ function renderCitationLink(citation: Citation): React.ReactNode {
           href={`https://youtube.com/watch?v=${citation.metadata?.videoId}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-red-600 dark:hover:text-red-400 hover:underline transition-colors"
+          className="hover:text-primary hover:underline transition-colors"
         >
           {citation.title}
         </a>
@@ -180,7 +180,7 @@ function renderCitationLink(citation: Citation): React.ReactNode {
       return (
         <Link
           href={`/dashboard/products/${citation.metadata?.recordId}`}
-          className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+          className="hover:text-primary hover:underline transition-colors"
         >
           {citation.title}
         </Link>

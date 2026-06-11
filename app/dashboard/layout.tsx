@@ -6,20 +6,20 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-screen bg-background">
       {/* Sidebar */}
       <Sidebar />
 
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <div className="border-b border-slate-200 px-8 py-6 bg-white">
-          <h1 className="text-3xl font-bold text-slate-900">A360 Intelligence Platform</h1>
-          <p className="text-sm text-slate-600 mt-2">Evidence-based consultation & treatment planning</p>
+        <div className="border-b border-border px-8 py-6 bg-background">
+          <h1 className="text-3xl font-bold text-foreground">A360 Intelligence Platform</h1>
+          <p className="text-sm text-muted-foreground mt-2">Evidence-based consultation & treatment planning</p>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto bg-slate-50">
+        <div className="flex-1 overflow-auto bg-muted/30">
           {children}
         </div>
       </div>

@@ -106,12 +106,12 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <div className="flex flex-col h-screen bg-background">
       {/* Header */}
-      <div className="border-b border-oklch(0.925 0.005 214.3) p-6">
+      <div className="border-b border-border p-6">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl font-bold text-oklch(0.148 0.004 228.8)">Consultation Intelligence</h1>
-          <p className="text-sm text-oklch(0.56 0.021 213.5) mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Consultation Intelligence</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Evidence-based treatment recommendations with AI reasoning
           </p>
         </div>
@@ -121,17 +121,17 @@ export default function ChatPage() {
       <div className="flex-1 overflow-hidden">
         <div className="max-w-6xl mx-auto h-full flex flex-col p-6 gap-6">
           {/* Messages Area */}
-          <ScrollArea className="flex-1 border border-oklch(0.925 0.005 214.3) rounded-lg bg-white">
+          <ScrollArea className="flex-1 border border-border rounded-lg bg-card">
             {messages.length === 0 ? (
               <div className="h-full flex items-center justify-center">
                 <div className="text-center">
                   <div className="flex justify-center mb-4">
-                    <div className="p-3 bg-oklch(0.52 0.105 223.128 / 10%) rounded-lg">
-                      <Sparkles className="h-8 w-8 text-oklch(0.52 0.105 223.128)" />
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <Sparkles className="h-8 w-8 text-primary" />
                     </div>
                   </div>
-                  <p className="text-oklch(0.148 0.004 228.8) font-semibold">Start a consultation</p>
-                  <p className="text-sm text-oklch(0.56 0.021 213.5) mt-2">
+                  <p className="text-foreground font-semibold">Start a consultation</p>
+                  <p className="text-sm text-muted-foreground mt-2">
                     Ask about treatments, patient concerns, or recommendations
                   </p>
                 </div>
@@ -143,7 +143,7 @@ export default function ChatPage() {
                     {/* User Message */}
                     {message.role === 'user' && (
                       <div className="flex justify-end">
-                        <Card className="max-w-md bg-oklch(0.52 0.105 223.128) border-oklch(0.52 0.105 223.128) text-white">
+                        <Card className="max-w-md bg-primary border-primary text-primary-foreground">
                           <div className="p-4">
                             <p className="text-sm">{message.content}</p>
                             <p className="text-xs mt-2 opacity-70">{message.timestamp.toLocaleTimeString()}</p>
@@ -156,14 +156,14 @@ export default function ChatPage() {
                     {message.role === 'agent' && (
                       <div className="space-y-3">
                         {/* Main Message */}
-                        <Card className="bg-white border-oklch(0.925 0.005 214.3)">
+                        <Card className="bg-card border-border">
                           <div className="p-4">
                             <MessageWithCitations
                               message={message.content}
                               citations={message.citations}
                               role="agent"
                             />
-                            <p className="text-xs text-oklch(0.56 0.021 213.5) mt-3">
+                            <p className="text-xs text-muted-foreground mt-3">
                               {message.timestamp.toLocaleTimeString()}
                             </p>
                           </div>
@@ -188,10 +188,10 @@ export default function ChatPage() {
                 ))}
 
                 {loading && (
-                  <Card className="bg-oklch(0.963 0.002 197.1) border-oklch(0.925 0.005 214.3)">
+                  <Card className="bg-muted border-border">
                     <div className="p-4 flex items-center gap-2">
-                      <div className="animate-spin h-4 w-4 border-2 border-oklch(0.52 0.105 223.128) border-t-transparent rounded-full" />
-                      <p className="text-sm text-oklch(0.56 0.021 213.5)">AI is thinking...</p>
+                      <div className="animate-spin h-4 w-4 border-2 border-primary border-t-transparent rounded-full" />
+                      <p className="text-sm text-muted-foreground">AI is thinking...</p>
                     </div>
                   </Card>
                 )}
@@ -212,12 +212,12 @@ export default function ChatPage() {
                 }
               }}
               disabled={loading}
-              className="flex-1 border-oklch(0.925 0.005 214.3) bg-white"
+              className="flex-1"
             />
             <Button
               onClick={handleSendMessage}
               disabled={!input.trim() || loading}
-              className="bg-oklch(0.52 0.105 223.128) hover:bg-oklch(0.45 0.085 224.283) text-oklch(0.984 0.019 200.873)"
+              className="bg-primary hover:bg-primary text-primary-foreground"
               size="icon"
             >
               <Send className="h-4 w-4" />
