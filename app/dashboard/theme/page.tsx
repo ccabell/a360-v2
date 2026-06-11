@@ -41,7 +41,7 @@ export default function ThemePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {/* Background */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--background)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(1 0 0)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
                     <span className="text-xs font-mono">--background</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Background</p>
@@ -49,7 +49,7 @@ export default function ThemePage() {
 
                 {/* Foreground */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--foreground)', borderColor: 'var(--border)', color: 'var(--background)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.148 0.004 228.8)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(1 0 0)' }}>
                     <span className="text-xs font-mono">--foreground</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Foreground</p>
@@ -57,7 +57,7 @@ export default function ThemePage() {
 
                 {/* Card */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--card)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(1 0 0)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
                     <span className="text-xs font-mono">--card</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Card</p>
@@ -65,7 +65,7 @@ export default function ThemePage() {
 
                 {/* Muted */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--muted)', borderColor: 'var(--border)', color: 'var(--foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.963 0.002 197.1)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.148 0.004 228.8)' }}>
                     <span className="text-xs font-mono">--muted</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Muted</p>
@@ -73,7 +73,7 @@ export default function ThemePage() {
 
                 {/* Primary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--primary)', borderColor: 'var(--border)', color: 'var(--primary-foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.52 0.105 223.128)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.984 0.019 200.873)' }}>
                     <span className="text-xs font-mono">--primary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Primary</p>
@@ -81,7 +81,7 @@ export default function ThemePage() {
 
                 {/* Secondary */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--secondary)', borderColor: 'var(--border)', color: 'var(--secondary-foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.967 0.001 286.375)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.21 0.006 285.885)' }}>
                     <span className="text-xs font-mono">--secondary</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Secondary</p>
@@ -89,7 +89,7 @@ export default function ThemePage() {
 
                 {/* Accent */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--accent)', borderColor: 'var(--border)', color: 'var(--accent-foreground)' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.963 0.002 197.1)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'oklch(0.218 0.008 223.9)' }}>
                     <span className="text-xs font-mono">--accent</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Accent</p>
@@ -97,7 +97,7 @@ export default function ThemePage() {
 
                 {/* Destructive */}
                 <div className="space-y-2">
-                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'var(--destructive)', borderColor: 'var(--border)', color: 'white' }}>
+                  <div className="h-24 rounded-lg border flex items-center justify-center" style={{ backgroundColor: 'oklch(0.577 0.245 27.325)', borderColor: 'oklch(0.925 0.005 214.3)', color: 'white' }}>
                     <span className="text-xs font-mono">--destructive</span>
                   </div>
                   <p className="text-xs text-muted-foreground">Destructive</p>
