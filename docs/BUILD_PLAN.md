@@ -3,18 +3,18 @@
 Task list for building the Agent Manager UI in a360-v2.
 Requirements: `REQUIREMENTS_v2.md`. Data model: `DATA_SOURCES_v2.md`. Retrieval: `RETRIEVAL_SERVICE.md`.
 
-**Status**: Ready to build
+**Status**: In progress — Prerequisites + Phase 1-3 done
 **Last Updated**: 2026-06-11
 
 ---
 
 ## Prerequisites (do first)
 
-- [ ] **P1. Reconcile DATA_SOURCES.md** — Add superseded banner to v1 `DATA_SOURCES.md` (file was locked during cleanup). Delete or rename to `DATA_SOURCES_v1_SUPERSEDED.md`.
-- [ ] **P2. Point migration at correct DB** — `supabase/migrations/20260611_agent_manager_tables.sql` header says GL Supabase (`wvpgmawrizwkmvfnwqfl`) but v2 uses Agent Manager Supabase (`aejskvmpembryunnbgrk`). Update the comment and run the migration against the correct project.
-- [ ] **P3. Wire Supabase clients** — Verify `.env.local` has all three Supabase connections. Ensure `lib/supabase.ts` creates clients for Agent Manager + CMS + PR. Test connectivity.
+- [ ] **P1. Reconcile DATA_SOURCES.md** *(file locked)* — Add superseded banner to v1 `DATA_SOURCES.md` (file was locked during cleanup). Delete or rename to `DATA_SOURCES_v1_SUPERSEDED.md`.
+- [x] **P2. Point migration at correct DB** — `supabase/migrations/20260611_agent_manager_tables.sql` header says GL Supabase (`wvpgmawrizwkmvfnwqfl`) but v2 uses Agent Manager Supabase (`aejskvmpembryunnbgrk`). Update the comment and run the migration against the correct project.
+- [x] **P3. Wire Supabase clients** — Verify `.env.local` has all three Supabase connections. Ensure `lib/supabase.ts` creates clients for Agent Manager + CMS + PR. Test connectivity.
 - [ ] **P4. Update API_CONTRACT.md** — Add `podcast` and `industry` to `CitationSourceType`. Add `PodcastMetadata` and `IndustryMetadata` shapes. Add `schemaVersion` to `AgentResponse`. Add error envelope. Add `startSeconds` to YouTube metadata. Add bidirectional citation validation note.
-- [ ] **P5. Create agent_documents table** — Document registry for playbooks/references/evidence (see CONTEXT_ASSEMBLY.md). `doc_type`, `task_tags`, `agent_keys`, `content`, `token_count`. Playbooks loaded whole by task tag, not searched.
+- [x] **P5. Create agent_documents table** — Document registry for playbooks/references/evidence (see CONTEXT_ASSEMBLY.md). `doc_type`, `task_tags`, `agent_keys`, `content`, `token_count`. Playbooks loaded whole by task tag, not searched.
 
 ---
 
@@ -22,13 +22,13 @@ Requirements: `REQUIREMENTS_v2.md`. Data model: `DATA_SOURCES_v2.md`. Retrieval:
 
 The manager needs UI primitives that don't exist in the current component inventory.
 
-- [ ] **1.1 DataTable component** — Sortable, filterable table for registry views (65+ rows). Column definitions, sort state, filter inputs, pagination. Use shadcn Table + custom header controls.
-- [ ] **1.2 Tabs component** — shadcn Tabs for agent detail (Config / Tools / Test / Versions / Runs).
-- [ ] **1.3 Dialog component** — Modal for create agent, confirm promote, etc.
-- [ ] **1.4 Select component** — Agent selector (playground), model selector (editor), status selector (filters).
-- [ ] **1.5 Toast/notification component** — Success/error feedback for save, promote, delete actions.
-- [ ] **1.6 CodeEditor component** — Monospace textarea with line numbers for prompt editing. Monaco is ideal but heavy; start with a styled textarea, swap in Monaco later if needed.
-- [ ] **1.7 JSONViewer component** — Collapsible JSON tree for run outputs and schema inspection.
+- [x] **1.1 DataTable component** — Sortable, filterable table for registry views (65+ rows). Column definitions, sort state, filter inputs, pagination. Use shadcn Table + custom header controls.
+- [x] **1.2 Tabs component** — shadcn Tabs for agent detail (Config / Tools / Test / Versions / Runs).
+- [x] **1.3 Dialog component** — Modal for create agent, confirm promote, etc.
+- [x] **1.4 Select component** — Agent selector (playground), model selector (editor), status selector (filters).
+- [x] **1.5 Toast/notification component** — Success/error feedback for save, promote, delete actions.
+- [x] **1.6 CodeEditor component** — Monospace textarea with line numbers for prompt editing. Monaco is ideal but heavy; start with a styled textarea, swap in Monaco later if needed.
+- [x] **1.7 JSONViewer component** — Collapsible JSON tree for run outputs and schema inspection.
 
 ---
 
@@ -36,11 +36,11 @@ The manager needs UI primitives that don't exist in the current component invent
 
 The entry point. List all agents, filter, create new ones.
 
-- [ ] **2.1 Route setup** — Add `/dashboard/agents` route and sidebar nav entry ("Agent Manager" with Settings icon).
-- [ ] **2.2 Agent list page** — DataTable showing: name, status badge, category, runtime type, active version, health indicators. Wire to `listAgents()` API client.
-- [ ] **2.3 Status summary bar** — Card row above table: total agents, active count, draft count, deprecated count.
-- [ ] **2.4 Create agent dialog** — Dialog with form: name, key (auto-slug from name), category, runtime type, description. POST to Agent Manager Supabase.
-- [ ] **2.5 Filter/search** — Status multi-select, category filter, runtime type filter, text search on name/description.
+- [x] **2.1 Route setup** — Add `/dashboard/agents` route and sidebar nav entry ("Agent Manager" with Settings icon).
+- [x] **2.2 Agent list page** — DataTable showing: name, status badge, category, runtime type, active version, health indicators. Wire to `listAgents()` API client.
+- [x] **2.3 Status summary bar** — Card row above table: total agents, active count, draft count, deprecated count.
+- [x] **2.4 Create agent dialog** — Dialog with form: name, key (auto-slug from name), category, runtime type, description. POST to Agent Manager Supabase.
+- [x] **2.5 Filter/search** — Status multi-select, category filter, runtime type filter, text search on name/description.
 
 ---
 
@@ -48,12 +48,12 @@ The entry point. List all agents, filter, create new ones.
 
 Edit an agent, manage versions, edit prompts.
 
-- [ ] **3.1 Agent detail page** — `/dashboard/agents/[id]` with tabbed layout: Overview, Config, Tools, Versions, Runs.
-- [ ] **3.2 Overview tab** — Agent metadata display/edit: name, description, category, status, created date, active version summary.
-- [ ] **3.3 Config tab (prompt editor)** — System prompt (CodeEditor), model selector, temperature/max_tokens/max_tool_rounds sliders, citation_required toggle, output schema editor (CodeEditor for JSON).
-- [ ] **3.4 Versions tab** — Version history list: semver, status badge (draft/candidate/active/archived), created date, notes. "Create New Version" button. Promote button with confirmation dialog.
+- [x] **3.1 Agent detail page** — `/dashboard/agents/[id]` with tabbed layout: Overview, Config, Tools, Versions, Runs.
+- [x] **3.2 Overview tab** — Agent metadata display/edit: name, description, category, status, created date, active version summary.
+- [x] **3.3 Config tab (prompt editor)** — System prompt (CodeEditor), model selector, temperature/max_tokens/max_tool_rounds sliders, citation_required toggle, output schema editor (CodeEditor for JSON).
+- [x] **3.4 Versions tab** — Version history list: semver, status badge (draft/candidate/active/archived), created date, notes. "Create New Version" button. Promote button with confirmation dialog.
 - [ ] **3.5 Version diff view** — Side-by-side comparison of two versions (prompt text diff, tool changes, schema changes). Should priority.
-- [ ] **3.6 Save as version** — Save current config state as new immutable version with notes field.
+- [x] **3.6 Save as version** — Save current config state as new immutable version with notes field.
 
 ---
 

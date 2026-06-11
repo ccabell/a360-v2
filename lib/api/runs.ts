@@ -1,4 +1,4 @@
-import { glSupabase } from "@/lib/supabase";
+import { agentSupabase } from "@/lib/supabase";
 import type { AgentRun, AgentCitation, EvalResult } from "@/lib/types";
 
 // --- Runs ---
@@ -10,7 +10,7 @@ export async function listRuns(opts?: {
   limit?: number;
 }) {
   const limit = opts?.limit || 50;
-  let query = glSupabase
+  let query = agentSupabase
     .from("agent_runs")
     .select("*")
     .order("created_at", { ascending: false })
@@ -26,7 +26,7 @@ export async function listRuns(opts?: {
 }
 
 export async function getRun(id: string) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_runs")
     .select("*")
     .eq("id", id)
@@ -36,7 +36,7 @@ export async function getRun(id: string) {
 }
 
 export async function createRun(run: Partial<AgentRun>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_runs")
     .insert(run)
     .select()
@@ -46,7 +46,7 @@ export async function createRun(run: Partial<AgentRun>) {
 }
 
 export async function updateRun(id: string, updates: Partial<AgentRun>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_runs")
     .update(updates)
     .eq("id", id)
@@ -59,7 +59,7 @@ export async function updateRun(id: string, updates: Partial<AgentRun>) {
 // --- Citations ---
 
 export async function listCitations(runId: string) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_citations")
     .select("*")
     .eq("run_id", runId)
@@ -71,7 +71,7 @@ export async function listCitations(runId: string) {
 // --- Eval Results ---
 
 export async function listEvalResults(opts?: { agentId?: string; runId?: string }) {
-  let query = glSupabase
+  let query = agentSupabase
     .from("eval_results")
     .select("*")
     .order("created_at", { ascending: false });

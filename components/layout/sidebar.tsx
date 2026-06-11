@@ -23,6 +23,7 @@ const menuItems = [
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
+  { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
@@ -49,7 +50,9 @@ export function Sidebar() {
       <nav className="flex-1 p-4 space-y-1">
         {menuItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+          const isActive = item.href === "/dashboard"
+            ? pathname === "/dashboard"
+            : pathname.startsWith(item.href);
 
           return (
             <Link key={item.href} href={item.href}>

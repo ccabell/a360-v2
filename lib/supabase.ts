@@ -1,19 +1,39 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
+function createSupabaseClient(urlKey: string, keyKey: string): SupabaseClient {
+  const url = process.env[urlKey];
+  const key = process.env[keyKey];
+  if (!url || !key) {
+    // Return a dummy client during build time (env vars not available)
+    // API routes will fail at runtime if env vars are actually missing
+    return createClient("https://placeholder.supabase.co", "placeholder");
+  }
+  return createClient(url, key);
+}
 
 /**
- * GL Supabase — structured data (agents, products, extractions, runs, opportunities).
- * Project: wvpgmawrizwkmvfnwqfl
+ * Agent Manager Supabase — agent definitions, versions, tools, workflows, runs, documents.
+ * Project: aejskvmpembryunnbgrk
  */
-export const glSupabase = createClient(
-  process.env.NEXT_PUBLIC_GL_SUPABASE_URL!,
-  process.env.GL_SUPABASE_SERVICE_KEY!
+export const agentSupabase = createSupabaseClient(
+  "NEXT_PUBLIC_AGENT_SUPABASE_URL",
+  "AGENT_SUPABASE_SERVICE_KEY"
 );
 
 /**
- * CMS Supabase — vectorized RAG content (podcasts, YouTube, PubMed, internal docs).
+ * CMS Supabase — vectorized RAG content (podcasts, YouTube, PubMed, industry articles).
  * Project: gjqicqldjgvrwmtkliie
  */
-export const cmsSupabase = createClient(
-  process.env.NEXT_PUBLIC_CMS_SUPABASE_URL!,
-  process.env.CMS_SUPABASE_SERVICE_KEY!
+export const cmsSupabase = createSupabaseClient(
+  "NEXT_PUBLIC_CMS_SUPABASE_URL",
+  "CMS_SUPABASE_SERVICE_KEY"
+);
+
+/**
+ * Prompt Runner Supabase — transcripts, extraction runs, prompts, evaluation.
+ * Project: ksutsaiogmicgaarocba
+ */
+export const prSupabase = createSupabaseClient(
+  "NEXT_PUBLIC_PR_SUPABASE_URL",
+  "PR_SUPABASE_SERVICE_KEY"
 );

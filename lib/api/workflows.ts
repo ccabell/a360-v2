@@ -1,8 +1,8 @@
-import { glSupabase } from "@/lib/supabase";
+import { agentSupabase } from "@/lib/supabase";
 import type { Workflow } from "@/lib/types";
 
 export async function listWorkflows() {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_workflows")
     .select("*")
     .order("name");
@@ -11,7 +11,7 @@ export async function listWorkflows() {
 }
 
 export async function getWorkflow(id: string) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_workflows")
     .select("*")
     .eq("id", id)
@@ -21,7 +21,7 @@ export async function getWorkflow(id: string) {
 }
 
 export async function createWorkflow(workflow: Partial<Workflow>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_workflows")
     .insert(workflow)
     .select()
@@ -31,7 +31,7 @@ export async function createWorkflow(workflow: Partial<Workflow>) {
 }
 
 export async function updateWorkflow(id: string, updates: Partial<Workflow>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_workflows")
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id)
@@ -42,7 +42,7 @@ export async function updateWorkflow(id: string, updates: Partial<Workflow>) {
 }
 
 export async function deleteWorkflow(id: string) {
-  const { error } = await glSupabase
+  const { error } = await agentSupabase
     .from("agent_workflows")
     .delete()
     .eq("id", id);

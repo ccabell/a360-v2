@@ -1,8 +1,8 @@
-import { glSupabase } from "@/lib/supabase";
+import { agentSupabase } from "@/lib/supabase";
 import type { ToolDef } from "@/lib/types";
 
 export async function listTools(dataSource?: string) {
-  let query = glSupabase
+  let query = agentSupabase
     .from("agent_tools")
     .select("*")
     .order("name");
@@ -15,7 +15,7 @@ export async function listTools(dataSource?: string) {
 }
 
 export async function getTool(toolKey: string) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_tools")
     .select("*")
     .eq("tool_key", toolKey)
@@ -25,7 +25,7 @@ export async function getTool(toolKey: string) {
 }
 
 export async function createTool(tool: Partial<ToolDef>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_tools")
     .insert(tool)
     .select()
@@ -35,7 +35,7 @@ export async function createTool(tool: Partial<ToolDef>) {
 }
 
 export async function updateTool(id: string, updates: Partial<ToolDef>) {
-  const { data, error } = await glSupabase
+  const { data, error } = await agentSupabase
     .from("agent_tools")
     .update(updates)
     .eq("id", id)

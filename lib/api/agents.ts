@@ -1,4 +1,4 @@
-import { glSupabase } from "@/lib/supabase";
+import { agentSupabase } from "@/lib/supabase";
 import type { Agent, AgentVersion, AgentStatus, AgentCategory } from "@/lib/types";
 
 // --- List / Filter Agents ---
@@ -8,8 +8,8 @@ export async function listAgents(filters?: {
   category?: AgentCategory;
   search?: string;
 }) {
-  let query = glSupabase
-    .from("a360_agents")
+  let query = agentSupabase
+    .from("agents")
     .select("*")
     .order("name");
 
@@ -25,8 +25,8 @@ export async function listAgents(filters?: {
 // --- Get Single Agent ---
 
 export async function getAgent(id: string) {
-  const { data, error } = await glSupabase
-    .from("a360_agents")
+  const { data, error } = await agentSupabase
+    .from("agents")
     .select("*")
     .eq("id", id)
     .single();
@@ -37,8 +37,8 @@ export async function getAgent(id: string) {
 // --- Get Agent by Key ---
 
 export async function getAgentByKey(agentKey: string) {
-  const { data, error } = await glSupabase
-    .from("a360_agents")
+  const { data, error } = await agentSupabase
+    .from("agents")
     .select("*")
     .eq("agent_key", agentKey)
     .single();
@@ -49,8 +49,8 @@ export async function getAgentByKey(agentKey: string) {
 // --- Create Agent ---
 
 export async function createAgent(agent: Partial<Agent>) {
-  const { data, error } = await glSupabase
-    .from("a360_agents")
+  const { data, error } = await agentSupabase
+    .from("agents")
     .insert(agent)
     .select()
     .single();
@@ -61,8 +61,8 @@ export async function createAgent(agent: Partial<Agent>) {
 // --- Update Agent ---
 
 export async function updateAgent(id: string, updates: Partial<Agent>) {
-  const { data, error } = await glSupabase
-    .from("a360_agents")
+  const { data, error } = await agentSupabase
+    .from("agents")
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id)
     .select()
@@ -74,8 +74,8 @@ export async function updateAgent(id: string, updates: Partial<Agent>) {
 // --- Versions ---
 
 export async function listVersions(agentId: string) {
-  const { data, error } = await glSupabase
-    .from("a360_agent_versions")
+  const { data, error } = await agentSupabase
+    .from("agent_versions")
     .select("*")
     .eq("agent_id", agentId)
     .order("created_at", { ascending: false });
@@ -84,8 +84,8 @@ export async function listVersions(agentId: string) {
 }
 
 export async function getVersion(versionId: string) {
-  const { data, error } = await glSupabase
-    .from("a360_agent_versions")
+  const { data, error } = await agentSupabase
+    .from("agent_versions")
     .select("*")
     .eq("id", versionId)
     .single();
@@ -94,8 +94,8 @@ export async function getVersion(versionId: string) {
 }
 
 export async function createVersion(version: Partial<AgentVersion>) {
-  const { data, error } = await glSupabase
-    .from("a360_agent_versions")
+  const { data, error } = await agentSupabase
+    .from("agent_versions")
     .insert(version)
     .select()
     .single();
@@ -105,14 +105,14 @@ export async function createVersion(version: Partial<AgentVersion>) {
 
 export async function promoteVersion(versionId: string, agentId: string) {
   // Set version to active, update agent's active_version_id
-  const { error: vErr } = await glSupabase
-    .from("a360_agent_versions")
+  const { error: vErr } = await agentSupabase
+    .from("agent_versions")
     .update({ status: "active", promoted_at: new Date().toISOString() })
     .eq("id", versionId);
   if (vErr) throw vErr;
 
-  const { error: aErr } = await glSupabase
-    .from("a360_agents")
+  const { error: aErr } = await agentSupabase
+    .from("agents")
     .update({ active_version_id: versionId, updated_at: new Date().toISOString() })
     .eq("id", agentId);
   if (aErr) throw aErr;

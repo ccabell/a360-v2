@@ -1,6 +1,6 @@
 // =============================================================================
 // Agent Manager — Domain Types
-// Matches Supabase GL schema: a360_agents, a360_agent_versions
+// Matches Agent Manager Supabase schema: agents, agent_versions
 // =============================================================================
 
 /** Runtime that executes this agent */
