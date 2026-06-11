@@ -155,29 +155,29 @@ export default function TCPPage() {
     <div className="p-8 max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-slate-900">Treatment Care Planning</h2>
-        <p className="text-sm text-slate-600 mt-1">
+        <h2 className="text-2xl font-bold text-foreground">Treatment Care Planning</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Generate evidence-based 3-tier treatment plans tailored to patient needs
         </p>
       </div>
 
       {/* Input Section */}
       {!showPlan && (
-        <Card className="p-8 mb-8 border-slate-200">
-          <h3 className="text-lg font-semibold text-slate-900 mb-4">
+        <Card className="p-8 mb-8 border-border">
+          <h3 className="text-lg font-semibold text-foreground mb-4">
             Patient Information
           </h3>
           <textarea
             placeholder="Enter patient details: chief complaint, medical history, aesthetic goals, budget considerations..."
             value={patientInfo}
             onChange={(e) => setPatientInfo(e.target.value)}
-            className="w-full p-4 rounded-lg border border-slate-200 text-slate-900 placeholder-slate-500 mb-4 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
+            className="w-full p-4 rounded-lg border border-border bg-transparent text-foreground placeholder-muted-foreground mb-4 focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring/50"
             rows={4}
           />
           <Button
             onClick={handleGeneratePlan}
             disabled={loading || !patientInfo.trim()}
-            className="w-full py-6 bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full py-6"
             size="lg"
           >
             {loading ? "Generating Treatment Plan..." : "Generate 3-Tier Plan"}
@@ -189,14 +189,14 @@ export default function TCPPage() {
       {showPlan && (
         <div className="space-y-6">
           {/* Recommended Approach */}
-          <Card className="p-6 border-blue-200 bg-blue-50">
+          <Card className="p-6 border-primary/20 bg-primary/5">
             <div className="flex items-start gap-4">
-              <Lightbulb className="h-6 w-6 text-blue-600 flex-shrink-0 mt-1" />
+              <Lightbulb className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
               <div>
-                <h3 className="font-semibold text-slate-900 mb-2">
+                <h3 className="font-semibold text-foreground mb-2">
                   Recommended Approach
                 </h3>
-                <p className="text-sm text-slate-700">
+                <p className="text-sm text-muted-foreground">
                   Start with the Foundation Plan to assess patient response, then progress
                   to Advanced or Premium based on goals and satisfaction.
                 </p>
@@ -207,9 +207,9 @@ export default function TCPPage() {
           {/* Treatment Tiers */}
           <div className="grid gap-6">
             {mockPlans.map((plan) => (
-              <Card key={plan.tier} className="border-slate-200 overflow-hidden">
+              <Card key={plan.tier} className="border-border overflow-hidden">
                 {/* Header */}
-                <div className="p-6 border-b border-slate-200 bg-slate-50">
+                <div className="p-6 border-b border-border bg-muted/40">
                   <div className="flex items-start justify-between mb-3">
                     <div>
                       <div className="flex items-center gap-3 mb-2">
@@ -226,15 +226,15 @@ export default function TCPPage() {
                           </Badge>
                         )}
                       </div>
-                      <h3 className="text-2xl font-bold text-slate-900">
+                      <h3 className="text-2xl font-bold text-foreground">
                         {plan.name}
                       </h3>
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-blue-600">
+                      <p className="text-2xl font-bold text-primary">
                         {plan.cost}
                       </p>
-                      <p className="text-sm text-slate-600">{plan.timeline}</p>
+                      <p className="text-sm text-muted-foreground">{plan.timeline}</p>
                     </div>
                   </div>
                 </div>
@@ -243,17 +243,17 @@ export default function TCPPage() {
                 <div className="p-6 grid grid-cols-3 gap-6">
                   {/* Treatments */}
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-blue-600" />
+                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <CheckCircle className="h-4 w-4 text-primary" />
                       Treatments
                     </h4>
                     <ul className="space-y-2">
                       {plan.treatments.map((treatment, idx) => (
                         <li
                           key={idx}
-                          className="text-sm text-slate-700 flex items-start gap-2"
+                          className="text-sm text-muted-foreground flex items-start gap-2"
                         >
-                          <span className="text-blue-600 font-bold mt-1">
+                          <span className="text-primary font-bold mt-1">
                             •
                           </span>
                           {treatment}
@@ -264,7 +264,7 @@ export default function TCPPage() {
 
                   {/* Benefits */}
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-emerald-600" />
                       Benefits
                     </h4>
@@ -272,7 +272,7 @@ export default function TCPPage() {
                       {plan.benefits.map((benefit, idx) => (
                         <li
                           key={idx}
-                          className="text-sm text-slate-700 flex items-start gap-2"
+                          className="text-sm text-muted-foreground flex items-start gap-2"
                         >
                           <span className="text-emerald-600 font-bold mt-1">
                             •
@@ -285,7 +285,7 @@ export default function TCPPage() {
 
                   {/* Considerations */}
                   <div>
-                    <h4 className="font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
                       <AlertCircle className="h-4 w-4 text-amber-600" />
                       Considerations
                     </h4>
@@ -293,7 +293,7 @@ export default function TCPPage() {
                       {plan.considerations.map((consideration, idx) => (
                         <li
                           key={idx}
-                          className="text-sm text-slate-700 flex items-start gap-2"
+                          className="text-sm text-muted-foreground flex items-start gap-2"
                         >
                           <span className="text-amber-600 font-bold mt-1">
                             •
@@ -307,7 +307,7 @@ export default function TCPPage() {
 
                 {/* Evidence Citations */}
                 {plan.citations.length > 0 && (
-                  <div className="px-6 pb-6 border-t border-slate-200">
+                  <div className="px-6 pb-6 border-t border-border">
                     <MessageWithCitations
                       message={
                         plan.citations[0].evidence +
@@ -334,7 +334,7 @@ export default function TCPPage() {
             >
               Generate New Plan
             </Button>
-            <Button className="flex-1 py-6 bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="flex-1 py-6">
               Send Plan to Patient
             </Button>
           </div>
