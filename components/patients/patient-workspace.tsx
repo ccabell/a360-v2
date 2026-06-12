@@ -152,7 +152,7 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
       <BackLink />
 
       {/* Patient header */}
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-base font-semibold text-primary">
           {(patient.first_name?.[0] ?? "") + (patient.last_name?.[0] ?? "")}
         </div>
@@ -164,6 +164,13 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
             Patient · <span className="font-mono text-xs">{patient.id.slice(0, 8)}</span>
           </p>
         </div>
+        <Link
+          href={`/dashboard/patients/${patientId}/extract`}
+          className="ml-auto inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Zap className="h-4 w-4" />
+          Start extraction
+        </Link>
       </div>
 
       {/* Patient information (full record) */}
