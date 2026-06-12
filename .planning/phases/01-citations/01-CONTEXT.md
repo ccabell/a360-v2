@@ -35,7 +35,7 @@ Fix the evidence_links data gaps in Supabase project `aejskvmpembryunnbgrk` and 
 - **D-11:** The 6 YouTube rows and 14 PubMed rows are manageable in one pass. The 47 FDA label rows are the biggest volume but mostly mechanical (URL lookup + insert).
 
 ### Compile Pipeline Update
-- **D-12:** Add one paragraph to `DOSSIER_COMPILE_PIPELINE.md` STEP 4 instructing: for all new evidence_links inserts, always capture `pmid`, `doi`, `url` (constructed), `page_number` (for FDA). This is a prompt/doc update, not a code change.
+- **D-12:** Add one paragraph to `DOSSIER_COMPILE_PIPELINE.md` STEP 5 (the EMIT section where evidence_links INSERTs happen) instructing: for all new evidence_links inserts, always capture `pmid`, `doi`, `url` (constructed), `page_number` (for FDA). This is a prompt/doc update, not a code change.
 
 ### What Does NOT Need Changing
 - The Research tab UI — already built and rendering correctly from mock data.
@@ -66,7 +66,7 @@ Fix the evidence_links data gaps in Supabase project `aejskvmpembryunnbgrk` and 
 - `lib/mock/research-data.ts` — Mock data showing correct citation structure including FDA URL pattern
 
 ### Compile Pipeline
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md` — Master compile prompt; STEP 4 needs citation locator capture paragraph added
+- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md` — Master compile prompt; STEP 5 needs citation locator capture paragraph added
 
 ### Posture Docs (context only)
 - `Fable Docs/GATEWAY_POSTURE_ADDENDUM.md` — Clinical lens posture (no precise dosing tables)
@@ -115,6 +115,18 @@ Products with fda_label rows: Botox Cosmetic, Xeomin, Skinvive, Juvéderm VOLUX 
 - **Agent Manager Supabase project ID**: `aejskvmpembryunnbgrk` (all GL/dossier data)
 - **YouTube deep-link format**: `https://www.youtube.com/watch?v={video_id}&t={start_time_int}s`
 - **Gap analysis delivery**: For FDA URLs that can't be auto-found, produce a list with product name + what was found/not found for Chris to fill in manually.
+
+### Per-Type Locator Fields (must be populated by scripts/pipeline)
+The compile pipeline and backfill scripts must ensure each evidence_link emits the fields the UI locator types expect:
+
+| Source Type | Required Fields |
+|-------------|----------------|
+| **pubmed** | `pmid`, `title`, `authors`, `journal`, `year`, `doi`, `url` |
+| **youtube** | `video_id` (extractable from url), `start_time` (→ startSeconds), `title` |
+| **fda_label / docs** | `url` (public FDA Access URL), `page_number`, `title`, `filename` |
+| **all** | `authority_tier` (fda > manufacturer > clinical > practitioner), `quote` (snippet text) |
+
+These map 1:1 to `PubMedLocator`, `YouTubeLocator`, `DocumentLocator` types in `lib/types/retrieval.ts`. The UI already consumes these shapes — the data just needs to match.
 
 </specifics>
 

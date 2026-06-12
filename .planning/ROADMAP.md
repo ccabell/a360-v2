@@ -11,7 +11,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 ## Phase Details
 
 ### Phase 1: citations
-**Goal**: Make citations work end-to-end in the Research/Evidence tab by fixing the evidence_links data gaps (pmid null, url empty, no page_number column, YouTube timestamps discarded) and wiring the compile pipeline to always capture citation locators going forward.
+**Goal**: Fix evidence_links data gaps (pmid null, url empty, no page_number column, YouTube timestamps missing) and update the compile pipeline to always capture citation locators going forward.
 **Depends on**: Nothing
 **Canonical refs**:
 - `HANDOFF_CITATIONS.md`
@@ -19,7 +19,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 - `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
 **Success Criteria** (what must be TRUE):
   1. All existing PubMed evidence_links rows have pmid populated and url set to `https://pubmed.ncbi.nlm.nih.gov/{pmid}/`
-  2. evidence_links table has page_number column; FDA source rows have it populated
+  2. evidence_links table has page_number column; row-level population deferred to v2
   3. FDA prescribing info PDFs are in Supabase Storage with accessible URLs in evidence_links
   4. YouTube CMS chunks have start_seconds/end_seconds captured (not discarded)
   5. Compile pipeline always captures pmid, doi, url, page_number on new evidence_links inserts
