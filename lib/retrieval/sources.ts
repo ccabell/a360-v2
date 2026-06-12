@@ -61,6 +61,26 @@ interface RefDocRow {
 }
 
 // ---------------------------------------------------------------------------
+// Snippet normalizer — column is TEXT but may hold JSON arrays or objects
+// ---------------------------------------------------------------------------
+
+function parseSnippet(snippet: string | null): string {
+  if (!snippet) return "";
+  try {
+    const parsed = JSON.parse(snippet) as unknown;
+    if (Array.isArray(parsed)) return (parsed as string[]).join(", ");
+    if (typeof parsed === "object" && parsed !== null) {
+      const obj = parsed as Record<string, unknown>;
+      const val = obj.display ?? obj.text;
+      if (typeof val === "string") return val;
+    }
+  } catch {
+    // plain string — fall through
+  }
+  return snippet.trim();
+}
+
+// ---------------------------------------------------------------------------
 // Locator builders
 // ---------------------------------------------------------------------------
 
@@ -163,7 +183,7 @@ export async function retrieveSources(
     .eq("offering_id", BOTOX_OFFERING_ID)
     .not("snippet", "is", null)
     .order("authority_rank", { ascending: true })
-    .limit(12);
+    .limit(50);
 
   // --- Query B: agent_reference_docs (prose context) ---
   // Include draft status — Phase 2 dossier docs are status='draft' pending review (Pitfall 5)
@@ -200,7 +220,7 @@ export async function retrieveSources(
         authorityWeight: authWeight,
         final: authWeight,
       },
-      text: (row.snippet ?? "").trim(),
+      text: parseSnippet(row.snippet),
       locator,
     });
   }
@@ -232,7 +252,8 @@ export async function retrieveSources(
   });
 
   // --- Merge: evidence_links first (ordered by authority_rank), then dossier rows ---
-  const merged = [...evSources, ...docSources].slice(0, 8);
+  // Limit raised to 20 to ensure all source types (fda, pubmed, youtube) are represented
+  const merged = [...evSources, ...docSources].slice(0, 20);
   const sources: RetrievedSource[] = merged.map((s, i) => ({
     ...s,
     retrievalId: `src_${i + 1}`,
