@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 02-03-PLAN.md — HA filler product dossiers (Voluma XC, Vollure XC, Skinvive, Lyft, RHA Redensity)
-last_updated: "2026-06-12T23:30:00.000Z"
+stopped_at: Completed 02-03-PLAN.md
+last_updated: "2026-06-12T22:35:34.287Z"
 progress:
   total_phases: 3
   completed_phases: 1
@@ -42,6 +42,7 @@ Plan: 2 of 4
 | 02-dossier-batch | 6/6 | - | - |
 | 03-retrieval-wiring | 1/4 | - | - |
 | Phase 02-dossier-batch P04 | 45 minutes | 2 tasks | 14 files |
+| Phase 02 P03 | 45 | 2 tasks | 19 files |
 
 ## Accumulated Context
 
@@ -55,6 +56,7 @@ Plan: 2 of 4
 - [Phase 02-dossier-batch P03]: item_body_areas trigger gl_check_side_laterality() requires side to match body_area.laterality — midline areas (Perioral, Perioral Lines, Full Face, Chin) require side='na'; new zones need explicit laterality UPDATE after INSERT (default='na')
 - [Phase 02-dossier-batch P03]: source_registry.ingestible is a generated column — never include in INSERT column lists
 - [Phase 02-dossier-batch P03]: HA Fillers category_id = 6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8
+- [Phase 02]: HA Fillers product scope in 02-03: 5 products per manifest (Voluma, Vollure, Skinvive, Restylane Lyft, RHA Redensity) — not the full Juvederm/Restylane portfolios
 
 ### Pending Todos
 
@@ -66,6 +68,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:45:00.000Z
-Stopped at: Completed 03-01-PLAN.md — wave-0 prep, verified Botox IDs + evidence counts
+Last session: 2026-06-12T22:34:56.261Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None

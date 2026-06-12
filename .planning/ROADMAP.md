@@ -59,7 +59,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Schema migration (does_not_solve column) + authority_rank backfill + product list discovery
 - [x] 02-02-PLAN.md — Compile 6 remaining category dossiers (HA Fillers, Biostimulators, Energy/RF, Energy/Laser, Skincare Actives, Body Contouring)
-- [ ] 02-03-PLAN.md — Compile HA Filler product dossiers (Juvederm family, Restylane family, RHA, Skinvive)
+- [x] 02-03-PLAN.md — Compile HA Filler product dossiers (Juvederm family, Restylane family, RHA, Skinvive)
 - [x] 02-04-PLAN.md — Compile Biostimulator + Body Contouring product dossiers (Sculptra, Radiesse, Kybella, CoolSculpting)
 - [ ] 02-05-PLAN.md — Compile Energy/RF + Energy/Laser + Skincare Actives + Dysport product dossiers
 - [ ] 02-06-PLAN.md — End-of-batch reports (STRUCTURED_COVERAGE, TAXONOMY_ADDITIONS, SOURCE CAPTURE REPORT with top-10 OA papers)
