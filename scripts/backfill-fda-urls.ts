@@ -83,6 +83,14 @@ const FDA_URL_MAP: Record<string, string> = {
   // Juvederm Voluma XC — PMA P110033 (same combined label as Vollure XC above)
   "6c8f72f0-887f-484a-a588-0bb9bd8052c9":
     "https://www.accessdata.fda.gov/cdrh_docs/pdf11/P110033S101.pdf",
+
+  // Sculptra Aesthetic — PMA P030050, supplement S039 (poly-L-lactic acid, Galderma)
+  "2ce7a3d2-b06d-4b62-b9b7-4113afb51baa":
+    "https://www.accessdata.fda.gov/cdrh_docs/pdf3/P030050S039D.pdf",
+
+  // CoolSculpting Elite — 510(k) K233732 (cryolipolysis device, Allergan/AbbVie, cleared 2024-08)
+  "694ea839-cf8f-4a17-b838-2588674c792f":
+    "https://www.accessdata.fda.gov/cdrh_docs/pdf23/K233732.pdf",
 };
 
 async function main() {
