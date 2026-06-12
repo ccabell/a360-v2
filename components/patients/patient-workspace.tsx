@@ -14,7 +14,7 @@ import {
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { TranscriptViewer } from "./transcript-viewer";
 import { RunOutput } from "./run-output";
-import { ConsultationIntelligence } from "./consultation-intelligence";
+import { ExtractionResults } from "@/components/extraction/extraction-results";
 import { pickScenario, type ResearchScenario } from "@/lib/mock/research-data";
 import { formatDate, age, formatDuration } from "@/lib/format";
 import type { PatientDetail, PRTranscript, PRRun, Paged } from "@/lib/types";
@@ -349,7 +349,7 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
             </Button>
           </div>
           {runView === "intelligence" ? (
-            <ConsultationIntelligence transcriptId={selected.id} runId={selectedRunId} />
+            <ExtractionResults transcriptId={selected.id} runId={selectedRunId} />
           ) : (
             <RunOutput runId={selectedRunId} />
           )}
