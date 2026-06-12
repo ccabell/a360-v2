@@ -782,5 +782,30 @@
     "source_registry_added": 12,
     "ingestion_queue_added": 5
   },
-  "notes": "02-02 complete: 9 category dossiers compiled (36 agent_reference_docs rows inserted as draft). 02-03 complete: 5 HA filler product dossiers (25 agent_reference_docs rows). source_registry grew by 12 (now ~46 rows). evidence_links: +~31 new. ingestion_queue: +5 OA/public_domain sources queued."
+  "notes": "02-02 complete: 9 category dossiers compiled (36 agent_reference_docs rows inserted as draft). 02-03 complete: 5 HA filler product dossiers (25 agent_reference_docs rows). source_registry grew by 12 (now ~46 rows). evidence_links: +~31 new. ingestion_queue: +5 OA/public_domain sources queued.",
+  "batch_status": "complete",
+  "batch_completed_at": "2026-06-12T22:45:00Z",
+  "reports_generated": [
+    "STRUCTURED_COVERAGE.md",
+    "TAXONOMY_ADDITIONS.md",
+    "SOURCE_CAPTURE_REPORT.md"
+  ],
+  "batch_summary": {
+    "plans_executed": ["02-01", "02-02", "02-03", "02-04", "02-05", "02-06"],
+    "products_compiled": 17,
+    "products_skipped": 2,
+    "agent_reference_docs_written": 89,
+    "agent_reference_docs_in_live_db": 25,
+    "agent_reference_docs_pending_sql_execution": 64,
+    "evidence_links_written": 73,
+    "source_registry_total": 50,
+    "ingestion_queue_total": 93,
+    "taxonomy_additions": {
+      "new_concerns": 7,
+      "new_body_areas": 3,
+      "new_aliases_estimated": 124
+    },
+    "fda_validation": "PASS — 0 orphaned FDA-indicated concerns",
+    "pending_action": "Execute 02-04 and 02-05 SQL files against Supabase aejskvmpembryunnbgrk to complete live DB state"
+  }
 }
