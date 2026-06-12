@@ -552,7 +552,99 @@
       "notes": "GLP-1/GIP dual agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
     }
   ],
-  "next_pending": "02-03 HA Filler product dossiers",
+  "next_pending": "02-04 Neurotoxin product dossiers",
   "batch_blocked_by": "none",
-  "notes": "02-02 complete: 9 category dossiers compiled (36 agent_reference_docs rows inserted as draft). All categories in batch manifest now have parent dossiers — product dossiers in 02-03 through 02-05 can now set extends_doc_id to category doc IDs above. source_registry grew from 14 to 34 rows (20 new discovery entries). evidence_links grew from 51 to 91 (+40 new). ingestion_queue: 14 OA/public_domain sources queued."
+  "plan_02_03_complete": {
+    "completed_at": "2026-06-12T18:00:00Z",
+    "products_compiled": [
+      {
+        "entity_key": "juvederm_voluma_xc",
+        "entity_id": "6c8f72f0-887f-484a-a588-0bb9bd8052c9",
+        "category_id": "6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8",
+        "status": "inserted",
+        "docs_inserted": [
+          {"id": "66af9422-5a07-4ed5-b089-8d3824403e01", "doc_type": "clinical_summary"},
+          {"id": "68e7f52a-c9d5-406d-92a2-94093784c836", "doc_type": "technique_guide"},
+          {"id": "823e604a-b52b-46eb-ba17-b5f61ddb238a", "doc_type": "patient_education"},
+          {"id": "8530bea8-f59c-4805-867e-5cd42437dd75", "doc_type": "faq"},
+          {"id": "8686de86-154c-4883-8350-24d02c04cd59", "doc_type": "deep_dive_playbook"}
+        ],
+        "item_concerns": 7,
+        "item_body_areas": 7,
+        "evidence_links": 6
+      },
+      {
+        "entity_key": "juvederm_vollure_xc",
+        "entity_id": "7370545f-97a3-4519-a92d-3ac4f969829d",
+        "category_id": "6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8",
+        "status": "inserted",
+        "docs_inserted": [
+          {"id": "25e4028c-ec6a-4c33-977c-c272cd7cf3bf", "doc_type": "clinical_summary"},
+          {"id": "893b57a9-a06a-43af-a0a7-e9f4280456b0", "doc_type": "technique_guide"},
+          {"id": "4c917095-5956-45c9-a703-7270d9b4f4b7", "doc_type": "patient_education"},
+          {"id": "fbfa316a-4d95-40bf-992f-3631c203cd2f", "doc_type": "faq"},
+          {"id": "7caf14c9-a9fd-4ec9-aff2-98204319f8b0", "doc_type": "deep_dive_playbook"}
+        ],
+        "item_concerns": 5,
+        "item_body_areas": 5,
+        "evidence_links": 7
+      },
+      {
+        "entity_key": "skinvive_by_juvederm",
+        "entity_id": "b74d5475-bf58-4d7d-87f5-2c8dc9e252de",
+        "category_id": "6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8",
+        "status": "inserted",
+        "docs_inserted": [
+          {"id": "87f7f03a-727f-4c73-875a-c389e0e2fd1f", "doc_type": "clinical_summary"},
+          {"id": "69966628-9227-4e6b-b576-45e9b560a76c", "doc_type": "technique_guide"},
+          {"id": "c670b69c-172b-42d2-8a43-56891663b79a", "doc_type": "patient_education"},
+          {"id": "48838fe6-cc36-4ce2-819e-b094eee22cee", "doc_type": "faq"},
+          {"id": "ece9394c-f40c-4b59-bc3d-6a215794dee4", "doc_type": "deep_dive_playbook"}
+        ],
+        "item_concerns": 5,
+        "item_body_areas": 2,
+        "evidence_links": 8
+      },
+      {
+        "entity_key": "restylane_lyft",
+        "entity_id": "f1732c7c-3f19-4f3d-9aff-543a132e5506",
+        "category_id": "6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8",
+        "status": "inserted",
+        "docs_inserted": [
+          {"id": "fd97029d-d32a-49c3-bfce-7043855c954e", "doc_type": "clinical_summary"},
+          {"id": "ad863d78-292e-4811-bb67-3e04fecac798", "doc_type": "technique_guide"},
+          {"id": "35590148-509f-4ed4-993a-4e371280eae5", "doc_type": "patient_education"},
+          {"id": "0a549d1a-4a87-4751-90a6-268079bdd121", "doc_type": "faq"},
+          {"id": "2a9819ae-4790-4707-9263-19f61e871240", "doc_type": "deep_dive_playbook"}
+        ],
+        "item_concerns": 7,
+        "item_body_areas": 7,
+        "evidence_links": 6
+      },
+      {
+        "entity_key": "rha_redensity",
+        "entity_id": "d8a00419-39e1-4d4b-8dab-ad134fb00930",
+        "category_id": "6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8",
+        "status": "inserted",
+        "docs_inserted": [
+          {"id": "a12eb1ab-7ed8-490f-8464-8329eabea4b8", "doc_type": "clinical_summary"},
+          {"id": "b41c72a5-3343-4803-b001-60b82cf9310b", "doc_type": "technique_guide"},
+          {"id": "9a989a2e-a99a-400d-abdd-062182667d89", "doc_type": "patient_education"},
+          {"id": "544a9644-60a5-4aa6-b523-3ac391729110", "doc_type": "faq"},
+          {"id": "ef6b56b6-5dcf-4583-804b-d28ea8ec1e24", "doc_type": "deep_dive_playbook"}
+        ],
+        "item_concerns": 4,
+        "item_body_areas": 4,
+        "evidence_links": 4
+      }
+    ],
+    "taxonomy_added": {
+      "concerns": 6,
+      "body_areas": 3,
+      "aliases": "~60"
+    },
+    "source_registry_added": 12,
+    "ingestion_queue_added": 5
+  },
+  "notes": "02-02 complete: 9 category dossiers compiled (36 agent_reference_docs rows inserted as draft). 02-03 complete: 5 HA filler product dossiers (25 agent_reference_docs rows). source_registry grew by 12 (now ~46 rows). evidence_links: +~31 new. ingestion_queue: +5 OA/public_domain sources queued."
 }
