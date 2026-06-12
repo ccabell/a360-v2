@@ -24,7 +24,12 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
   4. YouTube CMS chunks have start_seconds/end_seconds captured (not discarded)
   5. Compile pipeline always captures pmid, doi, url, page_number on new evidence_links inserts
   6. Research/Evidence tab renders clickable "View on PubMed" and "Open FDA label · p.N" links for at least Botox/Neurotoxins content
-**Plans**: TBD
+**Plans:** 3 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Schema migration (page_number column) + PubMed PMID backfill + YouTube timestamp backfill
+- [ ] 01-02-PLAN.md — FDA Access Data URL research + FDA URL backfill for 47 evidence_links rows
+- [ ] 01-03-PLAN.md — Compile pipeline doc update + demo verification checkpoint
 
 **Pre-decided (locked from prior session):**
 - Citation rendering: numbered chips `[1][2]` with source panel. Already built in M6.
