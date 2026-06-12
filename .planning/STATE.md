@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 03-01-PLAN.md — wave-0 prep, verified Botox IDs + evidence counts
-last_updated: "2026-06-12T22:45:00.000Z"
+stopped_at: Completed 02-03-PLAN.md — HA filler product dossiers (Voluma XC, Vollure XC, Skinvive, Lyft, RHA Redensity)
+last_updated: "2026-06-12T23:30:00.000Z"
 progress:
   total_phases: 3
   completed_phases: 1
@@ -52,6 +52,9 @@ Plan: 2 of 4
 - [Phase 02-dossier-batch]: Radiesse not in compile_manifest.json — compiled Sculptra only for biostimulators; Radiesse deferred (not in DB manifest)
 - [Phase 02-dossier-batch]: PAH safety floor: CoolSculpting clinical uses Singh et al. 2019 incidence (1/138) — more conservative than manufacturer's original 1/20,000 estimate
 - [Phase 03-retrieval-wiring P01]: Botox offering_id 4b92be36-e84e-432c-8549-f5d85a767fdb confirmed; Neurotoxins category_id 57b7c5a8-0799-42b0-9111-8441f18a82db confirmed; evidence_links pubmed=14, fda_label=10, total=31; agent_reference_docs=6; D-07 fallback not needed
+- [Phase 02-dossier-batch P03]: item_body_areas trigger gl_check_side_laterality() requires side to match body_area.laterality — midline areas (Perioral, Perioral Lines, Full Face, Chin) require side='na'; new zones need explicit laterality UPDATE after INSERT (default='na')
+- [Phase 02-dossier-batch P03]: source_registry.ingestible is a generated column — never include in INSERT column lists
+- [Phase 02-dossier-batch P03]: HA Fillers category_id = 6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8
 
 ### Pending Todos
 
