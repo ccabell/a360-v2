@@ -84,7 +84,20 @@
       "entity_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "02f611ad-cd03-464c-ab1a-a06bd4ead0cf", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "202c5649-f39a-4cfb-a894-5913ad490b47", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "e2e32141-cf83-4475-a94d-1aafafe8d66e", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "8044bea2-d637-4251-89e4-0f420699eab0", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_dermal_fillers_sales_education.md",
+        "REVIEW_QUEUE/PENDING_dermal_fillers_clinical.md"
+      ],
+      "evidence_links_added": 7,
       "notes": "HA Fillers category — Juvederm family, Restylane Lyft, RHA Redensity, SKINVIVE"
     },
     {
@@ -93,8 +106,21 @@
       "entity_id": "a6a854e2-7db1-4ec0-bac0-7b346454fca0",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Biostimulators category — Sculptra Aesthetic"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "67666118-7ed4-4627-b873-031b7666ee94", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "68ae5ce6-948a-45d6-b71d-672adaeebfb0", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "ae3a04db-70ab-4302-a6fd-9e00bcb1b071", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "910b9911-dc53-47fc-a0c3-bb2eb4ee111a", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_biostimulators_sales_education.md",
+        "REVIEW_QUEUE/PENDING_biostimulators_clinical.md"
+      ],
+      "evidence_links_added": 5,
+      "notes": "Biostimulators category — Sculptra Aesthetic (PLLA focus)"
     },
     {
       "entity_class": "category",
@@ -102,8 +128,22 @@
       "entity_id": "d72803ce-814f-4905-8ce4-3d44323e9503",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Body Contouring category — CoolSculpting Elite (products may need category assignment)"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "2dcf1b98-2f00-4205-8fab-5e8b58175526", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "c9fb67b3-6122-4a9a-8116-16872d269daf", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "7d82c7c6-abb1-4852-abf0-e7290ac4ac98", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "22139ec3-60b5-40fe-903e-ed1ec1595d97", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_body_contouring_sales_education.md",
+        "REVIEW_QUEUE/PENDING_body_contouring_clinical.md"
+      ],
+      "evidence_links_added": 5,
+      "pah_disclosed": true,
+      "notes": "Body Contouring — CoolSculpting Elite (cryolipolysis). PAH risk disclosed in clinical summary."
     },
     {
       "entity_class": "category",
@@ -111,8 +151,21 @@
       "entity_id": "b51855e7-73a2-498b-b1c4-4fdc739635a2",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Injectable Fat Reduction category — Kybella"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "391a8d21-d810-4998-94aa-2df7ad347592", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "2227735b-c23d-438c-a97c-029987d81859", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "312e452e-1e7d-4aef-a1fa-d113da6b5273", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "40245613-20c1-45b4-b20c-2ce90e83d0b3", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_injectable_fat_reduction_sales_education.md",
+        "REVIEW_QUEUE/PENDING_injectable_fat_reduction_clinical.md"
+      ],
+      "evidence_links_added": 5,
+      "notes": "Injectable Fat Reduction — Kybella (deoxycholic acid). Submental only FDA indication."
     },
     {
       "entity_class": "category",
@@ -120,8 +173,21 @@
       "entity_id": "836bcdf0-aa49-4dae-9ced-bd9c4a027299",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "RF Microneedling category — Morpheus8; includes energy/RF devices"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "77358d98-0c62-495a-90e2-487fe9f81a1d", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "bb289acc-bc72-4b27-855a-d41c9fb47056", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "b12ad6fc-c35c-4dbc-a32c-21c714ee8ec8", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "42abdc4c-dfeb-4ffa-8ed4-d8b11eb39d23", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_rf_microneedling_sales_education.md",
+        "REVIEW_QUEUE/PENDING_rf_microneedling_clinical.md"
+      ],
+      "evidence_links_added": 5,
+      "notes": "RF Microneedling — Morpheus8 (InMode). Fractional RF, Fitzpatrick I-VI, depth-controlled."
     },
     {
       "entity_class": "category",
@@ -129,8 +195,21 @@
       "entity_id": "4eb4c667-16af-44ba-94c6-e85edffef558",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Skin Tightening category — Sofwave"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "36129552-10fb-4de1-88e0-24a034a8c972", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "128e4ca9-5016-4709-ba8a-fca44988d0fe", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "28bf58bf-f3d3-4eee-8f99-8e65ab1f4131", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "129912ff-eee7-4ac9-bac2-4a3e4ac16036", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_skin_tightening_sales_education.md",
+        "REVIEW_QUEUE/PENDING_skin_tightening_clinical.md"
+      ],
+      "evidence_links_added": 3,
+      "notes": "Skin Tightening — Sofwave SUPERB (1.5mm mid-dermis parallel ultrasound)."
     },
     {
       "entity_class": "category",
@@ -138,8 +217,21 @@
       "entity_id": "1c9acf3e-8753-4bd3-af98-9372c994eec3",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Ultrasound Lifting category — Ultherapy PRIME (MFU-V)"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "76f2cc7d-1216-4b7b-ae49-90addfa26c9b", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "0b47b7aa-fbd6-4ec4-9dae-c0e5b869536f", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "dff4a45b-8832-4063-a5a2-4064ce8e346f", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "ca5b121f-878f-4256-a461-0d0b57d6f255", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_ultrasound_lifting_sales_education.md",
+        "REVIEW_QUEUE/PENDING_ultrasound_lifting_clinical.md"
+      ],
+      "evidence_links_added": 3,
+      "notes": "Ultrasound Lifting — Ultherapy PRIME (MFU-V, SMAS-level). Only non-invasive device with FDA brow lift clearance."
     },
     {
       "entity_class": "category",
@@ -147,8 +239,21 @@
       "entity_id": "b35c36c4-ee76-422d-89a6-0e7a4af568b9",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Pigment & Skin Rejuvenation category — Hollywood Spectra (PicoSure-class laser)"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "f34284d6-192b-4981-95ea-5cbbd612fa76", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "fb9e21b8-5a67-4acc-a8ab-36459fe4c07c", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "2f0e0278-12f1-4836-8cf4-e0985d7d053f", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "b55d7ec0-ffb8-48c6-8a88-ca404242e090", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_pigment_rejuvenation_sales_education.md",
+        "REVIEW_QUEUE/PENDING_pigment_rejuvenation_clinical.md"
+      ],
+      "evidence_links_added": 4,
+      "notes": "Pigment & Skin Rejuvenation — Hollywood Spectra Q-switched Nd:YAG. Melasma, toning, Hollywood Peel."
     },
     {
       "entity_class": "category",
@@ -156,8 +261,17 @@
       "entity_id": "1b17dd9a-3509-4183-ba50-cae83e0813b5",
       "batch": "02-dossier-batch",
       "plan": "02-02",
-      "status": "pending",
-      "notes": "Energy-Based Treatments umbrella category"
+      "status": "inserted",
+      "ts": "2026-06-12T21:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "7ce0dedb-8828-4dbc-933d-822623bc1245", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "80c44471-69b1-4d18-88ff-0980e10f3bb6", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft"},
+        {"id": "3d393091-4baf-4180-b07e-974f905932c3", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "draft"},
+        {"id": "065e13ed-a9b8-44f0-8d60-3be2a4e0783b", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "evidence_links_added": 2,
+      "notes": "Energy-Based Treatments — umbrella category. Covers RF microneedling, skin tightening, ultrasound lifting, laser/pigment."
     },
     {
       "entity_class": "product",
@@ -350,7 +464,7 @@
       "notes": "GLP-1/GIP dual agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
     }
   ],
-  "next_pending": "02-02 category dossiers",
+  "next_pending": "02-03 HA Filler product dossiers",
   "batch_blocked_by": "none",
-  "notes": "02-01 complete: does_not_solve column added, authority_rank backfilled (0 NULL FDA rows), Botox reference example populated. Full product/category roster loaded. 2 entities inserted (Neurotoxins category + Botox product), 30 entities pending across plans 02-02 through 02-05."
+  "notes": "02-02 complete: 9 category dossiers compiled (36 agent_reference_docs rows inserted as draft). All categories in batch manifest now have parent dossiers — product dossiers in 02-03 through 02-05 can now set extends_doc_id to category doc IDs above. source_registry grew from 14 to 34 rows (20 new discovery entries). evidence_links grew from 51 to 91 (+40 new). ingestion_queue: 14 OA/public_domain sources queued."
 }
