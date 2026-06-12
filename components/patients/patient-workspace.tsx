@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { TranscriptViewer } from "./transcript-viewer";
+import { RunOutput } from "./run-output";
 import { pickScenario, type ResearchScenario } from "@/lib/mock/research-data";
 import { formatDate, age, formatDuration } from "@/lib/format";
 import type { PatientDetail, PRTranscript, PRRun, Paged } from "@/lib/types";
@@ -107,9 +108,8 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
     const rid = run.run_id || run.id;
     setSelectedRunId(rid);
     setRunning(false);
-    // Grounded output is mocked until the retrieval/citation service is live.
-    setOutput(pickScenario("run output"));
-    setOutputLabel(`Run ${rid.slice(0, 8)} · ${run.status}`);
+    // Existing runs render their REAL output (see <RunOutput/>); clear any demo output.
+    setOutput(null);
   }
 
   function runPrompt() {
@@ -327,7 +327,10 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         </div>
       )}
 
-      {/* Loading output */}
+      {/* Existing run → REAL extraction output (live from Prompt Runner) */}
+      {selectedRunId && <RunOutput runId={selectedRunId} />}
+
+      {/* Loading output (new prompt run) */}
       {running && (
         <Card>
           <CardContent className="flex items-center gap-3 py-6">
@@ -339,7 +342,7 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         </Card>
       )}
 
-      {/* Grounded prompt output — same renderer as chat */}
+      {/* New prompt → grounded output (demo, same renderer as chat) */}
       {output && (
         <Card>
           <CardHeader>

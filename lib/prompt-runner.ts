@@ -11,6 +11,7 @@ import type {
   PRTranscript,
   PRTranscriptDetail,
   PRRun,
+  PRRunDetail,
   Practice,
 } from "@/lib/types";
 
@@ -81,7 +82,8 @@ export function listRuns(opts: { limit?: number; offset?: number; transcriptId?:
 }
 
 export function getRun(runId: string) {
-  return request<PRRun>(`/runs/${runId}`);
+  // Single-record endpoint includes model, prompt versions, and structured outputs.
+  return request<PRRunDetail>(`/runs/${runId}`);
 }
 
 // --- Extraction ---

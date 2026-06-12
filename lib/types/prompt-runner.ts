@@ -57,6 +57,32 @@ export interface PRRun {
   updated_at: string;
 }
 
+// --- /runs/{id} (full record: model, prompt versions, structured outputs) ---
+export interface RunEvidence {
+  quote?: string;
+  source?: string;
+  speaker?: string;
+  speaker_id?: string;
+  confidence?: number;
+}
+
+// Extraction fields follow { value, evidence, missing_reason }.
+export interface PRRunDetail extends PRRun {
+  label: string | null;
+  prompt_set_id: string | null;
+  prompt_versions: Record<string, string> | null;
+  model_provider: string | null;
+  model_name: string | null;
+  temperature: number | null;
+  inputs: Record<string, unknown> | null;
+  execution_meta: Record<string, unknown> | null;
+  // Deep/variable extraction tree — walked generically by the UI.
+  outputs: Record<string, any> | null;
+  practice_id: string | null;
+  catalog_id: string | null;
+  notes: string | null;
+}
+
 // --- /practices ---
 export interface Practice {
   id: string;
