@@ -13,7 +13,7 @@ export default function ResearchPage() {
               Multi-source retrieval with grounded, clickable citations
             </p>
           </div>
-          <Badge variant="secondary">Demo data</Badge>
+          <Badge variant="secondary">Live</Badge>
         </div>
       </div>
 
