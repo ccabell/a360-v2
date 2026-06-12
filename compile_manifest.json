@@ -330,8 +330,23 @@
       "category_id": "a6a854e2-7db1-4ec0-bac0-7b346454fca0",
       "batch": "02-dossier-batch",
       "plan": "02-04",
-      "status": "pending",
-      "notes": "PLLA biostimulator — collagen induction, gradual volume, multiple sessions"
+      "status": "inserted",
+      "ts": "2026-06-12T23:00:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "1cc99870-cdda-49e0-af12-c7381584ad2a", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "67666118-7ed4-4627-b873-031b7666ee94"},
+        {"id": "51297ecf-e2ea-4714-b622-824724db1915", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "68ae5ce6-948a-45d6-b71d-672adaeebfb0"},
+        {"id": "f17ef339-cb39-4512-8327-837125c0c1a1", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "ae3a04db-70ab-4302-a6fd-9e00bcb1b071"},
+        {"id": "8aacef16-7560-4ef5-8a1d-a6c5cd357b09", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "ae3a04db-70ab-4302-a6fd-9e00bcb1b071"},
+        {"id": "b5fd9933-11b3-46f7-bfc4-f767cf696b9a", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "910b9911-dc53-47fc-a0c3-bb2eb4ee111a"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_sculptra_clinical.md",
+        "REVIEW_QUEUE/PENDING_sculptra_sales_education.md"
+      ],
+      "evidence_links_added": 7,
+      "pah_disclosed": false,
+      "notes": "PLLA biostimulator — collagen induction, gradual volume, multiple sessions. 5-5-5 massage protocol. No reversal agent."
     },
     {
       "entity_class": "product",
@@ -340,8 +355,22 @@
       "category_id": "b51855e7-73a2-498b-b1c4-4fdc739635a2",
       "batch": "02-dossier-batch",
       "plan": "02-04",
-      "status": "pending",
-      "notes": "Deoxycholic acid — submental fullness reduction, FDA-indicated"
+      "status": "inserted",
+      "ts": "2026-06-12T23:00:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "d3b83276-ef42-44c4-a083-06386629817d", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "391a8d21-d810-4998-94aa-2df7ad347592"},
+        {"id": "8e99c839-f93e-4144-bec2-e98725ed971c", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "2227735b-c23d-438c-a97c-029987d81859"},
+        {"id": "ee1ae5bd-dd8c-44d8-92c3-ab84998228f8", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "312e452e-1e7d-4aef-a1fa-d113da6b5273"},
+        {"id": "315f20f8-c4b7-45db-ae29-546780e681ed", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "312e452e-1e7d-4aef-a1fa-d113da6b5273"},
+        {"id": "46d4c9d0-8f60-48f7-b4f1-cb1540e1fdf7", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "40245613-20c1-45b4-b20c-2ce90e83d0b3"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_kybella_clinical.md",
+        "REVIEW_QUEUE/PENDING_kybella_sales_education.md"
+      ],
+      "evidence_links_added": 5,
+      "notes": "Deoxycholic acid — submental fullness reduction, FDA-indicated (NDA 206333). Narrow indication: submental only. Marginal mandibular nerve risk documented."
     },
     {
       "entity_class": "product",
@@ -350,8 +379,23 @@
       "category_id": "d72803ce-814f-4905-8ce4-3d44323e9503",
       "batch": "02-dossier-batch",
       "plan": "02-04",
-      "status": "pending",
-      "notes": "Cryolipolysis body contouring — FDA-cleared fat reduction; note: PAH risk"
+      "status": "inserted",
+      "ts": "2026-06-12T23:00:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "4d3a566b-9c9f-404a-ab18-d912cfa1c849", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "2dcf1b98-2f00-4205-8fab-5e8b58175526"},
+        {"id": "111cf2c8-67d3-4e53-bee0-9d689f98752f", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "c9fb67b3-6122-4a9a-8116-16872d269daf"},
+        {"id": "45a71dfc-2dd3-4879-a360-ba88b3ca3442", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "7d82c7c6-abb1-4852-abf0-e7290ac4ac98"},
+        {"id": "59540a69-f7b0-47f5-af5f-9ee9eda5fa06", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "7d82c7c6-abb1-4852-abf0-e7290ac4ac98"},
+        {"id": "15452200-5aaa-4457-b1b1-3747a27f5d2f", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "22139ec3-60b5-40fe-903e-ed1ec1595d97"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_coolsculpting_clinical.md",
+        "REVIEW_QUEUE/PENDING_coolsculpting_sales_education.md"
+      ],
+      "evidence_links_added": 7,
+      "pah_disclosed": true,
+      "notes": "Cryolipolysis body contouring — FDA-cleared fat reduction (7+ body areas). PAH risk disclosed in clinical summary and patient education. Singh et al. 2019 incidence data used (1/138)."
     },
     {
       "entity_class": "product",
