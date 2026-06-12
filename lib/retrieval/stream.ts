@@ -3,8 +3,8 @@ import type { ResearchEvent } from "@/lib/types/retrieval";
 /** Example questions seeded in the empty Research chat (UI prompts, not retrieval data). */
 export const EXAMPLE_QUERIES = [
   "How fast does Botox work and what's the glabellar dose?",
-  "What are the FDA-approved indications for Botox Cosmetic?",
-  "How does Dysport compare to Botox for onset and duration?",
+  "Does neurotoxin dosing differ for male patients?",
+  "What's the evidence on onset timeline for botulinum toxin?",
 ];
 
 /**
