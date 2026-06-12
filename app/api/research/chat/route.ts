@@ -1,4 +1,6 @@
 import { NextRequest } from "next/server";
+import { gateway } from "@ai-sdk/gateway";
+import { streamText } from "ai";
 import { retrieveSources } from "@/lib/retrieval/sources";
 import { resolveCitations } from "@/lib/retrieval/post-process";
 import { locatorTitle } from "@/lib/retrieval/locator";
@@ -8,19 +10,40 @@ import type { ResearchEvent, RetrievedSource } from "@/lib/types/retrieval";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
-const MODEL = "anthropic/claude-haiku-4.5"; // via Vercel AI Gateway (AI_GATEWAY_API_KEY)
-
 const SYSTEM = `You are an evidence assistant for medical-aesthetics clinicians.
 Answer ONLY from the provided <knowledge> and <sources>. Cite every factual claim with a
 source marker in square brackets like [src_3]; you may cite multiple: [src_1][src_4].
 Be concise — 2 to 4 short paragraphs. If the sources do not support an answer, say so.
-Never invent PMIDs, URLs, or citations — cite [src_N] only.`;
+Never invent PMIDs, URLs, or citations — cite ONLY src markers that appear in the source list.`;
 
-function buildPrompt(query: string, knowledge: string, sources: RetrievedSource[]): string {
-  const blocks = sources
-    .map((s) => `[${s.retrievalId}] (${s.corpus} — ${locatorTitle(s.locator)})\n${s.text}`)
+function buildSystemPrompt(sources: RetrievedSource[], knowledge: string): string {
+  const sourceBlocks = sources
+    .map((s) => {
+      const provenance =
+        s.corpus === "fda"
+          ? "FDA label — BOTOX Cosmetic"
+          : s.corpus === "pubmed"
+            ? `PubMed ${(s.locator as { pmid?: string }).pmid ?? s.retrievalId}`
+            : s.corpus === "practice"
+              ? `Practice dossier — ${locatorTitle(s.locator)}`
+              : locatorTitle(s.locator);
+      return `[${s.retrievalId}] (${provenance})\n${s.text}`;
+    })
     .join("\n\n");
-  return `Question: ${query}\n\n<knowledge>\n${knowledge}\n</knowledge>\n\n<sources>\n${blocks}\n</sources>\n\nAnswer the question, citing [src_N] for every claim:`;
+
+  return `${SYSTEM}
+
+<knowledge>
+${knowledge}
+</knowledge>
+
+<sources>
+${sourceBlocks}
+</sources>`;
+}
+
+function buildPrompt(query: string): string {
+  return `Question: ${query}\n\nAnswer the question, citing [src_N] for every claim:`;
 }
 
 /** Deterministic grounded fallback when no LLM gateway key is configured. */
@@ -32,70 +55,92 @@ function fallbackProse(sources: RetrievedSource[]): string {
 }
 
 export async function POST(req: NextRequest) {
-  const { query } = (await req.json().catch(() => ({}))) as { query?: string };
-  const q = (query ?? "").trim();
+  const body = await req.json().catch(() => ({})) as { query?: string };
+  const q = (body.query ?? "").trim();
+
+  if (!q) {
+    return new Response(JSON.stringify({ error: "query required" }), {
+      status: 400,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
-      const send = (ev: ResearchEvent) =>
+      const emit = (ev: ResearchEvent) =>
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(ev)}\n\n`));
 
       try {
-        if (!q) {
-          send({ type: "error", code: "invalid_request", message: "Empty query", retryable: false });
-          controller.close();
-          return;
-        }
-
-        send({ type: "status", stage: "searching" });
+        // 1. Retrieve sources
+        emit({ type: "status", stage: "searching" });
         const { sources, knowledge } = await retrieveSources(q);
-        send({ type: "sources", sources });
 
+        // 2. Rank status + emit sources
+        emit({ type: "status", stage: "ranking" });
+        emit({ type: "sources", sources });
+
+        // 3. Graceful no-results (D-08)
         if (sources.length === 0) {
-          const msg =
-            "I couldn't find grounded sources for that question in the current library.";
-          send({ type: "token", text: msg });
-          send({ type: "citations", citations: [], displayMap: {} });
-          send({ type: "done", runId: `r_${Date.now()}`, usage: { inputTokens: 0, outputTokens: 0, durationMs: 0 } });
+          emit({
+            type: "token",
+            text: "No grounded sources were found for this question in the current evidence library.",
+          });
+          emit({ type: "citations", citations: [], displayMap: {} });
+          emit({
+            type: "done",
+            runId: `run_${Date.now()}`,
+            usage: { inputTokens: 0, outputTokens: 0, durationMs: 0 },
+          });
           controller.close();
           return;
         }
 
-        send({ type: "status", stage: "generating" });
+        // 4. Generate
+        emit({ type: "status", stage: "generating" });
 
-        let full = "";
+        let fullText = "";
+
         if (process.env.AI_GATEWAY_API_KEY) {
           try {
-            const { streamText } = await import("ai");
             const result = streamText({
-              model: MODEL,
-              system: SYSTEM,
-              prompt: buildPrompt(q, knowledge, sources),
+              model: gateway("anthropic/claude-haiku-4.5"),
+              system: buildSystemPrompt(sources, knowledge),
+              prompt: buildPrompt(q),
               temperature: 0.3,
+              maxOutputTokens: 600,
             });
             for await (const delta of result.textStream) {
-              full += delta;
-              send({ type: "token", text: delta });
+              fullText += delta;
+              emit({ type: "token", text: delta });
             }
-          } catch {
-            full = ""; // fall through to deterministic
+          } catch (err) {
+            // GatewayAuthenticationError or network error — fall through to deterministic fallback
+            emit({
+              type: "error",
+              code: "generation_failed",
+              message: err instanceof Error ? err.message : "Generation failed",
+              retryable: false,
+            });
+            fullText = ""; // use fallback below
           }
         }
 
-        if (!full) {
-          full = fallbackProse(sources);
-          for (const tok of full.match(/\S+\s*/g) ?? [full]) {
-            send({ type: "token", text: tok });
+        // 5. Deterministic fallback when gateway key missing or generation failed
+        if (!fullText) {
+          fullText = fallbackProse(sources);
+          for (const tok of fullText.match(/\S+\s*/g) ?? [fullText]) {
+            emit({ type: "token", text: tok });
           }
         }
 
-        const { citations, displayMap } = resolveCitations(full, sources);
-        send({ type: "citations", citations, displayMap });
-        send({
+        // 6. resolveCitations on the FULL accumulated text — never inside the token loop
+        const { citations, displayMap } = resolveCitations(fullText, sources);
+        emit({ type: "citations", citations, displayMap });
+        emit({
           type: "done",
-          runId: `r_${Date.now()}`,
-          usage: { inputTokens: 0, outputTokens: full.length >> 2, durationMs: 0 },
+          runId: `run_${Date.now()}`,
+          usage: { inputTokens: 0, outputTokens: 0, durationMs: 0 },
         });
 
         logActivity({
@@ -104,7 +149,7 @@ export async function POST(req: NextRequest) {
           payload: { query: q, sources: sources.length, cited: citations.length },
         });
       } catch (err) {
-        send({
+        emit({
           type: "error",
           code: "generation_failed",
           message: err instanceof Error ? err.message : "Unknown error",
@@ -119,7 +164,7 @@ export async function POST(req: NextRequest) {
   return new Response(stream, {
     headers: {
       "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache, no-transform",
+      "Cache-Control": "no-cache",
       Connection: "keep-alive",
     },
   });
