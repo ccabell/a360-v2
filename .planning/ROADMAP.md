@@ -30,8 +30,8 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 
 Plans:
 - [x] 01-01-PLAN.md — Schema migration (page_number column) + PubMed PMID backfill + YouTube timestamp backfill
-- [ ] 01-02-PLAN.md — FDA Access Data URL research + FDA URL backfill for 47 evidence_links rows
-- [ ] 01-03-PLAN.md — Compile pipeline doc update + demo verification checkpoint
+- [x] 01-02-PLAN.md — FDA Access Data URL research + FDA URL backfill for 47 evidence_links rows
+- [x] 01-03-PLAN.md — Compile pipeline doc update + demo verification checkpoint
 
 ---
 
