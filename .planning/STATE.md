@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 03-03-PLAN.md — mock cutover complete, live SSE reader wired
-last_updated: "2026-06-12T22:45:39.800Z"
+stopped_at: Completed 02-06-PLAN.md — batch reports generated
+last_updated: "2026-06-12T22:52:35.080Z"
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 13
-  completed_plans: 11
+  completed_plans: 12
 ---
 
 # Project State
@@ -47,6 +47,8 @@ Plan: 4 of 4
 | Phase 02 P05 | 23 | 2 tasks | 15 files |
 | Phase 03-retrieval-wiring P02 | 25 | 2 tasks | 2 files |
 | Phase 03-retrieval-wiring P03 | 10 | 2 tasks | 2 files |
+| Phase 02-dossier-batch P06 | 8 | 2 tasks | 4 files |
+| Phase 02-dossier-batch P06 | 12 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -69,6 +71,9 @@ Plan: 4 of 4
 - [Phase 02]: Daxxify unit non-interchangeability with Botox units treated as Safety Floor (rank 1 safety-critical) in technique documentation
 - [Phase 03-retrieval-wiring]: sources.ts uses direct evidence_links + agent_reference_docs queries with hard-coded Botox IDs (no search_reference_docs RPC); route.ts uses gateway('anthropic/claude-haiku-4.5'); maxOutputTokens replaces maxTokens for AI SDK v6
 - [Phase 03-retrieval-wiring]: stream.ts error path uses yield ResearchEvent error rather than throw — matches streaming protocol; research-chat.tsx import was already correct from prior session
+- [Phase 02-dossier-batch]: 02-05 SQL files written but not executed — 9 products have 0 live DB structured intelligence; priority SQL execution list in STRUCTURED_COVERAGE.md
+- [Phase 02-dossier-batch]: Top 10 OA Botox/Neurotoxin papers for pre-demo ingestion are from ASJ Open Forum (2), Dermatology and Therapy (7, CC-BY-NC), and Cureus (1) — all confirmed PMC links
+- [Phase 02-dossier-batch]: 02-05 SQL files committed to supabase/compile_sql/ but not yet executed — 12 products show 0 docs in live DB; execution checklist documented in STRUCTURED_COVERAGE.md
 
 ### Pending Todos
 
@@ -80,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:45:39.797Z
-Stopped at: Completed 03-03-PLAN.md — mock cutover complete, live SSE reader wired
+Last session: 2026-06-12T22:52:17.068Z
+Stopped at: Completed 02-06-PLAN.md — batch reports generated
 Resume file: None
