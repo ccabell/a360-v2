@@ -36,6 +36,11 @@ async function resolveTenantId(slug: string): Promise<string | null> {
   return null;
 }
 
+/** The tenant id for the current APP_MODE (investor in demo, internal otherwise). */
+export async function getDefaultTenantId(): Promise<string | null> {
+  return resolveTenantId(defaultTenantSlug());
+}
+
 export async function logActivity(ev: ActivityEvent): Promise<void> {
   try {
     const tenantId =

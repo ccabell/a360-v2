@@ -3,7 +3,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sparkles, AlertCircle } from "lucide-react";
+import { Send, Sparkles, AlertCircle, Bookmark, Check } from "lucide-react";
 import type {
   RetrievedSource,
   ResearchCitation,
@@ -37,8 +37,30 @@ export function ResearchChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [saved, setSaved] = useState<Record<string, boolean>>({});
+  const [savingId, setSavingId] = useState<string | null>(null);
   const idRef = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
+
+  async function saveAnswer(m: AssistantMessage, question: string) {
+    if (savingId || saved[m.id]) return;
+    setSavingId(m.id);
+    try {
+      const res = await fetch("/api/saved-outputs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          output_type: "research_chat",
+          question,
+          answer_prose: m.text,
+          citations: m.citations,
+        }),
+      });
+      if (res.ok) setSaved((s) => ({ ...s, [m.id]: true }));
+    } finally {
+      setSavingId(null);
+    }
+  }
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -148,7 +170,7 @@ export function ResearchChat() {
             </div>
           ) : (
             <div className="space-y-8">
-              {messages.map((m) =>
+              {messages.map((m, i) =>
                 m.role === "user" ? (
                   <div key={m.id} className="flex justify-end">
                     <div className="max-w-[80%] rounded-2xl bg-primary px-4 py-2.5 text-sm text-primary-foreground">
@@ -210,6 +232,34 @@ export function ResearchChat() {
                         displayMap={m.displayMap}
                         citations={m.citations}
                       />
+                    )}
+
+                    {/* Save to history */}
+                    {m.done && m.text && (
+                      <button
+                        onClick={() =>
+                          saveAnswer(
+                            m,
+                            i > 0 && messages[i - 1].role === "user"
+                              ? (messages[i - 1] as UserMessage).text
+                              : "",
+                          )
+                        }
+                        disabled={savingId === m.id || saved[m.id]}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground disabled:opacity-60"
+                      >
+                        {saved[m.id] ? (
+                          <>
+                            <Check className="h-3.5 w-3.5 text-primary" />
+                            Saved to history
+                          </>
+                        ) : (
+                          <>
+                            <Bookmark className="h-3.5 w-3.5" />
+                            {savingId === m.id ? "Saving…" : "Save answer"}
+                          </>
+                        )}
+                      </button>
                     )}
                   </div>
                 ),
