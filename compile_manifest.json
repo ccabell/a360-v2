@@ -280,8 +280,24 @@
       "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-03",
-      "status": "pending",
-      "notes": "HA filler — perioral lines, lip support, dynamic facial lines"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "25e4028c-ec6a-4c33-977c-c272cd7cf3bf", "lens": "clinical", "doc_type": "clinical_summary", "status": "draft"},
+        {"id": "893b57a9-a06a-43af-a0a7-e9f4280456b0", "lens": "clinical", "doc_type": "technique_guide", "status": "draft"},
+        {"id": "4c917095-5956-45c9-a703-7270d9b4f4b7", "lens": "sales_education", "doc_type": "patient_education", "status": "draft"},
+        {"id": "fbfa316a-4d95-40bf-992f-3631c203cd2f", "lens": "sales_education", "doc_type": "faq", "status": "draft"},
+        {"id": "7caf14c9-a9fd-4ec9-aff2-98204319f8b0", "lens": "deep_product", "doc_type": "deep_dive_playbook", "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_juvederm_vollure_xc_clinical.md",
+        "REVIEW_QUEUE/PENDING_juvederm_vollure_xc_sales_education.md"
+      ],
+      "item_concerns_added": 5,
+      "item_body_areas_added": 5,
+      "does_not_solve_count": 6,
+      "notes": "HA filler — perioral lines, NLF, dynamic facial lines. Vycross intermediate G''. 18-month duration differentiation."
     },
     {
       "entity_class": "product",
@@ -290,8 +306,24 @@
       "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-03",
-      "status": "pending",
-      "notes": "HA filler — cheek volume restoration, midface lift"
+      "status": "inserted",
+      "ts": "2026-06-12T22:00:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "66af9422-5a07-4ed5-b089-8d3824403e01", "lens": "clinical", "doc_type": "clinical_summary", "status": "draft"},
+        {"id": "68e7f52a-c9d5-406d-92a2-94093784c836", "lens": "clinical", "doc_type": "technique_guide", "status": "draft"},
+        {"id": "823e604a-b52b-46eb-ba17-b5f61ddb238a", "lens": "sales_education", "doc_type": "patient_education", "status": "draft"},
+        {"id": "8530bea8-f59c-4805-867e-5cd42437dd75", "lens": "sales_education", "doc_type": "faq", "status": "draft"},
+        {"id": "8686de86-154c-4883-8350-24d02c04cd59", "lens": "deep_product", "doc_type": "deep_dive_playbook", "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_juvederm_voluma_xc_clinical.md",
+        "REVIEW_QUEUE/PENDING_juvederm_voluma_xc_sales_education.md"
+      ],
+      "item_concerns_added": 8,
+      "item_body_areas_added": 7,
+      "does_not_solve_count": 7,
+      "notes": "HA filler — cheek volume restoration (FDA 2013), chin augmentation (FDA 2021). Vycross high G''. 18-24 month duration."
     },
     {
       "entity_class": "product",
@@ -300,8 +332,24 @@
       "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-03",
-      "status": "pending",
-      "notes": "HA filler — cheeks and hands; FDA-indicated for both"
+      "status": "inserted",
+      "ts": "2026-06-12T23:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "fd97029d-d32a-49c3-bfce-7043855c954e", "lens": "clinical", "doc_type": "clinical_summary", "status": "draft"},
+        {"id": "ad863d78-292e-4811-bb67-3e04fecac798", "lens": "clinical", "doc_type": "technique_guide", "status": "draft"},
+        {"id": "35590148-509f-4ed4-993a-4e371280eae5", "lens": "sales_education", "doc_type": "patient_education", "status": "draft"},
+        {"id": "0a549d1a-4a87-4751-90a6-268079bdd121", "lens": "sales_education", "doc_type": "faq", "status": "draft"},
+        {"id": "2a9819ae-4790-4707-9263-19f61e871240", "lens": "deep_product", "doc_type": "deep_dive_playbook", "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_restylane_lyft_clinical.md",
+        "REVIEW_QUEUE/PENDING_restylane_lyft_sales_education.md"
+      ],
+      "item_concerns_added": 7,
+      "item_body_areas_added": 7,
+      "does_not_solve_count": 6,
+      "notes": "HA filler — cheeks (FDA 2015), hands (FDA 2018, first filler for this), NLF (FDA 2004). OBT technology. 12-month duration."
     },
     {
       "entity_class": "product",
@@ -310,8 +358,24 @@
       "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-03",
-      "status": "pending",
-      "notes": "RHA resilient HA — dynamic wrinkles, perioral lines"
+      "status": "inserted",
+      "ts": "2026-06-12T23:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "a12eb1ab-7ed8-490f-8464-8329eabea4b8", "lens": "clinical", "doc_type": "clinical_summary", "status": "draft"},
+        {"id": "b41c72a5-3343-4803-b001-60b82cf9310b", "lens": "clinical", "doc_type": "technique_guide", "status": "draft"},
+        {"id": "9a989a2e-a99a-400d-abdd-062182667d89", "lens": "sales_education", "doc_type": "patient_education", "status": "draft"},
+        {"id": "544a9644-60a5-4aa6-b523-3ac391729110", "lens": "sales_education", "doc_type": "faq", "status": "draft"},
+        {"id": "ef6b56b6-5dcf-4583-804b-d28ea8ec1e24", "lens": "deep_product", "doc_type": "deep_dive_playbook", "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_rha_redensity_clinical.md",
+        "REVIEW_QUEUE/PENDING_rha_redensity_sales_education.md"
+      ],
+      "item_concerns_added": 4,
+      "item_body_areas_added": 4,
+      "does_not_solve_count": 7,
+      "notes": "RHA resilient HA — perioral rhytids (FDA 510k K183782, 2020). Elastic recovery technology. Off-label tear trough. 6-12 month duration."
     },
     {
       "entity_class": "product",
@@ -320,8 +384,24 @@
       "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
       "batch": "02-dossier-batch",
       "plan": "02-03",
-      "status": "pending",
-      "notes": "Intradermal HA microdroplet — skin quality/glow, not volumization"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "87f7f03a-727f-4c73-875a-c389e0e2fd1f", "lens": "clinical", "doc_type": "clinical_summary", "status": "draft"},
+        {"id": "69966628-9227-4e6b-b576-45e9b560a76c", "lens": "clinical", "doc_type": "technique_guide", "status": "draft"},
+        {"id": "c670b69c-172b-42d2-8a43-56891663b79a", "lens": "sales_education", "doc_type": "patient_education", "status": "draft"},
+        {"id": "48838fe6-cc36-4ce2-819e-b094eee22cee", "lens": "sales_education", "doc_type": "faq", "status": "draft"},
+        {"id": "ece9394c-f40c-4b59-bc3d-6a215794dee4", "lens": "deep_product", "doc_type": "deep_dive_playbook", "status": "draft"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_skinvive_clinical.md",
+        "REVIEW_QUEUE/PENDING_skinvive_sales_education.md"
+      ],
+      "item_concerns_added": 5,
+      "item_body_areas_added": 2,
+      "does_not_solve_count": 7,
+      "notes": "Intradermal HA microdroplet — skin quality/glow (FDA 510k K220481, 2023). NOT a volumizer. Cheeks only FDA indication. 6-month maintenance protocol."
     },
     {
       "entity_class": "product",
@@ -552,7 +632,7 @@
       "notes": "GLP-1/GIP dual agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
     }
   ],
-  "next_pending": "02-04 Neurotoxin product dossiers",
+  "next_pending": "02-04 Biostimulators/Injectable Fat Reduction/Body Contouring products",
   "batch_blocked_by": "none",
   "plan_02_03_complete": {
     "completed_at": "2026-06-12T18:00:00Z",
