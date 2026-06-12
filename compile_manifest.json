@@ -360,8 +360,19 @@
       "category_id": "836bcdf0-aa49-4dae-9ced-bd9c4a027299",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "Fractional RF microneedling — skin tightening, remodeling, Fitzpatrick I-VI"
+      "status": "inserted",
+      "ts": "2026-06-12T22:15:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "b1e2a3f4-5c6d-7e8f-9a0b-1c2d3e4f5a6b", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "77358d98-0c62-495a-90e2-487fe9f81a1d"},
+        {"id": "c2d3e4f5-6a7b-8c9d-0e1f-2a3b4c5d6e7f", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "bb289acc-bc72-4b27-855a-d41c9fb47056"},
+        {"id": "d3e4f5a6-7b8c-9d0e-1f2a-3b4c5d6e7f8a", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "b12ad6fc-c35c-4dbc-a32c-21c714ee8ec8"},
+        {"id": "e4f5a6b7-8c9d-0e1f-2a3b-4c5d6e7f8a9b", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "b12ad6fc-c35c-4dbc-a32c-21c714ee8ec8"},
+        {"id": "f5a6b7c8-9d0e-1f2a-3b4c-5d6e7f8a9b0c", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "42abdc4c-dfeb-4ffa-8ed4-d8b11eb39d23"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_morpheus8_clinical.md", "REVIEW_QUEUE/PENDING_morpheus8_sales_education.md"],
+      "evidence_links_added": 5,
+      "notes": "Fractional RF microneedling — skin tightening, remodeling, Fitzpatrick I-VI. PIH safety floor documented."
     },
     {
       "entity_class": "product",
@@ -370,8 +381,19 @@
       "category_id": "4eb4c667-16af-44ba-94c6-e85edffef558",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "Ultrasound-based skin tightening — synchronous ultrasound parallel beam (SUPERB)"
+      "status": "inserted",
+      "ts": "2026-06-12T22:15:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "36129552-10fb-4de1-88e0-24a034a8c972"},
+        {"id": "b2c3d4e5-f6a7-8901-bcde-f12345678901", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "128e4ca9-5016-4709-ba8a-fca44988d0fe"},
+        {"id": "c3d4e5f6-a7b8-9012-cdef-012345678902", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "28bf58bf-f3d3-4eee-8f99-8e65ab1f4131"},
+        {"id": "d4e5f6a7-b8c9-0123-defa-123456789003", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "28bf58bf-f3d3-4eee-8f99-8e65ab1f4131"},
+        {"id": "e5f6a7b8-c9d0-1234-efab-234567890004", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "129912ff-eee7-4ac9-bac2-4a3e4ac16036"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_energy_devices_clinical.md", "REVIEW_QUEUE/PENDING_energy_devices_sales_education.md"],
+      "evidence_links_added": 3,
+      "notes": "Sofwave SUPERB — mid-dermis 1.5mm ultrasound, single-session design, Fitzpatrick-universal"
     },
     {
       "entity_class": "product",
@@ -380,8 +402,19 @@
       "category_id": "1c9acf3e-8753-4bd3-af98-9372c994eec3",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "MFU-V (micro-focused ultrasound) — FDA-cleared brow lift, neck/chin/chest"
+      "status": "inserted",
+      "ts": "2026-06-12T22:15:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "f6a7b8c9-d0e1-2345-fabc-345678900105", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "76f2cc7d-1216-4b7b-ae49-90addfa26c9b"},
+        {"id": "a7b8c9d0-e1f2-3456-abcd-456789001206", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "0b47b7aa-fbd6-4ec4-9dae-c0e5b869536f"},
+        {"id": "b8c9d0e1-f2a3-4567-bcde-567890012307", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "dff4a45b-8832-4063-a5a2-4064ce8e346f"},
+        {"id": "c9d0e1f2-a3b4-5678-cdef-678901234408", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "dff4a45b-8832-4063-a5a2-4064ce8e346f"},
+        {"id": "d0e1f2a3-b4c5-6789-defa-789012345509", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "ca5b121f-878f-4256-a461-0d0b57d6f255"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_energy_devices_clinical.md", "REVIEW_QUEUE/PENDING_energy_devices_sales_education.md"],
+      "evidence_links_added": 4,
+      "notes": "Ultherapy PRIME — unique FDA brow lift clearance, SMAS-level MFU-V"
     },
     {
       "entity_class": "product",
@@ -390,8 +423,19 @@
       "category_id": "b35c36c4-ee76-422d-89a6-0e7a4af568b9",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "Q-switched Nd:YAG — pigmentation, tattoo, toning; Hollywood peel protocol"
+      "status": "inserted",
+      "ts": "2026-06-12T22:15:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "e1f2a3b4-c5d6-7890-efab-890123456610", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "f34284d6-192b-4981-95ea-5cbbd612fa76"},
+        {"id": "f2a3b4c5-d6e7-8901-fabc-901234567711", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "fb9e21b8-5a67-4acc-a8ab-36459fe4c07c"},
+        {"id": "a3b4c5d6-e7f8-9012-abcd-012345678812", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "2f0e0278-12f1-4836-8cf4-e0985d7d053f"},
+        {"id": "b4c5d6e7-f8a9-0123-bcde-123456789913", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "2f0e0278-12f1-4836-8cf4-e0985d7d053f"},
+        {"id": "c5d6e7f8-a9b0-1234-cdef-234567891014", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "b55d7ec0-ffb8-48c6-8a88-ca404242e090"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_energy_devices_clinical.md", "REVIEW_QUEUE/PENDING_energy_devices_sales_education.md"],
+      "evidence_links_added": 5,
+      "notes": "Hollywood Spectra Q-switched Nd:YAG — pigmentation, tattoo, Hollywood Peel. PIH safety for Fitzpatrick IV+ documented."
     },
     {
       "entity_class": "product",
