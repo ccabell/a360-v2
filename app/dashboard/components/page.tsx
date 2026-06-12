@@ -75,20 +75,20 @@ export default function ComponentsPage() {
     <div className="p-8 max-w-6xl mx-auto">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900">Component Gallery</h1>
-        <p className="text-slate-600 mt-2">Interactive showcase of all UI components and design system</p>
+        <h1 className="text-3xl font-bold text-foreground">Component Gallery</h1>
+        <p className="text-muted-foreground mt-2">Interactive showcase of all UI components and design system</p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-8 border-b border-slate-200 overflow-x-auto">
+      <div className="flex gap-2 mb-8 border-b border-border overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2 font-medium border-b-2 transition-colors whitespace-nowrap ${
               activeTab === tab.id
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-600 hover:text-slate-900'
+                ? 'border-primary text-primary'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
             }`}
           >
             {tab.label}
@@ -108,18 +108,18 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <h3 className="font-semibold text-blue-900 mb-2">Core Components</h3>
-                    <ul className="text-sm text-blue-700 space-y-1">
+                  <div className="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                    <h3 className="font-semibold text-primary mb-2">Core Components</h3>
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>✓ Button - All variants and sizes</li>
                       <li>✓ Input - Text inputs with states</li>
                       <li>✓ Card - Container component</li>
                       <li>✓ Badge - Labels and tags</li>
                     </ul>
                   </div>
-                  <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-lg">
-                    <h3 className="font-semibold text-emerald-900 mb-2">Citation Components</h3>
-                    <ul className="text-sm text-emerald-700 space-y-1">
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded-lg">
+                    <h3 className="font-semibold text-emerald-900 dark:text-emerald-300 mb-2">Citation Components</h3>
+                    <ul className="text-sm text-emerald-700 dark:text-emerald-400 space-y-1">
                       <li>✓ MessageWithCitations - Messages with citations</li>
                       <li>✓ ReferencesSection - Reference lists</li>
                       <li>✓ InlineCitationBadge - [1][2][3] badges</li>
@@ -135,10 +135,10 @@ export default function ComponentsPage() {
                 <CardTitle>How to Use This Gallery</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="text-slate-700">
+                <p className="text-foreground">
                   Each tab below shows a different component with interactive examples. You can:
                 </p>
-                <ul className="space-y-2 text-slate-700">
+                <ul className="space-y-2 text-foreground">
                   <li>• <strong>Edit props</strong> - Change component properties using controls</li>
                   <li>• <strong>See variations</strong> - View all states and styles</li>
                   <li>• <strong>Copy code</strong> - Use components in your pages</li>
@@ -159,8 +159,8 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Controls */}
-                <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                  <label className="block text-sm font-semibold text-slate-900 mb-3">Variant:</label>
+                <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                  <label className="block text-sm font-semibold text-foreground mb-3">Variant:</label>
                   <div className="flex flex-wrap gap-2">
                     {(['default', 'outline', 'secondary', 'ghost', 'destructive', 'link'] as const).map((v) => (
                       <button
@@ -168,8 +168,8 @@ export default function ComponentsPage() {
                         onClick={() => setButtonVariant(v)}
                         className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                           buttonVariant === v
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-background border border-border text-foreground hover:bg-muted'
                         }`}
                       >
                         {v}
@@ -179,19 +179,19 @@ export default function ComponentsPage() {
                 </div>
 
                 {/* Preview */}
-                <div className="p-8 bg-white border border-slate-200 rounded-lg flex items-center justify-center min-h-[200px]">
+                <div className="p-8 bg-background border border-border rounded-lg flex items-center justify-center min-h-[200px]">
                   <div className="space-y-4">
                     <Button variant={buttonVariant} size="lg">
                       <Send className="h-4 w-4 mr-2" />
                       {buttonVariant.charAt(0).toUpperCase() + buttonVariant.slice(1)}
                     </Button>
-                    <p className="text-sm text-slate-600">Variant: {buttonVariant}</p>
+                    <p className="text-sm text-muted-foreground">Variant: {buttonVariant}</p>
                   </div>
                 </div>
 
                 {/* All Variants */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">All Variants:</h4>
+                  <h4 className="font-semibold text-foreground">All Variants:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Button variant="default">Default</Button>
                     <Button variant="secondary">Secondary</Button>
@@ -204,7 +204,7 @@ export default function ComponentsPage() {
 
                 {/* Sizes */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">All Sizes:</h4>
+                  <h4 className="font-semibold text-foreground">All Sizes:</h4>
                   <div className="flex flex-wrap gap-3 items-center">
                     <Button size="sm">Small</Button>
                     <Button size="default">Default</Button>
@@ -217,7 +217,7 @@ export default function ComponentsPage() {
 
                 {/* With Icons */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">With Icons:</h4>
+                  <h4 className="font-semibold text-foreground">With Icons:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Button>
                       <Send className="h-4 w-4 mr-2" />
@@ -232,11 +232,11 @@ export default function ComponentsPage() {
 
                 {/* States */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">States:</h4>
+                  <h4 className="font-semibold text-foreground">States:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Button disabled>Disabled</Button>
                     <Button disabled>
-                      <div className="animate-spin h-4 w-4 mr-2 border-2 border-white border-t-transparent rounded-full" />
+                      <div className="animate-spin h-4 w-4 mr-2 border-2 border-current border-t-transparent rounded-full" />
                       Loading
                     </Button>
                   </div>
@@ -256,8 +256,8 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Controls */}
-                <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-                  <label className="block text-sm font-semibold text-slate-900 mb-3">Type:</label>
+                <div className="p-4 bg-muted/50 rounded-lg border border-border">
+                  <label className="block text-sm font-semibold text-foreground mb-3">Type:</label>
                   <div className="flex flex-wrap gap-2">
                     {(['text', 'email', 'password', 'search'] as const).map((t) => (
                       <button
@@ -265,8 +265,8 @@ export default function ComponentsPage() {
                         onClick={() => setInputType(t)}
                         className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                           inputType === t
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-background border border-border text-foreground hover:bg-muted'
                         }`}
                       >
                         {t}
@@ -276,10 +276,10 @@ export default function ComponentsPage() {
                 </div>
 
                 {/* Preview */}
-                <div className="p-8 bg-white border border-slate-200 rounded-lg">
+                <div className="p-8 bg-background border border-border rounded-lg">
                   <div className="space-y-4 max-w-sm">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-900 mb-2">Input Preview:</label>
+                      <label className="block text-sm font-semibold text-foreground mb-2">Input Preview:</label>
                       <Input
                         type={inputType}
                         placeholder={`Enter ${inputType}...`}
@@ -291,22 +291,22 @@ export default function ComponentsPage() {
 
                 {/* All Types */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">All Input Types:</h4>
+                  <h4 className="font-semibold text-foreground">All Input Types:</h4>
                   <div className="space-y-3 max-w-sm">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Text</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Text</label>
                       <Input type="text" placeholder="Enter text..." />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Email</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Email</label>
                       <Input type="email" placeholder="you@example.com" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Password</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Password</label>
                       <Input type="password" placeholder="••••••••" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Search</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Search</label>
                       <Input type="search" placeholder="Search..." />
                     </div>
                   </div>
@@ -314,24 +314,24 @@ export default function ComponentsPage() {
 
                 {/* States */}
                 <div className="space-y-4">
-                  <h4 className="font-semibold text-slate-900">States:</h4>
+                  <h4 className="font-semibold text-foreground">States:</h4>
                   <div className="space-y-3 max-w-sm">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Default</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Default</label>
                       <Input placeholder="Empty input" />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Filled</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Filled</label>
                       <Input value="Some text" readOnly />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Disabled</label>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Disabled</label>
                       <Input placeholder="Disabled" disabled />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-900 mb-1">Error</label>
-                      <Input placeholder="Invalid" className="border-red-500" />
-                      <p className="text-xs text-red-600 mt-1">This field is required</p>
+                      <label className="block text-xs font-semibold text-foreground mb-1">Error</label>
+                      <Input placeholder="Invalid" className="border-destructive" />
+                      <p className="text-xs text-destructive mt-1">This field is required</p>
                     </div>
                   </div>
                 </div>
@@ -344,8 +344,8 @@ export default function ComponentsPage() {
         {activeTab === 'cards' && (
           <div className="space-y-6">
             {/* State Selector */}
-            <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
-              <label className="block text-sm font-semibold text-slate-900 mb-3">Card State:</label>
+            <div className="p-4 bg-muted/50 rounded-lg border border-border">
+              <label className="block text-sm font-semibold text-foreground mb-3">Card State:</label>
               <div className="flex flex-wrap gap-2">
                 {(['default', 'info', 'success', 'error', 'empty', 'loading'] as const).map((s) => (
                   <button
@@ -353,8 +353,8 @@ export default function ComponentsPage() {
                     onClick={() => setCardState(s)}
                     className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                       cardState === s
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-background border border-border text-foreground hover:bg-muted'
                     }`}
                   >
                     {s}
@@ -365,13 +365,13 @@ export default function ComponentsPage() {
 
             {/* Default Card */}
             {cardState === 'default' && (
-              <Card className="border-slate-200">
+              <Card className="border-border">
                 <CardHeader>
                   <CardTitle>Default Card</CardTitle>
                   <CardDescription>Standard card with header, content, and footer</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-slate-700">This is the content area of the card.</p>
+                  <p className="text-foreground">This is the content area of the card.</p>
                 </CardContent>
                 <CardFooter className="flex gap-2">
                   <Button variant="outline">Cancel</Button>
@@ -382,57 +382,57 @@ export default function ComponentsPage() {
 
             {/* Info Card */}
             {cardState === 'info' && (
-              <Card className="border-blue-200 bg-blue-50">
+              <Card className="border-primary/20 bg-primary/5">
                 <CardHeader>
                   <div className="flex items-start gap-3">
-                    <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+                    <Info className="h-5 w-5 text-primary mt-0.5" />
                     <div>
-                      <CardTitle className="text-blue-900">Information</CardTitle>
-                      <CardDescription className="text-blue-700">This is an info message</CardDescription>
+                      <CardTitle className="text-primary">Information</CardTitle>
+                      <CardDescription className="text-primary/80">This is an info message</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-blue-800">Use this card to display helpful information to users.</p>
+                  <p className="text-foreground">Use this card to display helpful information to users.</p>
                 </CardContent>
               </Card>
             )}
 
             {/* Success Card */}
             {cardState === 'success' && (
-              <Card className="border-emerald-200 bg-emerald-50">
+              <Card className="border-emerald-200 dark:border-emerald-900 bg-emerald-50 dark:bg-emerald-950/40">
                 <CardHeader>
                   <div className="flex items-start gap-3">
                     <CheckCircle2 className="h-5 w-5 text-emerald-600 mt-0.5" />
                     <div>
-                      <CardTitle className="text-emerald-900">Success!</CardTitle>
-                      <CardDescription className="text-emerald-700">Operation completed</CardDescription>
+                      <CardTitle className="text-emerald-900 dark:text-emerald-300">Success!</CardTitle>
+                      <CardDescription className="text-emerald-700 dark:text-emerald-400">Operation completed</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-emerald-800">Your action was completed successfully.</p>
+                  <p className="text-emerald-800 dark:text-emerald-300">Your action was completed successfully.</p>
                 </CardContent>
               </Card>
             )}
 
             {/* Error Card */}
             {cardState === 'error' && (
-              <Card className="border-red-200 bg-red-50">
+              <Card className="border-destructive/30 bg-destructive/5">
                 <CardHeader>
                   <div className="flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-red-600 mt-0.5" />
+                    <AlertCircle className="h-5 w-5 text-destructive mt-0.5" />
                     <div>
-                      <CardTitle className="text-red-900">Error</CardTitle>
-                      <CardDescription className="text-red-700">Something went wrong</CardDescription>
+                      <CardTitle className="text-destructive">Error</CardTitle>
+                      <CardDescription className="text-destructive/80">Something went wrong</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-red-800">Unable to complete your request. Please try again.</p>
+                  <p className="text-foreground">Unable to complete your request. Please try again.</p>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline" className="text-red-600">
+                  <Button variant="outline" className="text-destructive">
                     Retry
                   </Button>
                 </CardFooter>
@@ -441,7 +441,7 @@ export default function ComponentsPage() {
 
             {/* Empty State */}
             {cardState === 'empty' && (
-              <Card className="p-12 text-center border-dashed border-slate-200 bg-slate-50">
+              <Card className="p-12 text-center border-dashed border-border bg-muted/50">
                 <div className="text-4xl mb-4">🔍</div>
                 <CardTitle className="mb-2">No results found</CardTitle>
                 <CardDescription className="mb-6">Try adjusting your search terms</CardDescription>
@@ -451,17 +451,17 @@ export default function ComponentsPage() {
 
             {/* Loading State */}
             {cardState === 'loading' && (
-              <Card className="p-8 text-center bg-slate-50 border-slate-200">
+              <Card className="p-8 text-center bg-muted/50 border-border">
                 <div className="flex items-center justify-center gap-3">
-                  <div className="animate-spin h-5 w-5 border-2 border-blue-400 border-t-blue-600 rounded-full" />
-                  <p className="text-slate-600 font-medium">Loading...</p>
+                  <div className="animate-spin h-5 w-5 border-2 border-primary/30 border-t-primary rounded-full" />
+                  <p className="text-muted-foreground font-medium">Loading...</p>
                 </div>
               </Card>
             )}
 
             {/* Grid Layout */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-slate-900">3-Tier Card Grid:</h3>
+              <h3 className="font-semibold text-foreground">3-Tier Card Grid:</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Card>
                   <CardHeader>
@@ -469,21 +469,21 @@ export default function ComponentsPage() {
                     <CardDescription>$400-600</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-700">Foundation plan</p>
+                    <p className="text-sm text-foreground">Foundation plan</p>
                   </CardContent>
                 </Card>
-                <Card className="border-blue-200 ring-2 ring-blue-400">
+                <Card className="border-primary/30 ring-2 ring-primary">
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle>Tier 2</CardTitle>
                         <CardDescription>$1,200-1,800</CardDescription>
                       </div>
-                      <Badge className="bg-blue-100 text-blue-700">RECOMMENDED</Badge>
+                      <Badge className="bg-primary/10 text-primary">RECOMMENDED</Badge>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-700">Advanced plan</p>
+                    <p className="text-sm text-foreground">Advanced plan</p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -492,7 +492,7 @@ export default function ComponentsPage() {
                     <CardDescription>$2,500-4,000</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-700">Premium plan</p>
+                    <p className="text-sm text-foreground">Premium plan</p>
                   </CardContent>
                 </Card>
               </div>
@@ -510,7 +510,7 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Variants:</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Variants:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Badge variant="default">Default</Badge>
                     <Badge variant="secondary">Secondary</Badge>
@@ -521,9 +521,9 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Status Colors:</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Status Colors:</h4>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-blue-100 text-blue-700">Info</Badge>
+                    <Badge className="bg-primary/10 text-primary">Info</Badge>
                     <Badge className="bg-emerald-100 text-emerald-700">Success</Badge>
                     <Badge className="bg-amber-100 text-amber-700">Warning</Badge>
                     <Badge className="bg-red-100 text-red-700">Error</Badge>
@@ -533,11 +533,11 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Source Types:</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Source Types:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Badge className="bg-emerald-100 text-emerald-700">📚 PubMed</Badge>
                     <Badge className="bg-red-100 text-red-700">🎥 YouTube</Badge>
-                    <Badge className="bg-blue-100 text-blue-700">📝 Internal</Badge>
+                    <Badge className="bg-primary/10 text-primary">📝 Internal</Badge>
                     <Badge className="bg-orange-100 text-orange-700">📄 PDF</Badge>
                     <Badge className="bg-purple-100 text-purple-700">🎙️ Podcast</Badge>
                   </div>
@@ -546,10 +546,10 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Tier Badges:</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Tier Badges:</h4>
                   <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-slate-100 text-slate-700">Tier 1</Badge>
-                    <Badge className="bg-blue-100 text-blue-700">Tier 2</Badge>
+                    <Badge className="bg-muted text-muted-foreground">Tier 1</Badge>
+                    <Badge className="bg-primary/10 text-primary">Tier 2</Badge>
                     <Badge className="bg-purple-100 text-purple-700">Tier 3</Badge>
                     <Badge className="bg-amber-100 text-amber-700">RECOMMENDED</Badge>
                   </div>
@@ -558,10 +558,10 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Confidence Scores:</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Confidence Scores:</h4>
                   <div className="flex flex-wrap gap-3">
                     <Badge className="bg-emerald-100 text-emerald-700">✓ 98% Confident</Badge>
-                    <Badge className="bg-blue-100 text-blue-700">✓ 92% Confident</Badge>
+                    <Badge className="bg-primary/10 text-primary">✓ 92% Confident</Badge>
                     <Badge className="bg-amber-100 text-amber-700">✓ 78% Confident</Badge>
                   </div>
                 </div>
@@ -580,8 +580,8 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-8">
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-4">Message with Single Citation:</h4>
-                  <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <h4 className="font-semibold text-foreground mb-4">Message with Single Citation:</h4>
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
                     <MessageWithCitations
                       role="agent"
                       message="Botox is FDA-approved for dynamic wrinkles[1] and typically takes 3-7 days for full effect."
@@ -593,8 +593,8 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-4">Message with Multiple Citations:</h4>
-                  <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <h4 className="font-semibold text-foreground mb-4">Message with Multiple Citations:</h4>
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
                     <MessageWithCitations
                       role="agent"
                       message="Botox is FDA-approved for dynamic wrinkles[1]. The best injection technique is demonstrated in this masterclass[2]. The recommended dosage is 20-40 units per treatment area[3]."
@@ -606,8 +606,8 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-4">References Section:</h4>
-                  <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+                  <h4 className="font-semibold text-foreground mb-4">References Section:</h4>
+                  <div className="p-4 bg-muted/50 rounded-lg border border-border">
                     <ReferencesSection citations={sampleCitations} defaultExpanded={false} />
                   </div>
                 </div>
@@ -615,23 +615,23 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-4">Citation Source Types:</h4>
+                  <h4 className="font-semibold text-foreground mb-4">Citation Source Types:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded">
-                      <p className="font-semibold text-emerald-900">📚 PubMed</p>
-                      <p className="text-xs text-emerald-700">Peer-reviewed research</p>
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded">
+                      <p className="font-semibold text-emerald-900 dark:text-emerald-300">📚 PubMed</p>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-400">Peer-reviewed research</p>
                     </div>
-                    <div className="p-3 bg-red-50 border border-red-200 rounded">
-                      <p className="font-semibold text-red-900">🎥 YouTube</p>
-                      <p className="text-xs text-red-700">Video content</p>
+                    <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded">
+                      <p className="font-semibold text-red-900 dark:text-red-300">🎥 YouTube</p>
+                      <p className="text-xs text-red-700 dark:text-red-400">Video content</p>
                     </div>
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-                      <p className="font-semibold text-blue-900">📝 Internal</p>
-                      <p className="text-xs text-blue-700">Product guides</p>
+                    <div className="p-3 bg-primary/5 border border-primary/20 rounded">
+                      <p className="font-semibold text-primary">📝 Internal</p>
+                      <p className="text-xs text-primary/80">Product guides</p>
                     </div>
-                    <div className="p-3 bg-orange-50 border border-orange-200 rounded">
-                      <p className="font-semibold text-orange-900">📄 PDF</p>
-                      <p className="text-xs text-orange-700">Documents</p>
+                    <div className="p-3 bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900 rounded">
+                      <p className="font-semibold text-orange-900 dark:text-orange-300">📄 PDF</p>
+                      <p className="text-xs text-orange-700 dark:text-orange-400">Documents</p>
                     </div>
                   </div>
                 </div>
@@ -646,28 +646,28 @@ export default function ComponentsPage() {
             {/* Colors */}
             <Card>
               <CardHeader>
-                <CardTitle>Color System (Light Theme)</CardTitle>
-                <CardDescription>All colors used in the design system</CardDescription>
+                <CardTitle>Color System (Theme Tokens)</CardTitle>
+                <CardDescription>Semantic tokens — adapt automatically to light and dark</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Text Colors</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Text Colors</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="p-3 border border-slate-200 rounded">
-                      <div className="text-slate-900 font-semibold mb-1">Primary</div>
-                      <p className="text-xs text-slate-600">slate-900</p>
+                    <div className="p-3 border border-border rounded">
+                      <div className="text-foreground font-semibold mb-1">Primary</div>
+                      <p className="text-xs text-muted-foreground">text-foreground</p>
                     </div>
-                    <div className="p-3 border border-slate-200 rounded">
-                      <div className="text-slate-700 font-semibold mb-1">Secondary</div>
-                      <p className="text-xs text-slate-600">slate-700</p>
+                    <div className="p-3 border border-border rounded">
+                      <div className="text-muted-foreground font-semibold mb-1">Muted</div>
+                      <p className="text-xs text-muted-foreground">text-muted-foreground</p>
                     </div>
-                    <div className="p-3 border border-slate-200 rounded">
-                      <div className="text-slate-600 mb-1">Tertiary</div>
-                      <p className="text-xs text-slate-600">slate-600</p>
+                    <div className="p-3 border border-border rounded">
+                      <div className="text-primary font-semibold mb-1">Accent</div>
+                      <p className="text-xs text-muted-foreground">text-primary</p>
                     </div>
-                    <div className="p-3 border border-slate-200 rounded">
-                      <div className="text-slate-500 mb-1">Muted</div>
-                      <p className="text-xs text-slate-600">slate-500</p>
+                    <div className="p-3 border border-border rounded">
+                      <div className="text-destructive font-semibold mb-1">Destructive</div>
+                      <p className="text-xs text-muted-foreground">text-destructive</p>
                     </div>
                   </div>
                 </div>
@@ -675,23 +675,23 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Status Colors</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Surface Tokens</h4>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-                      <div className="text-blue-900 font-semibold mb-1">Info</div>
-                      <p className="text-xs text-blue-700">blue-100</p>
+                    <div className="p-3 bg-background border border-border rounded">
+                      <div className="text-foreground font-semibold mb-1">Background</div>
+                      <p className="text-xs text-muted-foreground">bg-background</p>
                     </div>
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded">
-                      <div className="text-emerald-900 font-semibold mb-1">Success</div>
-                      <p className="text-xs text-emerald-700">emerald-100</p>
+                    <div className="p-3 bg-card border border-border rounded">
+                      <div className="text-card-foreground font-semibold mb-1">Card</div>
+                      <p className="text-xs text-muted-foreground">bg-card</p>
                     </div>
-                    <div className="p-3 bg-amber-50 border border-amber-200 rounded">
-                      <div className="text-amber-900 font-semibold mb-1">Warning</div>
-                      <p className="text-xs text-amber-700">amber-100</p>
+                    <div className="p-3 bg-muted border border-border rounded">
+                      <div className="text-foreground font-semibold mb-1">Muted</div>
+                      <p className="text-xs text-muted-foreground">bg-muted</p>
                     </div>
-                    <div className="p-3 bg-red-50 border border-red-200 rounded">
-                      <div className="text-red-900 font-semibold mb-1">Error</div>
-                      <p className="text-xs text-red-700">red-100</p>
+                    <div className="p-3 bg-primary border border-border rounded">
+                      <div className="text-primary-foreground font-semibold mb-1">Primary</div>
+                      <p className="text-xs text-primary-foreground/80">bg-primary</p>
                     </div>
                   </div>
                 </div>
@@ -699,19 +699,49 @@ export default function ComponentsPage() {
                 <Separator />
 
                 <div>
-                  <h4 className="font-semibold text-slate-900 mb-3">Citation Source Colors</h4>
+                  <h4 className="font-semibold text-foreground mb-3">Status Colors</h4>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Semantic status hues — no theme token yet, used sparingly for success/warning/error signals.
+                  </p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div className="p-3 bg-primary/5 border border-primary/20 rounded">
+                      <div className="text-primary font-semibold mb-1">Info</div>
+                      <p className="text-xs text-primary/80">primary</p>
+                    </div>
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded">
+                      <div className="text-emerald-900 dark:text-emerald-300 font-semibold mb-1">Success</div>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-400">emerald</p>
+                    </div>
+                    <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 rounded">
+                      <div className="text-amber-900 dark:text-amber-300 font-semibold mb-1">Warning</div>
+                      <p className="text-xs text-amber-700 dark:text-amber-400">amber</p>
+                    </div>
+                    <div className="p-3 bg-destructive/5 border border-destructive/20 rounded">
+                      <div className="text-destructive font-semibold mb-1">Error</div>
+                      <p className="text-xs text-destructive/80">destructive</p>
+                    </div>
+                  </div>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3">Citation Source Colors</h4>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    Source-type taxonomy used by ReferenceCard.
+                  </p>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    <div className="p-3 bg-emerald-50 border border-emerald-200 rounded">
-                      <p className="text-emerald-900 font-semibold">📚 PubMed</p>
-                      <p className="text-xs text-emerald-700">emerald</p>
+                    <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 rounded">
+                      <p className="text-emerald-900 dark:text-emerald-300 font-semibold">📚 PubMed</p>
+                      <p className="text-xs text-emerald-700 dark:text-emerald-400">emerald</p>
                     </div>
-                    <div className="p-3 bg-red-50 border border-red-200 rounded">
-                      <p className="text-red-900 font-semibold">🎥 YouTube</p>
-                      <p className="text-xs text-red-700">red</p>
+                    <div className="p-3 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded">
+                      <p className="text-red-900 dark:text-red-300 font-semibold">🎥 YouTube</p>
+                      <p className="text-xs text-red-700 dark:text-red-400">red</p>
                     </div>
-                    <div className="p-3 bg-blue-50 border border-blue-200 rounded">
-                      <p className="text-blue-900 font-semibold">📝 Internal</p>
-                      <p className="text-xs text-blue-700">blue</p>
+                    <div className="p-3 bg-primary/5 border border-primary/20 rounded">
+                      <p className="text-primary font-semibold">📝 Internal</p>
+                      <p className="text-xs text-primary/80">primary</p>
                     </div>
                   </div>
                 </div>
@@ -727,19 +757,19 @@ export default function ComponentsPage() {
               <CardContent className="space-y-4">
                 <div className="space-y-3">
                   <div className="flex items-center gap-4">
-                    <span className="w-20 font-mono text-sm text-slate-600">p-4</span>
-                    <div className="h-4 bg-blue-300" style={{ width: '1rem' }}></div>
-                    <span className="text-sm text-slate-600">1rem (16px)</span>
+                    <span className="w-20 font-mono text-sm text-muted-foreground">p-4</span>
+                    <div className="h-4 bg-primary/30" style={{ width: '1rem' }}></div>
+                    <span className="text-sm text-muted-foreground">1rem (16px)</span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="w-20 font-mono text-sm text-slate-600">p-6</span>
-                    <div className="h-4 bg-blue-300" style={{ width: '1.5rem' }}></div>
-                    <span className="text-sm text-slate-600">1.5rem (24px)</span>
+                    <span className="w-20 font-mono text-sm text-muted-foreground">p-6</span>
+                    <div className="h-4 bg-primary/30" style={{ width: '1.5rem' }}></div>
+                    <span className="text-sm text-muted-foreground">1.5rem (24px)</span>
                   </div>
                   <div className="flex items-center gap-4">
-                    <span className="w-20 font-mono text-sm text-slate-600">p-8</span>
-                    <div className="h-4 bg-blue-300" style={{ width: '2rem' }}></div>
-                    <span className="text-sm text-slate-600">2rem (32px)</span>
+                    <span className="w-20 font-mono text-sm text-muted-foreground">p-8</span>
+                    <div className="h-4 bg-primary/30" style={{ width: '2rem' }}></div>
+                    <span className="text-sm text-muted-foreground">2rem (32px)</span>
                   </div>
                 </div>
               </CardContent>
@@ -753,24 +783,24 @@ export default function ComponentsPage() {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-1">Page Title (h2)</h3>
-                  <p className="text-xs text-slate-600">text-2xl font-bold text-slate-900</p>
+                  <h3 className="text-2xl font-bold text-foreground mb-1">Page Title (h2)</h3>
+                  <p className="text-xs text-muted-foreground">text-2xl font-bold text-foreground</p>
                 </div>
                 <div>
-                  <h4 className="text-lg font-semibold text-slate-900 mb-1">Section Title (h3)</h4>
-                  <p className="text-xs text-slate-600">text-lg font-semibold text-slate-900</p>
+                  <h4 className="text-lg font-semibold text-foreground mb-1">Section Title (h3)</h4>
+                  <p className="text-xs text-muted-foreground">text-lg font-semibold text-foreground</p>
                 </div>
                 <div>
-                  <p className="text-base text-slate-700 mb-1">Body Text (p)</p>
-                  <p className="text-xs text-slate-600">text-base text-slate-700</p>
+                  <p className="text-base text-foreground mb-1">Body Text (p)</p>
+                  <p className="text-xs text-muted-foreground">text-base text-foreground</p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-600 mb-1">Secondary Text</p>
-                  <p className="text-xs text-slate-600">text-sm text-slate-600</p>
+                  <p className="text-sm text-muted-foreground mb-1">Secondary Text</p>
+                  <p className="text-xs text-muted-foreground">text-sm text-muted-foreground</p>
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 mb-1">Helper Text</p>
-                  <p className="text-xs text-slate-600">text-xs text-slate-500</p>
+                  <p className="text-xs text-muted-foreground mb-1">Helper Text</p>
+                  <p className="text-xs text-muted-foreground">text-xs text-muted-foreground</p>
                 </div>
               </CardContent>
             </Card>
