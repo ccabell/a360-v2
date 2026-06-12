@@ -1,39 +1,119 @@
 import { agentSupabase } from "@/lib/supabase";
-import type { RetrievedSource, SourceLocator, Corpus } from "@/lib/types/retrieval";
+import type {
+  RetrievedSource,
+  PubMedLocator,
+  DocumentLocator,
+  SourceLocator,
+  Corpus,
+} from "@/lib/types/retrieval";
 
-/**
- * Phase 3 retrieval (FTS-only, no vector — there is no pgvector on Agent Manager).
- * question -> FTS over agent_reference_docs -> offering_ids -> evidence_links
- *          -> RetrievedSource[] (the citations) + a knowledge string (the prose context).
- */
+// ---------------------------------------------------------------------------
+// Demo-scope constants (verified against live Agent Manager Supabase in 03-01)
+// ---------------------------------------------------------------------------
 
-interface DocRow {
-  offering_id: string | null;
-  title: string;
-  content_md: string;
-  lens: string;
-}
+const BOTOX_OFFERING_ID = "4b92be36-e84e-432c-8549-f5d85a767fdb";
+const NEUROTOXINS_CATEGORY_ID = "57b7c5a8-0799-42b0-9111-8441f18a82db";
+const BOTOX_TERMS = [
+  "botox",
+  "neurotoxin",
+  "botulinum",
+  "glabellar",
+  "onabotulinumtoxin",
+  "dysport",
+  "xeomin",
+  "daxxify",
+];
 
-interface EvidenceRow {
+// Authority weights from RETRIEVAL_SERVICE.md §6 table
+const AUTHORITY_WEIGHT: Record<string, number> = {
+  fda: 1.45,
+  manufacturer: 1.40,
+  pubmed: 1.33,
+  practice: 1.35,
+};
+
+// ---------------------------------------------------------------------------
+// Row shapes
+// ---------------------------------------------------------------------------
+
+interface EvidenceLinkRow {
   id: string;
   offering_id: string | null;
-  field_name: string | null;
   source: string;
-  pmid: string | null;
-  doi: string | null;
-  source_reference: string | null;
-  snippet: string | null;
-  claimed_value: string | null;
-  url: string | null;
   authority_rank: number | null;
+  snippet: string | null;
+  doi: string | null;
+  pmid: string | null;
+  url: string | null;
   page_number: number | null;
+  field_name: string | null;
 }
 
-function humanize(s?: string | null): string {
-  return (s ?? "")
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .trim();
+interface RefDocRow {
+  id: string;
+  offering_id: string | null;
+  category_id: string | null;
+  content_md: string | null;
+  lens: string;
+  doc_type: string | null;
+  status: string;
+  version: number | null;
+}
+
+// ---------------------------------------------------------------------------
+// Locator builders
+// ---------------------------------------------------------------------------
+
+function buildEvidenceLocator(row: EvidenceLinkRow): SourceLocator | null {
+  const src = row.source ?? "";
+
+  if (src === "pubmed") {
+    // Skip pubmed rows with no click target at all
+    if (!row.pmid && !row.url) return null;
+    const locator: PubMedLocator = {
+      type: "pubmed",
+      pmid: row.pmid ?? "",
+      title: row.field_name
+        ? `BOTOX — ${row.field_name.replace(/_/g, " ")}`
+        : `PubMed ${row.pmid}`,
+      doi: row.doi ?? undefined,
+      url: row.url || `https://pubmed.ncbi.nlm.nih.gov/${row.pmid}/`,
+    };
+    return locator;
+  }
+
+  if (src === "fda_label" || src === "fda" || src === "ifu") {
+    const locator: DocumentLocator = {
+      type: "document",
+      corpus: "fda",
+      filename: "botox-cosmetic-pi.pdf",
+      title: "BOTOX Cosmetic Prescribing Information",
+      pageNumber: row.page_number ?? undefined,
+      section: row.field_name ?? undefined,
+      storagePath: "fda/botox-cosmetic-pi.pdf",
+      url: row.url || "",
+      sourceAuthority: "fda_label",
+    };
+    return locator;
+  }
+
+  // All other evidence_links sources -> manufacturer DocumentLocator
+  const locator: DocumentLocator = {
+    type: "document",
+    corpus: "manufacturer",
+    filename: row.field_name
+      ? `botox-${row.field_name.replace(/_/g, "-")}.pdf`
+      : "botox-manufacturer.pdf",
+    title: row.field_name
+      ? `BOTOX — ${row.field_name.replace(/_/g, " ")}`
+      : "BOTOX Manufacturer Documentation",
+    pageNumber: row.page_number ?? undefined,
+    section: row.field_name ?? undefined,
+    storagePath: `manufacturer/${row.id}`,
+    url: row.url || "",
+    sourceAuthority: "manufacturer",
+  };
+  return locator;
 }
 
 function corpusForSource(source: string): Corpus {
@@ -41,123 +121,130 @@ function corpusForSource(source: string): Corpus {
     case "pubmed":
       return "pubmed";
     case "fda_label":
+    case "fda":
+    case "ifu":
       return "fda";
     case "youtube":
       return "youtube";
-    case "ifu":
-    case "manufacturer":
-      return "manufacturer";
-    case "journal":
-    case "industry":
-      return "industry";
-    case "podcast":
-      return "podcast";
     default:
-      return "practice";
+      return "manufacturer";
   }
 }
 
-function ytId(url?: string | null): string | undefined {
-  if (!url) return undefined;
-  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{6,})/);
-  return m?.[1];
-}
+// ---------------------------------------------------------------------------
+// Main export
+// ---------------------------------------------------------------------------
 
-function buildLocator(e: EvidenceRow, title: string): SourceLocator {
-  const c = corpusForSource(e.source);
-
-  if (c === "pubmed") {
-    return {
-      type: "pubmed",
-      pmid: e.pmid ?? "",
-      title,
-      doi: e.doi ?? undefined,
-      url: e.url || (e.pmid ? `https://pubmed.ncbi.nlm.nih.gov/${e.pmid}/` : ""),
-    };
-  }
-  if (c === "youtube") {
-    const vid = ytId(e.url);
-    if (vid) {
-      return { type: "youtube", videoId: vid, videoTitle: title, url: e.url ?? "" };
-    }
-  }
-  if (c === "industry") {
-    return { type: "industry", articleTitle: title, url: e.url ?? undefined };
-  }
-
-  // fda / manufacturer / practice (and youtube without a parseable id) -> document
-  const docCorpus = c === "fda" ? "fda" : c === "manufacturer" ? "manufacturer" : "practice";
-  return {
-    type: "document",
-    corpus: docCorpus,
-    title,
-    filename: e.source_reference ?? title,
-    storagePath: "",
-    url: e.url ?? "",
-    pageNumber: e.page_number ?? undefined,
-    sourceAuthority:
-      docCorpus === "fda" ? "fda_label" : docCorpus === "manufacturer" ? "manufacturer" : "internal",
-  };
-}
-
+/**
+ * Retrieve grounded sources for a query from real Agent Manager Supabase rows.
+ *
+ * Phase 3 scope: Botox/Neurotoxins only. If the query contains none of the
+ * BOTOX_TERMS, returns [] so the route can emit the D-08 graceful no-results.
+ * No vector search — full FTS by offering_id is sufficient for demo queries.
+ *
+ * Returns the combined RetrievedSource[] for the SSE sources event, plus a
+ * knowledge string (dossier prose) for the LLM system prompt.
+ */
 export async function retrieveSources(
   query: string,
-  finalK = 8,
 ): Promise<{ sources: RetrievedSource[]; knowledge: string }> {
-  // 1. Full-text search the dossiers.
-  const { data: docsData } = await agentSupabase.rpc("search_reference_docs", {
-    q: query,
-    lim: 6,
-  });
-  const docs = (docsData ?? []) as DocRow[];
-  const offeringIds = [
-    ...new Set(docs.map((d) => d.offering_id).filter(Boolean)),
-  ] as string[];
+  const lower = query.toLowerCase();
+  const isInScope = BOTOX_TERMS.some((t) => lower.includes(t));
+  if (!isInScope) {
+    return { sources: [], knowledge: "" };
+  }
 
-  // 2. Evidence links for those offerings (only ones with a clickable URL), best authority first.
-  let sources: RetrievedSource[] = [];
-  if (offeringIds.length) {
-    const { data: evData } = await agentSupabase
-      .from("evidence_links")
-      .select(
-        "id, offering_id, field_name, source, pmid, doi, source_reference, snippet, claimed_value, url, authority_rank, page_number",
-      )
-      .in("offering_id", offeringIds)
-      .not("url", "is", null)
-      .order("authority_rank", { ascending: true })
-      .limit(40);
+  // --- Query A: evidence_links (citation metadata) ---
+  const { data: evRows } = await agentSupabase
+    .from("evidence_links")
+    .select(
+      "id, source, authority_rank, snippet, doi, pmid, url, page_number, field_name, offering_id",
+    )
+    .eq("offering_id", BOTOX_OFFERING_ID)
+    .not("snippet", "is", null)
+    .order("authority_rank", { ascending: true })
+    .limit(12);
 
-    const rows = (evData ?? []) as EvidenceRow[];
-    const seen = new Set<string>();
-    const picked: EvidenceRow[] = [];
-    for (const r of rows) {
-      const key = r.url || r.id;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      picked.push(r);
-      if (picked.length >= finalK) break;
-    }
+  // --- Query B: agent_reference_docs (prose context) ---
+  // Include draft status — Phase 2 dossier docs are status='draft' pending review (Pitfall 5)
+  // Filter to clinical/deep_product lens only — never surface sales_education in research tab
+  const { data: docRows } = await agentSupabase
+    .from("agent_reference_docs")
+    .select(
+      "id, content_md, lens, doc_type, offering_id, category_id, status, version",
+    )
+    .or(
+      `offering_id.eq.${BOTOX_OFFERING_ID},category_id.eq.${NEUROTOXINS_CATEGORY_ID}`,
+    )
+    .in("lens", ["clinical", "deep_product"])
+    .in("status", ["draft", "active"])
+    .order("version", { ascending: false })
+    .limit(5);
 
-    sources = picked.map((e, i) => {
-      const title = e.source_reference || `${humanize(e.field_name)} — ${humanize(e.source)}`;
-      const corpus = corpusForSource(e.source);
-      const authorityWeight = 1 + (6 - (e.authority_rank ?? 4)) * 0.05;
-      const base = 1 - i * 0.05;
-      return {
-        retrievalId: `src_${i + 1}`,
-        chunkRef: `${corpus}:${e.id}`,
-        corpus,
-        scores: { fused: base, authorityWeight, final: base * authorityWeight },
-        text: (e.snippet || e.claimed_value || title).trim(),
-        locator: buildLocator(e, title),
-      };
+  const evidenceLinks = (evRows ?? []) as EvidenceLinkRow[];
+  const refDocs = (docRows ?? []) as RefDocRow[];
+
+  // --- Build RetrievedSource[] from evidence_links ---
+  const evSources: RetrievedSource[] = [];
+  for (const row of evidenceLinks) {
+    const locator = buildEvidenceLocator(row);
+    if (!locator) continue; // skip pubmed rows with no click target
+    const corpus = corpusForSource(row.source);
+    const authWeight = AUTHORITY_WEIGHT[corpus] ?? 1.0;
+    evSources.push({
+      retrievalId: "", // assigned after merge
+      chunkRef: `${row.source}:${row.id}`,
+      corpus,
+      scores: {
+        fused: authWeight,
+        authorityWeight: authWeight,
+        final: authWeight,
+      },
+      text: (row.snippet ?? "").trim(),
+      locator,
     });
   }
 
-  // 3. Knowledge context for the LLM (top dossier prose, truncated).
-  const knowledge = docs
-    .slice(0, 4)
-    .map((d) => `## ${d.title} (${d.lens})\n${(d.content_md ?? "").slice(0, 1500)}`)
+  // --- Build RetrievedSource[] from agent_reference_docs ---
+  const docSources: RetrievedSource[] = (refDocs ?? []).map((row) => {
+    const locator: DocumentLocator = {
+      type: "document",
+      corpus: "practice",
+      filename: `dossier-${row.id}.md`,
+      title: row.doc_type ?? "Dossier",
+      storagePath: `dossier/${row.id}`,
+      url: "",
+      sourceAuthority: "internal",
+    };
+    const authWeight = AUTHORITY_WEIGHT.practice;
+    return {
+      retrievalId: "", // assigned after merge
+      chunkRef: `dossier:${row.id}`,
+      corpus: "practice" as Corpus,
+      scores: {
+        fused: authWeight,
+        authorityWeight: authWeight,
+        final: authWeight,
+      },
+      text: (row.content_md ?? "").slice(0, 1200),
+      locator,
+    };
+  });
+
+  // --- Merge: evidence_links first (ordered by authority_rank), then dossier rows ---
+  const merged = [...evSources, ...docSources].slice(0, 8);
+  const sources: RetrievedSource[] = merged.map((s, i) => ({
+    ...s,
+    retrievalId: `src_${i + 1}`,
+  }));
+
+  // --- Knowledge string: top dossier prose for the LLM ---
+  const knowledge = refDocs
+    .slice(0, 3)
+    .map(
+      (d) =>
+        `## ${d.doc_type ?? "Document"} (${d.lens})\n${(d.content_md ?? "").slice(0, 1500)}`,
+    )
     .join("\n\n");
 
   return { sources, knowledge };
