@@ -1,0 +1,356 @@
+{
+  "compile_session": "2026-06-12_overnight",
+  "target_project": "aejskvmpembryunnbgrk",
+  "phase": "02-dossier-batch",
+  "calibration_status": "v2_draft_awaiting_review",
+  "entities": [
+    {
+      "entity_class": "category",
+      "entity_key": "neurotoxins",
+      "entity_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "status": "inserted",
+      "ts": "2026-06-12T05:30:00Z",
+      "docs_inserted": [
+        {"id": "a7bbc64d-3542-464e-a8fe-9d86089e1cbc", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "archived"},
+        {"id": "dc687d7d-7943-44c2-88a9-339a4b4dece4", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "archived"},
+        {"id": "058fa9fa-8f88-4733-b6c6-428bcf9767ac", "lens": "sales_education", "doc_type": "category_overview", "version": 1, "status": "archived"},
+        {"id": "6c183564-b966-424f-8ef4-c9acee7ffe5a", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "archived"}
+      ],
+      "fuel_id": "a1428447-e08d-4e4e-968b-26898267d6eb",
+      "evidence_links_added": 16,
+      "validation": "PASS"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "neurotoxins",
+      "entity_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "status": "inserted",
+      "ts": "2026-06-12T14:00:00Z",
+      "compile_version": 2,
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "4512a79d-0322-478e-a994-9b007b6567e2", "lens": "clinical", "doc_type": "clinical_summary", "version": 2, "status": "draft"},
+        {"id": "78eead5e-c25c-4b1f-8753-ee6856757cd8", "lens": "clinical", "doc_type": "technique_guide", "version": 2, "status": "draft"},
+        {"id": "84be871e-c167-46b1-ae93-7a70109662eb", "lens": "sales_education", "doc_type": "category_overview", "version": 2, "status": "draft"},
+        {"id": "634459ac-1162-4f1d-b37f-94ad06ac56fa", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 2, "status": "draft"}
+      ],
+      "review_file": "REVIEW_QUEUE/PENDING_botox_neurotoxins_clinical.md",
+      "validation": "PASS"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "botox_cosmetic",
+      "entity_id": "4b92be36-e84e-432c-8549-f5d85a767fdb",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "status": "inserted",
+      "ts": "2026-06-12T05:35:00Z",
+      "docs_inserted": [
+        {"id": "2f7218e1-79c5-4454-9b3f-49eb2cc41621", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "archived"},
+        {"id": "79aaa679-6bbb-4dc4-a6ff-05802f4c1f93", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "archived"},
+        {"id": "b443789a-98e5-435d-b39c-5cb34d7fd882", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "archived"},
+        {"id": "1389deae-b0c3-4dea-8dca-a536150b60db", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "archived"},
+        {"id": "49f3c702-dea9-4444-a389-db4f5483ca2f", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "archived"}
+      ],
+      "fuel_id": "a7056785-26c6-4724-88fd-d31bca7f8ec5",
+      "evidence_links_added": 7,
+      "validation": "PASS"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "botox_cosmetic",
+      "entity_id": "4b92be36-e84e-432c-8549-f5d85a767fdb",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "status": "inserted",
+      "ts": "2026-06-12T14:00:00Z",
+      "compile_version": 2,
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "eddb8155-3a8a-4fd3-8f71-25eea0c4ec38", "lens": "clinical", "doc_type": "clinical_summary", "version": 2, "status": "draft", "extends": "4512a79d-0322-478e-a994-9b007b6567e2"},
+        {"id": "8a4a534b-4814-47af-bc9d-c915d2e68531", "lens": "clinical", "doc_type": "technique_guide", "version": 2, "status": "draft", "extends": "78eead5e-c25c-4b1f-8753-ee6856757cd8"},
+        {"id": "9212af1b-2af9-4f89-b935-537954cb26cb", "lens": "sales_education", "doc_type": "patient_education", "version": 2, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "e3f5b92e-a51b-4ed1-a998-81ebc4c81863", "lens": "sales_education", "doc_type": "faq", "version": 2, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "ccc4b815-bf39-417b-8b05-42427f6dee89", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 2, "status": "draft", "extends": "634459ac-1162-4f1d-b37f-94ad06ac56fa"}
+      ],
+      "review_files": [
+        "REVIEW_QUEUE/PENDING_botox_neurotoxins_clinical.md",
+        "REVIEW_QUEUE/PENDING_botox_neurotoxins_sales_education.md",
+        "REVIEW_QUEUE/PENDING_botox_neurotoxins_deep_product.md"
+      ],
+      "validation": "PASS"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "dermal_fillers",
+      "entity_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "HA Fillers category — Juvederm family, Restylane Lyft, RHA Redensity, SKINVIVE"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "biostimulators",
+      "entity_id": "a6a854e2-7db1-4ec0-bac0-7b346454fca0",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Biostimulators category — Sculptra Aesthetic"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "body_contouring",
+      "entity_id": "d72803ce-814f-4905-8ce4-3d44323e9503",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Body Contouring category — CoolSculpting Elite (products may need category assignment)"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "injectable_fat_reduction",
+      "entity_id": "b51855e7-73a2-498b-b1c4-4fdc739635a2",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Injectable Fat Reduction category — Kybella"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "rf_microneedling",
+      "entity_id": "836bcdf0-aa49-4dae-9ced-bd9c4a027299",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "RF Microneedling category — Morpheus8; includes energy/RF devices"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "skin_tightening",
+      "entity_id": "4eb4c667-16af-44ba-94c6-e85edffef558",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Skin Tightening category — Sofwave"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "ultrasound_lifting",
+      "entity_id": "1c9acf3e-8753-4bd3-af98-9372c994eec3",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Ultrasound Lifting category — Ultherapy PRIME (MFU-V)"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "pigment_skin_rejuvenation",
+      "entity_id": "b35c36c4-ee76-422d-89a6-0e7a4af568b9",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Pigment & Skin Rejuvenation category — Hollywood Spectra (PicoSure-class laser)"
+    },
+    {
+      "entity_class": "category",
+      "entity_key": "energy_based_treatments",
+      "entity_id": "1b17dd9a-3509-4183-ba50-cae83e0813b5",
+      "batch": "02-dossier-batch",
+      "plan": "02-02",
+      "status": "pending",
+      "notes": "Energy-Based Treatments umbrella category"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "juvederm_vollure_xc",
+      "entity_id": "7370545f-97a3-4519-a92d-3ac4f969829d",
+      "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-03",
+      "status": "pending",
+      "notes": "HA filler — perioral lines, lip support, dynamic facial lines"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "juvederm_voluma_xc",
+      "entity_id": "6c8f72f0-887f-484a-a588-0bb9bd8052c9",
+      "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-03",
+      "status": "pending",
+      "notes": "HA filler — cheek volume restoration, midface lift"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "restylane_lyft",
+      "entity_id": "f1732c7c-3f19-4f3d-9aff-543a132e5506",
+      "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-03",
+      "status": "pending",
+      "notes": "HA filler — cheeks and hands; FDA-indicated for both"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "rha_redensity",
+      "entity_id": "d8a00419-39e1-4d4b-8dab-ad134fb00930",
+      "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-03",
+      "status": "pending",
+      "notes": "RHA resilient HA — dynamic wrinkles, perioral lines"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "skinvive_by_juvederm",
+      "entity_id": "b74d5475-bf58-4d7d-87f5-2c8dc9e252de",
+      "category_id": "138ed383-364a-44a3-87a0-8e641ecd4200",
+      "batch": "02-dossier-batch",
+      "plan": "02-03",
+      "status": "pending",
+      "notes": "Intradermal HA microdroplet — skin quality/glow, not volumization"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "sculptra_aesthetic",
+      "entity_id": "2ce7a3d2-b06d-4b62-b9b7-4113afb51baa",
+      "category_id": "a6a854e2-7db1-4ec0-bac0-7b346454fca0",
+      "batch": "02-dossier-batch",
+      "plan": "02-04",
+      "status": "pending",
+      "notes": "PLLA biostimulator — collagen induction, gradual volume, multiple sessions"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "kybella",
+      "entity_id": "0f901fec-5de5-4950-815e-82c3e47cb2ec",
+      "category_id": "b51855e7-73a2-498b-b1c4-4fdc739635a2",
+      "batch": "02-dossier-batch",
+      "plan": "02-04",
+      "status": "pending",
+      "notes": "Deoxycholic acid — submental fullness reduction, FDA-indicated"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "coolsculpting_elite",
+      "entity_id": "694ea839-cf8f-4a17-b838-2588674c792f",
+      "category_id": "d72803ce-814f-4905-8ce4-3d44323e9503",
+      "batch": "02-dossier-batch",
+      "plan": "02-04",
+      "status": "pending",
+      "notes": "Cryolipolysis body contouring — FDA-cleared fat reduction; note: PAH risk"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "inmode_morpheus8",
+      "entity_id": "84ac561e-1818-4ece-a8d7-1fb6c5ea80df",
+      "category_id": "836bcdf0-aa49-4dae-9ced-bd9c4a027299",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "Fractional RF microneedling — skin tightening, remodeling, Fitzpatrick I-VI"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "sofwave",
+      "entity_id": "78973d13-fa36-41dd-8625-4b851ff143ed",
+      "category_id": "4eb4c667-16af-44ba-94c6-e85edffef558",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "Ultrasound-based skin tightening — synchronous ultrasound parallel beam (SUPERB)"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "merz_ultherapy_prime",
+      "entity_id": "da25d447-c316-40b2-802e-e190c0bdbd9f",
+      "category_id": "1c9acf3e-8753-4bd3-af98-9372c994eec3",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "MFU-V (micro-focused ultrasound) — FDA-cleared brow lift, neck/chin/chest"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "lutronic_hollywood_spectra",
+      "entity_id": "be46f975-99d7-4772-867e-744814626654",
+      "category_id": "b35c36c4-ee76-422d-89a6-0e7a4af568b9",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "Q-switched Nd:YAG — pigmentation, tattoo, toning; Hollywood peel protocol"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "hydrafacial_syndeo",
+      "entity_id": "28918bda-787b-412a-9802-d3d9a00e6ab1",
+      "category_id": null,
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "Medical-grade hydrodermabrasion — cleansing, exfoliation, hydration; skincare/device hybrid"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "dysport",
+      "entity_id": "a7e1b29e-da10-40de-bea8-70d6e6624f43",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "abobotulinumtoxinA neurotoxin — compile deferred until structured taxonomy data enriched; flagged in OVERNIGHT_REPORT"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "jeuveau",
+      "entity_id": "8adda68a-9fd2-49ad-8852-641970135131",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "prabotulinumtoxinA-xvfs — FDA-approved glabellar lines only; younger brand positioning"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "daxxify",
+      "entity_id": "007d98fd-58b5-4d20-be11-caf421c0dccb",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "daxibotulinumtoxinA-lanm — peptide-stabilized, 6-month duration, FDA-approved glabellar lines"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "xeomin",
+      "entity_id": "92a05fe8-d349-4d2f-9a3f-bc5901f94dfa",
+      "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "incobotulinumtoxinA — naked toxin, no complexing proteins, theoretical reduced immunogenicity"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "semaglutide_wegovy_ozempic",
+      "entity_id": "eac2d740-b5b6-4b4e-a5f4-2386ffe1a8c7",
+      "category_id": null,
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "GLP-1 agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
+    },
+    {
+      "entity_class": "product",
+      "entity_key": "tirzepatide_mounjaro_zepbound",
+      "entity_id": "c4da2f94-0d00-4959-9b31-a3b2e2cbfa89",
+      "category_id": null,
+      "batch": "02-dossier-batch",
+      "plan": "02-05",
+      "status": "pending",
+      "notes": "GLP-1/GIP dual agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
+    }
+  ],
+  "next_pending": "02-02 category dossiers",
+  "batch_blocked_by": "none",
+  "notes": "02-01 complete: does_not_solve column added, authority_rank backfilled (0 NULL FDA rows), Botox reference example populated. Full product/category roster loaded. 2 entities inserted (Neurotoxins category + Botox product), 30 entities pending across plans 02-02 through 02-05."
+}
