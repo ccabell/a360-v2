@@ -6,7 +6,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 
 ## Phases
 
-- [ ] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations
+- [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
 - [ ] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
 
@@ -26,7 +26,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
   4. YouTube CMS chunks have start_seconds/end_seconds captured (not discarded)
   5. Compile pipeline always captures pmid, doi, url, page_number on new evidence_links inserts
   6. Research/Evidence tab renders clickable "View on PubMed" and "Open FDA label · p.N" links for at least Botox/Neurotoxins content
-**Plans:** 0/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 01-01-PLAN.md — Schema migration (page_number column) + PubMed PMID backfill + YouTube timestamp backfill
@@ -90,4 +90,10 @@ Plans:
   4. Response includes at least one clickable FDA label link pointing to accessdata.fda.gov
   5. Citation chips `[1][2]` map correctly to source panel entries
   6. No mock data imports remain in the retrieval path
-**Plans:** TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — Wave 0 prep: add AI_GATEWAY_API_KEY to env example + verify Botox IDs and evidence_links/dossier data
+- [ ] 03-02-PLAN.md — Retrieval engine: lib/retrieval/sources.ts (real DB -> RetrievedSource) + app/api/research/chat SSE route (streamText + resolveCitations)
+- [ ] 03-03-PLAN.md — Client cutover: lib/retrieval/stream.ts + swap mock import in research-chat.tsx + flip page badge to Live
+- [ ] 03-04-PLAN.md — End-to-end live UI verification: unscripted Botox question with clickable PubMed + FDA citations (SC-2 to SC-5)

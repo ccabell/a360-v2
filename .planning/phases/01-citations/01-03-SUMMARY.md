@@ -135,17 +135,19 @@ Videos not yet ingested into `manufacturer_youtube_transcript` CMS table. Timest
 **ifu — 2 rows with no URL:**
 IFU (Instructions for Use) rows have no URL. These are typically manufacturer-provided physical documents. Can be populated when public URLs are available.
 
-**page_number column — not yet applied:**
-The DDL migration SQL is written (`scripts/migrations/add_page_number_to_evidence_links.sql`) but requires manual apply via Supabase dashboard SQL editor. page_number values for FDA rows will be a follow-on task once the column exists.
+**page_number column — applied (confirmed at checkpoint):**
+Migration applied to Supabase via dashboard SQL editor. Column is live on `evidence_links`.
 
 ## Phase 1 Completion Status
+
+Checkpoint approved 2026-06-12.
 
 | Success Criterion | Status |
 |-------------------|--------|
 | All existing PubMed rows with pmid have url populated | DONE (3/3 rows with pmid have URL) |
-| evidence_links table has page_number column | PENDING (migration SQL ready, needs manual apply) |
+| evidence_links table has page_number column | DONE (migration applied and confirmed at checkpoint) |
 | FDA prescribing info URLs in evidence_links | DONE (29/29 fda_label rows have accessdata.fda.gov URLs) |
-| YouTube CMS chunks have start_seconds captured | PARTIAL (1/6 rows have timestamp; 5 videos not in CMS) |
+| YouTube CMS chunks have start_seconds captured | PARTIAL (1/6 rows have timestamp; 5 videos not in CMS — accepted gap) |
 | Compile pipeline always captures pmid, doi, url, page_number | DONE (STEP 5 updated via this plan) |
 | Research/Evidence tab renders clickable PubMed + FDA links | OUT OF SCOPE — Phase 3 |
 
