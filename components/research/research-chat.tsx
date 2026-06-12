@@ -9,8 +9,7 @@ import type {
   ResearchCitation,
   ResearchStage,
 } from "@/lib/types/retrieval";
-import { streamResearch } from "@/lib/mock/research-stream";
-import { EXAMPLE_QUERIES } from "@/lib/mock/research-data";
+import { streamResearch, EXAMPLE_QUERIES } from "@/lib/retrieval/stream";
 import { StatusIndicator } from "./status-indicator";
 import { SourcePill } from "@/components/grounding/source-pill";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
