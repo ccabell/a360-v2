@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 02-06-PLAN.md — batch reports generated
-last_updated: "2026-06-12T22:52:35.080Z"
+stopped_at: Completed 02-dossier-batch 02-06-PLAN.md
+last_updated: "2026-06-12T22:53:01.350Z"
 progress:
   total_phases: 3
   completed_phases: 2
@@ -74,6 +74,7 @@ Plan: 4 of 4
 - [Phase 02-dossier-batch]: 02-05 SQL files written but not executed — 9 products have 0 live DB structured intelligence; priority SQL execution list in STRUCTURED_COVERAGE.md
 - [Phase 02-dossier-batch]: Top 10 OA Botox/Neurotoxin papers for pre-demo ingestion are from ASJ Open Forum (2), Dermatology and Therapy (7, CC-BY-NC), and Cureus (1) — all confirmed PMC links
 - [Phase 02-dossier-batch]: 02-05 SQL files committed to supabase/compile_sql/ but not yet executed — 12 products show 0 docs in live DB; execution checklist documented in STRUCTURED_COVERAGE.md
+- [Phase 02-dossier-batch]: FDA validation PASS — 0 orphaned FDA-indicated concerns; all 12 is_fda_indicated=true rows have fda_label evidence_links
 
 ### Pending Todos
 
@@ -85,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:52:17.068Z
-Stopped at: Completed 02-06-PLAN.md — batch reports generated
+Last session: 2026-06-12T22:53:01.346Z
+Stopped at: Completed 02-dossier-batch 02-06-PLAN.md
 Resume file: None

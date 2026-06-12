@@ -7,7 +7,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 ## Phases
 
 - [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
-- [ ] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture
+- [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
 
 ## Phase Details
@@ -54,7 +54,7 @@ Plans:
   7. source_registry has new rows for every reputable source encountered (status='review')
   8. ingestion_queue has rows for ingestible-looking sources (OA/public_domain)
   9. SOURCE CAPTURE REPORT lists top 10 highest-authority OA papers (JCAD, Cureus, Dermatology and Therapy, ASJ) flagged for immediate Botox/Neurotoxins-related ingestion
-**Plans:** 5/6 plans executed
+**Plans:** 6/6 plans complete
 
 Plans:
 - [x] 02-01-PLAN.md — Schema migration (does_not_solve column) + authority_rank backfill + product list discovery
