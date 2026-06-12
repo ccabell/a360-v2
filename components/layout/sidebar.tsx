@@ -14,8 +14,10 @@ import {
   Layers,
   Settings,
   Sparkles,
+  LogOut,
 } from "lucide-react";
 
+// scope "internal" items are hidden in the acquirer-facing demo build.
 const menuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
@@ -23,15 +25,26 @@ const menuItems = [
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
-  { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles },
+  { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
-  { name: "Components", href: "/dashboard/components", icon: Settings },
-];
+  { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
+] as const;
+
+const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
+const isDemo = APP_MODE === "demo";
+
+async function signOut() {
+  await fetch("/api/auth/logout", { method: "POST" });
+  window.location.href = "/login";
+}
 
 export function Sidebar() {
   const pathname = usePathname();
+  const items = menuItems.filter(
+    (i) => !isDemo || !("scope" in i && i.scope === "internal"),
+  );
 
   return (
     <div className="w-64 border-r border-border flex flex-col h-screen sticky top-0 bg-sidebar">
@@ -48,7 +61,7 @@ export function Sidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
-        {menuItems.map((item) => {
+        {items.map((item) => {
           const Icon = item.icon;
           const isActive = item.href === "/dashboard"
             ? pathname === "/dashboard"
@@ -80,10 +93,20 @@ export function Sidebar() {
 
       {/* Footer */}
       <div className="p-4 border-t border-sidebar-border">
-        <button className="w-full px-4 py-2.5 rounded-lg flex items-center gap-3 text-sidebar-foreground hover:bg-sidebar-primary/5 transition-all text-sm font-medium">
-          <Settings className="h-4 w-4 text-sidebar-foreground/60" />
-          Settings
-        </button>
+        {isDemo ? (
+          <button
+            onClick={signOut}
+            className="w-full px-4 py-2.5 rounded-lg flex items-center gap-3 text-sidebar-foreground hover:bg-sidebar-primary/5 transition-all text-sm font-medium"
+          >
+            <LogOut className="h-4 w-4 text-sidebar-foreground/60" />
+            Sign out
+          </button>
+        ) : (
+          <button className="w-full px-4 py-2.5 rounded-lg flex items-center gap-3 text-sidebar-foreground hover:bg-sidebar-primary/5 transition-all text-sm font-medium">
+            <Settings className="h-4 w-4 text-sidebar-foreground/60" />
+            Settings
+          </button>
+        )}
       </div>
     </div>
   );
