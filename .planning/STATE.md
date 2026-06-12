@@ -51,6 +51,7 @@ Plan: 2 of 4
 - Phase 1: Compile pipeline updated to always capture pmid/doi/url on evidence_links inserts
 - [Phase 02-dossier-batch]: Radiesse not in compile_manifest.json — compiled Sculptra only for biostimulators; Radiesse deferred (not in DB manifest)
 - [Phase 02-dossier-batch]: PAH safety floor: CoolSculpting clinical uses Singh et al. 2019 incidence (1/138) — more conservative than manufacturer's original 1/20,000 estimate
+- [Phase 03-retrieval-wiring P01]: Botox offering_id 4b92be36-e84e-432c-8549-f5d85a767fdb confirmed; Neurotoxins category_id 57b7c5a8-0799-42b0-9111-8441f18a82db confirmed; evidence_links pubmed=14, fda_label=10, total=31; agent_reference_docs=6; D-07 fallback not needed
 
 ### Pending Todos
 
@@ -62,6 +63,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:30:35.508Z
-Stopped at: Completed 02-04-PLAN.md — biostimulators + body contouring dossiers
+Last session: 2026-06-12T22:45:00.000Z
+Stopped at: Completed 03-01-PLAN.md — wave-0 prep, verified Botox IDs + evidence counts
 Resume file: None
