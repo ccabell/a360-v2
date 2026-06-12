@@ -18,57 +18,7 @@ import {
 } from "lucide-react";
 import type { PRRunDetail, RunEvidence } from "@/lib/types";
 import { formatDate } from "@/lib/format";
-
-// --- helpers -----------------------------------------------------------------
-
-interface ExtractedField {
-  label: string;
-  value: unknown;
-  evidence?: RunEvidence[];
-  missing_reason?: string | null;
-}
-
-function humanize(key: string): string {
-  return key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-function pct(n: unknown): number {
-  const v = typeof n === "number" ? n : 0;
-  return Math.round(v <= 1 ? v * 100 : v);
-}
-
-function isFieldNode(v: unknown): boolean {
-  return (
-    !!v &&
-    typeof v === "object" &&
-    !Array.isArray(v) &&
-    "value" in (v as object) &&
-    ("evidence" in (v as object) || "missing_reason" in (v as object))
-  );
-}
-
-// Walk the extraction tree and collect { value, evidence } field nodes.
-function walkFields(
-  obj: unknown,
-  out: ExtractedField[] = [],
-  depth = 0,
-): ExtractedField[] {
-  if (!obj || typeof obj !== "object" || depth > 5) return out;
-  for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
-    if (isFieldNode(v)) {
-      const node = v as Record<string, unknown>;
-      out.push({
-        label: humanize(k),
-        value: node.value,
-        evidence: node.evidence as RunEvidence[] | undefined,
-        missing_reason: node.missing_reason as string | null | undefined,
-      });
-    } else if (v && typeof v === "object" && !Array.isArray(v)) {
-      walkFields(v, out, depth + 1);
-    }
-  }
-  return out;
-}
+import { walkFields, humanize, pct } from "@/lib/runs/extract-fields";
 
 // --- subcomponents -----------------------------------------------------------
 

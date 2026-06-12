@@ -14,6 +14,7 @@ import {
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { TranscriptViewer } from "./transcript-viewer";
 import { RunOutput } from "./run-output";
+import { ConsultationIntelligence } from "./consultation-intelligence";
 import { pickScenario, type ResearchScenario } from "@/lib/mock/research-data";
 import { formatDate, age, formatDuration } from "@/lib/format";
 import type { PatientDetail, PRTranscript, PRRun, Paged } from "@/lib/types";
@@ -42,6 +43,7 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
   const [errorRuns, setErrorRuns] = useState<string | null>(null);
 
   const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
+  const [runView, setRunView] = useState<"intelligence" | "raw">("intelligence");
   const [prompt, setPrompt] = useState(
     "Extract the primary treatment opportunity and supporting evidence.",
   );
@@ -328,7 +330,31 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
       )}
 
       {/* Existing run → REAL extraction output (live from Prompt Runner) */}
-      {selectedRunId && <RunOutput runId={selectedRunId} />}
+      {selectedRunId && selected && (
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant={runView === "intelligence" ? "default" : "outline"}
+              onClick={() => setRunView("intelligence")}
+            >
+              Intelligence
+            </Button>
+            <Button
+              size="sm"
+              variant={runView === "raw" ? "default" : "outline"}
+              onClick={() => setRunView("raw")}
+            >
+              Raw extraction
+            </Button>
+          </div>
+          {runView === "intelligence" ? (
+            <ConsultationIntelligence transcriptId={selected.id} runId={selectedRunId} />
+          ) : (
+            <RunOutput runId={selectedRunId} />
+          )}
+        </div>
+      )}
 
       {/* Loading output (new prompt run) */}
       {running && (
