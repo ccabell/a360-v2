@@ -568,8 +568,16 @@
       "category_id": null,
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "Medical-grade hydrodermabrasion — cleansing, exfoliation, hydration; skincare/device hybrid"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "aa20bb21-cc22-dd23-ee24-ff4455667788", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft"},
+        {"id": "bb21cc22-dd23-ee24-ff25-005566778899", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft"},
+        {"id": "cc22dd23-ee24-ff25-0026-116677889900", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft"},
+        {"id": "dd23ee24-ff25-0026-1177-228899001122", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft"}
+      ],
+      "notes": "HydraFacial Syndeo — 4 docs (no technique_guide; procedure follows standardized protocol). No category parent. Evidence level III-IV (manufacturer data)."
     },
     {
       "entity_class": "product",
@@ -578,8 +586,20 @@
       "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "abobotulinumtoxinA neurotoxin — compile deferred until structured taxonomy data enriched; flagged in OVERNIGHT_REPORT"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "aa01bb02-cc03-dd04-ee05-ff0611223344", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "4512a79d-0322-478e-a994-9b007b6567e2"},
+        {"id": "bb02cc03-dd04-ee05-ff06-001122334455", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "78eead5e-c25c-4b1f-8753-ee6856757cd8"},
+        {"id": "cc03dd04-ee05-ff06-0011-223344556677", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "dd04ee05-ff06-0011-2233-445566778899", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "ee05ff06-0011-2233-4455-667788991100", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "634459ac-1162-4f1d-b37f-94ad06ac56fa"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_dysport_clinical.md"],
+      "evidence_links_added": 3,
+      "taxonomy_updated": "onset_time, peak_effect, duration_of_effect, fda_approved_areas, does_not_solve",
+      "notes": "abobotulinumtoxinA — cow's milk allergy flag, 2.5:1 unit ratio, larger diffusion radius documented"
     },
     {
       "entity_class": "product",
@@ -588,8 +608,20 @@
       "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "prabotulinumtoxinA-xvfs — FDA-approved glabellar lines only; younger brand positioning"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "ff06aa07-bb08-cc09-dd10-eeff00112233", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "4512a79d-0322-478e-a994-9b007b6567e2"},
+        {"id": "aa07bb08-cc09-dd10-ee11-ff0011223344", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "78eead5e-c25c-4b1f-8753-ee6856757cd8"},
+        {"id": "bb08cc09-dd10-ee11-ff12-001122334455", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "cc09dd10-ee11-ff12-0013-112233445566", "lens": "sales_education", "doc_type": "faq", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "dd10ee11-ff12-0013-1122-334455667788", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "634459ac-1162-4f1d-b37f-94ad06ac56fa"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_neurotoxins_additional.md"],
+      "evidence_links_added": 1,
+      "taxonomy_updated": "onset_time, peak_effect, duration_of_effect, fda_approved_areas, does_not_solve",
+      "notes": "prabotulinumtoxinA-xvfs — glabellar lines ONLY; 1:1 Botox conversion; aesthetics-only brand"
     },
     {
       "entity_class": "product",
@@ -598,8 +630,19 @@
       "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "daxibotulinumtoxinA-lanm — peptide-stabilized, 6-month duration, FDA-approved glabellar lines"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "ee11ff12-0013-1122-3344-556677889901", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "4512a79d-0322-478e-a994-9b007b6567e2"},
+        {"id": "aa13bb14-cc15-dd16-ee17-ff2233445577", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "78eead5e-c25c-4b1f-8753-ee6856757cd8"},
+        {"id": "ff12aa13-bb14-cc15-dd16-ee1122334466", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "bb14cc15-dd16-ee17-ff18-003344556688", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "634459ac-1162-4f1d-b37f-94ad06ac56fa"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_neurotoxins_additional.md"],
+      "evidence_links_added": 3,
+      "taxonomy_updated": "onset_time, peak_effect, duration_of_effect (6 months median), fda_approved_areas, does_not_solve",
+      "notes": "daxibotulinumtoxinA-lanm — 6-month duration, peptide excipient, 40 Revance units NOT interchangeable with Botox"
     },
     {
       "entity_class": "product",
@@ -608,8 +651,19 @@
       "category_id": "57b7c5a8-0799-42b0-9111-8441f18a82db",
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "incobotulinumtoxinA — naked toxin, no complexing proteins, theoretical reduced immunogenicity"
+      "status": "inserted",
+      "ts": "2026-06-12T22:30:00Z",
+      "posture": "gateway+sales_education_primary",
+      "docs_inserted": [
+        {"id": "cc15dd16-ee17-ff18-0019-114455667799", "lens": "clinical", "doc_type": "clinical_summary", "version": 1, "status": "draft", "extends": "4512a79d-0322-478e-a994-9b007b6567e2"},
+        {"id": "dd16ee17-ff18-0019-1144-556677889901", "lens": "clinical", "doc_type": "technique_guide", "version": 1, "status": "draft", "extends": "78eead5e-c25c-4b1f-8753-ee6856757cd8"},
+        {"id": "ee17ff18-0019-1144-5566-778899001122", "lens": "sales_education", "doc_type": "patient_education", "version": 1, "status": "draft", "extends": "84be871e-c167-46b1-ae93-7a70109662eb"},
+        {"id": "ff18aa19-bb20-cc21-dd22-ee3344556601", "lens": "deep_product", "doc_type": "deep_dive_playbook", "version": 1, "status": "draft", "extends": "634459ac-1162-4f1d-b37f-94ad06ac56fa"}
+      ],
+      "review_files": ["REVIEW_QUEUE/PENDING_neurotoxins_additional.md"],
+      "evidence_links_added": 3,
+      "taxonomy_updated": "onset_time, peak_effect, duration_of_effect, fda_approved_areas, does_not_solve",
+      "notes": "incobotulinumtoxinA — naked toxin, room-temp storage, 1:1 Botox equivalence"
     },
     {
       "entity_class": "product",
@@ -618,8 +672,9 @@
       "category_id": null,
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "GLP-1 agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
+      "status": "skipped",
+      "skip_reason": "Out of core aesthetics scope — GLP-1 agonist weight management. No GL category parent. Compile if practice actively offers weight management.",
+      "notes": "GLP-1 agonist weight loss — compile deferred"
     },
     {
       "entity_class": "product",
@@ -628,8 +683,9 @@
       "category_id": null,
       "batch": "02-dossier-batch",
       "plan": "02-05",
-      "status": "pending",
-      "notes": "GLP-1/GIP dual agonist weight loss — out of core aesthetics scope; compile if practice sells weight management"
+      "status": "skipped",
+      "skip_reason": "Out of core aesthetics scope — GLP-1/GIP dual agonist weight management. No GL category parent. Compile if practice actively offers weight management.",
+      "notes": "GLP-1/GIP dual agonist weight loss — compile deferred"
     }
   ],
   "next_pending": "02-04 Biostimulators/Injectable Fat Reduction/Body Contouring products",
