@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 03-02-PLAN.md — sources.ts and SSE route built
-last_updated: "2026-06-12T22:40:10.850Z"
+stopped_at: Completed 03-03-PLAN.md — mock cutover complete, live SSE reader wired
+last_updated: "2026-06-12T22:45:39.800Z"
 progress:
   total_phases: 3
   completed_phases: 1
   total_plans: 13
-  completed_plans: 10
+  completed_plans: 11
 ---
 
 # Project State
@@ -46,6 +46,7 @@ Plan: 4 of 4
 | Phase 02-dossier-batch P04 | 35 | 2 tasks | 14 files |
 | Phase 02 P05 | 23 | 2 tasks | 15 files |
 | Phase 03-retrieval-wiring P02 | 25 | 2 tasks | 2 files |
+| Phase 03-retrieval-wiring P03 | 10 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,7 @@ Plan: 4 of 4
 - [Phase 02]: GLP-1 products (semaglutide, tirzepatide) skipped — out of aesthetics scope; no GL category parent; deferred to practice-specific decision
 - [Phase 02]: Daxxify unit non-interchangeability with Botox units treated as Safety Floor (rank 1 safety-critical) in technique documentation
 - [Phase 03-retrieval-wiring]: sources.ts uses direct evidence_links + agent_reference_docs queries with hard-coded Botox IDs (no search_reference_docs RPC); route.ts uses gateway('anthropic/claude-haiku-4.5'); maxOutputTokens replaces maxTokens for AI SDK v6
+- [Phase 03-retrieval-wiring]: stream.ts error path uses yield ResearchEvent error rather than throw — matches streaming protocol; research-chat.tsx import was already correct from prior session
 
 ### Pending Todos
 
@@ -78,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:40:10.845Z
-Stopped at: Completed 03-02-PLAN.md — sources.ts and SSE route built
+Last session: 2026-06-12T22:45:39.797Z
+Stopped at: Completed 03-03-PLAN.md — mock cutover complete, live SSE reader wired
 Resume file: None
