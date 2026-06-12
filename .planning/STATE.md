@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to execute
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-06-12T22:35:34.287Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 02-05-PLAN.md — energy devices + remaining products dossier batch complete
+last_updated: "2026-06-12T22:39:33.953Z"
 progress:
   total_phases: 3
   completed_phases: 1
   total_plans: 13
-  completed_plans: 8
+  completed_plans: 10
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-06-12)
 ## Current Position
 
 Phase: 03 (retrieval-wiring) — EXECUTING
-Plan: 2 of 4
+Plan: 4 of 4
 
 ## Performance Metrics
 
@@ -43,6 +43,8 @@ Plan: 2 of 4
 | 03-retrieval-wiring | 1/4 | - | - |
 | Phase 02-dossier-batch P04 | 45 minutes | 2 tasks | 14 files |
 | Phase 02 P03 | 45 | 2 tasks | 19 files |
+| Phase 02-dossier-batch P04 | 35 | 2 tasks | 14 files |
+| Phase 02 P05 | 23 | 2 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -57,6 +59,12 @@ Plan: 2 of 4
 - [Phase 02-dossier-batch P03]: source_registry.ingestible is a generated column — never include in INSERT column lists
 - [Phase 02-dossier-batch P03]: HA Fillers category_id = 6e7e0d2b-b8ed-4d30-8e5e-a5c63ce4ccb8
 - [Phase 02]: HA Fillers product scope in 02-03: 5 products per manifest (Voluma, Vollure, Skinvive, Restylane Lyft, RHA Redensity) — not the full Juvederm/Restylane portfolios
+- [Phase 02-dossier-batch]: Radiesse not in compile_manifest for 02-04; Sculptra compiled as only biostimulator product. Radiesse requires a future manifest entry.
+- [Phase 02-dossier-batch]: Kybella categorized under Injectable Fat Reduction, CoolSculpting under Body Contouring — separate extends_doc_id parents per manifest category_id
+- [Phase 02-dossier-batch]: PAH safety floor mandatory in CoolSculpting clinical_summary + patient_education; Singh et al. 2019 (1/138 incidence) used as sourced claim
+- [Phase 02]: Energy device compile scoped to 4 manifest products (Morpheus8, Sofwave, Ultherapy PRIME, Hollywood Spectra); Thermage/Vivace/laser devices not in manifest
+- [Phase 02]: GLP-1 products (semaglutide, tirzepatide) skipped — out of aesthetics scope; no GL category parent; deferred to practice-specific decision
+- [Phase 02]: Daxxify unit non-interchangeability with Botox units treated as Safety Floor (rank 1 safety-critical) in technique documentation
 
 ### Pending Todos
 
@@ -68,6 +76,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:34:56.261Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-06-12T22:39:20.751Z
+Stopped at: Completed 02-05-PLAN.md — energy devices + remaining products dossier batch complete
 Resume file: None
