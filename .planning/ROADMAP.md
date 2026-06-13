@@ -9,6 +9,8 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 - [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
 - [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
+- [ ] **Phase 4: source-ingestion** - Walk Phase 02's source_registry: verify rights, promote, bulk-ingest FDA/OA/manufacturer sources into CMS vector corpus
+- [ ] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters
 
 ## Phase Details
 
@@ -97,3 +99,43 @@ Plans:
 - [x] 03-02-PLAN.md — Retrieval engine: lib/retrieval/sources.ts (real DB -> RetrievedSource) + app/api/research/chat SSE route (streamText + resolveCitations)
 - [x] 03-03-PLAN.md — Client cutover: lib/retrieval/stream.ts + swap mock import in research-chat.tsx + flip page badge to Live
 - [ ] 03-04-PLAN.md — End-to-end live UI verification: unscripted Botox question with clickable PubMed + FDA citations (SC-2 to SC-5)
+
+---
+
+### Phase 4: source-ingestion
+**Goal**: Walk the source_registry map Phase 02 captured: review sources (status='review'), verify rights_class, promote to active, bulk-ingest ingestible sources (FDA/DailyMed public domain; CC-BY society journals; manufacturer-permitted) into the CMS vector corpus through the existing ingestion pipeline. Includes laser journals and everything discovery logged.
+**Depends on**: Phase 2 (the captured registry)
+**Canonical refs**:
+- `.planning/phases/02-dossier-batch/BATCH_SOURCE_LOGGING_ADDENDUM.md`
+- `.planning/phases/02-dossier-batch/AESTHETIC_DERMATOLOGY_JOURNAL_REGISTRY.md`
+- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
+- `GL_GSD_ROADMAP.md`
+**Success Criteria** (what must be TRUE):
+  1. All source_registry rows with status='review' triaged to either 'active' or 'rejected' with reason
+  2. ingestion_queue items either ingested or explicitly rejected with reason
+  3. Ingested sources searchable in vector corpus
+  4. Next compile run finds new sources in-corpus (verified with test query)
+  5. Rights classification documented for each source category (public_domain, CC-BY, manufacturer-permitted, restricted)
+**Plans:** 0 plans
+
+---
+
+### Phase 5: concern-language
+**Goal**: Mine the 122 consultation transcripts, Sales Excellence Framework, and coaching playbooks for real patient language at scale. Massively expand aliases; add legitimate missing concerns; build concern-cluster groupings (tired look, lower-face heaviness, post-weight-loss laxity). This is the layer that enables concern-first routing ("I look tired" -> candidate mechanisms -> products).
+**Depends on**: Phase 2 (taxonomy conventions established)
+**Canonical refs**:
+- `GL_GSD_ROADMAP.md`
+- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
+- `.planning/phases/05-concern-language/05-RESEARCH.md`
+**Success Criteria** (what must be TRUE):
+  1. Every concern has >=3 patient-language aliases
+  2. Concern clusters defined and documented (tired look, lower-face heaviness, etc.)
+  3. Concern-first routing demo-able: "I look tired" -> candidate mechanisms -> products
+  4. Missing concerns added with proper taxonomy integration
+  5. Aliases sourced from real transcript language (not LLM-generated guesses)
+**Plans:** 3 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — DB prep: execute outstanding Phase 2 SQL + verify aliases schema + create concern_clusters tables + add missing concerns
+- [ ] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
+- [ ] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report
