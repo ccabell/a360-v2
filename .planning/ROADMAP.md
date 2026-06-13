@@ -161,8 +161,25 @@ Plans:
 **Plans:** 5 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Foundation: schema migration (pairing_tier column) + does_not_solve backfill + PAIRING_RUBRIC.md
+- [x] 06-01-PLAN.md — Foundation: schema migration (pairing_tier column) + does_not_solve backfill + PAIRING_RUBRIC.md
 - [ ] 06-02-PLAN.md — SQL pre-screen: enumerate all 190 pairs + compute concern overlap and limitation signals
 - [ ] 06-03-PLAN.md — Corpus-first 8-gate evaluation for all 190 pairs (batch by category-pair per D-11)
 - [ ] 06-04-PLAN.md — DB emission: write + execute item_relationships INSERTs + QA validation report
 - [ ] 06-05-PLAN.md — Review artifacts (PAIRING_REVIEW.md + per-pair files) + Chris review checkpoint
+
+---
+
+### Phase 7: timing-rules
+**Goal**: Promote timing from prose to queryable data. Add product-level cadence/downtime fields to gl_products and pair-level timing/staging/safety fields to item_relationships. Populate for 20 products and ~30 canonical/common pairs. Human review gates safety-critical rules.
+**Depends on**: Phase 2 (product intelligence), Phase 6 (pairing engine / item_relationships rows)
+**Canonical refs**:
+- `.planning/GL_GSD_ROADMAP.md`
+- `.planning/phases/07-timing-rules/07-CONTEXT.md`
+- `.planning/phases/07-timing-rules/PHASE_7_TIMING_RESEARCH_SPEC.md`
+**Success Criteria** (what must be TRUE):
+  1. gl_products has 11 cadence/downtime columns populated for all ~20 products
+  2. item_relationships has 11 timing/staging/safety columns populated for ~30 canonical/common pairs
+  3. Safety-critical rules flagged (safety_critical=true, timing_warning_level set) for all ~8-10 hard stops
+  4. Booking-logic agent can answer "can these be same-day?" and "work backward from date" from structured data alone
+  5. TIMING_REVIEW.md produced with safety-critical items for Chris review
+**Plans:** pending
