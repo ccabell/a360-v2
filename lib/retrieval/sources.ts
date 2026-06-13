@@ -2,39 +2,77 @@ import { agentSupabase } from "@/lib/supabase";
 import type {
   RetrievedSource,
   PubMedLocator,
+  PodcastLocator,
+  IndustryLocator,
+  YouTubeLocator,
   DocumentLocator,
   SourceLocator,
   Corpus,
 } from "@/lib/types/retrieval";
 
 // ---------------------------------------------------------------------------
-// Demo-scope constants (verified against live Agent Manager Supabase in 03-01)
+// RAG service (WS-B) — 4-corpus vector search
+// ---------------------------------------------------------------------------
+
+const RAG_SEARCH_URL =
+  process.env.RAG_SEARCH_URL || "http://127.0.0.1:8100";
+
+interface RagChunk {
+  text: string;
+  source: string; // "pubmed" | "youtube" | "podcast" | "industry"
+  title: string | null;
+  url: string | null;
+  similarity: number;
+  authority: number;
+  final_score: number;
+  metadata: {
+    tier: string;
+    source_id: string;
+    tags: string[];
+    // source-specific
+    journal?: string;
+    year?: string;
+    channel?: string;
+    show?: string;
+    date?: string;
+    show_category?: string;
+    publisher?: string;
+    feed_category?: string;
+  };
+}
+
+async function searchRag(query: string, topK = 12): Promise<RagChunk[]> {
+  try {
+    const res = await fetch(`${RAG_SEARCH_URL}/search`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, top_k: topK }),
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!res.ok) {
+      console.error(`RAG search ${res.status}: ${await res.text().catch(() => "")}`);
+      return [];
+    }
+    return (await res.json()) as RagChunk[];
+  } catch (e) {
+    console.error("RAG search failed:", e instanceof Error ? e.message : e);
+    return [];
+  }
+}
+
+// ---------------------------------------------------------------------------
+// GL/FDA evidence_links (the regulatory floor — always queried)
 // ---------------------------------------------------------------------------
 
 const BOTOX_OFFERING_ID = "4b92be36-e84e-432c-8549-f5d85a767fdb";
 const NEUROTOXINS_CATEGORY_ID = "57b7c5a8-0799-42b0-9111-8441f18a82db";
-const BOTOX_TERMS = [
-  "botox",
-  "neurotoxin",
-  "botulinum",
-  "glabellar",
-  "onabotulinumtoxin",
-  "dysport",
-  "xeomin",
-  "daxxify",
-];
 
-// Authority weights from RETRIEVAL_SERVICE.md §6 table
 const AUTHORITY_WEIGHT: Record<string, number> = {
   fda: 1.45,
   manufacturer: 1.40,
   pubmed: 1.33,
   practice: 1.35,
 };
-
-// ---------------------------------------------------------------------------
-// Row shapes
-// ---------------------------------------------------------------------------
 
 interface EvidenceLinkRow {
   id: string;
@@ -60,10 +98,6 @@ interface RefDocRow {
   version: number | null;
 }
 
-// ---------------------------------------------------------------------------
-// Snippet normalizer — column is TEXT but may hold JSON arrays or objects
-// ---------------------------------------------------------------------------
-
 function parseSnippet(snippet: string | null): string {
   if (!snippet) return "";
   try {
@@ -75,20 +109,15 @@ function parseSnippet(snippet: string | null): string {
       if (typeof val === "string") return val;
     }
   } catch {
-    // plain string — fall through
+    // plain string
   }
   return snippet.trim();
 }
-
-// ---------------------------------------------------------------------------
-// Locator builders
-// ---------------------------------------------------------------------------
 
 function buildEvidenceLocator(row: EvidenceLinkRow): SourceLocator | null {
   const src = row.source ?? "";
 
   if (src === "pubmed") {
-    // Skip pubmed rows with no click target at all
     if (!row.pmid && !row.url) return null;
     const locator: PubMedLocator = {
       type: "pubmed",
@@ -117,7 +146,6 @@ function buildEvidenceLocator(row: EvidenceLinkRow): SourceLocator | null {
     return locator;
   }
 
-  // All other evidence_links sources -> manufacturer DocumentLocator
   const locator: DocumentLocator = {
     type: "document",
     corpus: "manufacturer",
@@ -152,67 +180,127 @@ function corpusForSource(source: string): Corpus {
 }
 
 // ---------------------------------------------------------------------------
-// Main export
+// RAG chunk → RetrievedSource mapper
 // ---------------------------------------------------------------------------
 
-/**
- * Retrieve grounded sources for a query from real Agent Manager Supabase rows.
- *
- * Phase 3 scope: Botox/Neurotoxins only. If the query contains none of the
- * BOTOX_TERMS, returns [] so the route can emit the D-08 graceful no-results.
- * No vector search — full FTS by offering_id is sufficient for demo queries.
- *
- * Returns the combined RetrievedSource[] for the SSE sources event, plus a
- * knowledge string (dossier prose) for the LLM system prompt.
- */
-export async function retrieveSources(
-  query: string,
-): Promise<{ sources: RetrievedSource[]; knowledge: string }> {
-  const lower = query.toLowerCase();
-  const isInScope = BOTOX_TERMS.some((t) => lower.includes(t));
-  if (!isInScope) {
-    return { sources: [], knowledge: "" };
+function ragChunkToSource(chunk: RagChunk): RetrievedSource {
+  const corpus = chunk.source as Corpus;
+  const locator = buildRagLocator(chunk);
+  return {
+    retrievalId: "", // assigned after merge
+    chunkRef: `${chunk.source}:${chunk.metadata.source_id}`,
+    corpus,
+    scores: {
+      vector: chunk.similarity,
+      fused: chunk.final_score,
+      authorityWeight: chunk.authority,
+      final: chunk.final_score,
+    },
+    text: chunk.text,
+    locator,
+  };
+}
+
+function buildRagLocator(chunk: RagChunk): SourceLocator {
+  const meta = chunk.metadata;
+
+  switch (chunk.source) {
+    case "pubmed": {
+      const loc: PubMedLocator = {
+        type: "pubmed",
+        pmid: meta.source_id,
+        title: chunk.title || `PubMed ${meta.source_id}`,
+        journal: meta.journal,
+        pubDate: meta.year,
+        url: chunk.url || `https://pubmed.ncbi.nlm.nih.gov/${meta.source_id}/`,
+      };
+      return loc;
+    }
+    case "youtube": {
+      const loc: YouTubeLocator = {
+        type: "youtube",
+        videoId: meta.source_id,
+        videoTitle: chunk.title || "Video",
+        manufacturerName: meta.channel,
+        url: chunk.url || `https://www.youtube.com/watch?v=${meta.source_id}`,
+      };
+      return loc;
+    }
+    case "podcast": {
+      const loc: PodcastLocator = {
+        type: "podcast",
+        showName: meta.show || "Podcast",
+        episodeTitle: chunk.title || "Episode",
+        publishedDate: meta.date,
+      };
+      return loc;
+    }
+    case "industry": {
+      const loc: IndustryLocator = {
+        type: "industry",
+        articleTitle: chunk.title || "Article",
+        publication: meta.publisher,
+        url: chunk.url ?? undefined,
+      };
+      return loc;
+    }
+    default: {
+      const loc: DocumentLocator = {
+        type: "document",
+        corpus: "manufacturer",
+        filename: `${chunk.source}-${meta.source_id}`,
+        title: chunk.title || chunk.source,
+        storagePath: `${chunk.source}/${meta.source_id}`,
+        url: chunk.url || "",
+      };
+      return loc;
+    }
   }
+}
 
-  // --- Query A: evidence_links (citation metadata) ---
-  const { data: evRows } = await agentSupabase
-    .from("evidence_links")
-    .select(
-      "id, source, authority_rank, snippet, doi, pmid, url, page_number, field_name, offering_id",
-    )
-    .eq("offering_id", BOTOX_OFFERING_ID)
-    .not("snippet", "is", null)
-    .order("authority_rank", { ascending: true })
-    .limit(50);
+// ---------------------------------------------------------------------------
+// GL/FDA retrieval (existing path — always runs for Botox/neuro queries)
+// ---------------------------------------------------------------------------
 
-  // --- Query B: agent_reference_docs (prose context) ---
-  // Include draft status — Phase 2 dossier docs are status='draft' pending review (Pitfall 5)
-  // Filter to clinical/deep_product lens only — never surface sales_education in research tab
-  const { data: docRows } = await agentSupabase
-    .from("agent_reference_docs")
-    .select(
-      "id, content_md, lens, doc_type, offering_id, category_id, status, version",
-    )
-    .or(
-      `offering_id.eq.${BOTOX_OFFERING_ID},category_id.eq.${NEUROTOXINS_CATEGORY_ID}`,
-    )
-    .in("lens", ["clinical", "deep_product"])
-    .in("status", ["draft", "active"])
-    .order("version", { ascending: false })
-    .limit(5);
+async function retrieveGlSources(): Promise<{
+  sources: RetrievedSource[];
+  knowledge: string;
+}> {
+  const [{ data: evRows }, { data: docRows }] = await Promise.all([
+    agentSupabase
+      .from("evidence_links")
+      .select(
+        "id, source, authority_rank, snippet, doi, pmid, url, page_number, field_name, offering_id",
+      )
+      .eq("offering_id", BOTOX_OFFERING_ID)
+      .not("snippet", "is", null)
+      .order("authority_rank", { ascending: true })
+      .limit(50),
+    agentSupabase
+      .from("agent_reference_docs")
+      .select(
+        "id, content_md, lens, doc_type, offering_id, category_id, status, version",
+      )
+      .or(
+        `offering_id.eq.${BOTOX_OFFERING_ID},category_id.eq.${NEUROTOXINS_CATEGORY_ID}`,
+      )
+      .in("lens", ["clinical", "deep_product"])
+      .in("status", ["draft", "active"])
+      .order("version", { ascending: false })
+      .limit(5),
+  ]);
 
   const evidenceLinks = (evRows ?? []) as EvidenceLinkRow[];
   const refDocs = (docRows ?? []) as RefDocRow[];
 
-  // --- Build RetrievedSource[] from evidence_links ---
   const evSources: RetrievedSource[] = [];
   for (const row of evidenceLinks) {
     const locator = buildEvidenceLocator(row);
-    if (!locator) continue; // skip pubmed rows with no click target
+    if (!locator) continue;
     const corpus = corpusForSource(row.source);
     const authWeight = AUTHORITY_WEIGHT[corpus] ?? 1.0;
     evSources.push({
-      retrievalId: "", // assigned after merge
+      retrievalId: "",
       chunkRef: `${row.source}:${row.id}`,
       corpus,
       scores: {
@@ -225,7 +313,6 @@ export async function retrieveSources(
     });
   }
 
-  // --- Build RetrievedSource[] from agent_reference_docs ---
   const docSources: RetrievedSource[] = (refDocs ?? []).map((row) => {
     const locator: DocumentLocator = {
       type: "document",
@@ -238,7 +325,7 @@ export async function retrieveSources(
     };
     const authWeight = AUTHORITY_WEIGHT.practice;
     return {
-      retrievalId: "", // assigned after merge
+      retrievalId: "",
       chunkRef: `dossier:${row.id}`,
       corpus: "practice" as Corpus,
       scores: {
@@ -251,15 +338,6 @@ export async function retrieveSources(
     };
   });
 
-  // --- Merge: evidence_links first (ordered by authority_rank), then dossier rows ---
-  // Limit raised to 20 to ensure all source types (fda, pubmed, youtube) are represented
-  const merged = [...evSources, ...docSources].slice(0, 20);
-  const sources: RetrievedSource[] = merged.map((s, i) => ({
-    ...s,
-    retrievalId: `src_${i + 1}`,
-  }));
-
-  // --- Knowledge string: top dossier prose for the LLM ---
   const knowledge = refDocs
     .slice(0, 3)
     .map(
@@ -268,5 +346,114 @@ export async function retrieveSources(
     )
     .join("\n\n");
 
-  return { sources, knowledge };
+  return { sources: [...evSources, ...docSources], knowledge };
+}
+
+// ---------------------------------------------------------------------------
+// Scope detection (relaxed — was Botox-only, now aesthetics-wide)
+// ---------------------------------------------------------------------------
+
+const BOTOX_TERMS = [
+  "botox",
+  "neurotoxin",
+  "botulinum",
+  "glabellar",
+  "onabotulinumtoxin",
+  "dysport",
+  "xeomin",
+  "daxxify",
+];
+
+const AESTHETICS_TERMS = [
+  // Neuromodulators
+  ...BOTOX_TERMS,
+  // Energy devices
+  "morpheus8", "microneedling", "rf", "radiofrequency", "laser", "ipl",
+  "ultherapy", "thermage", "coolsculpting", "emsculpt", "hydrafacial",
+  // Injectables
+  "filler", "hyaluronic", "juvederm", "restylane", "sculptra", "radiesse",
+  "kybella", "deoxycholic",
+  // Skin
+  "peel", "retinol", "retinoid", "prf", "prp", "exosome",
+  // Concerns
+  "wrinkle", "acne", "scar", "melasma", "hyperpigment", "rosacea",
+  "aging", "rejuvenation", "tightening", "contouring", "laxity",
+  // Body
+  "liposuction", "body contour", "cellulite",
+  // General clinical
+  "contraindication", "side effect", "adverse", "dosing", "dilution",
+  "anesthesia", "numbing", "downtime", "recovery",
+  // Business
+  "treatment plan", "consultation", "aesthetic", "cosmetic", "med spa",
+  "medspa", "dermatology", "plastic surgery",
+];
+
+function isInScope(query: string): boolean {
+  const lower = query.toLowerCase();
+  return AESTHETICS_TERMS.some((t) => lower.includes(t));
+}
+
+function isBotoxQuery(query: string): boolean {
+  const lower = query.toLowerCase();
+  return BOTOX_TERMS.some((t) => lower.includes(t));
+}
+
+// ---------------------------------------------------------------------------
+// Main export
+// ---------------------------------------------------------------------------
+
+/**
+ * Retrieve grounded sources for a query.
+ *
+ * Strategy:
+ *  1. RAG service (WS-B) — 4-corpus vector search (PubMed, YouTube, Podcast, Industry)
+ *  2. GL/FDA evidence_links — regulatory floor (for Botox/neuro queries)
+ *  3. Merge, deduplicate by chunkRef, sort by final score, assign retrievalIds
+ *
+ * Returns [] for out-of-scope queries so the route emits the honest decline.
+ */
+export async function retrieveSources(
+  query: string,
+): Promise<{ sources: RetrievedSource[]; knowledge: string }> {
+  if (!isInScope(query)) {
+    return { sources: [], knowledge: "" };
+  }
+
+  // Fan out: RAG search + GL/FDA (if Botox-relevant) in parallel
+  const [ragChunks, glResult] = await Promise.all([
+    searchRag(query, 16),
+    isBotoxQuery(query) ? retrieveGlSources() : Promise.resolve({ sources: [], knowledge: "" }),
+  ]);
+
+  // Map RAG chunks to RetrievedSource
+  const ragSources = ragChunks.map(ragChunkToSource);
+
+  // Merge: RAG sources first (already authority-ranked), then GL/FDA
+  // Deduplicate by chunkRef (RAG pubmed may overlap with GL evidence_links)
+  const seen = new Set<string>();
+  const merged: RetrievedSource[] = [];
+
+  // GL/FDA first (regulatory floor — highest authority)
+  for (const s of glResult.sources) {
+    if (!seen.has(s.chunkRef)) {
+      seen.add(s.chunkRef);
+      merged.push(s);
+    }
+  }
+  // Then RAG results
+  for (const s of ragSources) {
+    if (!seen.has(s.chunkRef)) {
+      seen.add(s.chunkRef);
+      merged.push(s);
+    }
+  }
+
+  // Sort by final score descending, cap at 20
+  merged.sort((a, b) => b.scores.final - a.scores.final);
+  const sources = merged.slice(0, 20).map((s, i) => ({
+    ...s,
+    retrievalId: `src_${i + 1}`,
+  }));
+
+  return { sources, knowledge: glResult.knowledge };
 }
