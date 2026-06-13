@@ -12,6 +12,7 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { TranscriptViewer } from "./transcript-viewer";
+import { ConsultationIntelligence } from "./consultation-intelligence";
 import { ExtractionCard } from "./extraction-card";
 import { AgentOutputsPanel } from "./agent-outputs-panel";
 import { AgentReport } from "@/components/workflow/agent-report";
@@ -216,13 +217,23 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         )}
       </section>
 
-      {/* Selected consultation: transcript + extraction */}
+      {/* Selected consultation: transcript + evidence-anchored extraction */}
       {selected && (
         <>
-          <TranscriptViewer transcript={selected} />
-
-          {selected.extraction && (
-            <ExtractionCard extraction={selected.extraction} />
+          {/* If we have both transcript and extraction, show the side-by-side
+              evidence-anchored view. Otherwise fall back to separate cards. */}
+          {selected.transcript_raw && selected.extraction ? (
+            <ConsultationIntelligence
+              transcriptRaw={selected.transcript_raw}
+              outputs={selected.extraction.outputs}
+            />
+          ) : (
+            <>
+              <TranscriptViewer transcript={selected} />
+              {selected.extraction && (
+                <ExtractionCard extraction={selected.extraction} />
+              )}
+            </>
           )}
         </>
       )}
