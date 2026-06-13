@@ -26,6 +26,12 @@ AI_GATEWAY_API_KEY=
 BETA_ACCESS_PASSWORD=
 NEXT_PUBLIC_APP_MODE=demo
 
+# A360 Evidence — public ask surface (plan 01-02)
+DEMO_BYPASS_TOKEN=          # boardroom rate-limit bypass (get value from Chris)
+IP_HASH_SALT=               # random string for IP anonymisation (get value from Chris)
+EMBED_ALLOWED_ORIGINS=      # space-separated origins for CSP frame-ancestors (plan 01-04)
+NEXT_PUBLIC_EMBED_PARENT_ORIGINS=  # comma-separated origins for postMessage allowlist (plan 01-04)
+
 # Run
 npm run dev   # → http://localhost:3000
 ```
@@ -86,6 +92,8 @@ This is a **10-day sprint** to a fully working demo for Boulevard's CEO/CTO. Bou
 ---
 
 ## 4. The Right Rail: Agent Activity Layer
+
+**Full spec: `Fable Docs/AGENT_ACTIVITY_LAYER_SPEC.md`** — read it before building this component.
 
 **This component is the backbone of the entire demo.** It runs on the right side of every module and shows in real time what every agent is doing: tools fired, database tables queried, guardrails checked, citations created, humans consulted, cost ticked.
 
@@ -235,15 +243,15 @@ As Chris builds the backend, he'll send you:
 
 | What | When | You build |
 |------|------|-----------|
-| `demo_run_events` table schema + sample event JSON | Day 1 | Activity Layer rail component |
-| `/api/demo/stats` endpoint | Day 2 | M0 Command Center |
-| T1 transcript + audio URL | Day 2-3 | M1 transcript player |
-| Extraction run events for T1 | Day 3 | M1 evidence beams + replay |
-| TCP run events | Day 4-5 | M3 DAG + plan assembly |
-| Reach run events | Day 5-6 | M4 pipeline + inbox |
-| Coaching run events + 20-consult batch | Day 6-7 | M5 scorecard + board |
-| Agent registry data | Day 7 | M8 platform view |
-| Revenue calculator input ranges + defaults | Day 6 | M5 revenue tab |
+| `demo_run_events` table schema + sample event JSON | June 12 | Activity Layer rail component |
+| `/api/demo/stats` endpoint | June 13 | M0 Command Center |
+| T1 transcript + audio URL | June 13–14 | M1 transcript player |
+| Extraction run events for T1 | June 14 | M1 evidence beams + replay |
+| TCP run events | June 15–16 | M3 DAG + plan assembly |
+| Reach run events | June 16–17 | M4 pipeline + inbox |
+| Coaching run events + 20-consult batch | June 17–18 | M5 scorecard + board |
+| Agent registry data | June 18 | M8 platform view |
+| Revenue calculator input ranges + defaults | June 17 | M5 revenue tab |
 
 **When you get event JSON:** build the component, hardcode the sample data, and mark it `// TODO: wire to replay engine`. Chris wires the live data when the replay engine is ready.
 
