@@ -8,47 +8,30 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FileText, ChevronDown, AlertCircle } from "lucide-react";
-import type { PRTranscript, PRTranscriptDetail } from "@/lib/types";
+import { FileText, ChevronDown } from "lucide-react";
 import { formatDate, formatDuration } from "@/lib/format";
 
-export function TranscriptViewer({ transcript }: { transcript: PRTranscript }) {
+interface TranscriptViewerProps {
+  consult_number?: number;
+  consult_type?: string;
+  transcript_date?: string;
+  duration_minutes?: number;
+  transcript_summary?: string;
+  transcript_raw?: string | null;
+}
+
+export function TranscriptViewer({ transcript }: { transcript: TranscriptViewerProps }) {
   const [open, setOpen] = useState(false);
-  const [raw, setRaw] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const summary =
-    transcript.transcript_summary_paragraph || transcript.transcript_summary;
-
-  async function toggle() {
-    const next = !open;
-    setOpen(next);
-    if (next && raw === null && !loading) {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`/api/transcripts/${transcript.id}`);
-        const json = (await res.json()) as PRTranscriptDetail & { error?: string };
-        if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
-        setRaw(json.transcript_raw ?? "(No transcript text available.)");
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Failed to load transcript");
-      } finally {
-        setLoading(false);
-      }
-    }
-  }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-wrap items-center gap-2 text-base">
           <FileText className="h-4 w-4 text-primary" />
-          Consult #{transcript.consult_number}
-          <Badge variant="secondary">{transcript.consult_type}</Badge>
+          Consult #{transcript.consult_number ?? 1}
+          <Badge variant="secondary">{transcript.consult_type ?? "consultation"}</Badge>
           <span className="ml-auto text-xs font-normal text-muted-foreground">
-            {formatDate(transcript.transcript_date)} · {transcript.clinic} ·{" "}
+            {formatDate(transcript.transcript_date)} ·{" "}
             {formatDuration(transcript.duration_minutes)}
           </span>
         </CardTitle>
@@ -59,47 +42,35 @@ export function TranscriptViewer({ transcript }: { transcript: PRTranscript }) {
           <p className="mb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Summary
           </p>
-          {summary ? (
-            <p className="text-sm leading-relaxed text-foreground">{summary}</p>
+          {transcript.transcript_summary ? (
+            <p className="text-sm leading-relaxed text-foreground">
+              {transcript.transcript_summary}
+            </p>
           ) : (
             <p className="text-sm text-muted-foreground">No summary available.</p>
           )}
         </div>
 
         {/* Full transcript toggle */}
-        <div>
-          <button
-            onClick={toggle}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
-          >
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
-            />
-            {open ? "Hide full transcript" : "View full transcript"}
-          </button>
+        {transcript.transcript_raw && (
+          <div>
+            <button
+              onClick={() => setOpen(!open)}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            >
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
+              />
+              {open ? "Hide full transcript" : "View full transcript"}
+            </button>
 
-          {open && (
-            <div className="mt-3">
-              {loading && (
-                <div className="flex items-center gap-2 py-4 text-sm text-muted-foreground">
-                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  Loading transcript…
-                </div>
-              )}
-              {error && (
-                <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  {error}
-                </div>
-              )}
-              {raw !== null && !loading && !error && (
-                <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-4 font-sans text-sm leading-relaxed text-foreground">
-                  {raw}
-                </pre>
-              )}
-            </div>
-          )}
-        </div>
+            {open && (
+              <pre className="mt-3 max-h-[28rem] overflow-auto whitespace-pre-wrap rounded-lg border border-border bg-muted/40 p-4 font-sans text-sm leading-relaxed text-foreground">
+                {transcript.transcript_raw}
+              </pre>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

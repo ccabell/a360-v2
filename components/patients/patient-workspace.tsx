@@ -11,123 +11,91 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { TranscriptViewer } from "./transcript-viewer";
-import { RunOutput } from "./run-output";
-import { ExtractionResults } from "@/components/extraction/extraction-results";
-import { pickScenario, type ResearchScenario } from "@/lib/mock/research-data";
+import { ExtractionCard } from "./extraction-card";
+import { AgentOutputsPanel } from "./agent-outputs-panel";
 import { formatDate, age, formatDuration } from "@/lib/format";
-import type { PatientDetail, PRTranscript, PRRun, Paged } from "@/lib/types";
-import { ArrowLeft, FileText, Zap, AlertCircle, History } from "lucide-react";
+import {
+  ArrowLeft,
+  FileText,
+  AlertCircle,
+  Brain,
+  User,
+} from "lucide-react";
 
-function statusChip(status: string): string {
-  const s = status.toLowerCase();
-  if (/(complete|success|done)/.test(s))
-    return "bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300";
-  if (/(fail|error)/.test(s))
-    return "bg-destructive/10 text-destructive";
-  if (/(run|pending|queue|progress)/.test(s))
-    return "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300";
-  return "bg-muted text-muted-foreground";
+// Shape returned by GET /api/patients/[id] (ops store, mapped)
+interface PatientResponse {
+  id: string;
+  first_name: string;
+  last_name: string;
+  dob: string | null;
+  birth_date: string | null;
+  biological_sex: string | null;
+  email: string | null;
+  phone: string | null;
+  photo_url: string | null;
+  patient_summary: string | null;
+  medical_history: string | null;
+  practice_id: string;
+  last_consultation_at: string | null;
+  created_at: string;
+  transcripts: {
+    id: string;
+    consultation_id: string;
+    consult_number: number;
+    transcript_date: string;
+    duration_minutes: number;
+    transcript_summary: string;
+    consult_type: string;
+    transcript_raw: string | null;
+    extraction: {
+      id: string;
+      model: string | null;
+      status: string | null;
+      outputs: Record<string, unknown>;
+      is_verified: boolean;
+      created_at: string;
+    } | null;
+  }[];
+  intelligence: {
+    patient_id: string;
+    latest_extraction: Record<string, unknown> | null;
+    opportunities: Record<string, unknown>[] | null;
+    agent_outputs: Record<string, unknown>[] | null;
+  } | null;
+  error?: string;
 }
 
 export function PatientWorkspace({ patientId }: { patientId: string }) {
-  const [patient, setPatient] = useState<PatientDetail | null>(null);
-  const [loadingPatient, setLoadingPatient] = useState(true);
-  const [errorPatient, setErrorPatient] = useState<string | null>(null);
+  const [patient, setPatient] = useState<PatientResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
-  const [selected, setSelected] = useState<PRTranscript | null>(null);
-
-  const [runs, setRuns] = useState<PRRun[]>([]);
-  const [loadingRuns, setLoadingRuns] = useState(false);
-  const [errorRuns, setErrorRuns] = useState<string | null>(null);
-
-  const [selectedRunId, setSelectedRunId] = useState<string | null>(null);
-  const [runView, setRunView] = useState<"intelligence" | "raw">("intelligence");
-  const [prompt, setPrompt] = useState(
-    "Extract the primary treatment opportunity and supporting evidence.",
-  );
-  const [running, setRunning] = useState(false);
-  const [output, setOutput] = useState<ResearchScenario | null>(null);
-  const [outputLabel, setOutputLabel] = useState("");
-
-  // Load patient (with nested transcripts)
   useEffect(() => {
     let cancelled = false;
+    setLoading(true);
+    setError(null);
     (async () => {
-      setLoadingPatient(true);
-      setErrorPatient(null);
       try {
         const res = await fetch(`/api/patients/${patientId}`);
-        const json = (await res.json()) as PatientDetail & { error?: string };
+        const json = (await res.json()) as PatientResponse;
         if (cancelled) return;
         if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
         setPatient(json);
-        if (json.transcripts?.length === 1) setSelected(json.transcripts[0]);
+        // Auto-select if only one consultation
+        if (json.transcripts?.length === 1) setSelectedIdx(0);
       } catch (e) {
         if (!cancelled)
-          setErrorPatient(e instanceof Error ? e.message : "Failed to load patient");
+          setError(e instanceof Error ? e.message : "Failed to load patient");
       } finally {
-        if (!cancelled) setLoadingPatient(false);
+        if (!cancelled) setLoading(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [patientId]);
 
-  // Load runs when the selected transcript changes
-  useEffect(() => {
-    setSelectedRunId(null);
-    setOutput(null);
-    if (!selected) {
-      setRuns([]);
-      return;
-    }
-    let cancelled = false;
-    (async () => {
-      setLoadingRuns(true);
-      setErrorRuns(null);
-      try {
-        const res = await fetch(`/api/runs?transcriptId=${selected.id}`);
-        const json = (await res.json()) as Paged<PRRun> & { error?: string };
-        if (cancelled) return;
-        if (!res.ok || json.error) throw new Error(json.error || `HTTP ${res.status}`);
-        setRuns(json.data ?? []);
-      } catch (e) {
-        if (!cancelled)
-          setErrorRuns(e instanceof Error ? e.message : "Failed to load runs");
-      } finally {
-        if (!cancelled) setLoadingRuns(false);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [selected]);
-
-  function viewRun(run: PRRun) {
-    const rid = run.run_id || run.id;
-    setSelectedRunId(rid);
-    setRunning(false);
-    // Existing runs render their REAL output (see <RunOutput/>); clear any demo output.
-    setOutput(null);
-  }
-
-  function runPrompt() {
-    if (!prompt.trim() || running || !selected) return;
-    setSelectedRunId(null);
-    setRunning(true);
-    setOutput(null);
-    setTimeout(() => {
-      setOutput(pickScenario(prompt));
-      setOutputLabel("New prompt run");
-      setRunning(false);
-    }, 900);
-  }
-
-  // --- Patient header states ---
-  if (loadingPatient) {
+  if (loading) {
     return (
       <div className="flex items-center gap-3 py-12 text-sm text-muted-foreground">
         <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -135,17 +103,19 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
       </div>
     );
   }
-  if (errorPatient || !patient) {
+  if (error || !patient) {
     return (
       <div className="space-y-4">
         <BackLink />
         <div className="flex items-center gap-2 rounded-lg border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
           <AlertCircle className="h-4 w-4" />
-          {errorPatient || "Patient not found"}
+          {error || "Patient not found"}
         </div>
       </div>
     );
   }
+
+  const selected = selectedIdx !== null ? patient.transcripts?.[selectedIdx] : null;
 
   return (
     <div className="space-y-6">
@@ -166,10 +136,13 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         </div>
       </div>
 
-      {/* Patient information (full record) */}
+      {/* Patient information */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Patient information</CardTitle>
+          <CardTitle className="flex items-center gap-2 text-base">
+            <User className="h-4 w-4" />
+            Patient information
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
@@ -178,10 +151,15 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
               label="Date of birth"
               value={`${formatDate(patient.dob)}${age(patient.dob) ? ` (${age(patient.dob)})` : ""}`}
             />
-            <Field label="Prior visits" value={patient.prior_visits ?? "Not recorded"} />
-            <Field label="Practice" value={patient.practice_id ?? "Not recorded"} />
-            <Field label="Patient ID" value={patient.id} mono />
-            <Field label="Added" value={formatDate(patient.created_at)} />
+            <Field label="Biological sex" value={patient.biological_sex ?? "Not recorded"} />
+            <Field label="Email" value={patient.email ?? "Not recorded"} />
+            <Field label="Phone" value={patient.phone ?? "Not recorded"} />
+            <Field label="Last consultation" value={formatDate(patient.last_consultation_at)} />
+            <Field
+              label="Patient summary"
+              value={patient.patient_summary ?? "Not recorded"}
+              full
+            />
             <Field
               label="Medical history"
               value={patient.medical_history ?? "Not recorded"}
@@ -191,19 +169,19 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         </CardContent>
       </Card>
 
-      {/* Transcripts */}
+      {/* Consultations */}
       <section className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground">
-          Transcripts ({patient.transcripts?.length ?? 0})
+          Consultations ({patient.transcripts?.length ?? 0})
         </h3>
         {patient.transcripts?.length ? (
           <div className="grid gap-3 sm:grid-cols-2">
-            {patient.transcripts.map((t) => {
-              const active = selected?.id === t.id;
+            {patient.transcripts.map((t, idx) => {
+              const active = selectedIdx === idx;
               return (
                 <button
                   key={t.id}
-                  onClick={() => setSelected(t)}
+                  onClick={() => setSelectedIdx(idx)}
                   className={`rounded-xl border p-4 text-left transition-colors ${
                     active
                       ? "border-primary bg-primary/5"
@@ -220,8 +198,11 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
                     </Badge>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {formatDate(t.transcript_date)} · {t.clinic} ·{" "}
+                    {formatDate(t.transcript_date)} ·{" "}
                     {formatDuration(t.duration_minutes)}
+                    {t.extraction?.is_verified && (
+                      <span className="ml-2 text-emerald-600">· Verified extraction</span>
+                    )}
                   </p>
                 </button>
               );
@@ -229,164 +210,70 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
           </div>
         ) : (
           <p className="text-sm text-muted-foreground">
-            No transcripts for this patient.
+            No consultations for this patient.
           </p>
         )}
       </section>
 
-      {/* Selected transcript: summary + full transcript */}
-      {selected && <TranscriptViewer transcript={selected} />}
-
-      {/* Runs + Run-a-prompt (only once a transcript is selected) */}
+      {/* Selected consultation: transcript + extraction */}
       {selected && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {/* Existing runs */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-base">
-                <History className="h-4 w-4" />
-                Existing runs
-                {!loadingRuns && (
-                  <Badge variant="secondary" className="ml-auto">
-                    {runs.length}
-                  </Badge>
-                )}
-              </CardTitle>
-              <CardDescription>
-                Select a run to view its output, or run a new prompt →
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              {errorRuns && (
-                <p className="py-2 text-sm text-destructive">{errorRuns}</p>
-              )}
-              {loadingRuns && (
-                <div className="flex items-center gap-2 py-3 text-sm text-muted-foreground">
-                  <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-                  Loading runs…
-                </div>
-              )}
-              {!loadingRuns && !errorRuns && runs.length === 0 && (
-                <p className="py-3 text-sm text-muted-foreground">
-                  No runs yet for this transcript.
-                </p>
-              )}
-              {!loadingRuns &&
-                runs.map((r) => {
-                  const rid = r.run_id || r.id;
-                  const active = selectedRunId === rid;
-                  return (
-                    <button
-                      key={r.id}
-                      onClick={() => viewRun(r)}
-                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left transition-colors ${
-                        active ? "bg-primary/5" : "hover:bg-muted"
-                      }`}
-                    >
-                      <span className="font-mono text-xs text-muted-foreground">
-                        {rid.slice(0, 8)}
-                      </span>
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${statusChip(
-                          r.status,
-                        )}`}
-                      >
-                        {r.status}
-                      </span>
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        {formatDate(r.created_at)}
-                      </span>
-                    </button>
-                  );
-                })}
-            </CardContent>
-          </Card>
+        <>
+          <TranscriptViewer transcript={selected} />
 
-          {/* Run a new prompt */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Run a prompt</CardTitle>
-              <CardDescription>
-                Against consult #{selected.consult_number} ({selected.consult_type})
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <textarea
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows={3}
-                className="w-full rounded-lg border border-border bg-transparent p-3 text-sm text-foreground placeholder-muted-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
-                placeholder="Enter a prompt to run against this transcript…"
-              />
-              <div className="flex justify-end">
-                <Button onClick={runPrompt} disabled={running || !prompt.trim()}>
-                  <Zap className="h-4 w-4" />
-                  {running ? "Running…" : "Run prompt"}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Existing run → REAL extraction output (live from Prompt Runner) */}
-      {selectedRunId && selected && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant={runView === "intelligence" ? "default" : "outline"}
-              onClick={() => setRunView("intelligence")}
-            >
-              Intelligence
-            </Button>
-            <Button
-              size="sm"
-              variant={runView === "raw" ? "default" : "outline"}
-              onClick={() => setRunView("raw")}
-            >
-              Raw extraction
-            </Button>
-          </div>
-          {runView === "intelligence" ? (
-            <ExtractionResults transcriptId={selected.id} runId={selectedRunId} />
-          ) : (
-            <RunOutput runId={selectedRunId} />
+          {selected.extraction && (
+            <ExtractionCard extraction={selected.extraction} />
           )}
-        </div>
+        </>
       )}
 
-      {/* Loading output (new prompt run) */}
-      {running && (
-        <Card>
-          <CardContent className="flex items-center gap-3 py-6">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-            <span className="text-sm text-muted-foreground">
-              Running prompt against transcript…
-            </span>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* New prompt → grounded output (demo, same renderer as chat) */}
-      {output && (
+      {/* Intelligence rollup */}
+      {patient.intelligence?.latest_extraction && (
         <Card>
           <CardHeader>
-            <CardTitle className="flex flex-wrap items-center gap-2 text-base">
-              Prompt Output
-              <span className="text-xs font-normal text-muted-foreground">
-                {outputLabel}
-              </span>
-              <Badge variant="secondary" className="ml-auto">
-                Demo output
-              </Badge>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Brain className="h-4 w-4 text-primary" />
+              Intelligence Rollup
             </CardTitle>
+            <CardDescription>
+              Aggregated from verified extractions and agent outputs
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <GroundedAnswer text={output.answer} sources={output.sources} />
+          <CardContent className="space-y-3">
+            {patient.intelligence.opportunities &&
+              patient.intelligence.opportunities.length > 0 && (
+                <div>
+                  <p className="mb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    Opportunities ({patient.intelligence.opportunities.length})
+                  </p>
+                  <div className="space-y-1.5">
+                    {patient.intelligence.opportunities.map((opp, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm"
+                      >
+                        {(opp as Record<string, unknown>).tier ? (
+                          <Badge variant="outline" className="text-xs">
+                            {String((opp as Record<string, unknown>).tier)}
+                          </Badge>
+                        ) : null}
+                        <span className="text-foreground">
+                          {String(
+                            (opp as Record<string, unknown>).description ??
+                              (opp as Record<string, unknown>).product_ref ??
+                              JSON.stringify(opp).slice(0, 80),
+                          )}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
           </CardContent>
         </Card>
       )}
+
+      {/* Agent outputs */}
+      <AgentOutputsPanel patientId={patientId} />
     </div>
   );
 }
