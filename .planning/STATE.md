@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-06-13T21:15:17.015Z"
+stopped_at: Completed 06-03-PLAN.md
+last_updated: "2026-06-13T21:16:55.196Z"
 progress:
   total_phases: 7
   completed_phases: 5
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-12)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 07 — timing-rules
+**Current focus:** Phase 06 — pairing-engine
 
 ## Current Position
 
-Phase: 07 (timing-rules) — EXECUTING
-Plan: 2 of 2
+Phase: 06 (pairing-engine) — EXECUTING
+Plan: 4 of 5
 
 ## Performance Metrics
 
@@ -58,6 +58,7 @@ Plan: 2 of 2
 | Phase 06 P01 | 7 | 2 tasks | 4 files |
 | Phase 06 P02 | 6 | 1 tasks | 1 files |
 | Phase 07-timing-rules P01 | 209 | 2 tasks | 3 files |
+| Phase 06 P03 | 11 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,8 @@ Plan: 2 of 2
 - [Phase 07-timing-rules]: 22 nullable columns added across gl_products (11) and item_relationships (11) via ADD COLUMN IF NOT EXISTS — no existing data affected
 - [Phase 07-timing-rules]: BoNT-A 85-day minimum retreatment floor used as safety floor for all 5 neurotoxins (sourced from PubMed HIGH, Monheit 2009)
 - [Phase 07-timing-rules]: timing_warning_level CHECK constraint (hard_block/warning/education) added via idempotent DO block on item_relationships
+- [Phase 06]: 5 canonical (Botox+each HA filler), 32 common, 51 conditional, 48 compatible_only, 17 do_not_market pairs -- all 153 evaluated with corpus evidence
+- [Phase 06]: Category-level evidence inheritance: non-Botox neurotoxins get common tier (not canonical) despite identical mechanism -- product-specific corpus evidence is the differentiator
 
 ### Roadmap Evolution
 
