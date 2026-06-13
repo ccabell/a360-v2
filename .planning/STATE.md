@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Phase complete — ready for verification
-stopped_at: Completed 05-concern-language 05-01-PLAN.md
-last_updated: "2026-06-13T17:55:18.936Z"
+stopped_at: Completed 04-source-ingestion 04-02-PLAN.md
+last_updated: "2026-06-13T18:00:10.097Z"
 progress:
   total_phases: 5
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 18
-  completed_plans: 15
+  completed_plans: 16
 ---
 
 # Project State
@@ -51,6 +51,7 @@ Plan: 2 of 2
 | Phase 02-dossier-batch P06 | 12 | 2 tasks | 3 files |
 | Phase 04-source-ingestion P01 | 45 | 2 tasks | 1 files |
 | Phase 05-concern-language P01 | 19 | 2 tasks | 4 files |
+| Phase 04-source-ingestion P04-02 | 8 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Plan: 2 of 2
 - [Phase 04-source-ingestion]: JDD 'paywalled' duplicate (1be6d8be) retired as misclassified; canonical JDD (JDD) entry (dcfa3d2e, open_access_cc_by) is the active source
 - [Phase 05-concern-language]: Phase 2 SQL files (02-05-task1, 02-05-task2) had 11 bugs (enum casts, generated column, wrong concern names, Chest→Decolletage, onset_time JSONB constraint, laterality trigger). All fixed in 05-01-execute-phase2-outstanding.sql.
 - [Phase 05-concern-language]: concern_clusters uses separate junction table (Option A) not JSONB — enables queryable concern-first routing. body_area side must derive from ba.laterality via CASE expression.
+- [Phase 04-source-ingestion]: evidence_links.field_name is NOT NULL — always include when inserting; use 'indications' for 510k/PMA device clearance rows
+- [Phase 04-source-ingestion]: FDA Access Data blocks automated downloads; accessdata.fda.gov URLs used directly in evidence_links.url (Supabase Storage upload is optional)
 
 ### Pending Todos
 
@@ -93,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-13T17:55:18.932Z
-Stopped at: Completed 05-concern-language 05-01-PLAN.md
+Last session: 2026-06-13T18:00:10.093Z
+Stopped at: Completed 04-source-ingestion 04-02-PLAN.md
 Resume file: None
