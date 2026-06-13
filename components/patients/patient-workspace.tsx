@@ -14,6 +14,7 @@ import {
 import { TranscriptViewer } from "./transcript-viewer";
 import { ExtractionCard } from "./extraction-card";
 import { AgentOutputsPanel } from "./agent-outputs-panel";
+import { AgentReport } from "@/components/workflow/agent-report";
 import { formatDate, age, formatDuration } from "@/lib/format";
 import {
   ArrowLeft,
@@ -272,7 +273,10 @@ export function PatientWorkspace({ patientId }: { patientId: string }) {
         </Card>
       )}
 
-      {/* Agent outputs */}
+      {/* Post-consultation intelligence report (Beat 2) */}
+      <AgentReport patientId={patientId} />
+
+      {/* Agent outputs (raw) */}
       <AgentOutputsPanel patientId={patientId} />
     </div>
   );

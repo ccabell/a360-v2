@@ -31,17 +31,17 @@ export interface AgentServiceAgent {
   status: string;
 }
 
+/** Actual shape returned by GET /workflows/cached/{patient_id} */
 export interface CachedWorkflowResult {
-  patient_id: string;
-  workflow_key: string;
-  steps: {
-    agent_key: string;
-    agent_name: string;
-    status: string;
-    result: Record<string, unknown> | null;
-    evidence_used: Record<string, unknown> | null;
-    latency_ms: number | null;
-  }[];
+  id: string;
+  agent_key: string;
+  agent_version: string | null;
+  status: string;
+  result: { text: string };
+  evidence_used: Record<string, unknown> | null;
+  guardrail_results: Record<string, unknown> | null;
+  latency_ms: number | null;
+  is_demo_canonical: boolean;
   created_at: string;
 }
 
@@ -52,6 +52,7 @@ export function listAgentServiceAgents() {
 
 /**
  * GET /workflows/cached/{patient_id} — cached orchestrator output.
+ * Returns { result: { text: "<markdown report>" } }.
  * Use this in the demo to avoid the live orchestrator (~4 min).
  */
 export function getCachedWorkflow(patientId: string) {

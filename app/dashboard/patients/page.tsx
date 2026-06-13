@@ -6,8 +6,8 @@ export default function PatientsPage() {
       <div>
         <h2 className="text-2xl font-bold text-foreground">Patients</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Live patient records from Prompt Runner. Select a patient to run a prompt
-          against one of their transcripts.
+          Patient records with consultation transcripts, verified extractions, and
+          AI-generated intelligence. Select a patient to view their full profile.
         </p>
       </div>
 
