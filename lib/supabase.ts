@@ -37,3 +37,14 @@ export const prSupabase = createSupabaseClient(
   "NEXT_PUBLIC_PR_SUPABASE_URL",
   "PR_SUPABASE_SERVICE_KEY"
 );
+
+/**
+ * Ops Store Supabase — patients, consultations, transcripts, extractions,
+ * agent_outputs, opportunities, patient_intelligence view.
+ * Project: uedajrdzcjfrmbiznflf
+ * Server-side only (service role key). Never expose to the client.
+ */
+export const opsSupabase = createSupabaseClient(
+  "OPS_SUPABASE_URL",
+  "OPS_SUPABASE_SERVICE_KEY"
+);

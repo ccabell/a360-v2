@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listPatients } from "@/lib/prompt-runner";
+import { listPatients } from "@/lib/api/ops-store";
 
 export const dynamic = "force-dynamic";
 
 /**
  * GET /api/patients?limit=&offset=&q=
- * Server-side proxy to the Prompt Runner /patients endpoint.
- * Keeps the upstream API (and any future auth/PHI controls) on the server.
+ * Reads from the ops store (Supabase uedajrdzcjfrmbiznflf).
  */
 export async function GET(req: NextRequest) {
   const sp = req.nextUrl.searchParams;
@@ -16,7 +15,13 @@ export async function GET(req: NextRequest) {
 
   try {
     const result = await listPatients({ limit, offset, q });
-    return NextResponse.json(result);
+    // Map ops store fields to the shape PatientsTable expects
+    const mapped = result.data.map((p) => ({
+      ...p,
+      dob: p.birth_date,
+      prior_visits: null,
+    }));
+    return NextResponse.json({ data: mapped, total: result.total });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json(
