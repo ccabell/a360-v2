@@ -10,7 +10,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 - [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
 - [x] **Phase 4: source-ingestion** - Triage source_registry, ensure FDA source document links, verify evidence_links URLs (completed 2026-06-13)
-- [ ] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters
+- [x] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters (completed 2026-06-13)
 
 ## Phase Details
 
@@ -137,9 +137,9 @@ Plans:
   3. Concern-first routing demo-able: "I look tired" -> candidate mechanisms -> products
   4. Missing concerns added with proper taxonomy integration
   5. Aliases sourced from real transcript language (not LLM-generated guesses)
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 
 Plans:
 - [x] 05-01-PLAN.md — DB prep: execute outstanding Phase 2 SQL + verify aliases schema + create concern_clusters tables + add missing concerns
 - [x] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
-- [ ] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report
+- [x] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 05-concern-language 05-02-PLAN.md
-last_updated: "2026-06-13T18:12:17.615Z"
+status: Ready to execute
+stopped_at: Completed 05-concern-language 05-03-PLAN.md
+last_updated: "2026-06-13T18:24:07.019Z"
 progress:
   total_phases: 5
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 18
-  completed_plans: 17
+  completed_plans: 18
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-12)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 04 — source-ingestion
+**Current focus:** Phase 05 — concern-language
 
 ## Current Position
 
-Phase: 05
-Plan: Not started
+Phase: 05 (concern-language) — EXECUTING
+Plan: 2 of 3
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Plan: Not started
 | Phase 05-concern-language P01 | 19 | 2 tasks | 4 files |
 | Phase 04-source-ingestion P04-02 | 8 | 2 tasks | 2 files |
 | Phase 05-concern-language P02 | 45 | 2 tasks | 4 files |
+| Phase 05 P03 | 8 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,8 @@ Plan: Not started
 - [Phase 04-source-ingestion]: FDA Access Data blocks automated downloads; accessdata.fda.gov URLs used directly in evidence_links.url (Supabase Storage upload is optional)
 - [Phase 05-concern-language]: Gummy Smile (new concern) aliases use subquery pattern (FROM concerns WHERE name='Gummy Smile') since UUID was not in DB_STATE_BASELINE.md
 - [Phase 05-concern-language]: 187 aliases mined from 122 HIPAA-redacted transcripts; all 48 concerns now have >=4 aliases; total alias count 593 (was 406)
+- [Phase 05]: Concern clusters use junction table pattern (concern_cluster_members) enabling queryable multi-mechanism routing; Brow Ptosis cluster membership documented despite 0 item_concerns rows
+- [Phase 05]: SC-3 validated: 'I look tired' routes to 5 distinct products across 3 concern mechanisms (Skin Dullness, Skin Quality Improvement, Tear Trough Hollowing)
 
 ### Pending Todos
 
@@ -99,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-13T18:12:17.611Z
-Stopped at: Completed 05-concern-language 05-02-PLAN.md
+Last session: 2026-06-13T18:24:07.016Z
+Stopped at: Completed 05-concern-language 05-03-PLAN.md
 Resume file: None
