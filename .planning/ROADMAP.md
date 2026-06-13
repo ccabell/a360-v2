@@ -9,7 +9,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 - [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
 - [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
-- [ ] **Phase 4: source-ingestion** - Walk Phase 02's source_registry: verify rights, promote, bulk-ingest FDA/OA/manufacturer sources into CMS vector corpus
+- [ ] **Phase 4: source-ingestion** - Triage source_registry, ensure FDA source document links, verify evidence_links URLs
 - [ ] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters
 
 ## Phase Details
@@ -103,20 +103,24 @@ Plans:
 ---
 
 ### Phase 4: source-ingestion
-**Goal**: Walk the source_registry map Phase 02 captured: review sources (status='review'), verify rights_class, promote to active, bulk-ingest ingestible sources (FDA/DailyMed public domain; CC-BY society journals; manufacturer-permitted) into the CMS vector corpus through the existing ingestion pipeline. Includes laser journals and everything discovery logged.
+**Goal**: Triage the source_registry map from Phase 02 (review -> active or rejected), ensure all products link to their FDA source documents via evidence_links, and download FDA PDFs to Supabase Storage for link stability. CMS vector corpus writes are out of scope (separate project).
 **Depends on**: Phase 2 (the captured registry)
 **Canonical refs**:
 - `.planning/phases/02-dossier-batch/BATCH_SOURCE_LOGGING_ADDENDUM.md`
 - `.planning/phases/02-dossier-batch/AESTHETIC_DERMATOLOGY_JOURNAL_REGISTRY.md`
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
+- `.planning/phases/04-source-ingestion/04-RESEARCH.md`
 - `GL_GSD_ROADMAP.md`
 **Success Criteria** (what must be TRUE):
   1. All source_registry rows with status='review' triaged to either 'active' or 'rejected' with reason
-  2. ingestion_queue items either ingested or explicitly rejected with reason
-  3. Ingested sources searchable in vector corpus
-  4. Next compile run finds new sources in-corpus (verified with test query)
+  2. ingestion_queue items either ingested (FDA) or explicitly rejected with reason
+  3. Every product with an FDA regulatory source has a working evidence_links URL
+  4. FDA PDFs stored in Supabase Storage (or fallback to accessdata.fda.gov URLs documented)
   5. Rights classification documented for each source category (public_domain, CC-BY, manufacturer-permitted, restricted)
-**Plans:** 0 plans
+**Plans:** 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue (deduplicate, promote, reject)
+- [ ] 04-02-PLAN.md — Download FDA PDFs to Supabase Storage + backfill evidence_links FDA URLs for Phase 2 products
 
 ---
 
