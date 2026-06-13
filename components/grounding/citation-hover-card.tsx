@@ -47,7 +47,7 @@ export function CitationHoverCard({
 }: CitationHoverCardProps) {
   const [open, setOpen] = useState(false);
   const [page, setPage] = useState(0);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const containerRef = useRef<HTMLSpanElement>(null);
 
   const enter = useCallback(() => {

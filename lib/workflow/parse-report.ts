@@ -236,34 +236,53 @@ function parseClinicalEvidence(text: string): ClinicalEvidenceSection {
 
 function parseNextSteps(text: string): NextStepsSection {
   const items: ChecklistItem[] = [];
-  const lines = text.split("\n");
 
-  for (const line of lines) {
-    // Match - [ ] or - [x] or numbered/bulleted items
+  // Split by ### sub-headings for time horizon grouping
+  const normalized = text.startsWith("### ") ? "\n" + text : text;
+  const subsections = normalized.split(/\n### +/);
+
+  // Items before any ### heading (ungrouped)
+  parseNextStepsLines(subsections[0] ?? "", null, items);
+
+  // Items within ### groups — heading is the time horizon
+  for (let i = 1; i < subsections.length; i++) {
+    const sub = subsections[i];
+    const headingEnd = sub.indexOf("\n");
+    const rawHeading = headingEnd >= 0 ? sub.slice(0, headingEnd).trim() : sub.trim();
+    const content = headingEnd >= 0 ? sub.slice(headingEnd).trim() : "";
+
+    // Strip emoji prefix from heading (🔴 🟡 🟢 🗓️ 📆 📋 🏥)
+    // Use Emoji_Presentation to avoid stripping digits (0-9 are in \p{Emoji})
+    const horizon = rawHeading.replace(/^[\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\s]+/u, "").trim();
+    parseNextStepsLines(content, horizon, items);
+  }
+
+  return { items };
+}
+
+function parseNextStepsLines(text: string, horizon: string | null, items: ChecklistItem[]) {
+  for (const line of text.split("\n")) {
+    // Match - [ ] or - [x] checklist items
     const checkMatch = line.match(/^[-*]\s*\[([ xX])\]\s*(.+)/);
     if (checkMatch) {
       const checked = checkMatch[1].toLowerCase() === "x";
       const raw = checkMatch[2].trim();
-
-      // Extract time horizon: bold prefix like **Today**, **Week 1**, **30 days**
-      const horizonMatch = raw.match(/^\*\*([^*]+)\*\*[:\s]*/);
-      const timeHorizon = horizonMatch ? horizonMatch[1].trim() : null;
-      const text = horizonMatch ? raw.slice(horizonMatch[0].length).trim() : raw;
-
-      items.push({ text, checked, timeHorizon });
+      // Strip bold wrapper from the item text but keep the content
+      const cleanText = raw.replace(/^\*\*([^*]+)\*\*[:\s—–-]*/g, "$1: ").replace(/\*\*/g, "").trim();
+      items.push({ text: cleanText, checked, timeHorizon: horizon });
       continue;
     }
 
-    // Plain bullet with bold lead
-    const bulletMatch = line.match(/^[-*]\s+\*\*([^*]+)\*\*[:\s]*(.*)/);
+    // Plain bullet with bold lead (no checkbox)
+    const bulletMatch = line.match(/^[-*]\s+\*\*([^*]+)\*\*[:\s—–-]*(.*)/);
     if (bulletMatch) {
+      const label = bulletMatch[1].trim();
+      const detail = bulletMatch[2]?.trim() ?? "";
       items.push({
-        text: bulletMatch[2].trim() || bulletMatch[1].trim(),
+        text: detail ? `${label}: ${detail}` : label,
         checked: false,
-        timeHorizon: bulletMatch[1].trim(),
+        timeHorizon: horizon,
       });
     }
   }
-
-  return { items };
 }
