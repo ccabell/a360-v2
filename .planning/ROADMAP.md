@@ -164,7 +164,7 @@ Plans:
 - [x] 06-01-PLAN.md — Foundation: schema migration (pairing_tier column) + does_not_solve backfill + PAIRING_RUBRIC.md
 - [x] 06-02-PLAN.md — SQL pre-screen: enumerate all 190 pairs + compute concern overlap and limitation signals
 - [x] 06-03-PLAN.md — Corpus-first 8-gate evaluation for all 190 pairs (batch by category-pair per D-11)
-- [ ] 06-04-PLAN.md — DB emission: write + execute item_relationships INSERTs + QA validation report
+- [x] 06-04-PLAN.md — DB emission: write + execute item_relationships INSERTs + QA validation report
 - [ ] 06-05-PLAN.md — Review artifacts (PAIRING_REVIEW.md + per-pair files) + Chris review checkpoint
 
 ---
