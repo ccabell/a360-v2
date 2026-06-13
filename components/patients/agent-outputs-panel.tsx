@@ -195,8 +195,17 @@ export function AgentOutputsPanel({ patientId }: { patientId: string }) {
     return () => { cancelled = true; };
   }, [patientId]);
 
+  // Filter out empty/failed runs (result.text is empty string = SDK failed silently)
+  const valid = outputs.filter((o) => {
+    if (!o.result) return false;
+    const text = typeof o.result === "object" && "text" in o.result
+      ? String((o.result as { text: string }).text)
+      : JSON.stringify(o.result);
+    return text.length > 10; // skip empty or trivially short results
+  });
+
   // Group by agent_key
-  const grouped = outputs.reduce<Record<string, AgentOutput[]>>((acc, o) => {
+  const grouped = valid.reduce<Record<string, AgentOutput[]>>((acc, o) => {
     (acc[o.agent_key] ||= []).push(o);
     return acc;
   }, {});
@@ -207,9 +216,9 @@ export function AgentOutputsPanel({ patientId }: { patientId: string }) {
         <CardTitle className="flex items-center gap-2 text-base">
           <Sparkles className="h-4 w-4" />
           Agent Outputs
-          {!loading && (
+          {!loading && valid.length > 0 && (
             <Badge variant="secondary" className="ml-auto">
-              {outputs.length}
+              {valid.length}
             </Badge>
           )}
         </CardTitle>
@@ -230,7 +239,7 @@ export function AgentOutputsPanel({ patientId }: { patientId: string }) {
             {error}
           </div>
         )}
-        {!loading && !error && outputs.length === 0 && (
+        {!loading && !error && valid.length === 0 && (
           <p className="py-3 text-sm text-muted-foreground">
             No agent outputs for this patient yet.
           </p>

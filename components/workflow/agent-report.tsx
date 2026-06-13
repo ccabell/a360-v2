@@ -107,12 +107,10 @@ export function AgentReport({ patientId }: AgentReportProps) {
         <h3 className="text-lg font-semibold text-foreground">
           Post-Consultation Intelligence Report
         </h3>
-        {latencyMs && (
-          <Badge variant="secondary" className="ml-auto gap-1 text-xs">
-            <Clock className="h-3 w-3" />
-            {(latencyMs / 1000).toFixed(0)}s orchestration
-          </Badge>
-        )}
+        <Badge variant="secondary" className="ml-auto gap-1 text-xs">
+          <Clock className="h-3 w-3" />
+          Pre-computed
+        </Badge>
       </div>
 
       {/* GL caveat — always visible (honest framing) */}
