@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-06-13T21:01:30.473Z"
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-06-13T21:15:17.015Z"
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 25
-  completed_plans: 20
+  completed_plans: 21
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-12)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 06 — pairing-engine
+**Current focus:** Phase 07 — timing-rules
 
 ## Current Position
 
-Phase: 06 (pairing-engine) — EXECUTING
-Plan: 3 of 5
+Phase: 07 (timing-rules) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -57,6 +57,7 @@ Plan: 3 of 5
 | Phase 05-concern-language P03 | 11 | 2 tasks | 3 files |
 | Phase 06 P01 | 7 | 2 tasks | 4 files |
 | Phase 06 P02 | 6 | 1 tasks | 1 files |
+| Phase 07-timing-rules P01 | 209 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -99,6 +100,9 @@ Plan: 3 of 5
 - [Phase 06]: No backfill needed -- all 18 products already had does_not_solve populated (6-8 entries each)
 - [Phase 06]: Product count is 18 (not 20) -- 2 GLP-1 products skipped; 153 unique pairs not 190
 - [Phase 06]: 153 pairs enumerated in 15 category-pair batches; concern overlap SQL deferred to Plan 03; HydraFacial batched as Skin Care
+- [Phase 07-timing-rules]: 22 nullable columns added across gl_products (11) and item_relationships (11) via ADD COLUMN IF NOT EXISTS — no existing data affected
+- [Phase 07-timing-rules]: BoNT-A 85-day minimum retreatment floor used as safety floor for all 5 neurotoxins (sourced from PubMed HIGH, Monheit 2009)
+- [Phase 07-timing-rules]: timing_warning_level CHECK constraint (hard_block/warning/education) added via idempotent DO block on item_relationships
 
 ### Roadmap Evolution
 
@@ -114,6 +118,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-13T21:01:30.469Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-06-13T21:15:17.010Z
+Stopped at: Completed 07-01-PLAN.md
 Resume file: None

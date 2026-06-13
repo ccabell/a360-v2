@@ -182,8 +182,8 @@ Plans:
   3. Safety-critical rules flagged (safety_critical=true, timing_warning_level set) for all ~8-10 hard stops
   4. Booking-logic agent can answer "can these be same-day?" and "work backward from date" from structured data alone
   5. TIMING_REVIEW.md produced with safety-critical items for Chris review
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 07-01-PLAN.md — Schema migration (22 timing columns) + product cadence UPDATEs for 18 products
+- [x] 07-01-PLAN.md — Schema migration (22 timing columns) + product cadence UPDATEs for 18 products
 - [ ] 07-02-PLAN.md — Pair timing UPDATEs for ~30 canonical/common pairs + TIMING_EVALUATION.md + TIMING_REVIEW.md
