@@ -11,6 +11,7 @@ Fix the evidence_links data gaps and wire the compile pipeline to always capture
 - [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
 - [x] **Phase 4: source-ingestion** - Triage source_registry, ensure FDA source document links, verify evidence_links URLs (completed 2026-06-13)
 - [x] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters (completed 2026-06-13)
+- [ ] **Phase 6: pairing-engine** - 8-gate legitimacy test for product pairings; tier all 190 pairs; emit item_relationships rows
 
 ## Phase Details
 
@@ -122,8 +123,6 @@ Plans:
 - [x] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue (deduplicate, promote, reject)
 - [x] 04-02-PLAN.md — Download FDA PDFs to Supabase Storage + backfill evidence_links FDA URLs for Phase 2 products
 
----
-
 ### Phase 5: concern-language
 **Goal**: Mine the 122 consultation transcripts, Sales Excellence Framework, and coaching playbooks for real patient language at scale. Massively expand aliases; add legitimate missing concerns; build concern-cluster groupings (tired look, lower-face heaviness, post-weight-loss laxity). This is the layer that enables concern-first routing ("I look tired" -> candidate mechanisms -> products).
 **Depends on**: Phase 2 (taxonomy conventions established)
@@ -143,3 +142,27 @@ Plans:
 - [x] 05-01-PLAN.md — DB prep: execute outstanding Phase 2 SQL + verify aliases schema + create concern_clusters tables + add missing concerns
 - [x] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
 - [x] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report
+
+---
+
+### Phase 6: pairing-engine
+**Goal**: The dedicated item_relationships build. Generate within-catalog pairing candidates, run each through the 8-gate legitimacy test (concern, mechanism, limitation, timing, safety, commercial, patient clarity, source support), score, tier (canonical/common/conditional/compatible_only/do_not_market/rejected), and emit draft relationship rows with clinical_rationale, timing_guidance, same_session_ok, patient_education_text, staff_talking_points. Human review gates publication.
+**Depends on**: Phase 2 (product intelligence + does_not_solve), Phase 5 (concern routing). Key input: does_not_solve — "what A doesn't solve" is "why B joins."
+**Canonical refs**:
+- `.planning/GL_GSD_ROADMAP.md`
+- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
+- `.planning/phases/05-concern-language/CONCERN_CLUSTERS.md`
+**Success Criteria** (what must be TRUE):
+  1. All 190 possible pairs among 20 products explicitly tiered (most rejected — that's correct)
+  2. Canonical/common pairs reviewed by Chris
+  3. Zero forced pairings — every pairing backed by clinical rationale
+  4. Each relationship row has clinical_rationale, timing_guidance, same_session_ok, patient_education_text, staff_talking_points
+  5. 8-gate legitimacy test documented and applied consistently
+**Plans:** 5 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Foundation: schema migration (pairing_tier column) + does_not_solve backfill + PAIRING_RUBRIC.md
+- [ ] 06-02-PLAN.md — SQL pre-screen: enumerate all 190 pairs + compute concern overlap and limitation signals
+- [ ] 06-03-PLAN.md — Corpus-first 8-gate evaluation for all 190 pairs (batch by category-pair per D-11)
+- [ ] 06-04-PLAN.md — DB emission: write + execute item_relationships INSERTs + QA validation report
+- [ ] 06-05-PLAN.md — Review artifacts (PAIRING_REVIEW.md + per-pair files) + Chris review checkpoint
