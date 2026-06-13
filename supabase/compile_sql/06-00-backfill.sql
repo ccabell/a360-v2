@@ -1,0 +1,35 @@
+-- Phase 06: does_not_solve backfill verification
+-- Verified 2026-06-13: All 18 manifest products already have does_not_solve populated.
+-- No backfill was required.
+--
+-- Verification query (run 2026-06-13, result: 0 missing):
+-- SELECT COUNT(*) FROM products
+-- WHERE (does_not_solve IS NULL OR array_length(does_not_solve,1) = 0)
+-- AND id IN (
+--   '4b92be36-e84e-432c-8549-f5d85a767fdb', -- Botox (8 entries)
+--   '6c8f72f0-887f-484a-a588-0bb9bd8052c9', -- Voluma XC (7)
+--   '7370545f-97a3-4519-a92d-3ac4f969829d', -- Vollure XC (6)
+--   'b74d5475-bf58-4d7d-87f5-2c8dc9e252de', -- SKINVIVE (7)
+--   'f1732c7c-3f19-4f3d-9aff-543a132e5506', -- Restylane Lyft (6)
+--   'd8a00419-39e1-4d4b-8dab-ad134fb00930', -- RHA Redensity (7)
+--   '2ce7a3d2-b06d-4b62-b9b7-4113afb51baa', -- Sculptra (7)
+--   '0f901fec-5de5-4950-815e-82c3e47cb2ec', -- Kybella (6)
+--   '694ea839-cf8f-4a17-b838-2588674c792f', -- CoolSculpting (6)
+--   '84ac561e-1818-4ece-a8d7-1fb6c5ea80df', -- Morpheus8 (6)
+--   '78973d13-fa36-41dd-8625-4b851ff143ed', -- Sofwave (6)
+--   'da25d447-c316-40b2-802e-e190c0bdbd9f', -- Ultherapy PRIME (6)
+--   'be46f975-99d7-4772-867e-744814626654', -- Hollywood Spectra (6)
+--   '28918bda-787b-412a-9802-d3d9a00e6ab1', -- HydraFacial (8)
+--   'a7e1b29e-da10-40de-bea8-70d6e6624f43', -- Dysport (7)
+--   '8adda68a-9fd2-49ad-8852-641970135131', -- Jeuveau (7)
+--   '007d98fd-58b5-4d20-be11-caf421c0dccb', -- Daxxify (7)
+--   '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'  -- Xeomin (7)
+-- );
+--
+-- The does_not_solve data was populated across Phase 2 (plans 02-01 through 02-05)
+-- and finalized via 05-01-execute-phase2-outstanding.sql which fixed enum cast bugs
+-- and executed all pending Phase 2 SQL.
+--
+-- This file is intentionally a no-op. It documents that the prerequisite
+-- (D-10: all products must have does_not_solve populated before pairing evaluation)
+-- was already satisfied at Phase 6 start.
