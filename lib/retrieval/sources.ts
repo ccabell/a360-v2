@@ -251,9 +251,32 @@ export async function retrieveSources(
     };
   });
 
-  // --- Merge: evidence_links first (ordered by authority_rank), then dossier rows ---
-  // Limit raised to 20 to ensure all source types (fda, pubmed, youtube) are represented
-  const merged = [...evSources, ...docSources].slice(0, 20);
+  // --- Merge with corpus diversity: guarantee PubMed/YouTube aren't drowned by FDA ---
+  // Partition evidence sources by corpus, take top N from each, then fill remaining slots
+  const byCorpus: Record<string, RetrievedSource[]> = {};
+  for (const s of evSources) {
+    (byCorpus[s.corpus] ??= []).push(s);
+  }
+  const reserved: RetrievedSource[] = [];
+  const remainder: RetrievedSource[] = [];
+  for (const [corpus, items] of Object.entries(byCorpus)) {
+    if (corpus === "fda") {
+      // FDA gets up to 8 slots, rest go to remainder
+      reserved.push(...items.slice(0, 8));
+      remainder.push(...items.slice(8));
+    } else {
+      // PubMed, YouTube, manufacturer each get up to 4 reserved slots
+      reserved.push(...items.slice(0, 4));
+      remainder.push(...items.slice(4));
+    }
+  }
+  // Fill to 20: reserved first, then remainder by score, then dossier rows
+  const TARGET = 20;
+  const merged = [
+    ...reserved,
+    ...remainder,
+    ...docSources,
+  ].slice(0, TARGET);
   const sources: RetrievedSource[] = merged.map((s, i) => ({
     ...s,
     retrievalId: `src_${i + 1}`,

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { gateway } from "@ai-sdk/gateway";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
 import { retrieveSources } from "@/lib/retrieval/sources";
 import { resolveCitations } from "@/lib/retrieval/post-process";
@@ -101,10 +101,12 @@ export async function POST(req: NextRequest) {
 
         let fullText = "";
 
-        if (process.env.AI_GATEWAY_API_KEY) {
+        const apiKey = process.env.ANTHROPIC_API_KEY || process.env.AI_GATEWAY_API_KEY;
+        if (apiKey) {
           try {
+            const anthropic = createAnthropic({ apiKey });
             const result = streamText({
-              model: gateway("anthropic/claude-haiku-4.5"),
+              model: anthropic("claude-haiku-4-5-20251001"),
               system: buildSystemPrompt(sources, knowledge),
               prompt: buildPrompt(q),
               temperature: 0.3,
