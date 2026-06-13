@@ -137,9 +137,9 @@ Plans:
   3. Concern-first routing demo-able: "I look tired" -> candidate mechanisms -> products
   4. Missing concerns added with proper taxonomy integration
   5. Aliases sourced from real transcript language (not LLM-generated guesses)
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 05-01-PLAN.md — DB prep: execute outstanding Phase 2 SQL + verify aliases schema + create concern_clusters tables + add missing concerns
-- [ ] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
+- [x] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
 - [ ] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report

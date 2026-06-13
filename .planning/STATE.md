@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Phase complete — ready for verification
-stopped_at: Completed 04-source-ingestion 04-02-PLAN.md
-last_updated: "2026-06-13T18:00:10.097Z"
+status: Ready to plan
+stopped_at: Completed 05-concern-language 05-02-PLAN.md
+last_updated: "2026-06-13T18:12:17.615Z"
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 18
-  completed_plans: 16
+  completed_plans: 17
 ---
 
 # Project State
@@ -23,8 +23,8 @@ See: .planning/PROJECT.md (updated 2026-06-12)
 
 ## Current Position
 
-Phase: 04 (source-ingestion) — EXECUTING
-Plan: 2 of 2
+Phase: 05
+Plan: Not started
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Plan: 2 of 2
 | Phase 04-source-ingestion P01 | 45 | 2 tasks | 1 files |
 | Phase 05-concern-language P01 | 19 | 2 tasks | 4 files |
 | Phase 04-source-ingestion P04-02 | 8 | 2 tasks | 2 files |
+| Phase 05-concern-language P02 | 45 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -85,6 +86,8 @@ Plan: 2 of 2
 - [Phase 05-concern-language]: concern_clusters uses separate junction table (Option A) not JSONB — enables queryable concern-first routing. body_area side must derive from ba.laterality via CASE expression.
 - [Phase 04-source-ingestion]: evidence_links.field_name is NOT NULL — always include when inserting; use 'indications' for 510k/PMA device clearance rows
 - [Phase 04-source-ingestion]: FDA Access Data blocks automated downloads; accessdata.fda.gov URLs used directly in evidence_links.url (Supabase Storage upload is optional)
+- [Phase 05-concern-language]: Gummy Smile (new concern) aliases use subquery pattern (FROM concerns WHERE name='Gummy Smile') since UUID was not in DB_STATE_BASELINE.md
+- [Phase 05-concern-language]: 187 aliases mined from 122 HIPAA-redacted transcripts; all 48 concerns now have >=4 aliases; total alias count 593 (was 406)
 
 ### Pending Todos
 
@@ -96,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-13T18:00:10.093Z
-Stopped at: Completed 04-source-ingestion 04-02-PLAN.md
+Last session: 2026-06-13T18:12:17.611Z
+Stopped at: Completed 05-concern-language 05-02-PLAN.md
 Resume file: None
