@@ -30,6 +30,7 @@ export interface AskExperienceProps {
   autoSubmitInitial?: boolean;
   suggestions?: VerbGroup[];
   showSave?: boolean;
+  showTierLegend?: boolean;
   placeholder?: string;
   // embed bridge hooks (no-ops unless provided):
   onAskSent?: (m: { messageId: string; ts: number }) => void;
@@ -110,6 +111,7 @@ export function AskExperience({
   autoSubmitInitial,
   suggestions,
   showSave,
+  showTierLegend,
   placeholder = "Ask a clinical research question…",
   onAskSent,
   onAnswerComplete,
@@ -124,8 +126,13 @@ export function AskExperience({
   const bottomRef = useRef<HTMLDivElement>(null);
   const didAutoSubmit = useRef(false);
   const lastCitationsRef = useRef<ResearchCitation[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    // Autofocus on desktop only (skip to avoid keyboard pop on mobile)
+    if (variant !== "embed" && !window.matchMedia("(max-width: 768px)").matches) {
+      inputRef.current?.focus();
+    }
     if (autoSubmitInitial && initialQuery && !didAutoSubmit.current) {
       didAutoSubmit.current = true;
       send(initialQuery);
@@ -353,11 +360,36 @@ export function AskExperience({
 
                     {/* Answer + resolved references */}
                     {m.text && (
-                      <GroundedAnswer
-                        text={m.text}
-                        displayMap={m.displayMap}
-                        citations={m.citations}
-                      />
+                      <>
+                        {showTierLegend && m.citations.length > 0 && (
+                          <p className="text-xs text-muted-foreground">
+                            Color = source authority:&nbsp;
+                            <span className="inline-flex items-center gap-2">
+                              <span className="inline-flex items-center gap-1">
+                                <span className="h-2 w-2 rounded-full bg-teal-500" />
+                                FDA
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <span className="h-2 w-2 rounded-full bg-blue-500" />
+                                Manufacturer
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                                Peer-reviewed
+                              </span>
+                              <span className="inline-flex items-center gap-1">
+                                <span className="h-2 w-2 rounded-full bg-amber-500" />
+                                Industry
+                              </span>
+                            </span>
+                          </p>
+                        )}
+                        <GroundedAnswer
+                          text={m.text}
+                          displayMap={m.displayMap}
+                          citations={m.citations}
+                        />
+                      </>
                     )}
 
                     {/* Save to history (dashboard only) */}
@@ -406,6 +438,7 @@ export function AskExperience({
           }`}
         >
           <Input
+            ref={inputRef}
             placeholder={placeholder}
             value={input}
             onChange={(e) => setInput(e.target.value)}

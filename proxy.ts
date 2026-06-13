@@ -30,8 +30,14 @@ function isStudioPath(pathname: string): boolean {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always-public: login page + auth endpoints
-  if (pathname.startsWith("/login") || pathname.startsWith("/api/auth")) {
+  // Always-public: login page, auth endpoints, and public ask surface
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/ask") ||
+    pathname.startsWith("/embed") ||
+    pathname.startsWith("/api/ask")
+  ) {
     return NextResponse.next();
   }
 
