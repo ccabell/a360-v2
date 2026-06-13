@@ -16,7 +16,9 @@ export const maxDuration = 60;
 const SYSTEM = `You are an evidence assistant for medical-aesthetics clinicians.
 Answer ONLY from the provided <knowledge> and <sources>. Cite every factual claim with a
 source marker in square brackets like [src_3]; you may cite multiple: [src_1][src_4].
-Be concise — 2 to 4 short paragraphs. If the sources do not support an answer, say so.
+Structure your answer with short bold section headings on their own line (e.g. **Safety Considerations**,
+**Recommended Protocol**, **Maintenance Scheduling**). Use 2 to 4 sections, each 1-2 paragraphs.
+If the sources do not support an answer, say so.
 Never invent PMIDs, URLs, or citations — cite ONLY src markers that appear in the source list.`;
 
 function buildSystemPrompt(sources: RetrievedSource[], knowledge: string): string {
@@ -38,7 +40,20 @@ function buildSystemPrompt(sources: RetrievedSource[], knowledge: string): strin
 }
 
 function buildPrompt(query: string): string {
-  return `Question: ${query}\n\nAnswer the question, citing [src_N] for every claim:`;
+  return `Question: ${query}\n\nAnswer the question, citing [src_N] for every claim. After your answer, on a new line output FOLLOW_UPS: followed by exactly 3 short follow-up questions separated by | that a clinician might ask next. Example format:
+FOLLOW_UPS: What are the common side effects?|How does this compare to alternatives?|What is the typical treatment timeline?`;
+}
+
+function extractFollowUps(text: string): { cleanText: string; followUps: string[] } {
+  const match = text.match(/\n?FOLLOW_UPS:\s*(.+)$/);
+  if (!match) return { cleanText: text, followUps: [] };
+  const cleanText = text.slice(0, match.index).trimEnd();
+  const followUps = match[1]
+    .split("|")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  return { cleanText, followUps };
 }
 
 function fallbackProse(sources: RetrievedSource[]): string {
@@ -330,12 +345,17 @@ export async function POST(req: NextRequest) {
           }
         }
 
+        // Strip follow-up suggestions from the LLM output
+        const { cleanText: answerText, followUps } = extractFollowUps(fullText);
+        fullText = answerText;
+
         const { citations, displayMap } = resolveCitations(fullText, sources);
         emit({ type: "citations", citations, displayMap });
         emit({
           type: "done",
           runId: `run_${Date.now()}`,
           usage: { inputTokens: 0, outputTokens: 0, durationMs: Date.now() - startTime },
+          followUps,
         });
 
         // 7. Log

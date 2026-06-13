@@ -3,7 +3,16 @@
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sparkles, AlertCircle, Bookmark, Check } from "lucide-react";
+import {
+  ArrowUp,
+  Loader2,
+  Sparkles,
+  AlertCircle,
+  Bookmark,
+  Check,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import type {
   RetrievedSource,
   ResearchCitation,
@@ -53,6 +62,7 @@ interface AssistantMessage {
   displayMap: Record<string, number>;
   done: boolean;
   error?: string;
+  followUps?: string[];
 }
 type ChatMessage = UserMessage | AssistantMessage;
 
@@ -122,6 +132,7 @@ export function AskExperience({
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [showSources, setShowSources] = useState(true);
   const idRef = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
   const didAutoSubmit = useRef(false);
@@ -222,7 +233,12 @@ export function AskExperience({
             }));
             break;
           case "done":
-            patch((m) => ({ ...m, done: true, stage: null }));
+            patch((m) => ({
+              ...m,
+              done: true,
+              stage: null,
+              followUps: ev.followUps,
+            }));
             onAnswerComplete?.({
               messageId: asstId,
               citationsCount: lastCitationsRef.current.length,
@@ -323,38 +339,55 @@ export function AskExperience({
                       </div>
                     )}
 
-                    {/* Retrieved source pills */}
+                    {/* Retrieved source pills with toggle */}
                     {m.sources.length > 0 && (
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                          Retrieved sources ({m.sources.length})
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {m.sources.map((s) => {
-                            const number = m.displayMap[s.retrievalId];
-                            const cited = number != null;
-                            const resolved = m.citations.length > 0;
-                            return (
-                              <SourcePill
-                                key={s.retrievalId}
-                                source={s}
-                                number={cited ? number : undefined}
-                                dimmed={resolved && !cited}
-                                onClick={
-                                  cited
-                                    ? () =>
-                                        document
-                                          .getElementById(`cite-${number}`)
-                                          ?.scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "center",
-                                          })
-                                    : undefined
-                                }
-                              />
-                            );
-                          })}
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                            Retrieved sources ({m.sources.length})
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => setShowSources((v) => !v)}
+                            className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted-foreground hover:text-foreground"
+                            title={showSources ? "Hide sources" : "Show sources"}
+                          >
+                            {showSources ? (
+                              <EyeOff className="h-3 w-3" />
+                            ) : (
+                              <Eye className="h-3 w-3" />
+                            )}
+                            {showSources ? "Hide" : "Show"}
+                          </button>
                         </div>
+                        {showSources && (
+                          <div className="flex flex-wrap gap-2">
+                            {m.sources.map((s) => {
+                              const number = m.displayMap[s.retrievalId];
+                              const cited = number != null;
+                              const resolved = m.citations.length > 0;
+                              return (
+                                <SourcePill
+                                  key={s.retrievalId}
+                                  source={s}
+                                  number={cited ? number : undefined}
+                                  dimmed={resolved && !cited}
+                                  onClick={
+                                    cited
+                                      ? () =>
+                                          document
+                                            .getElementById(`cite-${number}`)
+                                            ?.scrollIntoView({
+                                              behavior: "smooth",
+                                              block: "center",
+                                            })
+                                      : undefined
+                                  }
+                                />
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -388,8 +421,25 @@ export function AskExperience({
                           text={m.text}
                           displayMap={m.displayMap}
                           citations={m.citations}
+                          defaultRefsExpanded={variant !== "embed"}
                         />
                       </>
+                    )}
+
+                    {/* Follow-up suggestion chips */}
+                    {m.done && m.followUps && m.followUps.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {m.followUps.map((fu) => (
+                          <button
+                            key={fu}
+                            onClick={() => send(fu)}
+                            disabled={busy}
+                            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground transition-colors hover:border-primary/50 hover:bg-muted disabled:opacity-50"
+                          >
+                            {fu}
+                          </button>
+                        ))}
+                      </div>
                     )}
 
                     {/* Save to history (dashboard only) */}
@@ -439,7 +489,11 @@ export function AskExperience({
         >
           <Input
             ref={inputRef}
-            placeholder={placeholder}
+            placeholder={
+              messages.length > 0
+                ? "Ask a follow-up question…"
+                : placeholder
+            }
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -456,7 +510,11 @@ export function AskExperience({
             disabled={busy || !input.trim()}
             size="icon"
           >
-            <Send className="h-4 w-4" />
+            {busy ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <ArrowUp className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
