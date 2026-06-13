@@ -16,6 +16,9 @@ import {
   Sparkles,
   LogOut,
   History,
+  FileText,
+  UserRound,
+  Images,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -27,11 +30,32 @@ const menuItems = [
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
-  { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
+  {
+    name: "Agent Manager",
+    href: "/dashboard/agents",
+    icon: Sparkles,
+    scope: "internal",
+  },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
-  { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
+  { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },
+  {
+    name: "Age Progression",
+    href: "/dashboard/age-progression",
+    icon: UserRound,
+  },
+  {
+    name: "Before After",
+    href: "/dashboard/before-after",
+    icon: Images,
+  },
+  {
+    name: "Components",
+    href: "/dashboard/components",
+    icon: Settings,
+    scope: "internal",
+  },
 ] as const;
 
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
@@ -58,16 +82,19 @@ export function Sidebar() {
           </div>
           <h2 className="text-lg font-bold text-sidebar-foreground">A360</h2>
         </div>
-        <p className="text-xs text-sidebar-foreground/60 ml-12">Intelligence Platform</p>
+        <p className="text-xs text-sidebar-foreground/60 ml-12">
+          Intelligence Platform
+        </p>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1">
         {items.map((item) => {
           const Icon = item.icon;
-          const isActive = item.href === "/dashboard"
-            ? pathname === "/dashboard"
-            : pathname.startsWith(item.href);
+          const isActive =
+            item.href === "/dashboard"
+              ? pathname === "/dashboard"
+              : pathname.startsWith(item.href);
 
           return (
             <Link key={item.href} href={item.href}>
@@ -80,7 +107,9 @@ export function Sidebar() {
               >
                 <Icon
                   className={`h-4 w-4 transition-colors ${
-                    isActive ? "text-sidebar-primary" : "text-sidebar-foreground/60"
+                    isActive
+                      ? "text-sidebar-primary"
+                      : "text-sidebar-foreground/60"
                   }`}
                 />
                 <span className="flex-1 text-left">{item.name}</span>

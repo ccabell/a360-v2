@@ -1,0 +1,42 @@
+{
+  "name": "@a360/age-progression",
+  "version": "1.0.0",
+  "description": "A React component for viewing age progression images with an interactive slider",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "age-progression",
+    "slider",
+    "image-viewer",
+    "timeline"
+  ],
+  "author": "A360",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@mui/material": "^7.3.5",
+    "@mui/icons-material": "^7.3.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "react-window": "^2.2.7",
+    "react-zoom-pan-pinch": "^3.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "typescript": "~5.9.3"
+  }
+}
+
