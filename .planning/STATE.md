@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: Ready to plan
-stopped_at: Completed 02-dossier-batch 02-06-PLAN.md
-last_updated: "2026-06-12T23:58:12.032Z"
+status: Ready to execute
+stopped_at: Completed 04-source-ingestion 04-01-PLAN.md
+last_updated: "2026-06-13T17:49:51.171Z"
 progress:
-  total_phases: 3
+  total_phases: 5
   completed_phases: 3
-  total_plans: 13
-  completed_plans: 13
+  total_plans: 18
+  completed_plans: 14
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-12)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 03 — retrieval-wiring
+**Current focus:** Phase 04 — source-ingestion
 
 ## Current Position
 
-Phase: 03
-Plan: Not started
+Phase: 04 (source-ingestion) — EXECUTING
+Plan: 2 of 2
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Plan: Not started
 | Phase 03-retrieval-wiring P03 | 10 | 2 tasks | 2 files |
 | Phase 02-dossier-batch P06 | 8 | 2 tasks | 4 files |
 | Phase 02-dossier-batch P06 | 12 | 2 tasks | 3 files |
+| Phase 04-source-ingestion P01 | 45 | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,9 @@ Plan: Not started
 - [Phase 02-dossier-batch]: Top 10 OA Botox/Neurotoxin papers for pre-demo ingestion are from ASJ Open Forum (2), Dermatology and Therapy (7, CC-BY-NC), and Cureus (1) — all confirmed PMC links
 - [Phase 02-dossier-batch]: 02-05 SQL files committed to supabase/compile_sql/ but not yet executed — 12 products show 0 docs in live DB; execution checklist documented in STRUCTURED_COVERAGE.md
 - [Phase 02-dossier-batch]: FDA validation PASS — 0 orphaned FDA-indicated concerns; all 12 is_fda_indicated=true rows have fda_label evidence_links
+- [Phase 04-source-ingestion]: source_registry.status check constraint only allows ('active','review','retired') — not 'rejected'; use 'retired' for non-ingestible sources
+- [Phase 04-source-ingestion]: ingestion_queue.rights_class is the per-item gate: per-article OA (PMC CC-BY) can be approved even from paywalled journals
+- [Phase 04-source-ingestion]: JDD 'paywalled' duplicate (1be6d8be) retired as misclassified; canonical JDD (JDD) entry (dcfa3d2e, open_access_cc_by) is the active source
 
 ### Pending Todos
 
@@ -86,6 +90,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-12T22:53:01.346Z
-Stopped at: Completed 02-dossier-batch 02-06-PLAN.md
+Last session: 2026-06-13T17:49:51.167Z
+Stopped at: Completed 04-source-ingestion 04-01-PLAN.md
 Resume file: None

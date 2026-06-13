@@ -116,10 +116,10 @@ Plans:
   3. Every product with an FDA regulatory source has a working evidence_links URL
   4. FDA PDFs stored in Supabase Storage (or fallback to accessdata.fda.gov URLs documented)
   5. Rights classification documented for each source category (public_domain, CC-BY, manufacturer-permitted, restricted)
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue (deduplicate, promote, reject)
+- [x] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue (deduplicate, promote, reject)
 - [ ] 04-02-PLAN.md — Download FDA PDFs to Supabase Storage + backfill evidence_links FDA URLs for Phase 2 products
 
 ---
