@@ -23,8 +23,9 @@ export function locatorUrl(l: SourceLocator): string | undefined {
     case "youtube":
     case "podcast":
     case "industry":
-      return l.url;
+      return l.url || undefined;
     case "document":
+      if (!l.url) return undefined;
       return l.pageNumber ? `${l.url}#page=${l.pageNumber}` : l.url;
   }
 }
