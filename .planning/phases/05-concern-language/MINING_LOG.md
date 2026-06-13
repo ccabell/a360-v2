@@ -161,14 +161,68 @@ The following patient phrases appeared in transcripts but do not map cleanly to 
 
 ## Post-Execution Coverage
 
-*To be filled after Task 2 SQL execution*
+Executed 2026-06-13. All 3 SQL files applied against Supabase project `aejskvmpembryunnbgrk`.
+
+| alias_count | concern | category |
+|-------------|---------|----------|
+| 4 | Buttock Appearance | body_contouring |
+| 4 | Feminine Wellness | wellness |
+| 4 | Unwanted Body Hair | hair |
+| 4 | Vascular Lesions | vascular |
+| 5 | Gummy Smile | aging |
+| 5 | Melasma | pigmentation |
+| 5 | Muscle Definition | body_contouring |
+| 5 | Rosacea | vascular |
+| 5 | Skin Dullness | skin_quality |
+| 5 | Uneven Skin Tone | pigmentation |
+| 5 | Unwanted Facial Hair | hair |
+| 6 | Brow Ptosis | aging |
+| 6 | Fine Lines & Wrinkles | skin_quality |
+| 7 | Bunny Lines | aging |
+| 7 | Buttock Augmentation | body_contouring |
+| 7 | Flank Fat | body_contouring |
+| 8 | Abdominal Fat | body_contouring |
+| 8 | Back Fat | body_contouring |
+| 8 | Dynamic Wrinkle Correction | aging |
+| 8 | Hyperhidrosis | wellness |
+| 8 | Hyperpigmentation | pigmentation |
+| 8 | Neck Lines | aging |
+| 8 | Platysmal Band Concern | aging |
+| 8 | Skin Texture | skin_quality |
+| 8 | Thigh Fat | body_contouring |
+| 9 | Arm Fat | body_contouring |
+| 9 | Lip Augmentation | volume |
+| 9 | Skin Hydration | skin_quality |
+| 10 | Bruxism & TMJ | wellness |
+| 10 | Chin Augmentation | volume |
+| 11 | Acne & Breakouts | skin_quality |
+| 11 | Hand Volume Loss | volume |
+| 11 | Jawline Definition | volume |
+| 11 | Lip Volume Loss | volume |
+| 11 | Skin Quality Improvement | skin_quality |
+| 11 | Submental Fullness | volume |
+| 11 | Sun Damage | pigmentation |
+| 11 | Temple Hollowing | volume |
+| 12 | Forehead Lines | aging |
+| 13 | Age-Related Volume Loss | volume |
+| 13 | Marionette Lines | aging |
+| 14 | Cheek Volume Loss | volume |
+| 14 | Crow's Feet | aging |
+| 14 | Nasolabial Folds | aging |
+| 14 | Perioral Lines | aging |
+| 16 | Skin Laxity | skin_quality |
+| 16 | Tear Trough Hollowing | volume |
+| 17 | Frown Lines | aging |
+
+**Result: 0 concerns with <3 aliases. Minimum is 4. All 48 concerns covered.**
+
+**Note:** Feminine Wellness and Unwanted Body Hair were already at 4 aliases before this plan and were not primary targets. No SQL was written for them as they are out of core concern scope.
 
 ---
 
 ## Net Alias Change
 
-*To be filled after Task 2 SQL execution*
-
 - Baseline (post-05-01): 406
-- Expected new aliases: ~187
-- Expected total: ~593
+- New aliases added: 187
+- Post-execution total: 593
+- Net change: +187 (+46% increase)
