@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Ready to execute
-stopped_at: "Completed 12-01-PLAN.md: schema audit and SQL migration for combination fuel docs"
-last_updated: "2026-06-14T16:50:50.214Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 11.1-01-PLAN.md — fuel doc types, data access, serializer
+last_updated: "2026-06-14T16:56:38.033Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -96,6 +96,8 @@ Plan: 2 of 2
 - [Phase 12]: Live table is agent_fuel_documents (not gl_agent_fuel_documents) and JSON column is content (not agent_fuel_json) — all downstream SQL must use these names
 - [Phase 12]: Zero pairing_fuel rows exist in live DB — Phase 12-01 SQL uses INSERT not UPDATE; pair_key in content JSONB is the idempotency key
 - [Phase 12]: TypeScript type GLAgentFuelDocument (lib/types/data-sources.ts) is stale and does not reflect live agent_fuel_documents schema — deferred fix
+- [Phase 11.1-01]: source_type column (existing) used as fuel_type discriminator in DB queries — avoids schema migration in this plan
+- [Phase 11.1-01]: COALESCE resolution implemented in TypeScript (not SQL) — more flexible, merges content via object spread without migration
 
 ### v1.0 Carry-Forward Context
 
@@ -135,7 +137,7 @@ Plan: 2 of 2
 
 ## Session Continuity
 
-Last session: 2026-06-14T16:50:50.210Z
-Stopped at: Completed 12-01-PLAN.md: schema audit and SQL migration for combination fuel docs
+Last session: 2026-06-14T16:56:38.029Z
+Stopped at: Completed 11.1-01-PLAN.md — fuel doc types, data access, serializer
 Resume file: None
 Next action: `/gsd:plan-phase 11.1` or `/gsd:plan-phase 15` to begin v2.0
