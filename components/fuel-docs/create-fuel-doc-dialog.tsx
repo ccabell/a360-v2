@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select"
 import type { FuelDocType } from "@/lib/types/fuel-docs"
 import { createEmptyContent } from "@/lib/types/fuel-docs"
+import { SAMPLE_TEMPLATES } from "@/lib/fuel-docs/sample-templates"
 
 interface CreateFuelDocDialogProps {
   open: boolean
@@ -30,6 +31,7 @@ interface CreateFuelDocDialogProps {
 export function CreateFuelDocDialog({ open, onOpenChange, onCreated }: CreateFuelDocDialogProps) {
   const [fuelType, setFuelType] = React.useState<FuelDocType>("combination")
   const [productName, setProductName] = React.useState("")
+  const [useSample, setUseSample] = React.useState(false)
   const [saving, setSaving] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
 
@@ -47,7 +49,7 @@ export function CreateFuelDocDialog({ open, onOpenChange, onCreated }: CreateFue
         body: JSON.stringify({
           product_name: productName.trim(),
           source_type: fuelType,
-          content: createEmptyContent(fuelType),
+          content: useSample ? SAMPLE_TEMPLATES[fuelType] : createEmptyContent(fuelType),
           metadata: { template_version: "1.0", fuel_type: fuelType },
         }),
       })
@@ -103,6 +105,18 @@ export function CreateFuelDocDialog({ open, onOpenChange, onCreated }: CreateFue
                 required
               />
             </div>
+
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={useSample}
+                onChange={(e) => setUseSample(e.target.checked)}
+                className="rounded border-input"
+              />
+              <span className="text-muted-foreground">
+                Pre-fill with sample template content
+              </span>
+            </label>
 
             {error && (
               <p className="text-sm text-destructive">{error}</p>
