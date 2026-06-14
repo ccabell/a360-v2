@@ -206,7 +206,7 @@ Plans:
 
 Plans:
 - [x] 10-01-PLAN.md — Contamination audit of 37 review cards + Sculptra tier re-evaluation + Chris light-revision feedback
-- [ ] 10-02-PLAN.md — Regenerate all three 06-02 SQL files from clean review cards + update EXECUTION_MANIFEST.json
+- [x] 10-02-PLAN.md — Regenerate all three 06-02 SQL files from clean review cards + update EXECUTION_MANIFEST.json
 
 ---
 
@@ -226,7 +226,7 @@ Plans:
   5. All v1.1 carry-forward items resolved (PAIR-01 verified, EVID-03 browser test, TIMING_REVIEW.md closed, SQL manifest executed)
 
 Plans:
-- [ ] 11-01-PLAN.md — v1.1 close-out: verify PAIR-01, EVID-03 browser test, TIMING_REVIEW.md closure, SQL manifest execution
+- [x] 11-01-PLAN.md — v1.1 close-out: verify PAIR-01, EVID-03 browser test, TIMING_REVIEW.md closure, SQL manifest execution
 - [x] 11-02-PLAN.md — Source classification update: revise SOURCE_CLASSIFICATION.md with practical source-type guidance + citation formats
 - [ ] 11-03-PLAN.md — Enrichment pipeline design: repeatable loop for ingesting new sources into vector DBs
 
@@ -299,7 +299,7 @@ Plans:
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 11. source-framework-and-v1.1-closeout | v1.2 | 1/3 | In Progress|  |
+| 11. source-framework-and-v1.1-closeout | v1.2 | 2/3 | In Progress|  |
 | 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
