@@ -70,7 +70,7 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Demo Acceptance
 
-- [ ] **DEMO-01**: `/ask?query=Can+Botox+and+filler+be+done+the+same+day` loads without login, auto-submits, streams cited answer with Key Points, sections, table, references with Reliable badges, disclaimer visible, follow-ups appear (Section 15 of spec)
+- [x] **DEMO-01**: `/ask?query=Can+Botox+and+filler+be+done+the+same+day` loads without login, auto-submits, streams cited answer with Key Points, sections, table, references with Reliable badges, disclaimer visible, follow-ups appear (Section 15 of spec)
 
 ---
 
@@ -160,7 +160,7 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 | TRST-03 | Phase 7 | Complete |
 | INTR-01 | Phase 7 | Pending (polish) |
 | INTR-02 | Phase 7 | Pending (verify) |
-| DEMO-01 | Phase 7 | Pending |
+| DEMO-01 | Phase 7 | Complete |
 
 **Coverage:**
 - v2.0 P0 requirements: 22 total

@@ -122,7 +122,7 @@ Plans:
 Plans:
 - [x] 07-01-PLAN.md — Trust surface audit: disclaimer verification, citation hover card check, system prompt safety guardrails
 - [x] 07-02-PLAN.md — Interaction polish: follow-up pill A360 brand styling, suggestion chip verification
-- [ ] 07-03-PLAN.md — DEMO-01 end-to-end acceptance test with live human verification
+- [x] 07-03-PLAN.md — DEMO-01 end-to-end acceptance test with live human verification
 
 ---
 
