@@ -1,99 +1,89 @@
 # Combination Fuel Document Review
 
-**Phase:** 12 — combination-fuel-documents
+**Phase:** 12 -- combination-fuel-documents
 **Generated:** 2026-06-14
-**Total docs:** 37 (5 canonical/common Botox + 5 neurotoxin x Sculptra + 4 neurotoxin x SKINVIVE + 5 HA x Sculptra + 18 remaining common pairs)
-**QC status:** See GENERATION_QC_REPORT.md — all 7 QC dimensions PASS; 37/37 docs ready for human review
-
----
+**Total docs:** 37 (5 canonical + 32 common)
+**QC status:** 7/7 dimensions PASS -- see GENERATION_QC_REPORT.md for detailed quality metrics
 
 ## How to Review
 
-1. Check the summary table below — all 37 pairs listed with evidence level, QC result, and current status
-2. Read the per-pair detail section for each doc you want to inspect
-3. Mark each pair as: **APPROVED** / **NEEDS REVISION** / **REJECTED**
-4. For NEEDS REVISION, note what needs changing in the Notes field
-5. Approved docs will be committed to `agent_fuel_documents` (table: `agent_fuel_documents`, column: `content`) via `supabase/compile_sql/12-03-combination-fuel-updates.sql`
-6. The SQL file is pre-written and gated on your approval — do not execute until you have reviewed and marked all pairs
+1. Each pair below shows a summary of the fuel doc content
+2. Mark each as: APPROVED / NEEDS REVISION / REJECTED
+3. For NEEDS REVISION, note what needs changing
+4. Approved docs will be committed to agent_fuel_documents via SQL (file: `supabase/compile_sql/12-03-combination-fuel-updates.sql`)
 
-**Batch files for full JSON:**
-- `REVIEW_QUEUE/combination_fuel/canonical_batch.md` — 5 pairs
-- `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` — 5 pairs
-- `REVIEW_QUEUE/combination_fuel/common_neurotoxin_skinvive_batch.md` — 4 pairs
-- `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` — 5 pairs
-- `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` — 18 pairs
+**Key review criteria:**
+- **COMBO-01**: Is the corpus-grounded content clinically accurate?
+- **COMBO-02**: Does it sound like what trained staff would actually say (education tone)?
+- **COMBO-03**: Are the do-not-say items appropriate and pair-specific items clinically sound?
 
 ---
 
 ## Summary Table
 
-| # | Pair | Tier | Evidence | QC | Flags | Status |
-|---|------|------|----------|-----|-------|--------|
-| 1 | Botox Cosmetic + Juvederm Vollure XC | canonical | strong | PASS | — | PENDING |
-| 2 | Botox Cosmetic + Juvederm Voluma XC | canonical | strong | PASS | — | PENDING |
-| 3 | Botox Cosmetic + Restylane Lyft | common | moderate | PASS | — | PENDING |
-| 4 | Botox Cosmetic + RHA Redensity | common | moderate | PASS | — | PENDING |
-| 5 | Botox Cosmetic + SKINVIVE by Juvederm | common | **weak** | PASS | FLAG: weak evidence; expert consensus only | PENDING |
-| 6 | Botox Cosmetic + Sculptra Aesthetic | common | **weak** | PASS | FLAG: weak evidence; FDA combo caveat; same-session conditional | PENDING |
-| 7 | Daxxify + Sculptra Aesthetic | common | **weak** | PASS | FLAG: weak evidence; FDA combo caveat; same-session conditional | PENDING |
-| 8 | Dysport + Sculptra Aesthetic | common | **weak** | PASS | FLAG: weak evidence; FDA combo caveat; same-session conditional | PENDING |
-| 9 | Jeuveau + Sculptra Aesthetic | common | **weak** | PASS | FLAG: weak evidence; FDA combo caveat; same-session conditional | PENDING |
-| 10 | Xeomin + Sculptra Aesthetic | common | **weak** | PASS | FLAG: weak evidence; FDA combo caveat; same-session conditional | PENDING |
-| 11 | Daxxify + SKINVIVE by Juvederm | common | **weak** | PASS | FLAG: weak evidence; expert consensus only | PENDING |
-| 12 | Dysport + SKINVIVE by Juvederm | common | **weak** | PASS | FLAG: weak evidence; expert consensus only | PENDING |
-| 13 | Jeuveau + SKINVIVE by Juvederm | common | **weak** | PASS | FLAG: weak evidence; expert consensus only | PENDING |
-| 14 | Xeomin + SKINVIVE by Juvederm | common | **weak** | PASS | FLAG: weak evidence; expert consensus only | PENDING |
-| 15 | Juvederm Vollure XC + Sculptra Aesthetic | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-| 16 | Juvederm Voluma XC + Sculptra Aesthetic | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-| 17 | Restylane Lyft + Sculptra Aesthetic | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-| 18 | RHA Redensity + Sculptra Aesthetic | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-| 19 | SKINVIVE by Juvederm + Sculptra Aesthetic | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-| 20 | Daxxify + Juvederm Vollure XC | common | moderate | PASS | — | PENDING |
-| 21 | Daxxify + Juvederm Voluma XC | common | moderate | PASS | — | PENDING |
-| 22 | Daxxify + Restylane Lyft | common | moderate | PASS | — | PENDING |
-| 23 | Daxxify + RHA Redensity | common | moderate | PASS | — | PENDING |
-| 24 | Dysport + Juvederm Vollure XC | common | moderate | PASS | — | PENDING |
-| 25 | Dysport + Juvederm Voluma XC | common | moderate | PASS | — | PENDING |
-| 26 | Dysport + Restylane Lyft | common | moderate | PASS | — | PENDING |
-| 27 | Dysport + RHA Redensity | common | moderate | PASS | — | PENDING |
-| 28 | Jeuveau + Juvederm Vollure XC | common | moderate | PASS | — | PENDING |
-| 29 | Jeuveau + Juvederm Voluma XC | common | moderate | PASS | — | PENDING |
-| 30 | Jeuveau + Restylane Lyft | common | moderate | PASS | — | PENDING |
-| 31 | Jeuveau + RHA Redensity | common | moderate | PASS | — | PENDING |
-| 32 | Xeomin + Juvederm Vollure XC | common | moderate | PASS | — | PENDING |
-| 33 | Xeomin + Juvederm Voluma XC | common | moderate | PASS | — | PENDING |
-| 34 | Xeomin + Restylane Lyft | common | moderate | PASS | — | PENDING |
-| 35 | Xeomin + RHA Redensity | common | moderate | PASS | — | PENDING |
-| 36 | Botox Cosmetic + InMode Morpheus8 | common | strong | PASS | FLAG: same-session conditional; energy device protocol | PENDING |
-| 37 | Sculptra Aesthetic + InMode Morpheus8 | conditional | **weak** | PASS | FLAG: conditional tier; weak evidence; same-session conditional | PENDING |
-
-**Evidence summary:** 3 strong | 18 moderate | 16 weak
-**QC summary:** 37/37 PASS all 7 QC dimensions
-**Review card status:** All 37 pairings cards show Status: PENDING (no pre-existing approvals or rejections)
+| # | Pair | Tier | Evidence | Quality | Review Card | Status |
+|---|------|------|----------|---------|-------------|--------|
+| 1 | Botox Cosmetic + Juvederm Vollure XC | canonical | strong | PASS | PENDING | PENDING |
+| 2 | Botox Cosmetic + Juvederm Voluma XC | canonical | strong | PASS | PENDING | PENDING |
+| 3 | Botox Cosmetic + Restylane Lyft | canonical | moderate | PASS | PENDING | PENDING |
+| 4 | Botox Cosmetic + RHA Redensity | canonical | moderate | PASS | PENDING | PENDING |
+| 5 | Botox Cosmetic + SKINVIVE by Juvederm | canonical | weak | PASS | PENDING | PENDING |
+| 6 | Botox Cosmetic + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 7 | Daxxify + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 8 | Dysport + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 9 | Jeuveau + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 10 | Xeomin + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 11 | Daxxify + SKINVIVE by Juvederm | common | weak | PASS | PENDING | PENDING |
+| 12 | Dysport + SKINVIVE by Juvederm | common | weak | PASS | PENDING | PENDING |
+| 13 | Jeuveau + SKINVIVE by Juvederm | common | weak | PASS | PENDING | PENDING |
+| 14 | Xeomin + SKINVIVE by Juvederm | common | weak | PASS | PENDING | PENDING |
+| 15 | Juvederm Vollure XC + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 16 | Juvederm Voluma XC + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 17 | Restylane Lyft + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 18 | RHA Redensity + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 19 | SKINVIVE by Juvederm + Sculptra Aesthetic | common | weak | PASS | PENDING | PENDING |
+| 20 | Daxxify + Juvederm Vollure XC | common | moderate | PASS | PENDING | PENDING |
+| 21 | Daxxify + Juvederm Voluma XC | common | moderate | PASS | PENDING | PENDING |
+| 22 | Daxxify + Restylane Lyft | common | moderate | PASS | PENDING | PENDING |
+| 23 | Daxxify + RHA Redensity | common | moderate | PASS | PENDING | PENDING |
+| 24 | Dysport + Juvederm Vollure XC | common | moderate | PASS | PENDING | PENDING |
+| 25 | Dysport + Juvederm Voluma XC | common | moderate | PASS | PENDING | PENDING |
+| 26 | Dysport + Restylane Lyft | common | moderate | PASS | PENDING | PENDING |
+| 27 | Dysport + RHA Redensity | common | moderate | PASS | PENDING | PENDING |
+| 28 | Jeuveau + Juvederm Vollure XC | common | moderate | PASS | PENDING | PENDING |
+| 29 | Jeuveau + Juvederm Voluma XC | common | moderate | PASS | PENDING | PENDING |
+| 30 | Jeuveau + Restylane Lyft | common | moderate | PASS | PENDING | PENDING |
+| 31 | Jeuveau + RHA Redensity | common | moderate | PASS | PENDING | PENDING |
+| 32 | Xeomin + Juvederm Vollure XC | common | moderate | PASS | PENDING | PENDING |
+| 33 | Xeomin + Juvederm Voluma XC | common | moderate | PASS | PENDING | PENDING |
+| 34 | Xeomin + Restylane Lyft | common | moderate | PASS | PENDING | PENDING |
+| 35 | Xeomin + RHA Redensity | common | moderate | PASS | PENDING | PENDING |
+| 36 | Botox Cosmetic + InMode Morpheus8 | common | strong | PASS | PENDING | PENDING |
+| 37 | Sculptra Aesthetic + InMode Morpheus8 | common | weak | PASS | PENDING | PENDING |
 
 ---
 
-## Flagged Items Requiring Attention
+## Flags
 
-### Weak Evidence Docs (16 docs) — Review Before Promoting
-These docs disclose evidence limitation explicitly. Do not promote to patients without provider discussion.
+### Weak Evidence Docs (16 docs -- requires explicit provider discussion)
 
-- **All 5 neurotoxin + SKINVIVE pairs** (#5, #11–#14): No class-level or product-specific BoNT-A + microdroplet HA combination evidence. SKINVIVE is distinct from volumizing fillers.
-- **All 5 neurotoxin + Sculptra pairs** (#6–#10): Expert consensus only; FDA Sculptra label caveat disclosed in each doc.
-- **All 5 HA + Sculptra pairs** (#15–#19): Expert consensus only; FDA Sculptra label caveat disclosed; conditional tier.
-- **Sculptra + Morpheus8** (#37): Expert consensus only; FDA Sculptra caveat; conditional tier.
+All 16 weak-evidence docs properly disclose their evidence limitations. No weak-evidence doc claims more than expert consensus support.
+
+- **5 SKINVIVE pairs** (#5, #11-14): No class-level or product-specific BoNT-A + microdroplet HA combination evidence exists. SKINVIVE is a distinct product category from volumizing fillers.
+- **10 Sculptra pairs** (#6-10, #15-19): Expert consensus only; FDA Sculptra label combination caveat quoted in all docs.
+- **1 Sculptra + Morpheus8** (#37): Expert consensus only; FDA combination caveat present.
 
 ### Same-Session Conditional Docs (7 docs)
-Providers must use clinical judgment:
-- Botox + InMode Morpheus8 (#36): Energy device first; inflammation assessment between procedures
-- All 5 neurotoxin + Sculptra pairs (#6–#10): Sequential staging preferred
-- All 5 HA + Sculptra pairs (#15–#19): Sequential staging preferred; same-session by experienced injectors only
-- Sculptra + InMode Morpheus8 (#37): Not evaluated in controlled trials
 
-### Conditional Tier Docs (6 docs)
-These pairs were reviewed through the pairing engine gates and passed but required additional considerations:
-- HA + Sculptra pairs (#15–#19): Overlapping tissue territory; sequencing guidance critical
-- Sculptra + Morpheus8 (#37): Expert-consensus-only evidence
+These have `same_session_ok` as conditional rather than true:
+
+- All 5 Neurotoxin + Sculptra pairs (#6-10): FDA Sculptra label caveat applies
+- All 5 HA + Sculptra pairs (#15-19): Sequential staging preferred; same-session possible by experienced injectors
+- Sculptra + Morpheus8 (#37): Not evaluated in controlled trials
+
+### Review Cards
+
+All 37 review cards in `REVIEW_QUEUE/pairings/` have status: PENDING. No unresolved issues flagged in any review card.
 
 ---
 
@@ -101,831 +91,1033 @@ These pairs were reviewed through the pairing engine gates and passed but requir
 
 ---
 
-### Pair 1: Botox Cosmetic + Juvederm Vollure XC
+### 1. Botox Cosmetic + Juvederm Vollure XC
 
-**pair_key:** `botox_cosmetic__juvederm_vollure_xc`
-**Tier:** canonical | **Evidence:** strong | **Same Session OK:** true
-**Batch file:** `canonical_batch.md` — Pair 1
+**Batch:** canonical_batch.md | **Tier:** canonical | **Evidence:** strong
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore |
-| **one_line_positioning** | Botox relaxes the muscles that cause expression lines while Vollure restores the mid-depth volume that muscle relaxation alone cannot address. |
-| **why_together** | Botox addresses movement-caused lines through neuromodulation; Vollure fills the static mid-depth volume loss that muscle relaxation cannot restore. These two mechanisms operate at different tissue layers and address different root causes of facial aging. |
-| **staff_close** | "Botox can help with the lines around your eyes and forehead — those are caused by muscle movement. But if you're also noticing deeper lines from your nose to the corners of your mouth — those nasolabial folds — those are caused by volume loss, which Botox can't address. Vollure is designed to soften those specific lines by restoring volume at the mid-depth level." |
-| **do_not_say (pair_specific)** | (1) Do not call this a 'liquid facelift' or 'non-surgical facelift'. (2) Do not imply Vollure will 'plump' or 'inflate' the face. (3) Do not state the combination is 'FDA approved' as a combination. (4) Do not guarantee how long results will last. |
-| **evidence_level** | strong |
-| **citations** | PubMed DOI 10.2310/6350.2010.00029; DOI 10.1097/DSS.0000000000000754; FDA labels (Botox Cosmetic, Vollure XC) |
+**Patient-Facing Name:** Smooth & Restore
+**One-Line Positioning:** Botox relaxes the muscles that cause expression lines while Vollure restores the mid-depth volume that muscle relaxation alone cannot address.
 
-#### Review Decision
-**Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Why Together:** Botox addresses movement-caused lines through neuromodulation; Vollure fills the static mid-depth volume loss that muscle relaxation cannot restore. These two mechanisms operate at different tissue layers and address different root causes of facial aging.
 
----
+**Staff Close:** When a patient comes in concerned about looking tired or aged, explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing deeper lines from your nose to the corners of your mouth -- those nasolabial folds -- those are caused by volume loss, which Botox can't address. Vollure is designed to soften those specific lines by restoring volume at the mid-depth level.'
 
-### Pair 2: Botox Cosmetic + Juvederm Voluma XC
+**Do Not Say (pair-specific):**
+- Do not call this a 'liquid facelift' or 'non-surgical facelift'
+- Do not imply that Vollure will 'plump' or 'inflate' the face
+- Do not state the combination is 'FDA approved' as a combination
+- Do not guarantee how long results will last
 
-**pair_key:** `botox_cosmetic__juvederm_voluma_xc`
-**Tier:** canonical | **Evidence:** strong | **Same Session OK:** true
-**Batch file:** `canonical_batch.md` — Pair 2
+**Citations:** PubMed DOI 10.2310/6350.2010.00029; PubMed DOI 10.1097/DSS.0000000000000754; FDA labels (Botox Cosmetic, Vollure XC)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Lift |
-| **one_line_positioning** | Botox relaxes expression lines while Voluma restores the deep cheek structure that supports and lifts the face. |
-| **why_together** | Botox addresses movement-caused lines through neuromodulation; Voluma restores deep structural volume in the cheek area through HA gel scaffold. They work at completely different tissue layers — Botox at the neuromuscular level, Voluma at the deep supraperiosteal/subcutaneous level. |
-| **staff_close** | "Botox can help with the lines around your eyes and forehead — those are caused by muscle movement. But if you're also noticing that your cheeks look flatter or more hollow than they used to, that's structural volume loss in the midface, which Botox can't address. Voluma is designed for deep cheek restoration — it provides the structural support that lifts and contours your midface." |
-| **do_not_say (pair_specific)** | (1) Do not describe Voluma as 'lifting' in a surgical-lift sense. (2) Do not call this a 'liquid facelift'. (3) Do not imply FDA approval as a package. (4) Do not guarantee cheek volume restoration duration. |
-| **evidence_level** | strong |
-| **citations** | PubMed DOI 10.2310/6350.2010.00029; DOI 10.1097/DSS.0000000000000754; FDA labels (Botox Cosmetic, Voluma XC) |
+> Full JSON: `REVIEW_QUEUE/combination_fuel/canonical_batch.md` -- Pair 1
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 3: Botox Cosmetic + Restylane Lyft
+### 2. Botox Cosmetic + Juvederm Voluma XC
 
-**pair_key:** `botox_cosmetic__restylane_lyft`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `canonical_batch.md` — Pair 3
+**Batch:** canonical_batch.md | **Tier:** canonical | **Evidence:** strong
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Restylane) |
-| **one_line_positioning** | Botox relaxes expression lines while Restylane Lyft restores structural midface volume or hand volume through a complementary mechanism. |
-| **why_together** | Botox addresses movement-caused lines; Restylane Lyft restores structural midface or hand volume. The complementarity is mechanism-based — neuromodulation vs HA gel scaffold — not brand-specific. |
-| **staff_close** | "Botox can help with the lines around your eyes and forehead — those are caused by muscle movement. If you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Restylane Lyft works on a different layer to restore that structure." |
-| **do_not_say (pair_specific)** | (1) Do not state the combination is FDA approved as a combination. (2) Do not dismiss the cross-brand nature as negative or positive. (3) Do not overpromise on evidence strength — category-level only. (4) Do not claim Lyft provides the same depth as products designed for deeper planes. |
-| **evidence_level** | moderate (category-level; no product-specific study for this cross-brand pair) |
-| **citations** | DOI 10.1097/DSS.0000000000000754 (category); FDA labels (Botox Cosmetic, Restylane Lyft) |
+**Patient-Facing Name:** Smooth & Lift
+**One-Line Positioning:** Botox relaxes expression lines while Voluma restores the deep cheek structure that supports and lifts the face.
+
+**Why Together:** Botox addresses movement-caused lines through neuromodulation; Voluma restores deep structural volume in the cheek area through HA gel scaffold. They work at completely different tissue layers.
+
+**Staff Close:** Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter or more hollow than they used to, that's structural volume loss in the midface, which Botox can't address. Voluma is designed for deep cheek restoration.
+
+**Do Not Say (pair-specific):**
+- Do not describe Voluma as 'lifting' the cheeks in a way that implies a surgical lift
+- Do not call this a 'liquid facelift' or 'non-surgical facelift'
+- Do not imply that the combination is 'FDA approved' as a package
+- Do not guarantee cheek volume restoration duration
+
+**Citations:** PubMed DOI 10.2310/6350.2010.00029; PubMed DOI 10.1097/DSS.0000000000000754; FDA labels (Botox Cosmetic, Voluma XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/canonical_batch.md` -- Pair 2
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 4: Botox Cosmetic + RHA Redensity
+### 3. Botox Cosmetic + Restylane Lyft
 
-**pair_key:** `botox_cosmetic__rha_redensity`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `canonical_batch.md` — Pair 4
+**Batch:** canonical_batch.md | **Tier:** canonical | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Soften (Perioral) |
-| **one_line_positioning** | Botox reduces upper-face expression lines while RHA Redensity softens the perioral fine lines that neurotoxin cannot address. |
-| **why_together** | Botox and RHA Redensity treat complementary anatomical zones. Botox is most effective for upper-face dynamic lines; RHA Redensity's flexible formulation is designed specifically for the dynamic perioral area that neurotoxin cannot treat effectively. |
-| **staff_close** | "Botox can help with the crow's feet and forehead lines — those are caused by muscle movement. But the lines around your lips are different — they need a filler that can move with your expressions. RHA Redensity is designed for that dynamic area." |
-| **do_not_say (pair_specific)** | (1) Do not suggest Botox around the mouth — perioral neurotoxin can impair speech and eating. (2) Do not imply RHA adds 'volume' to lips — it treats perioral rhytids, not lip augmentation. (3) Do not overstate perioral maintenance duration. (4) Do not claim product-specific evidence for this pair. |
-| **evidence_level** | moderate (category-level; FDA indication for RHA Redensity: dynamic perioral rhytids) |
-| **citations** | DOI 10.1097/DSS.0000000000000754 (category); FDA labels (Botox Cosmetic, RHA Redensity) |
+**Patient-Facing Name:** Smooth & Restore (Restylane)
+**One-Line Positioning:** Botox relaxes expression lines while Restylane Lyft restores structural midface volume or hand volume through a complementary mechanism.
+
+**Why Together:** Botox addresses movement-caused lines; Restylane Lyft restores structural midface or hand volume. The complementarity is mechanism-based -- neuromodulation vs HA gel scaffold.
+
+**Staff Close:** Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. If you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Restylane Lyft works on a different layer to restore that structure.
+
+**Do Not Say (pair-specific):**
+- Do not state that the combination is FDA approved as a combination
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not overpromise on evidence strength -- no product-specific study for this pair
+- Do not claim Restylane Lyft provides the same depth as products designed for deeper planes
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Botox Cosmetic, Restylane Lyft)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/canonical_batch.md` -- Pair 3
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 5: Botox Cosmetic + SKINVIVE by Juvederm
+### 4. Botox Cosmetic + RHA Redensity
 
-**pair_key:** `botox_cosmetic__skinvive_by_juvederm`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** true
-**Batch file:** `canonical_batch.md` — Pair 5
-**FLAG: Weak evidence — expert consensus only; no published controlled trial for BoNT-A + microdroplet HA**
+**Batch:** canonical_batch.md | **Tier:** canonical | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Glow |
-| **one_line_positioning** | Botox reduces expression lines while SKINVIVE improves the overall cheek skin smoothness that neurotoxin cannot address. |
-| **why_together** | Botox reduces movement-caused lines through muscle relaxation; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA hydration. They do not overlap in mechanism or target tissue. |
-| **staff_close** | "Botox can help with the expression lines — frown lines, crow's feet, forehead. But some patients tell us even after Botox, their skin still doesn't look as vibrant as they'd like. SKINVIVE isn't a filler in the traditional sense — it doesn't add volume or fill wrinkles. It hydrates the skin from within using microdroplets, improving cheek skin smoothness." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a filler that 'adds volume'. (2) Do not overstate the evidence — expert consensus only; no controlled trial. (3) Do not describe SKINVIVE's FDA indication beyond cheek skin smoothness. (4) Do not guarantee specific 'glow' outcomes. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Botox Cosmetic, SKINVIVE by Juvederm); accepted clinical practice |
+**Patient-Facing Name:** Smooth & Soften (Perioral)
+**One-Line Positioning:** Botox reduces upper-face expression lines while RHA Redensity softens the perioral fine lines that neurotoxin cannot address.
+
+**Why Together:** Botox and RHA Redensity treat complementary anatomical zones. Botox is most effective for upper-face dynamic lines; RHA Redensity's flexible formulation is designed specifically for the dynamic perioral area.
+
+**Staff Close:** When a patient comes in concerned about fine lines both around the eyes and around the mouth, explain: 'Botox can help with the crow's feet and forehead lines -- those are caused by muscle movement. But the lines around your lips are different -- they need a filler that can move with your expressions. RHA Redensity is designed for that dynamic area.'
+
+**Do Not Say (pair-specific):**
+- Do not suggest Botox around the mouth -- perioral neurotoxin can impair speech, eating, and facial function
+- Do not imply RHA Redensity adds 'volume' to the lips the way lip fillers do
+- Do not overstate the perioral maintenance duration
+- Do not claim product-specific evidence for this pair
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Botox Cosmetic, RHA Redensity)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/canonical_batch.md` -- Pair 4
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 6: Botox Cosmetic + Sculptra Aesthetic
+### 5. Botox Cosmetic + SKINVIVE by Juvederm
 
-**pair_key:** `botox_cosmetic__sculptra_aesthetic`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_neurotoxin_sculptra_batch.md` — Pair 1
-**FLAG: Weak evidence; FDA Sculptra combination caveat; same-session conditional**
+**Batch:** canonical_batch.md | **Tier:** canonical | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Rebuild |
-| **one_line_positioning** | Botox relaxes expression lines immediately while Sculptra supports collagen production over months — addressing two different aspects of aging on different timelines. |
-| **why_together** | Botox and Sculptra address two fundamentally different aspects of aging through orthogonal mechanisms. Botox delivers immediate, reversible neuromodulation; Sculptra delivers gradual, durable collagen stimulation. |
-| **staff_close** | Frame as provider-recommended option, not standard protocol. "The lines around your eyes and forehead are from muscle movement — that's what Botox addresses. But the overall loss of fullness and structure is from collagen breakdown over time. Sculptra works gradually to support collagen production." |
-| **do_not_say (pair_specific)** | (1) Do not say this combination is 'FDA approved' or 'clinically proven' as a combination — the FDA Sculptra label explicitly states combination use has not been evaluated. (2) Do not call Sculptra a 'filler' in the traditional sense. (3) Do not imply Sculptra provides the same type of immediate correction as HA fillers. (4) Do not suggest Sculptra is appropriate for patients unwilling to commit to a treatment series. |
-| **evidence_level** | weak (expert consensus only; FDA Sculptra label: combination use not evaluated in controlled clinical trials) |
-| **citations** | FDA labels (Botox Cosmetic, Sculptra Aesthetic); FDA Sculptra label combination caveat disclosed |
+**Patient-Facing Name:** Smooth & Glow
+**One-Line Positioning:** Botox reduces expression lines while SKINVIVE improves the overall cheek skin smoothness that neurotoxin cannot address.
+
+**Why Together:** Botox and SKINVIVE address completely different aspects of skin appearance. Botox reduces movement-caused lines; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA hydration.
+
+**Staff Close:** When a patient is focused on looking refreshed: 'Botox can help with the expression lines -- frown lines, crow's feet, forehead. But some patients tell us even after Botox, their skin still doesn't look as vibrant as they'd like. SKINVIVE isn't a filler in the traditional sense -- it doesn't add volume or fill wrinkles. It hydrates the skin from within using microdroplets, improving cheek skin smoothness.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not overstate the evidence for this combination -- expert consensus only
+- Do not describe SKINVIVE's FDA indication beyond cheek skin smoothness
+- Do not guarantee specific 'glow' outcomes
+
+**Citations:** FDA labels (Botox Cosmetic, SKINVIVE); Expert consensus only -- no published controlled trial for BoNT-A + microdroplet HA
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/canonical_batch.md` -- Pair 5
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 7: Daxxify + Sculptra Aesthetic
+### 6. Botox Cosmetic + Sculptra Aesthetic
 
-**pair_key:** `daxxify__sculptra_aesthetic`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_neurotoxin_sculptra_batch.md` — Pair 2
-**FLAG: Weak evidence; FDA Sculptra combination caveat; Daxxify extended-duration differentiator**
+**Batch:** common_neurotoxin_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Rebuild |
-| **one_line_positioning** | Daxxify's ~6-month extended duration reduces annual visits while Sculptra builds collagen structure over months — two orthogonal mechanisms on compatible timelines. |
-| **why_together** | Both Daxxify and Sculptra operate over months: Daxxify's peptide exchange technology for ~6-month neuromodulation, Sculptra's PLLA for gradual collagen stimulation. They address complementary aging concerns on aligned maintenance timelines. |
-| **staff_close** | Highlight the scheduling advantage: Daxxify's ~6-month duration means fewer neurotoxin visits; Sculptra's series fits within those longer intervals. Frame as provider-recommended based on patient's long-term goals. |
-| **do_not_say (pair_specific)** | (1) Do not claim Daxxify guarantees 6-month duration — clinical data shows ~6 months in trials, individual results vary. (2) Do not present this combination as 'FDA approved' as a combination. (3) Do not imply Sculptra is a one-visit treatment — the series requires 2-3 sessions. (4) Do not say Daxxify has been 'proven better' than other neurotoxins for this combination. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Daxxify, Sculptra Aesthetic); expert consensus |
+**Patient-Facing Name:** Smooth & Rebuild
+**One-Line Positioning:** Botox relaxes expression lines immediately while Sculptra supports collagen production over months -- addressing two different aspects of aging on different timelines.
+
+**Why Together:** Botox and Sculptra address two fundamentally different aspects of aging through orthogonal mechanisms. Botox delivers immediate, reversible neuromodulation; Sculptra delivers gradual, durable collagen stimulation.
+
+**Staff Close:** When a patient is concerned about both expression lines and overall facial volume loss: 'There are really two different things happening. The lines around your eyes and forehead are from muscle movement -- that's what Botox addresses. But the overall loss of fullness and structure is from collagen breakdown over time. Sculptra works gradually to support collagen production.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' or 'FDA approved' as a combination
+- Do not say Sculptra 'replaces a facelift' or is a 'non-surgical facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not guarantee collagen stimulation outcomes
+
+**Same-session:** Conditional -- FDA Sculptra label notes combination use not evaluated in controlled clinical trials
+
+**Citations:** FDA labels (Botox Cosmetic, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` -- Pair 1
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 8: Dysport + Sculptra Aesthetic
+### 7. Daxxify + Sculptra Aesthetic
 
-**pair_key:** `dysport__sculptra_aesthetic`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_neurotoxin_sculptra_batch.md` — Pair 3
-**FLAG: Weak evidence; FDA Sculptra combination caveat**
+**Batch:** common_neurotoxin_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Rebuild (Dysport) |
-| **one_line_positioning** | Dysport relaxes expression lines through neuromodulation while Sculptra builds collagen structure over months — addressing movement-caused lines and structural aging separately. |
-| **why_together** | Dysport and Sculptra target orthogonal mechanisms. Dysport (abobotulinumtoxinA) addresses dynamic lines; Sculptra (PLLA) addresses collagen-loss-related volume decline. |
-| **staff_close** | Frame as a dual-timeline plan. "Dysport helps right away with the expression lines. Sculptra works over several months to build collagen support. They address different parts of the aging process." |
-| **do_not_say (pair_specific)** | (1) Do not claim the combination is 'clinically proven' — FDA Sculptra caveat applies. (2) Do not describe Sculptra as a filler or imply immediate results. (3) Do not suggest the combination is a standard protocol — frame as provider-recommended. (4) Do not compare Dysport to other neurotoxins in this context. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Dysport, Sculptra Aesthetic); FDA Sculptra combination caveat |
+**Patient-Facing Name:** Long-Lasting Smooth & Rebuild
+**One-Line Positioning:** Daxxify's extended ~6-month duration means fewer toxin visits per year, while Sculptra supports collagen production over months -- a low-visit-count long-term aging plan.
+
+**Why Together:** Daxxify addresses dynamic expression lines with ~6-month extended duration; Sculptra stimulates collagen over months. Daxxify's reduced visit frequency simplifies scheduling around Sculptra sessions.
+
+**Staff Close:** When a patient values fewer visits: 'There are two different things happening with aging. The lines from expressions -- that's what Daxxify addresses. It uses a peptide formulation that tends to last about six months. The loss of fullness and firmness is from collagen breakdown over time -- Sculptra addresses that gradually.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not guarantee Daxxify's 6-month duration as absolute
+
+**Same-session:** Conditional -- FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Daxxify, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` -- Pair 2
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 9: Jeuveau + Sculptra Aesthetic
+### 8. Dysport + Sculptra Aesthetic
 
-**pair_key:** `jeuveau__sculptra_aesthetic`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_neurotoxin_sculptra_batch.md` — Pair 4
-**FLAG: Weak evidence; FDA Sculptra combination caveat; Jeuveau Hi-Pure technology differentiator**
+**Batch:** common_neurotoxin_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Rebuild (Jeuveau) |
-| **one_line_positioning** | Jeuveau reduces expression lines while Sculptra builds collagen structure — addressing dynamic wrinkles and structural aging through complementary mechanisms. |
-| **why_together** | Jeuveau (prabotulinumtoxinA-xvfs, Hi-Pure technology) provides neuromodulation for dynamic lines; Sculptra provides PLLA collagen stimulation for structural aging. Different mechanisms, different targets, different timelines. |
-| **staff_close** | "Jeuveau addresses the expression lines right away. Sculptra takes a different approach — it stimulates your own collagen production over time, which takes months to build but can last longer. They're addressing two different things." |
-| **do_not_say (pair_specific)** | (1) Do not imply Jeuveau has the same evidence base as Botox Cosmetic — Jeuveau has more limited post-market combination data. (2) Do not present this as a proven combination — FDA Sculptra caveat applies. (3) Do not call Sculptra a traditional filler. (4) Do not oversell Jeuveau's Hi-Pure technology as a clinical differentiator for this combination. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Jeuveau, Sculptra Aesthetic); expert consensus |
+**Patient-Facing Name:** Fast Smooth & Rebuild
+**One-Line Positioning:** Dysport's fast-onset broad coverage addresses expression lines quickly while Sculptra supports collagen production over months.
+
+**Why Together:** Dysport's broader diffusion pattern addresses dynamic expression lines across large areas quickly; Sculptra stimulates collagen for structural improvement over months. Both Galderma products.
+
+**Staff Close:** When a patient is concerned about both expression lines and overall facial structure: 'There are really two different things happening. The lines around your eyes and across your forehead are from muscle movement -- Dysport addresses that. But the overall loss of fullness and firmness is from collagen breaking down over time. Sculptra works gradually to support collagen production.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate Galderma ecosystem benefits as clinical benefits
+
+**Same-session:** Conditional -- FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Dysport, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` -- Pair 3
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 10: Xeomin + Sculptra Aesthetic
+### 9. Jeuveau + Sculptra Aesthetic
 
-**pair_key:** `xeomin__sculptra_aesthetic`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_neurotoxin_sculptra_batch.md` — Pair 5
-**FLAG: Weak evidence; FDA Sculptra combination caveat; Xeomin accessory-protein immunogenicity language requires hedging**
+**Batch:** common_neurotoxin_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Rebuild (Xeomin) |
-| **one_line_positioning** | Xeomin's 'naked' incobotulinumtoxinA formulation reduces expression lines while Sculptra builds collagen structure — two orthogonal mechanisms on different timelines. |
-| **why_together** | Xeomin (incobotulinumtoxinA, no accessory proteins) provides neuromodulation; Sculptra (PLLA) provides collagen stimulation. The accessory-protein-free formulation is a provider consideration for some patients, not a guaranteed advantage. |
-| **staff_close** | "Xeomin addresses the expression lines. For some providers, Xeomin's formulation — it has no added proteins — is a consideration worth discussing. Sculptra works separately over months to support collagen production. They address different aspects of aging." |
-| **do_not_say (pair_specific)** | (1) Do not say Xeomin is 'less likely' to cause antibody formation — accessory-protein-free is a consideration some providers weigh, not a guarantee against antibody formation. (2) Do not present the combination as 'FDA approved' or 'proven'. (3) Do not describe Sculptra as filling lines or providing immediate results. (4) Do not oversell Xeomin immunogenicity claims as clinical superiority. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Xeomin, Sculptra Aesthetic); expert consensus |
+**Patient-Facing Name:** Smooth & Rebuild (Jeuveau)
+**One-Line Positioning:** Jeuveau's aesthetics-only neurotoxin addresses expression lines while Sculptra supports collagen production over months.
+
+**Why Together:** Jeuveau addresses dynamic expression lines through standard BoNT-A mechanism; Sculptra stimulates collagen production. Jeuveau-specific combination evidence is more limited than other neurotoxins.
+
+**Staff Close:** The neurotoxin + biostimulator rationale applies to Jeuveau the same way it does to any neurotoxin. 'Jeuveau addresses the lines from muscle movement. Sculptra supports collagen production over time. They work at different depths and on different timelines.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate Jeuveau's evidence base for this pairing
+
+**Same-session:** Conditional -- FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Jeuveau, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` -- Pair 4
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 11: Daxxify + SKINVIVE by Juvederm
+### 10. Xeomin + Sculptra Aesthetic
 
-**pair_key:** `daxxify__skinvive_by_juvederm`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** true
-**Batch file:** `common_neurotoxin_skinvive_batch.md` — Pair 1
-**FLAG: Weak evidence; scheduling alignment story (both ~6 months)**
+**Batch:** common_neurotoxin_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Glow |
-| **one_line_positioning** | Daxxify's ~6-month duration and SKINVIVE's ~6-month skin quality improvement align on a convenient shared maintenance schedule — addressing expression lines and skin smoothness in two visits per year. |
-| **why_together** | Daxxify reduces expression lines with extended ~6-month duration; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA. Different mechanisms, different tissue targets. Both have ~6-month maintenance cycles — a practical scheduling alignment. |
-| **staff_close** | "Both Daxxify and SKINVIVE last about six months, so you could potentially schedule maintenance for both on the same visit about twice a year." Plus clarify what SKINVIVE is: "It doesn't add volume the way cheek or lip fillers do." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a traditional filler that adds volume. (2) Do not overstate Daxxify duration guarantee — "approximately 6 months" not guaranteed. (3) Do not claim this combination has specific published evidence — expert consensus only. (4) Do not suggest the cross-brand nature (Revance + Allergan) affects clinical compatibility. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Daxxify, SKINVIVE); accepted clinical practice |
+**Patient-Facing Name:** Pure Smooth & Rebuild
+**One-Line Positioning:** Xeomin's purified formulation addresses expression lines while Sculptra supports collagen production -- a long-term aging plan that some providers consider when protein-free neurotoxin is relevant.
+
+**Why Together:** Xeomin's accessory-protein-free formulation is a consideration some providers weigh for long-term neurotoxin use; Sculptra's collagen stimulation is also a long-term structural investment. Complementary timelines and mechanisms.
+
+**Staff Close:** When discussing Xeomin + Sculptra, the key angle is long-term planning. 'Xeomin is a pure-form neurotoxin -- it's been processed to remove the accessory proteins, which may reduce the chance of your body building resistance over time. Xeomin handles the expression lines; Sculptra supports the underlying structure.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration, not superiority
+
+**Same-session:** Conditional -- FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Xeomin, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_sculptra_batch.md` -- Pair 5
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 12: Dysport + SKINVIVE by Juvederm
+### 11. Daxxify + SKINVIVE by Juvederm
 
-**pair_key:** `dysport__skinvive_by_juvederm`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** true
-**Batch file:** `common_neurotoxin_skinvive_batch.md` — Pair 2
-**FLAG: Weak evidence; SKINVIVE-is-not-a-filler clarification required**
+**Batch:** common_neurotoxin_skinvive_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Glow (Dysport) |
-| **one_line_positioning** | Dysport reduces expression lines while SKINVIVE improves cheek skin smoothness — different mechanisms addressing different aspects of appearance. |
-| **why_together** | Dysport reduces dynamic expression lines through neuromodulation; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA hydration. No overlap in mechanism or tissue target. |
-| **staff_close** | "Dysport can help with the expression lines. SKINVIVE is completely different from a traditional filler — it uses tiny microdroplets just under the skin to improve skin quality and cheek smoothness, not to add volume." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a traditional volume filler. (2) Do not claim this combination has controlled trial evidence — expert consensus only. (3) Do not compare Dysport to other neurotoxins in this conversation. (4) Do not describe SKINVIVE's indication beyond cheek skin smoothness. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Dysport, SKINVIVE); accepted clinical practice |
+**Patient-Facing Name:** Long-Lasting Smooth & Glow
+**One-Line Positioning:** Daxxify's ~6-month duration and SKINVIVE's ~6-month skin quality improvement align on a convenient shared maintenance schedule.
+
+**Why Together:** Daxxify reduces expression lines with extended ~6-month duration; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA. Both have ~6-month maintenance cycles -- practical scheduling alignment.
+
+**Staff Close:** Two key points. First, clarify what SKINVIVE is: 'SKINVIVE doesn't add volume the way cheek or lip fillers do. It uses microdroplets to improve the quality and smoothness of your skin itself.' Second, the scheduling convenience: 'Both last about six months, so you could potentially schedule maintenance for both on the same visit about twice a year.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not overstate the evidence -- expert consensus only
+- Do not describe SKINVIVE's indication beyond cheek skin smoothness
+- Do not guarantee specific 'glow' outcomes
+
+**Citations:** FDA labels (Daxxify, SKINVIVE); Expert consensus only
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_skinvive_batch.md` -- Pair 1
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 13: Jeuveau + SKINVIVE by Juvederm
+### 12. Dysport + SKINVIVE by Juvederm
 
-**pair_key:** `jeuveau__skinvive_by_juvederm`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** true
-**Batch file:** `common_neurotoxin_skinvive_batch.md` — Pair 3
-**FLAG: Weak evidence; SKINVIVE-is-not-a-filler clarification required**
+**Batch:** common_neurotoxin_skinvive_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Glow (Jeuveau) |
-| **one_line_positioning** | Jeuveau reduces expression lines while SKINVIVE improves cheek skin smoothness — two distinct mechanisms addressing different patient concerns. |
-| **why_together** | Jeuveau addresses dynamic expression lines; SKINVIVE addresses cheek skin quality through intradermal microdroplet HA. Orthogonal mechanisms at different tissue levels. |
-| **staff_close** | "Jeuveau helps with the expression lines. SKINVIVE is different — it's placed just under the skin's surface as tiny microdroplets to improve the quality and smoothness of the skin itself. Not a volume treatment." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a traditional filler. (2) Do not imply Jeuveau has the same evidence base as longer-established neurotoxins for this context. (3) Do not overstate evidence — expert consensus only. (4) Do not describe SKINVIVE's FDA indication beyond cheek skin smoothness in adults over 21. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Jeuveau, SKINVIVE); accepted clinical practice |
+**Patient-Facing Name:** Fast Smooth & Glow
+**One-Line Positioning:** Dysport's fast-onset broad coverage addresses expression lines while SKINVIVE improves cheek skin smoothness.
+
+**Why Together:** Dysport's broader diffusion treats dynamic expression lines across the upper face quickly; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA. Different tissues, different concerns, different mechanisms.
+
+**Staff Close:** 'Dysport addresses the expression lines on your forehead and around your eyes by relaxing the muscles that cause them. SKINVIVE does something completely different -- it uses microdroplets of hyaluronic acid placed just under the surface to improve skin smoothness. It's more like a skin quality treatment than a filler.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not overstate the evidence -- expert consensus only
+- Do not describe SKINVIVE's indication beyond cheek skin smoothness
+- Do not overstate Galderma ecosystem benefits as clinical benefits
+
+**Citations:** FDA labels (Dysport, SKINVIVE); Expert consensus only
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_skinvive_batch.md` -- Pair 2
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 14: Xeomin + SKINVIVE by Juvederm
+### 13. Jeuveau + SKINVIVE by Juvederm
 
-**pair_key:** `xeomin__skinvive_by_juvederm`
-**Tier:** common | **Evidence:** **weak** | **Same Session OK:** true
-**Batch file:** `common_neurotoxin_skinvive_batch.md` — Pair 4
-**FLAG: Weak evidence; SKINVIVE-is-not-a-filler clarification required**
+**Batch:** common_neurotoxin_skinvive_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Glow (Xeomin) |
-| **one_line_positioning** | Xeomin reduces expression lines while SKINVIVE improves cheek skin smoothness — orthogonal mechanisms with no tissue-level overlap. |
-| **why_together** | Xeomin's accessory-protein-free formulation provides neuromodulation; SKINVIVE provides intradermal microdroplet HA skin quality improvement. Different targets, different timelines. |
-| **staff_close** | "Xeomin addresses the expression lines. SKINVIVE works on the skin's surface quality — not volume, not lines specifically, but the overall smoothness and hydration of the cheek skin itself. Very different from a traditional filler." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a volume filler. (2) Do not use Xeomin's accessory-protein-free status as a superiority claim. (3) Do not claim product-specific evidence for this pair. (4) Do not describe SKINVIVE beyond its FDA indication scope. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Xeomin, SKINVIVE); accepted clinical practice |
+**Patient-Facing Name:** Smooth & Glow (Jeuveau)
+**One-Line Positioning:** Jeuveau's aesthetics-only neurotoxin relaxes expression lines while SKINVIVE improves cheek skin smoothness -- two newer-generation products addressing different aspects of skin appearance.
+
+**Why Together:** Jeuveau addresses dynamic expression lines through prabotulinumtoxinA neuromodulation; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA. Different mechanisms, different tissue targets, no overlap.
+
+**Staff Close:** Two important things. First, Jeuveau is designed specifically for cosmetic use -- it relaxes the muscles that cause expression lines. Second, SKINVIVE is not a traditional filler: 'It doesn't add volume to your cheeks or lips. It uses microdroplets to improve your skin's overall quality.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not overstate the evidence -- expert consensus only
+- Do not describe SKINVIVE's indication beyond cheek skin smoothness
+- Do not overstate Jeuveau's evidence base
+
+**Citations:** FDA labels (Jeuveau, SKINVIVE); Expert consensus only
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_skinvive_batch.md` -- Pair 3
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 15: Juvederm Vollure XC + Sculptra Aesthetic
+### 14. Xeomin + SKINVIVE by Juvederm
 
-**pair_key:** `juvederm_vollure_xc__sculptra_aesthetic`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_ha_sculptra_batch.md` — Pair 1
-**FLAG: Conditional tier; overlapping tissue territory; sequential staging preferred; FDA Sculptra caveat**
+**Batch:** common_neurotoxin_skinvive_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Restore & Rebuild (Vollure) |
-| **one_line_positioning** | Vollure addresses the static mid-depth volume loss in nasolabial folds while Sculptra builds deeper collagen scaffolding — complementary corrections at different tissue depths. |
-| **why_together** | Vollure (VYCROSS HA) provides immediate mid-depth volume correction; Sculptra (PLLA) stimulates gradual deep collagen scaffolding. Different mechanisms, different depths. Sequencing matters — Sculptra first or staged protocols recommended. |
-| **staff_close** | Frame sequencing carefully: "These two products work at different depths. Sculptra builds structure over time; Vollure addresses more immediate volume. Your provider may recommend starting with Sculptra and adding Vollure as results develop, or spacing them out." |
-| **do_not_say (pair_specific)** | (1) Do not suggest these are always same-session compatible — overlapping tissue territory; provider judgment required. (2) Do not claim Sculptra is a filler in the HA sense. (3) Do not claim FDA-proven combination use. (4) Do not imply Vollure can be added to fresh Sculptra at the same injection site. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Vollure XC, Sculptra Aesthetic); FDA Sculptra combination caveat; expert consensus |
+**Patient-Facing Name:** Pure Smooth & Glow
+**One-Line Positioning:** Xeomin's purified formulation addresses expression lines while SKINVIVE improves cheek skin smoothness -- wrinkle relaxation and skin quality through completely different mechanisms.
+
+**Why Together:** Xeomin addresses dynamic expression lines with a purified formulation; SKINVIVE improves cheek skin smoothness through intradermal microdroplet HA. Different mechanisms, different tissue targets.
+
+**Staff Close:** Two distinct stories. On Xeomin: 'It's the pure neurotoxin -- just the active ingredient without complexing proteins. Some providers consider this for patients planning long-term neurotoxin use.' On SKINVIVE: 'This is not a filler in the traditional sense. SKINVIVE uses microdroplets placed in the skin itself to improve cheek skin smoothness.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not overstate the evidence -- expert consensus only
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration
+- Do not describe SKINVIVE's indication beyond cheek skin smoothness
+
+**Citations:** FDA labels (Xeomin, SKINVIVE); Expert consensus only
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_neurotoxin_skinvive_batch.md` -- Pair 4
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 16: Juvederm Voluma XC + Sculptra Aesthetic
+### 15. Juvederm Vollure XC + Sculptra Aesthetic
 
-**pair_key:** `juvederm_voluma_xc__sculptra_aesthetic`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_ha_sculptra_batch.md` — Pair 2
-**FLAG: Conditional tier; deep cheek overlap; sequential staging preferred**
+**Batch:** common_ha_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Lift & Rebuild |
-| **one_line_positioning** | Voluma provides deep cheek structure immediately while Sculptra builds collagen scaffolding over months — complementary approaches to midface aging. |
-| **why_together** | Voluma (deep supraperiosteal placement) provides immediate structural cheek volume; Sculptra builds long-term collagen support. Both affect the midface, but at different depths and through different mechanisms. Sequencing protocol is clinically important. |
-| **staff_close** | "Voluma gives structural support to the cheeks right away. Sculptra takes a different approach — it stimulates collagen over months. Your provider may stage these: Sculptra first to build the foundation, then Voluma when the collagen scaffolding is underway." |
-| **do_not_say (pair_specific)** | (1) Do not describe same-session use as standard — deep cheek overlap requires provider judgment. (2) Do not imply the two products are fully independent in the cheek area. (3) Do not present FDA-proven combination status. (4) Do not guarantee Sculptra collagen timeline. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Voluma XC, Sculptra Aesthetic); FDA Sculptra combination caveat; expert consensus |
+**Patient-Facing Name:** Rebuild & Refine (NLF)
+**One-Line Positioning:** Sculptra builds collagen support in the midface over months while Vollure provides precise nasolabial fold correction -- address the cause and the visible crease.
+
+**Why Together:** Sculptra addresses the underlying collagen loss that causes nasolabial folds to deepen; Vollure provides immediate correction of the fold crease itself. One addresses the cause, the other the visible result.
+
+**Staff Close:** 'Those fold lines often deepen because the midface above them is losing volume and structure. If we only fill the fold itself, we're treating the symptom. Sculptra supports collagen production in the midface -- that's addressing the cause. Vollure then smooths whatever fold remains.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate Vollure's role as addressing the root cause
+
+**Same-session:** Conditional -- sequential staging preferred; FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Vollure XC, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` -- Pair 1
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 17: Restylane Lyft + Sculptra Aesthetic
+### 16. Juvederm Voluma XC + Sculptra Aesthetic
 
-**pair_key:** `restylane_lyft__sculptra_aesthetic`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_ha_sculptra_batch.md` — Pair 3
-**FLAG: Conditional tier; cross-brand (Galderma + Allergan); sequential staging preferred**
+**Batch:** common_ha_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Restore & Rebuild (Restylane) |
-| **one_line_positioning** | Restylane Lyft provides immediate midface or hand volume correction while Sculptra builds collagen structure — addressing immediate and long-term volume needs separately. |
-| **why_together** | Restylane Lyft (NASHA HA, midface + hand) provides immediate volume; Sculptra (PLLA) provides gradual collagen biostimulation. Cross-brand (Galderma + Allergan) — clinically irrelevant to mechanism; no shared loyalty programs. |
-| **staff_close** | "Restylane Lyft addresses volume right away. Sculptra is a longer-term approach — it works with your body to build collagen support over months. They solve the same broader problem from two different angles and timelines." |
-| **do_not_say (pair_specific)** | (1) Do not claim FDA-proven combination status. (2) Do not imply the cross-brand nature creates a clinical concern — it doesn't. (3) Do not describe Sculptra as providing immediate correction. (4) Do not suggest same-session is always appropriate in the midface — tissue overlap requires provider judgment. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (Restylane Lyft, Sculptra Aesthetic); FDA Sculptra combination caveat; expert consensus |
+**Patient-Facing Name:** Rebuild & Contour (Cheek)
+**One-Line Positioning:** Sculptra builds collagen in the midface foundation over months while Voluma provides immediate structural cheek contouring -- deep structure from two complementary pathways.
+
+**Why Together:** Sculptra addresses the collagen infrastructure supporting the midface; Voluma provides the structural scaffold on top. Different depths, different timelines, different mechanisms.
+
+**Staff Close:** 'There's the underlying structure -- the collagen that's been thinning over time -- and then there's the specific contour and definition. Sculptra supports that underlying collagen production gradually. Voluma gives you the precise cheek sculpting on top of a stronger foundation.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate immediate results from the combination
+
+**Same-session:** Conditional -- sequential staging preferred; FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Voluma XC, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` -- Pair 2
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 18: RHA Redensity + Sculptra Aesthetic
+### 17. Restylane Lyft + Sculptra Aesthetic
 
-**pair_key:** `rha_redensity__sculptra_aesthetic`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_ha_sculptra_batch.md` — Pair 4
-**FLAG: Conditional tier; perioral + biostimulator is an unusual anatomical pairing**
+**Batch:** common_ha_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Soften & Rebuild (Perioral) |
-| **one_line_positioning** | RHA Redensity addresses perioral fine lines while Sculptra builds deeper facial collagen structure — treating surface-level lines and underlying collagen loss through different mechanisms. |
-| **why_together** | RHA Redensity (resilient HA for perioral zone) treats superficial perioral rhytids; Sculptra builds deeper collagen scaffolding for facial volume support. Different depths, different zones, different timelines. |
-| **staff_close** | "RHA Redensity is designed specifically for the fine lines around your mouth. Sculptra works at a deeper level over months to build collagen support across the face. The perioral area and the structural collagen are two different things." |
-| **do_not_say (pair_specific)** | (1) Do not imply Sculptra is appropriate for superficial perioral rhytids — it works at a deeper level. (2) Do not claim FDA-proven combination status. (3) Do not overstate RHA maintenance duration — perioral zone typically requires more frequent retreatment. (4) Do not suggest same-session is standard without provider assessment. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (RHA Redensity, Sculptra Aesthetic); expert consensus |
+**Patient-Facing Name:** Rebuild & Structure (Galderma)
+**One-Line Positioning:** Sculptra and Restylane Lyft are both Galderma products addressing complementary aspects of midface and hand aging -- collagen stimulation and immediate structural correction.
+
+**Why Together:** Both Galderma products working through different mechanisms at different tissue depths. Sculptra stimulates collagen gradually; Lyft provides immediate structural correction.
+
+**Staff Close:** 'Sculptra supports collagen production gradually. Lyft gives you the immediate midface structure -- the cheekbone definition and lift. Starting with collagen support means the contouring filler sits on a stronger base and you may need less of it.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate Galderma ecosystem benefits as clinical benefits
+
+**Same-session:** Conditional -- sequential staging preferred; FDA Sculptra combination caveat
+
+**Citations:** FDA labels (Restylane Lyft, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` -- Pair 3
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 19: SKINVIVE by Juvederm + Sculptra Aesthetic
+### 18. RHA Redensity + Sculptra Aesthetic
 
-**pair_key:** `skinvive_by_juvederm__sculptra_aesthetic`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_ha_sculptra_batch.md` — Pair 5
-**FLAG: Conditional tier; both microdroplet HA and PLLA are intradermal/subdermal; no combination data exists**
+**Batch:** common_ha_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Glow & Rebuild |
-| **one_line_positioning** | SKINVIVE improves cheek skin quality while Sculptra builds deeper collagen structure — treating skin surface quality and structural collagen loss through distinct mechanisms. |
-| **why_together** | SKINVIVE (intradermal microdroplet HA, skin quality) operates at the skin surface level; Sculptra (PLLA, subdermal) builds deeper collagen scaffolding. Different product categories, different depths, different outcomes. |
-| **staff_close** | "SKINVIVE improves the skin's smoothness and quality from within the skin itself. Sculptra works deeper — it stimulates your own collagen production over months. They're doing very different things at different levels." |
-| **do_not_say (pair_specific)** | (1) Do not describe SKINVIVE as a traditional filler. (2) Do not claim FDA-proven combination use — no combination data for SKINVIVE + Sculptra. (3) Do not suggest same-session as routine for this pairing — provider assessment of tissue response required. (4) Do not imply Sculptra and SKINVIVE address the same problem. |
-| **evidence_level** | weak |
-| **citations** | FDA labels (SKINVIVE, Sculptra Aesthetic); expert consensus |
+**Patient-Facing Name:** Rebuild & Refine (Perioral)
+**One-Line Positioning:** Sculptra builds collagen support in the perioral region over months while RHA Redensity's resilient HA directly smooths fine lines in this high-movement area.
+
+**Why Together:** Sculptra addresses the underlying collagen loss; RHA Redensity's resilient HA is specifically designed for the dynamic perioral zone, flexing with movement rather than resisting it. Complementary approaches.
+
+**Staff Close:** 'Perioral lines form for two reasons: the skin is constantly moving there, and the underlying collagen support has thinned over time. RHA Redensity is a resilient HA designed for dynamic areas. Sculptra supports the deeper collagen production that the perioral region needs.'
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination is 'proven' as a combination
+- Do not say Sculptra 'replaces a facelift'
+- Do not minimize the FDA Sculptra combination caveat
+- Do not overstate RHA Redensity's role in replacing Sculptra's collagen stimulation
+
+**Same-session:** Conditional -- perioral bruising risk should inform staging decision; FDA Sculptra combination caveat
+
+**Citations:** FDA labels (RHA Redensity, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` -- Pair 4
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 20: Daxxify + Juvederm Vollure XC
+### 19. SKINVIVE by Juvederm + Sculptra Aesthetic
 
-**pair_key:** `daxxify__juvederm_vollure_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 1
+**Batch:** common_ha_sculptra_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Restore |
-| **one_line_positioning** | Daxxify's extended-duration neuromodulation reduces annual visit frequency while Vollure addresses the nasolabial fold volume loss that neurotoxin cannot correct. |
-| **why_together** | Daxxify addresses movement-caused lines with ~6-month duration; Vollure restores mid-depth nasolabial fold volume that muscle relaxation cannot correct. Different tissue layers, different mechanisms. |
-| **staff_close** | Highlight the scheduling advantage: Daxxify's extended duration reduces how often they need to come in for wrinkle-relaxer visits while Vollure addresses the separate volume concern. |
-| **do_not_say (pair_specific)** | (1) Do not guarantee Daxxify's 6-month duration. (2) Do not imply the cross-brand pairing (Revance + Allergan) raises clinical concerns. (3) Do not claim product-specific evidence for this cross-brand pair — evidence is category-level. (4) Do not call this a 'liquid facelift'. |
-| **evidence_level** | moderate (category-level: DOI 10.1097/DSS.0000000000000754) |
+**Patient-Facing Name:** Deep Rebuild & Surface Glow
+**One-Line Positioning:** Sculptra builds collagen from deep structural layers while SKINVIVE improves surface skin quality -- an inside-out layered approach to skin aging.
+
+**Why Together:** Sculptra works subdermally to stimulate collagen from deep within; SKINVIVE works intradermally to improve surface skin quality. Different layers, different purposes.
+
+**Staff Close:** 'SKINVIVE is NOT a volume filler. Sculptra and SKINVIVE do completely different things at different depths. Sculptra supports collagen production deep in your skin -- the foundation. SKINVIVE improves the surface -- hydration, smoothness, skin quality. One is structural, the other is finishing.'
+
+**Do Not Say (pair-specific):**
+- Do not describe SKINVIVE as a filler that 'adds volume'
+- Do not claim this combination is 'proven' as a combination
+- Do not minimize the FDA Sculptra combination caveat
+- Do not guarantee specific 'glow' outcomes
+
+**Same-session:** Conditional -- different tissue depths; FDA Sculptra combination caveat
+
+**Citations:** FDA labels (SKINVIVE, Sculptra Aesthetic); FDA Sculptra combination caveat disclosed
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_ha_sculptra_batch.md` -- Pair 5
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 21: Daxxify + Juvederm Voluma XC
+### 20. Daxxify + Juvederm Vollure XC
 
-**pair_key:** `daxxify__juvederm_voluma_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 2
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Lift |
-| **one_line_positioning** | Daxxify's extended duration reduces neurotoxin visit frequency while Voluma restores deep cheek structure that neuromodulation cannot address. |
-| **why_together** | Daxxify provides extended (~6-month) neuromodulation for dynamic lines; Voluma provides deep supraperiosteal cheek volume restoration. They operate at different tissue layers with different mechanisms. |
-| **staff_close** | Extended-duration scheduling story combined with the cheek-structure explanation. Daxxify handles the expression lines with fewer visits; Voluma handles the structural midface aging separately. |
-| **do_not_say (pair_specific)** | (1) Do not guarantee Daxxify duration. (2) Do not describe Voluma as 'lifting' in a surgical sense. (3) Do not claim product-specific evidence for this cross-brand pair. (4) Do not imply this is a marketed package. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Long-Lasting Smooth & Restore
+**One-Line Positioning:** Daxxify's extended-duration neuromodulation reduces annual visit frequency while Vollure addresses the nasolabial fold volume loss that neurotoxin cannot correct.
+
+**Why Together:** Daxxify addresses movement-caused lines with approximately 6-month duration; Vollure restores mid-depth volume in nasolabial folds. Different tissue layers and aging mechanisms.
+
+**Staff Close:** 'Daxxify uses a peptide technology that helps it last about six months -- so instead of coming in three or four times a year, you may only need two visits. Vollure addresses the deeper lines around your nose and mouth, and it typically lasts about 18 months.'
+
+**Do Not Say (pair-specific):**
+- Do not guarantee Daxxify's 6-month duration as universal
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not overstate Daxxify evidence relative to Botox
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Daxxify, Vollure XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 1
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 22: Daxxify + Restylane Lyft
+### 21. Daxxify + Juvederm Voluma XC
 
-**pair_key:** `daxxify__restylane_lyft`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 3
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Restore (Restylane) |
-| **one_line_positioning** | Daxxify's extended neurotoxin duration reduces visit frequency while Restylane Lyft addresses midface or hand volume through a complementary mechanism. |
-| **why_together** | Daxxify neuromodulation (extended duration) + Restylane Lyft structural volume (midface/hands). Cross-brand (Revance + Galderma). Clinically mechanism-based, not brand-based. |
-| **staff_close** | Extended-duration scheduling advantage + volume complement. Lyft's unique hand indication may be relevant for some patients. |
-| **do_not_say (pair_specific)** | (1) Do not guarantee Daxxify duration. (2) Do not imply cross-brand is a clinical issue. (3) Do not overpromise evidence strength — category-level only. (4) Do not suggest Lyft provides the same depth as deep-plane products. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Long-Lasting Smooth & Lift
+**One-Line Positioning:** Daxxify's extended neuromodulation reduces annual visit frequency while Voluma restores the deep cheek structure that muscle relaxation cannot address.
+
+**Why Together:** Daxxify addresses movement-caused lines with ~6-month duration; Voluma restores deep structural cheek volume. Different tissue layers.
+
+**Staff Close:** 'Daxxify relaxes expression lines and lasts about six months -- so about two visits a year instead of three or four. Voluma restores cheek structure and can last up to two years. Together, these are two of the longer-duration options available.'
+
+**Do Not Say (pair-specific):**
+- Do not guarantee Daxxify's 6-month duration as universal
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not overstate Daxxify evidence relative to Botox
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Daxxify, Voluma XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 2
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 23: Daxxify + RHA Redensity
+### 22. Daxxify + Restylane Lyft
 
-**pair_key:** `daxxify__rha_redensity`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 4
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Long-Lasting Smooth & Soften (Perioral) |
-| **one_line_positioning** | Daxxify extends the interval between upper-face neurotoxin treatments while RHA Redensity addresses perioral fine lines in a complementary zone. |
-| **why_together** | Daxxify (upper face, extended duration) + RHA Redensity (perioral zone, resilient HA designed for high-mobility areas). Zone-based complementarity. |
-| **staff_close** | Extended duration + zone-based framing: "Daxxify handles the upper face with fewer visits per year; RHA Redensity specifically treats the fine lines around your mouth, which are in a completely different zone and require a different approach." |
-| **do_not_say (pair_specific)** | (1) Do not guarantee Daxxify duration. (2) Do not suggest Botox around the perioral area. (3) Do not imply RHA adds volume to lips — perioral rhytids treatment only. (4) Do not overstate evidence — category-level only. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Long-Lasting Smooth & Restore (Lyft)
+**One-Line Positioning:** Daxxify's extended neuromodulation pairs with Restylane Lyft's unique dual midface-and-hand indication.
+
+**Why Together:** Daxxify addresses movement-caused lines; Restylane Lyft restores structural midface or hand volume. Mechanism-based complementarity.
+
+**Staff Close:** 'Daxxify lasts about six months, so you'd come in about twice a year for the wrinkle relaxer. Restylane Lyft is one of the few fillers approved for both the midface and hands.'
+
+**Do Not Say (pair-specific):**
+- Do not guarantee Daxxify's 6-month duration as universal
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not state the combination is FDA approved as a combination
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Daxxify, Restylane Lyft)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 3
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 24: Dysport + Juvederm Vollure XC
+### 23. Daxxify + RHA Redensity
 
-**pair_key:** `dysport__juvederm_vollure_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 5
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Dysport) |
-| **one_line_positioning** | Dysport relaxes expression lines while Vollure restores mid-depth nasolabial fold volume through a complementary mechanism. |
-| **why_together** | Dysport (abobotulinumtoxinA, neuromodulation) + Vollure (VYCROSS HA, mid-depth NLF volume). Different mechanisms, different tissue layers, different aging concerns. Cross-brand (Galderma + Allergan). |
-| **staff_close** | Zone-based framing: Dysport for expression lines, Vollure for the static nasolabial fold lines that remain at rest — volume correction that neurotoxin can't provide. |
-| **do_not_say (pair_specific)** | (1) Do not state FDA-approved as a combination. (2) Do not call it a 'liquid facelift'. (3) Do not claim Dysport-specific evidence for this pairing. (4) Do not imply the cross-brand combination has a clinical disadvantage. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Long-Lasting Smooth & Soften (Perioral)
+**One-Line Positioning:** Daxxify's extended upper-face neuromodulation pairs with RHA Redensity's resilient perioral HA -- both from the Revance ecosystem.
+
+**Why Together:** Daxxify and RHA Redensity are both Revance products, creating ecosystem alignment. Daxxify addresses upper-face dynamic lines with extended duration; RHA Redensity's resilient HA is designed for perioral fine lines.
+
+**Staff Close:** 'Both Daxxify and RHA Redensity are Revance products, so patients can benefit from a single loyalty program. Daxxify addresses your expression lines and lasts about six months. RHA Redensity is a specialized filler for the fine lines around your mouth -- it's designed to move with your expressions.'
+
+**Do Not Say (pair-specific):**
+- Do not suggest Daxxify around the mouth
+- Do not imply RHA Redensity adds 'volume' to the lips
+- Do not overstate Revance ecosystem benefits as clinical benefits
+- Do not guarantee Daxxify's 6-month duration as universal
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Daxxify, RHA Redensity)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 4
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 25: Dysport + Juvederm Voluma XC
+### 24. Dysport + Juvederm Vollure XC
 
-**pair_key:** `dysport__juvederm_voluma_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 6
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Lift (Dysport) |
-| **one_line_positioning** | Dysport relaxes expression lines while Voluma restores deep cheek structure — addressing dynamic wrinkles and structural midface aging through orthogonal mechanisms. |
-| **why_together** | Dysport provides dynamic line reduction; Voluma provides deep cheek structural volume. Different mechanisms at different tissue depths. Cross-brand. |
-| **staff_close** | Upper-face expression lines (Dysport) + midface structural volume (Voluma) framing. Clearly separate concerns addressed by separate mechanisms. |
-| **do_not_say (pair_specific)** | Same category as #24: no combination FDA approval; no 'liquid facelift'; category-level evidence only. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Broad Smooth & Restore
+**One-Line Positioning:** Dysport's broad-diffusion pattern addresses large dynamic zones while Vollure softens the static nasolabial fold lines that neurotoxin cannot correct.
+
+**Why Together:** Dysport addresses movement-caused lines in broad facial zones; Vollure restores mid-depth volume in nasolabial folds. Different mechanisms at different tissue layers.
+
+**Staff Close:** 'The forehead and crow's feet lines come from muscle movement -- Dysport is designed for those areas and tends to work well across broader zones. The deeper lines around your nose and mouth are from volume loss -- that's where Vollure comes in.'
+
+**Do Not Say (pair-specific):**
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Dysport, Vollure XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 5
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 26: Dysport + Restylane Lyft
+### 25. Dysport + Juvederm Voluma XC
 
-**pair_key:** `dysport__restylane_lyft`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 7
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Dysport + Restylane) |
-| **one_line_positioning** | Dysport reduces expression lines while Restylane Lyft addresses midface or hand volume — two mechanisms targeting different aspects of aging. |
-| **why_together** | Dysport neuromodulation + Restylane Lyft structural volume (midface + hands). Both Galderma products — shared ecosystem, possible loyalty program overlap. |
-| **staff_close** | Galderma-family pairing: "Both Dysport and Restylane Lyft are from Galderma — if you're in their loyalty program, that's worth keeping in mind. More importantly, they work on completely different things..." |
-| **do_not_say (pair_specific)** | (1) Do not overstate brand synergy as a clinical benefit — it's a loyalty program consideration, not clinical. (2) No FDA combination approval. (3) Category-level evidence only. (4) Do not claim Lyft provides deeper restoration than its indicated use. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Broad Smooth & Lift
+**One-Line Positioning:** Dysport's broad-coverage neuromodulation addresses large dynamic zones while Voluma rebuilds the deep cheek foundation.
+
+**Why Together:** Dysport addresses movement-caused lines with broader diffusion; Voluma restores deep structural cheek volume. Different tissue layers.
+
+**Staff Close:** 'The lines on your forehead and around your eyes are from muscle movement -- Dysport addresses those by relaxing the muscles. But if your cheeks look flatter than they used to, that's structural volume loss. Voluma is designed specifically for deep cheek volume.'
+
+**Do Not Say (pair-specific):**
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not describe Voluma as 'lifting' in a surgical sense
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Dysport, Voluma XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 6
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 27: Dysport + RHA Redensity
+### 26. Dysport + Restylane Lyft
 
-**pair_key:** `dysport__rha_redensity`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 8
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Soften (Dysport + Perioral) |
-| **one_line_positioning** | Dysport reduces upper-face expression lines while RHA Redensity addresses perioral fine lines in a complementary anatomical zone. |
-| **why_together** | Dysport (upper face) + RHA Redensity (perioral, resilient HA for dynamic areas). Both Galderma products. Zone-based complementarity. |
-| **staff_close** | Zone explanation: upper-face expression lines vs perioral fine lines that persist in a high-mobility area requiring flexible HA. |
-| **do_not_say (pair_specific)** | (1) Do not suggest neurotoxin for the perioral zone. (2) Do not imply RHA adds volume to lips. (3) Category-level evidence only. (4) Do not claim RHA maintenance is the same interval as facial fillers in general. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Broad Smooth & Restore (Galderma)
+**One-Line Positioning:** Dysport and Restylane Lyft are both Galderma products addressing expression lines and structural volume through different mechanisms.
+
+**Why Together:** Both Galderma products. Dysport addresses movement-caused lines; Restylane Lyft restores structural midface or hand volume. Mechanism-based complementarity.
+
+**Staff Close:** 'Dysport and Restylane Lyft are both Galderma products, so patients can benefit from brand consistency and loyalty programs. Dysport works on the muscles that cause expression lines. Restylane Lyft addresses volume loss, and it's unique because it's approved for both midface volume and hands.'
+
+**Do Not Say (pair-specific):**
+- Do not overstate Galderma ecosystem benefits as clinical benefits
+- Do not state the combination is FDA approved as a combination
+- Do not dismiss or overstate the brand consistency angle
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Dysport, Restylane Lyft)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 7
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 28: Jeuveau + Juvederm Vollure XC
+### 27. Dysport + RHA Redensity
 
-**pair_key:** `jeuveau__juvederm_vollure_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 9
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Jeuveau) |
-| **one_line_positioning** | Jeuveau reduces expression lines while Vollure restores mid-depth nasolabial fold volume — complementary mechanisms for comprehensive facial rejuvenation. |
-| **why_together** | Jeuveau (prabotulinumtoxinA-xvfs, Hi-Pure) provides neuromodulation; Vollure (VYCROSS) provides mid-depth NLF volume. Cross-brand (Evolus + Allergan). |
-| **staff_close** | Standard zone-based framing. Note Jeuveau evidence limitation: "Jeuveau is a newer neurotoxin — it works the same way, though it has a shorter track record in combination use than older brands." |
-| **do_not_say (pair_specific)** | (1) Do not imply Jeuveau has the same combination evidence base as Botox. (2) No FDA combination approval. (3) Category-level evidence extrapolated. (4) Cross-brand combination is clinically fine. |
-| **evidence_level** | moderate (category-level; Jeuveau evidence limitation noted) |
+**Patient-Facing Name:** Broad Smooth & Soften (Perioral)
+**One-Line Positioning:** Dysport's broad-coverage neuromodulation addresses large upper-face zones while RHA Redensity refines the perioral fine lines that neurotoxin is not suited to treat.
+
+**Why Together:** Dysport addresses upper-face movement-caused lines with broader diffusion; RHA Redensity uses resilient HA for perioral fine lines and dynamic areas. Different zones, different mechanisms.
+
+**Staff Close:** 'The forehead and crow's feet lines are from muscle movement -- Dysport relaxes those muscles and works well across broad areas. The fine lines around your mouth are a different challenge. That area moves constantly, so it needs a filler that can flex with your expressions. RHA Redensity is designed specifically for those perioral lines.'
+
+**Do Not Say (pair-specific):**
+- Do not suggest Dysport around the mouth
+- Do not imply RHA Redensity adds 'volume' to the lips
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Dysport, RHA Redensity)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 8
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 29: Jeuveau + Juvederm Voluma XC
+### 28. Jeuveau + Juvederm Vollure XC
 
-**pair_key:** `jeuveau__juvederm_voluma_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 10
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Lift (Jeuveau) |
-| **one_line_positioning** | Jeuveau reduces dynamic expression lines while Voluma restores deep cheek structure — addressing movement-caused lines and structural midface aging. |
-| **why_together** | Jeuveau neuromodulation + Voluma deep cheek structural volume. Different tissue depths, different mechanisms. |
-| **staff_close** | Jeuveau handles dynamic lines; Voluma addresses the deep structural cheek volume loss that's separate from muscle movement. |
-| **do_not_say (pair_specific)** | (1) Do not present Jeuveau-specific evidence for this pairing. (2) Do not describe Voluma as a 'lift' in surgical terms. (3) Category-level evidence only. (4) No combination FDA approval. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Smooth & Restore (Jeuveau)
+**One-Line Positioning:** Jeuveau's aesthetics-only neuromodulation addresses dynamic expression lines while Vollure corrects the nasolabial fold volume loss.
+
+**Why Together:** Jeuveau addresses movement-caused lines; Vollure restores mid-depth volume in nasolabial folds. Mechanism-based complementarity.
+
+**Staff Close:** 'Jeuveau is sometimes called Newtox -- it's a wrinkle relaxer made specifically for cosmetic use. Vollure addresses the deeper lines around your nose and mouth that come from volume loss. It's specifically designed for nasolabial folds and tends to last about 18 months.'
+
+**Do Not Say (pair-specific):**
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not overstate Jeuveau's evidence base relative to Botox
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Jeuveau, Vollure XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 9
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 30: Jeuveau + Restylane Lyft
+### 29. Jeuveau + Juvederm Voluma XC
 
-**pair_key:** `jeuveau__restylane_lyft`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 11
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Jeuveau + Restylane) |
-| **one_line_positioning** | Jeuveau reduces expression lines while Restylane Lyft addresses midface or hand volume — two mechanisms at different tissue layers. |
-| **why_together** | Jeuveau (Evolus) neuromodulation + Restylane Lyft (Galderma) structural volume. Cross-brand. Clinically mechanism-based. |
-| **staff_close** | Zone explanation plus note: Lyft has a dual FDA indication (face and hands) that may be relevant if patients mention hand aging. |
-| **do_not_say (pair_specific)** | (1) Do not imply Jeuveau has the same long-term data as established neurotoxins. (2) No FDA combination approval. (3) Category-level evidence only. (4) Cross-brand is clinically neutral. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Relax & Restore
+**One-Line Positioning:** Jeuveau relaxes expression lines while Voluma rebuilds the cheek structure that supports the entire face.
+
+**Why Together:** Jeuveau relaxes muscles creating expression lines; Voluma restores deep structural cheek volume. Complementary tools for different aging mechanisms.
+
+**Staff Close:** Help patients separate the concerns: expression lines are from muscle movement (Jeuveau), cheek flatness is structural volume loss (Voluma) -- two different processes requiring two different solutions.
+
+**Do Not Say (pair-specific):**
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not overstate Jeuveau's evidence base relative to Botox
+- Do not describe Voluma as 'lifting' in a surgical sense
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Jeuveau, Voluma XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 10
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 31: Jeuveau + RHA Redensity
+### 30. Jeuveau + Restylane Lyft
 
-**pair_key:** `jeuveau__rha_redensity`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 12
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Soften (Jeuveau + Perioral) |
-| **one_line_positioning** | Jeuveau reduces upper-face expression lines while RHA Redensity softens perioral fine lines in a complementary zone. |
-| **why_together** | Jeuveau (upper face) + RHA Redensity (perioral zone, resilient HA). Zone-based complementarity — different anatomical areas, different mechanisms. |
-| **staff_close** | Zone framing: "Jeuveau for the upper face lines; RHA Redensity for the perioral area, which needs a flexible filler rather than a neurotoxin." |
-| **do_not_say (pair_specific)** | (1) Do not suggest neurotoxin for perioral rhytids. (2) Do not imply RHA is a lip filler. (3) Acknowledge Jeuveau evidence limits. (4) Category-level evidence only. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Relax & Lift
+**One-Line Positioning:** Jeuveau relaxes expression lines while Restylane Lyft restores midface volume and can address aging hands -- the only HA filler approved for both.
+
+**Why Together:** Jeuveau relaxes upper-face expression muscles; Restylane Lyft restores midface volume or hand volume. Lyft's dual indication extends this pairing to hand aging.
+
+**Staff Close:** Lyft is one of the only fillers approved for both the midface and hands -- if a patient mentions their hands as a concern, this is specifically indicated for that.
+
+**Do Not Say (pair-specific):**
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not state the combination is FDA approved as a combination
+- Do not overstate Jeuveau's evidence base relative to Botox
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Jeuveau, Restylane Lyft)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 11
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 32: Xeomin + Juvederm Vollure XC
+### 31. Jeuveau + RHA Redensity
 
-**pair_key:** `xeomin__juvederm_vollure_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 13
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Xeomin) |
-| **one_line_positioning** | Xeomin's accessory-protein-free formulation reduces expression lines while Vollure addresses mid-depth nasolabial fold volume through a complementary mechanism. |
-| **why_together** | Xeomin (naked incobotulinumtoxinA) neuromodulation + Vollure (VYCROSS) mid-depth volume. Different mechanisms, different tissue layers. |
-| **staff_close** | Zone framing with Xeomin differentiation note: "Xeomin works the same way as other neurotoxins — it relaxes the muscles causing expression lines. Some providers consider the accessory-protein-free formulation for certain patients. Vollure addresses a completely separate issue — the nasolabial fold volume." |
-| **do_not_say (pair_specific)** | (1) Do not claim Xeomin has a proven immunogenicity advantage — it's a consideration, not a guarantee. (2) No FDA combination approval. (3) Category-level evidence only. (4) No 'liquid facelift' language. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Relax & Refine
+**One-Line Positioning:** Jeuveau addresses expression lines in the upper face while RHA Redensity refines the fine lines around the mouth that constant movement creates.
+
+**Why Together:** Jeuveau relaxes upper-face expression muscles; RHA Redensity uses resilient HA designed for the perioral zone. Different zones, different mechanisms.
+
+**Staff Close:** Jeuveau for upper-face expression lines, RHA Redensity as a finishing filler for perioral fine lines -- two different zones requiring two different tools.
+
+**Do Not Say (pair-specific):**
+- Do not suggest Jeuveau around the mouth
+- Do not imply RHA Redensity adds 'volume' to the lips
+- Do not overstate Jeuveau's evidence base relative to Botox
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Jeuveau, RHA Redensity)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 12
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 33: Xeomin + Juvederm Voluma XC
+### 32. Xeomin + Juvederm Vollure XC
 
-**pair_key:** `xeomin__juvederm_voluma_xc`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 14
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Lift (Xeomin) |
-| **one_line_positioning** | Xeomin reduces expression lines while Voluma restores deep cheek structure — addressing dynamic wrinkles and midface structural aging separately. |
-| **why_together** | Xeomin neuromodulation + Voluma deep supraperiosteal cheek volume. Different targets, different depths. |
-| **staff_close** | Expression lines + deep cheek structure framing. Note that these address fundamentally different aging processes. |
-| **do_not_say (pair_specific)** | (1) Do not overclaim Xeomin immunogenicity advantage. (2) Do not describe Voluma as surgical lift. (3) Category-level evidence only. (4) No combination FDA approval. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Pure Smooth
+**One-Line Positioning:** Xeomin's pure neurotoxin formulation relaxes expression lines while Vollure smooths nasolabial folds -- two different problems, two different solutions.
+
+**Why Together:** Xeomin relaxes expression muscles; Vollure smooths nasolabial fold lines with HA gel correction. Complementary and non-overlapping mechanisms.
+
+**Staff Close:** Xeomin's purity is a meaningful differentiator for long-term plans; Vollure is NLF-specific with 18-month duration -- two different tools for two different concerns.
+
+**Do Not Say (pair-specific):**
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration
+- Do not call this a 'liquid facelift'
+- Do not state the combination is FDA approved as a combination
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Xeomin, Vollure XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 13
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 34: Xeomin + Restylane Lyft
+### 33. Xeomin + Juvederm Voluma XC
 
-**pair_key:** `xeomin__restylane_lyft`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 15
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Restore (Xeomin + Restylane) |
-| **one_line_positioning** | Xeomin reduces expression lines while Restylane Lyft restores midface or hand volume through a complementary mechanism. |
-| **why_together** | Xeomin (Merz) neuromodulation + Restylane Lyft (Galderma) structural volume. Cross-brand. Mechanism-based complementarity. |
-| **staff_close** | Xeomin for expression lines + Restylane Lyft for volume (face or hands). Note Lyft's dual indication if patient has hand concerns. |
-| **do_not_say (pair_specific)** | (1) Xeomin immunogenicity should be hedged. (2) No FDA combination approval. (3) Category-level evidence. (4) Cross-brand is clinically neutral. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Pure Restore
+**One-Line Positioning:** Xeomin's pure neurotoxin formulation relaxes expression lines while Voluma rebuilds structural cheek volume.
+
+**Why Together:** Xeomin relaxes expression muscles; Voluma restores deep structural cheek volume. Different tissue layers, different aging mechanisms.
+
+**Staff Close:** Xeomin's purity is a meaningful long-term consideration; Voluma restores the structural foundation -- two different tools addressing two different layers of aging.
+
+**Do Not Say (pair-specific):**
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration
+- Do not describe Voluma as 'lifting' in a surgical sense
+- Do not state the combination is FDA approved as a combination
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Xeomin, Voluma XC)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 14
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 35: Xeomin + RHA Redensity
+### 34. Xeomin + Restylane Lyft
 
-**pair_key:** `xeomin__rha_redensity`
-**Tier:** common | **Evidence:** moderate | **Same Session OK:** true
-**Batch file:** `common_remaining_batch.md` — Pair 16
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Soften (Xeomin + Perioral) |
-| **one_line_positioning** | Xeomin reduces upper-face expression lines while RHA Redensity addresses perioral fine lines — zone-based complementarity at different anatomical areas. |
-| **why_together** | Xeomin (upper face) + RHA Redensity (perioral, resilient HA). Zone-based. Both from separate ecosystems; no clinical interaction. |
-| **staff_close** | Zone explanation: upper-face neurotoxin + perioral flexible filler, acknowledging Xeomin's formulation difference for providers who weigh it. |
-| **do_not_say (pair_specific)** | (1) Hedge Xeomin immunogenicity claims. (2) Do not suggest neurotoxin for perioral use. (3) Do not imply RHA is a lip filler. (4) Category-level evidence only. |
-| **evidence_level** | moderate (category-level) |
+**Patient-Facing Name:** Pure Lift
+**One-Line Positioning:** Xeomin's pure neurotoxin formulation relaxes expression lines while Restylane Lyft restores midface and hand volume -- the only HA filler approved for both.
+
+**Why Together:** Xeomin relaxes expression muscles; Restylane Lyft restores midface volume or hand volume. Lyft's dual indication extends this pairing to hand aging.
+
+**Staff Close:** Two differentiators: Xeomin's purity for long-term treatment considerations and Lyft's unique dual face + hand FDA indication.
+
+**Do Not Say (pair-specific):**
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration
+- Do not dismiss the cross-brand nature as a negative or positive
+- Do not state the combination is FDA approved as a combination
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Xeomin, Restylane Lyft)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 15
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 36: Botox Cosmetic + InMode Morpheus8
+### 35. Xeomin + RHA Redensity
 
-**pair_key:** `botox_cosmetic__inmode_morpheus8`
-**Tier:** common | **Evidence:** **strong** | **Same Session OK:** conditional
-**Batch file:** `common_remaining_batch.md` — Pair 17
-**FLAG: Strong evidence; same-session conditional (energy device protocol required)**
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** moderate
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Smooth & Tighten |
-| **one_line_positioning** | Botox relaxes expression-causing muscles while Morpheus8's RF microneedling stimulates dermal remodeling and skin tightening — addressing facial movement and tissue quality through complementary mechanisms. |
-| **why_together** | Botox addresses dynamic muscle activity; Morpheus8 delivers radiofrequency energy to remodel dermal collagen and tighten tissue. Different mechanisms — neuromodulation vs RF energy delivery. Published evidence supports same-day RF + BoNT-A safety (DOI 10.1111/j.1524-4725.2005.31105). |
-| **staff_close** | "Botox helps with the lines caused by muscle movement. Morpheus8 works differently — it uses radiofrequency energy to remodel and tighten the skin itself, addressing skin quality and laxity that neurotoxin can't improve. Some providers offer both in the same visit, though sequencing is important." |
-| **do_not_say (pair_specific)** | (1) Do not claim same-session is always appropriate — energy device inflammation assessment required. (2) Do not say Morpheus8 is 'painless' — social downtime of several days should be disclosed. (3) Do not imply the combination replaces surgery. (4) Do not claim permanence for either treatment. |
-| **evidence_level** | strong |
-| **citations** | PubMed DOI 10.1111/j.1524-4725.2005.31105 (RF + BoNT-A same-day safety); FDA labels (Botox Cosmetic, InMode Morpheus8 510k clearance) |
+**Patient-Facing Name:** Pure Refine
+**One-Line Positioning:** Xeomin's pure neurotoxin formulation addresses upper-face expression lines while RHA Redensity refines perioral fine lines in a zone built for constant movement.
+
+**Why Together:** Xeomin relaxes upper-face expression muscles; RHA Redensity uses resilient HA designed for the perioral zone. Different zones, different mechanisms, different product categories.
+
+**Staff Close:** Xeomin's purity is a meaningful long-term consideration; RHA Redensity is the finishing step for perioral fine lines -- two tools designed for the nuances of long-term maintenance.
+
+**Do Not Say (pair-specific):**
+- Do not overstate Xeomin immunogenicity advantages -- frame as provider consideration
+- Do not suggest Xeomin around the mouth
+- Do not imply RHA Redensity adds 'volume' to the lips
+- Do not overpromise on evidence -- category-level only
+
+**Citations:** PubMed DOI 10.1097/DSS.0000000000000754 (category-level); FDA labels (Xeomin, RHA Redensity)
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 16
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-### Pair 37: Sculptra Aesthetic + InMode Morpheus8
+### 36. Botox Cosmetic + InMode Morpheus8
 
-**pair_key:** `sculptra_aesthetic__inmode_morpheus8`
-**Tier:** conditional | **Evidence:** **weak** | **Same Session OK:** conditional
-**Batch file:** `common_remaining_batch.md` — Pair 18
-**FLAG: Conditional tier; weak evidence; FDA Sculptra caveat; same-session conditional**
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** strong
 
-| Field | Content |
-|-------|---------|
-| **patient_facing_name** | Rebuild & Tighten |
-| **one_line_positioning** | Sculptra builds collagen structure over months while Morpheus8's RF energy remodels and tightens tissue — two collagen-stimulating mechanisms that work on different timelines and through different pathways. |
-| **why_together** | Sculptra (PLLA biostimulation, gradual collagen production) + Morpheus8 (RF energy, immediate dermal remodeling). Both target collagen, but through completely different mechanisms, timelines, and tissue responses. |
-| **staff_close** | "Both Sculptra and Morpheus8 work with your body's collagen, but very differently. Sculptra injects tiny particles that stimulate your immune system to build collagen over months. Morpheus8 uses radiofrequency energy to immediately start remodeling the skin from within. They're often staged — your provider would sequence them based on your individual goals." |
-| **do_not_say (pair_specific)** | (1) Do not suggest same-session as standard — no controlled combination data; provider judgment required. (2) Do not claim FDA-proven combination. (3) Disclose Morpheus8 social downtime — not a 'quick procedure'. (4) Do not imply this replaces surgical lifting or facelift. |
-| **evidence_level** | weak (expert consensus only; no published combination data for Sculptra + RF energy device) |
-| **citations** | FDA labels (Sculptra Aesthetic, InMode Morpheus8 510k); FDA Sculptra combination caveat; expert consensus |
+**Patient-Facing Name:** Smooth & Tighten
+**One-Line Positioning:** Botox Cosmetic relaxes expression lines while Morpheus8 RF microneedling improves skin texture and firmness -- addressing muscle movement and skin quality through separate mechanisms.
+
+**Why Together:** Botox Cosmetic relaxes muscles causing expression lines; Morpheus8 targets skin quality, texture, and laxity through RF microneedling. Published evidence supports same-day safety of this combination.
+
+**Staff Close:** Energy device for skin quality and firmness; neurotoxin for expression lines -- different tissue layers, different tools, supported by published combination safety data.
+
+**Do Not Say (pair-specific):**
+- Do not claim Morpheus8 'replaces surgery' or is equivalent to a surgical facelift
+- Do not minimize Morpheus8 social downtime (several days)
+- Do not claim the combination is 'FDA approved' as a combination
+- Do not guarantee specific tightening outcomes
+
+**Citations:** PubMed DOI 10.1111/j.1524-4725.2005.31105 (same-day RF + BoNT-A safety); FDA labels (Botox Cosmetic, Morpheus8 510(k))
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 17
 
 #### Review Decision
 **Status:** PENDING
-**Notes:** _(mark as APPROVED / NEEDS REVISION / REJECTED and add notes if applicable)_
+**Notes:**
 
 ---
 
-## Overall Review Completion Tracker
+### 37. Sculptra Aesthetic + InMode Morpheus8
 
-**To complete review, mark all 37 pairs above with APPROVED / NEEDS REVISION / REJECTED.**
+**Batch:** common_remaining_batch.md | **Tier:** common | **Evidence:** weak (FLAGGED)
 
-| Status | Count |
-|--------|-------|
-| APPROVED | 0 |
-| NEEDS REVISION | 0 |
-| REJECTED | 0 |
-| PENDING | 37 |
-| **Total** | **37** |
+**Patient-Facing Name:** Rebuild & Refirm
+**One-Line Positioning:** Sculptra supports collagen production from within while Morpheus8 RF microneedling improves skin texture and firmness from a different pathway -- two complementary collagen stimulation mechanisms.
 
-Once all 37 are marked, execute `supabase/compile_sql/12-03-combination-fuel-updates.sql` against Supabase project `aejskvmpembryunnbgrk`.
+**Why Together:** Sculptra stimulates collagen through PLLA particle-based biologic response; Morpheus8 stimulates collagen through controlled RF thermal energy. Two different pathways to collagen stimulation -- biologic (Sculptra) and thermal (Morpheus8).
+
+**Staff Close:** Different pathways to collagen support -- Sculptra biologic, Morpheus8 thermal. Not evaluated in controlled trials; present as a provider-guided option based on individual patient needs.
+
+**Do Not Say (pair-specific):**
+- Do not claim this combination has been clinically proven together
+- Do not claim it will 'completely reverse collagen loss'
+- Do not say fewer Sculptra sessions are needed with Morpheus8
+- Do not say this will replace surgery
+
+**Same-session:** Conditional -- not evaluated in controlled trials; provider judgment required
+
+**Citations:** FDA labels (Sculptra Aesthetic, Morpheus8 510(k)); FDA Sculptra combination caveat disclosed; Expert consensus only
+
+> Full JSON: `REVIEW_QUEUE/combination_fuel/common_remaining_batch.md` -- Pair 18
+
+#### Review Decision
+**Status:** PENDING
+**Notes:**
+
+---
+
+## Approval Summary
+
+**To approve all docs:** Change each pair's Status from PENDING to APPROVED, or type "approved" to approve all.
+
+**To request revisions:** Change specific pairs to NEEDS REVISION and add notes describing what needs changing.
+
+**To reject:** Change specific pairs to REJECTED and add notes.
+
+**After approval:** SQL file `supabase/compile_sql/12-03-combination-fuel-updates.sql` will be executed against agent_fuel_documents in Global V3 (aejskvmpembryunnbgrk).
