@@ -4,7 +4,8 @@
 
 - [x] **v1.0 Foundation** - Phases 01-07 (shipped 2026-06-13)
 - [ ] **v1.1 Pipeline Integrity & Data Strategy** - Phases 08-10 (in progress)
-- [ ] **v1.2 Evidence Sources & Agent Fuel** - Phases 11-14 (planned — source framework, combination fuel, concern fuel, compiled packets)
+- [ ] **v1.2 Evidence Sources & Agent Fuel** - Phases 11-14 + 11.1 (planned — source framework, fuel doc templates & UI, combination fuel, concern fuel, compiled packets)
+- [ ] **v2.0 Agent Runtime Inspector** - Phases 15-19 (planned — runtime stabilization, trace contract, inspector UI, output viewer, demo mode)
 
 ---
 
@@ -232,6 +233,27 @@ Plans:
 
 ---
 
+#### Phase 11.1: fuel-doc-templates-and-management-ui (INSERTED)
+**Goal**: Build expanded fuel doc templates (combination, concern, product) with logically grouped fields — including SOPs, preferences, room requirements — and a simple internal management UI for creating, viewing, editing, and managing fuel doc templates and content. Templates define the MD file structure that agents consume; UI sits on top for internal use now, iterates into product later. Promotes backlog 999.1.
+**Depends on**: Phase 11 (source framework established)
+**Requirements**: FUEL-TPL-01, FUEL-TPL-02, FUEL-UI-01, FUEL-UI-02, FUEL-SER-01, FUEL-INT-01
+**Success Criteria** (what must be TRUE):
+  1. Fuel doc templates defined for 3 document types (combination, concern, product) with logically grouped field sections
+  2. Templates include operational fields (SOPs, preferences, room requirements) alongside clinical/intelligence fields
+  3. Internal management UI allows CRUD operations on fuel doc templates and content
+  4. Practice-level override support (COALESCE pattern) wired into UI
+  5. Template system produces MD files consumable by agents
+  6. UI deployable as internal tool (not production-facing yet)
+**Plans:** 4 plans
+
+Plans:
+- [ ] 11.1-01-PLAN.md — Types + data access layer + markdown serializer (foundation)
+- [ ] 11.1-02-PLAN.md — API routes + sidebar entry + migration SQL
+- [ ] 11.1-03-PLAN.md — List page with DataTable, create dialog, filters, badges
+- [ ] 11.1-04-PLAN.md — Detail page with 6 tabs + visual verification checkpoint
+
+---
+
 #### Phase 12: combination-fuel-documents
 **Goal**: Enrich the 16 existing pairing fuel docs in `gl_agent_fuel_documents` with corpus-grounded content. Fuel docs are what agents should say — sources are what backs it up. Use PubMed + manufacturer data + corpus as research inputs.
 **Depends on**: Phase 11 (source framework), Phase 6 (pairings), Phase 7 (timing). Chris manufacturer doc population running in parallel.
@@ -285,6 +307,82 @@ Plans:
 
 ---
 
+### v2.0 Agent Runtime Inspector
+
+**Milestone Goal:** Replace the 100% mock agent-tester page with a real in-project runtime (Next.js API routes + Supabase + Claude API). Every agent run emits structured trace events that stream live to an inspector UI and persist for replay. The page becomes a functional tool for running, observing, and demoing agents against real patient data.
+
+#### Phase 15: runtime-stabilization
+**Goal**: Make the existing agent-tester page actually work before adding trace infrastructure. Fix agent loading, prompt loading, output streaming, error handling, and run persistence so the tool is genuinely functional end-to-end.
+**Depends on**: Phase 14 (compiled fuel packets provide runtime inputs)
+**Requirements**: RUN-01, RUN-02, RUN-03, RUN-04, RUN-05
+**Success Criteria** (what must be TRUE):
+  1. Selecting an agent and clicking Run executes a real Claude API call using the agent's active version prompt from Agent Manager Supabase — no mock data, no pickScenario, no setTimeout
+  2. Tool calls against real data sources (patient context from PR Supabase, fuel docs and evidence links from Agent Manager, clinical literature from CMS Supabase, product info from Agent Manager) succeed and return populated results
+  3. When a tool fails, the run continues with remaining tools and the failed step is marked with a structured error message identifying what failed and why
+  4. Every completed or failed run is saved to `agent_runs` in Agent Manager Supabase — the run is never lost
+  5. A run never ends with only "No output generated" — a structured error always identifies which step failed, what completed successfully, and what action is recommended
+**Plans**: TBD
+**UI hint**: yes
+
+---
+
+#### Phase 16: trace-contract-and-persistence
+**Goal**: Add the structured event contract that makes every run fully observable and replayable. Define the AgentRunEvent schema, create the `agent_run_events` and `agent_run_artifacts` tables, wire SSE emission throughout the runtime, and validate that completed runs replay correctly from stored events.
+**Depends on**: Phase 15 (stable runtime to instrument)
+**Requirements**: TRACE-01, TRACE-02, TRACE-03, TRACE-04, OBS-01, OBS-02
+**Success Criteria** (what must be TRUE):
+  1. Every major runtime step (run start, agent load, patient load, context build, tool call start/complete/fail, retrieval, model call, artifact creation, output save, run complete/fail) emits a structured AgentRunEvent with consistent schema
+  2. Events stream to the browser over SSE and render as they arrive — the UI updates step-by-step without waiting for the final answer
+  3. All events persist to `agent_run_events` and all artifacts to `agent_run_artifacts` in Agent Manager Supabase
+  4. A completed run can be fully replayed from stored events without rerunning the model or any tools
+  5. Run metrics are computable from stored events: total duration, time to first event, tool call count, success/fail counts, token usage, source count, artifact count
+  6. Observable trace only — tool inputs/outputs, retrieved context, model-visible messages, generated tokens, artifacts, errors — no hidden chain-of-thought exposed
+**Plans**: TBD
+
+---
+
+#### Phase 17: inspector-ui
+**Goal**: Build the left-panel execution timeline and detail drawer that make the trace data readable and explorable. Each event is a card in a vertical timeline; clicking opens a multi-tab detail drawer with tool-specific readable views.
+**Depends on**: Phase 16 (event schema and SSE stream defined)
+**Requirements**: UI-01, UI-02, UI-03
+**Success Criteria** (what must be TRUE):
+  1. Left panel shows a live vertical timeline as events arrive — each step has a status icon (pending/running/success/fail/warning), step title, tool name where applicable, duration, and a one-line summary
+  2. Clicking any timeline step opens a detail drawer with tabs: Summary, Input, Output, Sources, Raw JSON, Errors, Timing — populated from the event's stored data
+  3. Tool calls render as readable cards (not raw JSON blobs) with tool-specific layouts: `get_patient_context` shows patient fields, `search_fuel_documents` shows result count and top items with source/fuel distinction, `get_evidence_links` shows citation list, `search_clinical_literature` shows CMS results with similarity scores, `get_product_info` shows product fields
+  4. Timeline updates in real-time during a live run and shows final state after run completes
+**Plans**: TBD
+**UI hint**: yes
+
+---
+
+#### Phase 18: output-viewer
+**Goal**: Build the universal output viewer that renders agent output in the most useful format for its content type — markdown, JSON, table, care plan, evidence list — with tabs for raw view, citation sources, and save status.
+**Depends on**: Phase 17 (inspector UI provides the container)
+**Requirements**: UI-04
+**Success Criteria** (what must be TRUE):
+  1. Agent output renders in the correct format detected from content type: markdown prose renders with formatting, JSON renders as collapsible tree, tabular data renders as a sortable table, care plan renders as structured sections, evidence list renders as citation cards with links
+  2. Plain text fallback renders when content type cannot be detected
+  3. Output tabs available: Rendered (formatted view), Raw (exact model output), Citations/Sources (list of sources the output draws from), Save status (whether output was persisted to agent_run_artifacts)
+  4. Viewer works for both live streaming output and replayed historical runs
+**Plans**: TBD
+**UI hint**: yes
+
+---
+
+#### Phase 19: demo-mode
+**Goal**: Add seeded demo scenarios, run mode selector (Live / Replay / Load Demo Run), and "why this matters" plain-English labels on major steps so non-engineer demo audiences can follow what the runtime is doing and why it matters.
+**Depends on**: Phase 17 (inspector UI), Phase 18 (output viewer)
+**Requirements**: DEMO-01, DEMO-02, DEMO-03
+**Success Criteria** (what must be TRUE):
+  1. Page includes at least one seeded demo scenario (Sofia Reyes + Consultation Analyst) that loads a known-good patient and agent with one click — no manual configuration required
+  2. Run mode selector shows three options: Live (execute against real API), Replay (replay from stored events), Load Demo Run (load a pre-seeded demo run) — switching modes updates the UI accordingly
+  3. Every major timeline step has a plain-English "why this matters" label visible in the detail drawer — labels explain the step's purpose for a non-engineer audience (e.g., "Loading the agent's trained behavior and prompt" not "fetching active_version_id")
+  4. Demo mode can be run without provisioned patient data — seeded scenarios include all required context
+**Plans**: TBD
+**UI hint**: yes
+
+---
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -296,19 +394,25 @@ Plans:
 | 05. concern-language | v1.0 | 3/3 | Complete | 2026-06-13 |
 | 06. pairing-engine | v1.0 | 5/5 | Complete | 2026-06-13 |
 | 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
-| 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete    | 2026-06-14 |
+| 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete | 2026-06-14 |
+| 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete | 2026-06-14 |
+| 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete | 2026-06-14 |
+| 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete | 2026-06-14 |
+| 11.1 fuel-doc-templates-and-management-ui | v1.2 | 0/4 | Not started | - |
 | 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
+| 15. runtime-stabilization | v2.0 | 0/? | Not started | - |
+| 16. trace-contract-and-persistence | v2.0 | 0/? | Not started | - |
+| 17. inspector-ui | v2.0 | 0/? | Not started | - |
+| 18. output-viewer | v2.0 | 0/? | Not started | - |
+| 19. demo-mode | v2.0 | 0/? | Not started | - |
 
 ---
 
 ## Backlog
 
-#### Phase 999.1: agent-fuel-document-management-ui (BACKLOG)
+#### ~~Phase 999.1: agent-fuel-document-management-ui~~ (PROMOTED -> Phase 11.1)
 **Goal**: Build a template system for agent fuel documents with a practice-facing UI for managing them. Templates define the standard structure per document type (combination, concern, product); the UI sits on top so practices can view, edit, and override fuel docs without touching the database directly. This is the missing layer between the raw fuel doc data (Phases 12-14) and the agents that consume them.
 **Key pieces**:
   1. Standardized fuel doc templates per document type (combination, concern, product) — defining sections like why-together, timing, what-not-to-say, patient questions, evidence backing
