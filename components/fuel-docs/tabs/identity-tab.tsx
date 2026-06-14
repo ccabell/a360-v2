@@ -80,7 +80,7 @@ export function IdentityTab({ doc, editing, onSave }: TabProps) {
         ? ((c.mechanism_summary as string) ?? "")
         : ((c.patient_language as string[]) ?? []).join(", ")
     )
-    setAudience(doc.audience ?? [])
+    setAudience(audienceArr)
     setPatientSafe(doc.patient_safe ?? false)
   }
 
@@ -176,8 +176,8 @@ export function IdentityTab({ doc, editing, onSave }: TabProps) {
             </div>
           ) : (
             <div className="flex gap-1">
-              {(doc.audience ?? []).length > 0
-                ? doc.audience.map((a) => (
+              {audienceArr.length > 0
+                ? audienceArr.map((a) => (
                     <span
                       key={a}
                       className="text-xs bg-muted px-2 py-0.5 rounded capitalize"
