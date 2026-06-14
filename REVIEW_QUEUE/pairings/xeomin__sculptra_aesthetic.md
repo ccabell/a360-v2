@@ -1,9 +1,11 @@
 # Xeomin + Sculptra Aesthetic
 
-**Tier:** conditional
+**Tier:** common
 **Type:** complementary
 **Strength:** strong
-**Same Session OK:** true (FDA labeling notes safety and effectiveness of Sculptra used in combination with other products have not been evaluated in controlled clinical trials)
+**Same Session OK:** conditional (Same session is performed in clinical practice, but FDA labeling notes safety and effectiveness of Sculptra used in combination with other products have not been evaluated in controlled clinical trials. Providers should discuss this caveat with patients before same-session administration.)
+
+_Tier re-evaluated in Phase 10: mechanism-based reasoning supports common tier (neuromodulation + collagen stimulation are orthogonal mechanisms; 7/8 gates pass; expert consensus supports combination). Same-session language kept conditional per Chris feedback._
 
 ## Gate Results
 
