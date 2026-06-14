@@ -1,11 +1,11 @@
-import { ExternalLink, Quote } from "lucide-react";
+import { ExternalLink, Quote, ShieldCheck } from "lucide-react";
 import type { ResearchCitation } from "@/lib/types/retrieval";
 import {
   locatorUrl,
   locatorSubtitle,
   deepLinkLabel,
 } from "@/lib/retrieval/locator";
-import { CORPUS_META } from "./source-meta";
+import { CORPUS_META, TIER_RELIABLE } from "./source-meta";
 import { YouTubeViewer } from "./youtube-viewer";
 
 function RelevanceBars({ value }: { value?: number }) {
@@ -46,6 +46,15 @@ export function CitationCard({ citation }: { citation: ResearchCitation }) {
         >
           <Icon className="h-3 w-3" />
           {meta.label}
+        </span>
+        {TIER_RELIABLE.has(citation.corpus) && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-tier-trusted-bg px-2 py-0.5 text-[0.65rem] font-semibold text-tier-trusted-fg">
+            <ShieldCheck className="h-3 w-3" />
+            Reliable
+          </span>
+        )}
+        <span className="rounded-full bg-muted px-2 py-0.5 text-[0.65rem] font-medium text-muted-foreground">
+          {meta.typeTag}
         </span>
         <div className="ml-auto">
           <RelevanceBars value={citation.relevance} />
