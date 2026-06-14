@@ -573,7 +573,7 @@ async function retrieveProductCatalog(match: MatchResult): Promise<RetrievedSour
   if (!data || data.length === 0) return [];
 
   const authWeight = AUTHORITY_WEIGHT.product_catalog;
-  return (data as (ProductRow & { manufacturers?: { name: string } | null })[])
+  return (data as unknown as (ProductRow & { manufacturers?: { name: string }[] | null })[])
     .filter((p) => p.description)
     .map((p) => {
       const sections: string[] = [];
@@ -587,7 +587,7 @@ async function retrieveProductCatalog(match: MatchResult): Promise<RetrievedSour
       if (p.duration_of_effect) sections.push(`Duration: ${p.duration_of_effect}`);
 
       const productName = p.brand_name || p.name;
-      const mfr = p.manufacturers?.name;
+      const mfr = p.manufacturers?.[0]?.name;
       const locator: DocumentLocator = {
         type: "document",
         corpus: "manufacturer",
@@ -653,7 +653,7 @@ async function retrieveContentAssets(match: MatchResult): Promise<RetrievedSourc
 
   const authWeight = AUTHORITY_WEIGHT.content_asset;
   const seenAssets = new Set<string>();
-  return (data as OcRow[])
+  return (data as unknown as OcRow[])
     .filter((oc) => oc.content_assets?.title && !seenAssets.has(oc.content_assets.id))
     .map((oc) => {
       const a = oc.content_assets;
