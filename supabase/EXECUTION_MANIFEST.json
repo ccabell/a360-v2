@@ -1,0 +1,1134 @@
+{
+  "manifest_version": "1.0",
+  "target_project": "aejskvmpembryunnbgrk",
+  "created": "2026-06-14",
+  "total_files": 62,
+  "notes": "Dependency-ordered inventory of all SQL/TS artifacts across phases 01-07. Status values: pending|applied|verified|deferred|blocked. Update status field manually after each execution.",
+  "status_key": {
+    "pending": "Not yet applied to live DB",
+    "applied": "Applied but not formally validated",
+    "verified": "Applied and validation SQL returned PASS",
+    "deferred": "Intentionally not applied yet (awaiting upstream decision)",
+    "blocked": "Cannot apply until named dependency is resolved"
+  },
+  "entries": [
+    {
+      "order": 1,
+      "file": "supabase/migrations/20260611_agent_manager_tables.sql",
+      "phase": "pre-phase",
+      "plan": "pre",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name LIKE '%agent%' ORDER BY table_name; -- expected: agent manager tables present",
+      "source_artifact": null,
+      "notes": "Agent manager tables — applied before Phase 1"
+    },
+    {
+      "order": 2,
+      "file": "supabase/migrations/20260612_add_does_not_solve_backfill_authority_rank.sql",
+      "phase": "pre-phase",
+      "plan": "pre",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT column_name FROM information_schema.columns WHERE table_name='evidence_links' AND column_name='authority_rank'; -- expected: 1 row",
+      "source_artifact": null,
+      "notes": "Adds does_not_solve backfill + authority_rank column to evidence_links"
+    },
+    {
+      "order": 3,
+      "file": "supabase/migrations/20260612_app_tracking.sql",
+      "phase": "pre-phase",
+      "plan": "pre",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name LIKE '%tracking%'; -- expected: app tracking tables",
+      "source_artifact": null,
+      "notes": "App tracking tables"
+    },
+    {
+      "order": 4,
+      "file": "supabase/migrations/20260612_saved_outputs.sql",
+      "phase": "pre-phase",
+      "plan": "pre",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name='saved_outputs'; -- expected: 1 row",
+      "source_artifact": null,
+      "notes": "Saved outputs table"
+    },
+    {
+      "order": 5,
+      "file": "supabase/migrations/20260612_search_reference_docs.sql",
+      "phase": "pre-phase",
+      "plan": "pre",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name LIKE '%search%'; -- expected: search reference docs table",
+      "source_artifact": null,
+      "notes": "Search reference docs table"
+    },
+    {
+      "order": 6,
+      "file": "supabase/migrations/20260613_timing_columns.sql",
+      "phase": "07-timing-rules",
+      "plan": "07-01",
+      "type": "schema",
+      "execution_method": "migration_file",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT COUNT(*) FROM information_schema.columns WHERE table_name='gl_products' AND column_name LIKE '%retreatment%'; -- expected >= 1",
+      "source_artifact": ".planning/phases/07-timing-rules/07-01-PLAN.md",
+      "notes": "Mirror of compile_sql/07-01-timing-schema.sql. Apply this migration version preferentially — compile_sql version is documentation reference only."
+    },
+    {
+      "order": 7,
+      "file": "scripts/migrations/add_page_number_to_evidence_links.sql",
+      "phase": "01-citations",
+      "plan": "01-01",
+      "type": "schema",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT column_name FROM information_schema.columns WHERE table_name='evidence_links' AND column_name='page_number'; -- expected: 1 row",
+      "source_artifact": ".planning/phases/01-citations/",
+      "notes": "DDL: ADD COLUMN page_number INT to evidence_links. Phase 1 artifact stored in scripts/migrations/ not compile_sql/."
+    },
+    {
+      "order": 8,
+      "file": "scripts/backfill-pubmed.ts",
+      "phase": "01-citations",
+      "plan": "01-01",
+      "type": "backfill",
+      "execution_method": "tsx_script",
+      "depends_on": ["scripts/migrations/add_page_number_to_evidence_links.sql"],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "scripts/migrations/add_page_number_to_evidence_links.sql has been applied (page_number column exists on evidence_links)",
+        "GL_SUPABASE_URL and GL_SUPABASE_KEY env vars are set in .env.local"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE source='pubmed' AND pmid IS NOT NULL; -- all PubMed rows should have pmid populated",
+      "source_artifact": ".planning/phases/01-citations/",
+      "notes": "Run: npx tsx scripts/backfill-pubmed.ts. Backfills PubMed PMID + URL fields in evidence_links."
+    },
+    {
+      "order": 9,
+      "file": "scripts/backfill-youtube.ts",
+      "phase": "01-citations",
+      "plan": "01-01",
+      "type": "backfill",
+      "execution_method": "tsx_script",
+      "depends_on": ["scripts/migrations/add_page_number_to_evidence_links.sql"],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "scripts/migrations/add_page_number_to_evidence_links.sql has been applied (page_number column exists on evidence_links)",
+        "GL_SUPABASE_URL and GL_SUPABASE_KEY env vars are set in .env.local"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE source='youtube' AND url IS NOT NULL; -- all YouTube rows should have url populated",
+      "source_artifact": ".planning/phases/01-citations/",
+      "notes": "Run: npx tsx scripts/backfill-youtube.ts. Backfills YouTube timestamp fields. Note: YouTube timestamp preservation is a known gap at ingestion time."
+    },
+    {
+      "order": 10,
+      "file": "supabase/compile_sql/02-02-source-registry.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "source_registry table exists (migrations/20260612_* applied)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM source_registry WHERE status='active'; -- expected >= 43 active sources",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02: source registry seed data. Execute before evidence-links files that foreign-key source_registry."
+    },
+    {
+      "order": 11,
+      "file": "supabase/compile_sql/02-02-task1-biostimulators.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Prior plan group files applied (if any)",
+        "02-02-source-registry.sql applied (source_registry rows exist)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%biostimulator%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 1: biostimulator category dossiers. 12 products show 0 docs in live DB per STATE.md."
+    },
+    {
+      "order": 12,
+      "file": "supabase/compile_sql/02-02-task1-body-contouring.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%body%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 1: body-contouring category dossiers."
+    },
+    {
+      "order": 13,
+      "file": "supabase/compile_sql/02-02-task1-dermal-fillers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%filler%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 1: dermal-fillers category dossiers."
+    },
+    {
+      "order": 14,
+      "file": "supabase/compile_sql/02-02-task1-evidence-dermal-fillers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-task1-dermal-fillers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-task1-dermal-fillers.sql applied (dossier rows exist before evidence-links)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%filler%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 1: evidence links for dermal-fillers category."
+    },
+    {
+      "order": 15,
+      "file": "supabase/compile_sql/02-02-task1-injectable-fat-reduction.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%fat%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 1: injectable-fat-reduction category dossiers."
+    },
+    {
+      "order": 16,
+      "file": "supabase/compile_sql/02-02-task2-energy-based-treatments.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%energy%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 2: energy-based-treatments category dossiers."
+    },
+    {
+      "order": 17,
+      "file": "supabase/compile_sql/02-02-task2-pigment-rejuvenation.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%pigment%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 2: pigment-rejuvenation category dossiers."
+    },
+    {
+      "order": 18,
+      "file": "supabase/compile_sql/02-02-task2-rf-microneedling.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%microneedling%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 2: rf-microneedling category dossiers."
+    },
+    {
+      "order": 19,
+      "file": "supabase/compile_sql/02-02-task2-skin-tightening.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%skin%tighten%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 2: skin-tightening category dossiers."
+    },
+    {
+      "order": 20,
+      "file": "supabase/compile_sql/02-02-task2-ultrasound-lifting.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-02-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE category ILIKE '%ultrasound%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-02-PLAN.md",
+      "notes": "Phase 2 plan 02-02 task 2: ultrasound-lifting category dossiers."
+    },
+    {
+      "order": 21,
+      "file": "supabase/compile_sql/02-03-source-registry.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Prior plan group (02-02) files applied",
+        "source_registry table exists"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM source_registry; -- expected >= 43 (additive)",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03: source registry additions for HA filler products."
+    },
+    {
+      "order": 22,
+      "file": "supabase/compile_sql/02-03-task1-juvederm-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%juvederm%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 1: Juvederm product dossiers. 12 products show 0 docs in live DB per STATE.md."
+    },
+    {
+      "order": 23,
+      "file": "supabase/compile_sql/02-03-task1-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-task1-juvederm-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-task1-juvederm-dossiers.sql applied (dossier offering_ids must exist before evidence-links reference them)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%juvederm%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 1: evidence links for Juvederm products."
+    },
+    {
+      "order": 24,
+      "file": "supabase/compile_sql/02-03-task1-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-task1-juvederm-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-task1-juvederm-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%juvederm%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 1: structured emission (item_concerns, item_body_areas, aliases) for Juvederm. See 05-01-execute-phase2-outstanding.sql for bug fixes."
+    },
+    {
+      "order": 25,
+      "file": "supabase/compile_sql/02-03-task1-taxonomy-additions.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM gl_products WHERE category IS NOT NULL; -- expected unchanged or incremented",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 1: taxonomy additions (category/subcategory) for HA filler products."
+    },
+    {
+      "order": 26,
+      "file": "supabase/compile_sql/02-03-task2-restylane-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%restylane%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 2: Restylane product dossiers."
+    },
+    {
+      "order": 27,
+      "file": "supabase/compile_sql/02-03-task2-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-task2-restylane-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-task2-restylane-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%restylane%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 2: evidence links for Restylane products."
+    },
+    {
+      "order": 28,
+      "file": "supabase/compile_sql/02-03-task2-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-task2-restylane-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-03-task2-restylane-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%restylane%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-03-PLAN.md",
+      "notes": "Phase 2 plan 02-03 task 2: structured emission for Restylane. See 05-01-execute-phase2-outstanding.sql for bug fixes."
+    },
+    {
+      "order": 29,
+      "file": "supabase/compile_sql/02-04-source-registry.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-03-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Prior plan group (02-03) files applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM source_registry; -- expected >= 43 (additive)",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04: source registry additions for biostimulator + body contouring products."
+    },
+    {
+      "order": 30,
+      "file": "supabase/compile_sql/02-04-task1-biostimulator-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%sculptra%' OR name ILIKE '%radiesse%' OR name ILIKE '%bellafill%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 1: biostimulator product dossiers (Sculptra, Radiesse, Bellafill)."
+    },
+    {
+      "order": 31,
+      "file": "supabase/compile_sql/02-04-task1-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-task1-biostimulator-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-task1-biostimulator-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%sculptra%' OR name ILIKE '%radiesse%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 1: evidence links for biostimulator products."
+    },
+    {
+      "order": 32,
+      "file": "supabase/compile_sql/02-04-task1-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-task1-biostimulator-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-task1-biostimulator-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%sculptra%' OR name ILIKE '%radiesse%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 1: structured emission for biostimulators. Bug fixes applied by 05-01-execute-phase2-outstanding.sql."
+    },
+    {
+      "order": 33,
+      "file": "supabase/compile_sql/02-04-task2-body-contouring-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%coolsculpting%' OR name ILIKE '%emsculpt%' OR name ILIKE '%sculpsure%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 2: body contouring product dossiers."
+    },
+    {
+      "order": 34,
+      "file": "supabase/compile_sql/02-04-task2-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-task2-body-contouring-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-task2-body-contouring-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%coolsculpting%' OR name ILIKE '%emsculpt%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 2: evidence links for body contouring products."
+    },
+    {
+      "order": 35,
+      "file": "supabase/compile_sql/02-04-task2-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-04",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-task2-body-contouring-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-04-task2-body-contouring-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%coolsculpting%' OR name ILIKE '%emsculpt%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-04-PLAN.md",
+      "notes": "Phase 2 plan 02-04 task 2: structured emission for body contouring products."
+    },
+    {
+      "order": 36,
+      "file": "supabase/compile_sql/02-05-source-registry.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Prior plan group (02-04) files applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM source_registry; -- expected >= 43 (additive)",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05: source registry additions for energy/RF, laser, skincare, Dysport."
+    },
+    {
+      "order": 37,
+      "file": "supabase/compile_sql/02-05-task1-energy-devices-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%thermage%' OR name ILIKE '%ultherapy%' OR name ILIKE '%sofwave%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 1: energy device product dossiers."
+    },
+    {
+      "order": 38,
+      "file": "supabase/compile_sql/02-05-task1-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-task1-energy-devices-dossiers.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-task1-energy-devices-dossiers.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%thermage%' OR name ILIKE '%ultherapy%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 1: evidence links for energy devices."
+    },
+    {
+      "order": 39,
+      "file": "supabase/compile_sql/02-05-task1-morpheus8-dossier.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%morpheus%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 1: Morpheus8 RF microneedling product dossier."
+    },
+    {
+      "order": 40,
+      "file": "supabase/compile_sql/02-05-task1-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-task1-energy-devices-dossiers.sql", "supabase/compile_sql/02-05-task1-morpheus8-dossier.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-task1-energy-devices-dossiers.sql applied",
+        "02-05-task1-morpheus8-dossier.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%thermage%' OR name ILIKE '%morpheus%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 1: structured emission for energy devices + Morpheus8. Bug fixes applied by 05-01-execute-phase2-outstanding.sql."
+    },
+    {
+      "order": 41,
+      "file": "supabase/compile_sql/02-05-task2-hydrafacial-dossier.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%hydrafacial%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 2: HydraFacial product dossier."
+    },
+    {
+      "order": 42,
+      "file": "supabase/compile_sql/02-05-task2-neurotoxin-dossiers.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-source-registry.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM agent_reference_docs WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%dysport%' OR name ILIKE '%xeomin%' OR name ILIKE '%jeuveau%') AND status='draft'; -- expected >= 3",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 2: neurotoxin product dossiers (Dysport, Xeomin, Jeuveau, Daxxify)."
+    },
+    {
+      "order": 43,
+      "file": "supabase/compile_sql/02-05-task2-evidence-links.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-task2-neurotoxin-dossiers.sql", "supabase/compile_sql/02-05-task2-hydrafacial-dossier.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-task2-neurotoxin-dossiers.sql applied",
+        "02-05-task2-hydrafacial-dossier.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%dysport%' OR name ILIKE '%hydrafacial%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 2: evidence links for neurotoxins + HydraFacial."
+    },
+    {
+      "order": 44,
+      "file": "supabase/compile_sql/02-05-task2-structured-emission.sql",
+      "phase": "02-dossier-batch",
+      "plan": "02-05",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-05-task2-neurotoxin-dossiers.sql", "supabase/compile_sql/02-05-task2-hydrafacial-dossier.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "02-05-task2-neurotoxin-dossiers.sql applied",
+        "02-05-task2-hydrafacial-dossier.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns WHERE offering_id IN (SELECT id FROM gl_products WHERE name ILIKE '%dysport%' OR name ILIKE '%hydrafacial%'); -- expected >= 1",
+      "source_artifact": ".planning/phases/02-dossier-batch/02-05-PLAN.md",
+      "notes": "Phase 2 plan 02-05 task 2: structured emission for neurotoxins + HydraFacial. Bug fixes applied by 05-01-execute-phase2-outstanding.sql."
+    },
+    {
+      "order": 45,
+      "file": "PHASE_03_NO_SQL",
+      "phase": "03-retrieval-wiring",
+      "plan": "03-01",
+      "type": "no_sql",
+      "execution_method": "no_sql",
+      "depends_on": [],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "test -f lib/retrieval/sources.ts && test -f app/api/research/chat/route.ts && echo PASS || echo FAIL",
+      "source_artifact": ".planning/phases/03-retrieval-wiring/",
+      "notes": "Phase 3 produced TypeScript code changes only (lib/retrieval/sources.ts, app/api/research/chat/route.ts). No SQL artifacts. Validation is live UI test (EVID-03 in Phase 09)."
+    },
+    {
+      "order": 46,
+      "file": "supabase/compile_sql/04-01-source-registry-triage.sql",
+      "phase": "04-source-ingestion",
+      "plan": "04-01",
+      "type": "triage",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-02-source-registry.sql", "supabase/compile_sql/02-03-source-registry.sql", "supabase/compile_sql/02-04-source-registry.sql", "supabase/compile_sql/02-05-source-registry.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "All Phase 2 source-registry files applied (02-02, 02-03, 02-04, 02-05 source-registry.sql)",
+        "source_registry table has >= 43 rows"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM source_registry WHERE status='review'; -- expected 0 (all triaged). Also: SELECT status, COUNT(*) FROM source_registry GROUP BY status;",
+      "source_artifact": ".planning/phases/04-source-ingestion/",
+      "notes": "Has execution timestamp header (2026-06-13) and idempotent conditional logic. Updates source_registry + ingestion_queue status. Per STATE.md: 43 active, 14 retired, 0 review (fully triaged)."
+    },
+    {
+      "order": 47,
+      "file": "supabase/compile_sql/04-02-evidence-links-fda-urls.sql",
+      "phase": "04-source-ingestion",
+      "plan": "04-02",
+      "type": "backfill",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/04-01-source-registry-triage.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "04-01-source-registry-triage.sql applied",
+        "evidence_links table has rows with source='fda_label'"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM evidence_links WHERE source='fda_label' AND url IS NULL; -- expected 0 (all FDA rows have URL populated). Per STATE.md: 17 offerings with FDA evidence_links, 0 null URLs.",
+      "source_artifact": ".planning/phases/04-source-ingestion/",
+      "notes": "Backfills FDA URL fields in evidence_links. Per STATE.md: 0 null URLs achieved."
+    },
+    {
+      "order": 48,
+      "file": "supabase/compile_sql/05-01-schema-clusters.sql",
+      "phase": "05-concern-language",
+      "plan": "05-01",
+      "type": "schema",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('concern_clusters','concern_cluster_members') ORDER BY table_name; -- expected 2 rows",
+      "source_artifact": ".planning/phases/05-concern-language/05-01-PLAN.md",
+      "notes": "Creates concern_clusters and concern_cluster_members tables. USE ADD COLUMN IF NOT EXISTS pattern — safe to re-run."
+    },
+    {
+      "order": 49,
+      "file": "supabase/compile_sql/05-01-missing-concerns.sql",
+      "phase": "05-concern-language",
+      "plan": "05-01",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [],
+      "post_exec_verification": "SELECT name FROM concerns WHERE name IN ('Brow Ptosis', 'Gummy Smile'); -- expected 2 rows",
+      "source_artifact": ".planning/phases/05-concern-language/05-01-PLAN.md",
+      "notes": "Adds missing concerns (Brow Ptosis, Gummy Smile) to concerns table."
+    },
+    {
+      "order": 50,
+      "file": "supabase/compile_sql/05-01-execute-phase2-outstanding.sql",
+      "phase": "05-concern-language",
+      "plan": "05-01",
+      "type": "meta",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/02-04-task1-structured-emission.sql", "supabase/compile_sql/02-04-task2-structured-emission.sql", "supabase/compile_sql/02-05-task1-structured-emission.sql", "supabase/compile_sql/02-05-task2-structured-emission.sql"],
+      "status": "applied",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Phase 2 structured-emission files applied (02-04-task1, 02-04-task2, 02-05-task1, 02-05-task2 structured-emission.sql)"
+      ],
+      "post_exec_verification": "SELECT COUNT(DISTINCT offering_id) FROM item_concerns; -- expected >= 32 offerings with concern data",
+      "source_artifact": ".planning/phases/05-concern-language/05-01-PLAN.md",
+      "notes": "Contains inline SQL with bug fixes for Phase 2 enum casts. References: 02-04-task1-structured-emission.sql, 02-04-task2-structured-emission.sql, 02-05-task1-structured-emission.sql, 02-05-task2-structured-emission.sql. Executed 2026-06-13 per file header."
+    },
+    {
+      "order": 51,
+      "file": "supabase/compile_sql/05-02-aliases-aging-volume.sql",
+      "phase": "05-concern-language",
+      "plan": "05-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/05-01-missing-concerns.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "05-01-missing-concerns.sql applied (concerns table populated before aliases reference concern names/ids)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM aliases WHERE concern_id IN (SELECT id FROM concerns WHERE name ILIKE '%aging%' OR name ILIKE '%volume%'); -- expected >= 50",
+      "source_artifact": ".planning/phases/05-concern-language/05-02-PLAN.md",
+      "notes": "Alias INSERTs for aging/volume concern cluster. Per STATE.md: 593 total aliases across 48 concerns."
+    },
+    {
+      "order": 52,
+      "file": "supabase/compile_sql/05-02-aliases-expression-specialty.sql",
+      "phase": "05-concern-language",
+      "plan": "05-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/05-01-missing-concerns.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "05-01-missing-concerns.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM aliases WHERE concern_id IN (SELECT id FROM concerns WHERE name ILIKE '%expression%' OR name ILIKE '%brow%' OR name ILIKE '%gummy%'); -- expected >= 50",
+      "source_artifact": ".planning/phases/05-concern-language/05-02-PLAN.md",
+      "notes": "Alias INSERTs for expression/specialty concerns (includes Brow Ptosis, Gummy Smile added in 05-01-missing-concerns.sql)."
+    },
+    {
+      "order": 53,
+      "file": "supabase/compile_sql/05-02-aliases-skin-body.sql",
+      "phase": "05-concern-language",
+      "plan": "05-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/05-01-missing-concerns.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "05-01-missing-concerns.sql applied"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM aliases WHERE concern_id IN (SELECT id FROM concerns WHERE name ILIKE '%skin%' OR name ILIKE '%body%'); -- expected >= 100",
+      "source_artifact": ".planning/phases/05-concern-language/05-02-PLAN.md",
+      "notes": "Alias INSERTs for skin/body concerns."
+    },
+    {
+      "order": 54,
+      "file": "supabase/compile_sql/05-03-cluster-definitions.sql",
+      "phase": "05-concern-language",
+      "plan": "05-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/05-01-schema-clusters.sql", "supabase/compile_sql/05-01-missing-concerns.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "05-01-schema-clusters.sql applied (concern_clusters table must exist)",
+        "05-01-missing-concerns.sql applied (all concerns referenced in clusters must exist)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM concern_clusters; -- expected >= 4. SELECT name FROM concern_clusters ORDER BY name;",
+      "source_artifact": ".planning/phases/05-concern-language/05-03-PLAN.md",
+      "notes": "Inserts 4 concern cluster definitions: Tired Appearance, Lower-Face Heaviness, Post-Weight-Loss Laxity, Angry/Mean Resting Expression."
+    },
+    {
+      "order": 55,
+      "file": "supabase/compile_sql/06-00-schema.sql",
+      "phase": "06-pairing-engine",
+      "plan": "06-00",
+      "type": "schema",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "item_relationships table exists (migrations applied)"
+      ],
+      "post_exec_verification": "SELECT column_name FROM information_schema.columns WHERE table_name='item_relationships' AND column_name='pairing_tier'; -- expected 1 row",
+      "source_artifact": ".planning/phases/06-pairing-engine/",
+      "notes": "ADD COLUMN pairing_tier to item_relationships. Uses ADD COLUMN IF NOT EXISTS pattern — safe to re-run."
+    },
+    {
+      "order": 56,
+      "file": "supabase/compile_sql/06-00-backfill.sql",
+      "phase": "06-pairing-engine",
+      "plan": "06-00",
+      "type": "backfill",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "06-00-schema.sql applied (pairing_tier column must exist on item_relationships)"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE does_not_solve IS NOT NULL; -- expected: does_not_solve backfill applied to existing rows",
+      "source_artifact": ".planning/phases/06-pairing-engine/",
+      "notes": "does_not_solve backfill for existing item_relationships rows."
+    },
+    {
+      "order": 57,
+      "file": "supabase/compile_sql/06-02-canonical-common-inserts.sql",
+      "phase": "06-pairing-engine",
+      "plan": "06-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
+      "status": "deferred",
+      "out_of_sync": true,
+      "do_not_execute": true,
+      "pre_exec_checklist": [
+        "BLOCKED: This file must NOT be executed. It is out of sync with review cards.",
+        "File must be regenerated from finalized review cards in .planning/phases/06-pairing-engine/REVIEW_QUEUE/pairings/ after Chris's review (Phase 10 work)",
+        "See PHASE_6_QUALITY_AUDIT.md for regeneration instructions"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE pairing_tier IN ('canonical','common'); -- expected 37 (5 canonical + 32 common) ONLY after regenerated file is applied",
+      "source_artifact": ".planning/phases/06-pairing-engine/REVIEW_QUEUE/pairings/",
+      "notes": "WARNING: OUT OF SYNC with REVIEW_QUEUE/pairings/ review cards. File has WARNING header: 'DO NOT EXECUTE until reconciled.' Contains podcast references in source_reference field; predates Chris's review of 37 pairing cards. MUST be regenerated in Phase 10. DO NOT EXECUTE."
+    },
+    {
+      "order": 58,
+      "file": "supabase/compile_sql/06-02-conditional-compatible-inserts.sql",
+      "phase": "06-pairing-engine",
+      "plan": "06-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
+      "status": "deferred",
+      "out_of_sync": true,
+      "do_not_execute": true,
+      "pre_exec_checklist": [
+        "BLOCKED: This file must NOT be executed. It is out of sync with review cards.",
+        "File must be regenerated from finalized review cards after Chris's review (Phase 10 work)",
+        "See PHASE_6_QUALITY_AUDIT.md for regeneration instructions"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE pairing_tier IN ('conditional','compatible_only'); -- expected 99 (51 conditional + 48 compatible_only) ONLY after regenerated file is applied",
+      "source_artifact": ".planning/phases/06-pairing-engine/REVIEW_QUEUE/pairings/",
+      "notes": "WARNING: OUT OF SYNC with REVIEW_QUEUE/pairings/ review cards. File has WARNING header: 'DO NOT EXECUTE until reconciled.' 51 conditional + 48 compatible_only = 99 pairs. MUST be regenerated in Phase 10. DO NOT EXECUTE."
+    },
+    {
+      "order": 59,
+      "file": "supabase/compile_sql/06-02-do-not-market-inserts.sql",
+      "phase": "06-pairing-engine",
+      "plan": "06-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
+      "status": "deferred",
+      "out_of_sync": true,
+      "do_not_execute": true,
+      "pre_exec_checklist": [
+        "BLOCKED: This file must NOT be executed. It is out of sync with review cards.",
+        "File must be regenerated from finalized review cards after Chris's review (Phase 10 work)",
+        "See PHASE_6_QUALITY_AUDIT.md for regeneration instructions"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE pairing_tier='do_not_market'; -- expected 17 ONLY after regenerated file is applied",
+      "source_artifact": ".planning/phases/06-pairing-engine/REVIEW_QUEUE/pairings/",
+      "notes": "WARNING: OUT OF SYNC with REVIEW_QUEUE/pairings/ review cards. File has WARNING header: 'DO NOT EXECUTE until reconciled.' 17 do_not_market pairs (10 neurotoxin alternatives + 7 HA filler alternatives). MUST be regenerated in Phase 10. DO NOT EXECUTE."
+    },
+    {
+      "order": 60,
+      "file": "supabase/compile_sql/07-01-timing-schema.sql",
+      "phase": "07-timing-rules",
+      "plan": "07-01",
+      "type": "schema",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": [],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "PREFER the migration version: supabase/migrations/20260613_timing_columns.sql is the authoritative version for Supabase migration tracking",
+        "Only use this compile_sql version if Supabase migration tracking is not being used"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM information_schema.columns WHERE table_name='gl_products' AND column_name LIKE '%retreatment%'; -- expected >= 1. Also check item_relationships timing columns exist.",
+      "source_artifact": ".planning/phases/07-timing-rules/07-01-PLAN.md",
+      "notes": "22 ADD COLUMN statements for gl_products + item_relationships timing fields. Mirror of migrations/20260613_timing_columns.sql — apply migration version preferentially. This file is for documentation/reference."
+    },
+    {
+      "order": 61,
+      "file": "supabase/compile_sql/07-02-product-cadence.sql",
+      "phase": "07-timing-rules",
+      "plan": "07-02",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/07-01-timing-schema.sql"],
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "Timing columns exist on gl_products (07-01 or migration applied): minimum_retreatment_days, maximum_retreatment_days, typical_downtime_days, downtime_category",
+        "Run: SELECT column_name FROM information_schema.columns WHERE table_name='gl_products' AND column_name='minimum_retreatment_days'; -- must return 1 row"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM gl_products WHERE minimum_retreatment_days IS NOT NULL; -- expected 18. Also check: SELECT name, minimum_retreatment_days FROM gl_products WHERE minimum_retreatment_days = 85; -- should return 5 neurotoxins (BoNT-A safety floor).",
+      "source_artifact": ".planning/phases/07-timing-rules/07-02-PLAN.md",
+      "notes": "UPDATE 18 products with cadence/downtime data. Has trailing verification SELECT in file. BoNT-A safety floor: 85-day minimum retreatment for all 5 neurotoxins (Botox, Dysport, Xeomin, Jeuveau, Daxxify)."
+    },
+    {
+      "order": 62,
+      "file": "supabase/compile_sql/07-03-pair-timing.sql",
+      "phase": "07-timing-rules",
+      "plan": "07-03",
+      "type": "data",
+      "execution_method": "supabase_dashboard_sql",
+      "depends_on": ["supabase/compile_sql/07-01-timing-schema.sql", "supabase/compile_sql/06-02-canonical-common-inserts.sql", "supabase/compile_sql/06-02-conditional-compatible-inserts.sql", "supabase/compile_sql/06-02-do-not-market-inserts.sql"],
+      "status": "blocked",
+      "out_of_sync": false,
+      "do_not_execute": false,
+      "pre_exec_checklist": [
+        "item_relationships has >= 37 rows with pairing_tier IN ('canonical','common') — confirms 06-02-canonical-common-inserts.sql has been regenerated and applied (Phase 10)",
+        "06-02-canonical-common-inserts.sql has been regenerated from finalized review cards and applied",
+        "06-02-conditional-compatible-inserts.sql regenerated and applied",
+        "06-02-do-not-market-inserts.sql regenerated and applied",
+        "Timing columns exist on item_relationships: same_session_ok, staging_required, safety_critical, timing_warning_level"
+      ],
+      "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE same_session_ok IS NOT NULL; -- expected >= 27. SELECT COUNT(*) FROM item_relationships WHERE safety_critical = true; -- expected >= 4. SELECT timing_warning_level, COUNT(*) FROM item_relationships WHERE timing_warning_level IS NOT NULL GROUP BY timing_warning_level;",
+      "source_artifact": ".planning/phases/07-timing-rules/07-03-PLAN.md",
+      "notes": "Updates timing on pairs. Depends on Phase 6 INSERT files being applied first. Currently blocked until 06-02-canonical-common-inserts.sql is regenerated and applied (Phase 10 work). Will only update conditional/compatible/do-not-market rows until 06-02 canonical-common is resolved. Has trailing verification SELECT in file."
+    }
+  ]
+}
