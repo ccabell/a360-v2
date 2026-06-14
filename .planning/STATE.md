@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Ready to execute
-stopped_at: Completed 11.1-02-PLAN.md — fuel doc API routes, Fuel Library sidebar, schema migration SQL
-last_updated: "2026-06-14T17:02:37.085Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 11.1-03-PLAN.md — Fuel Library list page, badges, filters, create dialog
+last_updated: "2026-06-14T17:08:10.994Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -103,6 +103,8 @@ Plan: 2 of 2 complete
 - [Phase 15-01]: Agent runtime tools use jsonSchema() from ai SDK (not Zod) and structured error returns (never throw)
 - [Phase 11.1-02]: COALESCE resolution wired at HTTP layer — GET /api/fuel-docs/{id}?practice_id=X transparently calls getResolvedFuelDoc
 - [Phase 11.1-02]: Migration SQL is reference artifact only — not auto-executed; idempotent with IF NOT EXISTS guards for safe future application
+- [Phase 11.1-fuel-doc-templates-and-management-ui]: Empty state rendered as conditional block before DataTable — avoids empty DataTable when no docs exist
+- [Phase 11.1-fuel-doc-templates-and-management-ui]: typeFilter and statusFilter held as separate top-level state variables (not nested) for direct handler binding in FuelDocFilters
 
 ### v1.0 Carry-Forward Context
 
@@ -142,7 +144,7 @@ Plan: 2 of 2 complete
 
 ## Session Continuity
 
-Last session: 2026-06-14T17:02:37.082Z
-Stopped at: Completed 11.1-02-PLAN.md — fuel doc API routes, Fuel Library sidebar, schema migration SQL
+Last session: 2026-06-14T17:08:10.990Z
+Stopped at: Completed 11.1-03-PLAN.md — Fuel Library list page, badges, filters, create dialog
 Resume file: None
 Next action: Execute 15-02-PLAN.md (frontend page rewrite)

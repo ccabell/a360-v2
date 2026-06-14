@@ -244,12 +244,12 @@ Plans:
   4. Practice-level override support (COALESCE pattern) wired into UI
   5. Template system produces MD files consumable by agents
   6. UI deployable as internal tool (not production-facing yet)
-**Plans:** 2/4 plans executed
+**Plans:** 3/4 plans executed
 
 Plans:
 - [x] 11.1-01-PLAN.md — Types + data access layer + markdown serializer (foundation)
 - [x] 11.1-02-PLAN.md — API routes + sidebar entry + migration SQL
-- [ ] 11.1-03-PLAN.md — List page with DataTable, create dialog, filters, badges
+- [x] 11.1-03-PLAN.md — List page with DataTable, create dialog, filters, badges
 - [ ] 11.1-04-PLAN.md — Detail page with 6 tabs + visual verification checkpoint
 
 ---
@@ -401,7 +401,7 @@ Plans:
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete | 2026-06-14 |
 | 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete | 2026-06-14 |
-| 11.1 fuel-doc-templates-and-management-ui | v1.2 | 2/4 | In Progress|  |
+| 11.1 fuel-doc-templates-and-management-ui | v1.2 | 3/4 | In Progress|  |
 | 12. combination-fuel-documents | v1.2 | 1/3 | In Progress|  |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
