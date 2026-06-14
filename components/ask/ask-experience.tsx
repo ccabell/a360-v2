@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { trackEvent } from "@/lib/ask/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -138,6 +139,7 @@ export function AskExperience({
   const didAutoSubmit = useRef(false);
   const lastCitationsRef = useRef<ResearchCitation[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const startTimeRef = useRef(0);
 
   useEffect(() => {
     // Autofocus on desktop only (skip to avoid keyboard pop on mobile)
@@ -179,6 +181,7 @@ export function AskExperience({
     const q = query.trim();
     if (!q || busy) return;
 
+    startTimeRef.current = Date.now();
     const userId = `u_${++idRef.current}`;
     const asstId = `a_${++idRef.current}`;
 
@@ -201,6 +204,9 @@ export function AskExperience({
     lastCitationsRef.current = [];
 
     onAskSent?.({ messageId: asstId, ts: Date.now() });
+    if (variant === "public" || variant === "embed") {
+      trackEvent("evidence_unauth_ask", { surface: variant, question: q });
+    }
 
     const patch = (fn: (m: AssistantMessage) => AssistantMessage) =>
       setMessages((prev) =>
@@ -244,6 +250,13 @@ export function AskExperience({
               messageId: asstId,
               citationsCount: lastCitationsRef.current.length,
             });
+            if (variant === "public" || variant === "embed") {
+              trackEvent("evidence_answer_complete", {
+                surface: variant,
+                latency_ms: Date.now() - startTimeRef.current,
+                citation_count: lastCitationsRef.current.length,
+              });
+            }
             break;
           case "error":
             patch((m) => ({ ...m, error: ev.message, done: true, stage: null }));
@@ -262,12 +275,16 @@ export function AskExperience({
     }
   }
 
-  // T3 — passive citation click instrumentation (no-op unless onCitationClick provided)
+  // T3 — passive citation click instrumentation
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!onCitationClick) return;
     const anchor = (e.target as HTMLElement).closest("a");
     if (anchor?.href) {
-      onCitationClick({ url: anchor.href, tier: "citation" });
+      onCitationClick?.({ url: anchor.href, tier: "citation" });
+      trackEvent("citation_click", {
+        citation_url: anchor.href,
+        citation_tier: "citation",
+        surface: variant,
+      });
     }
   };
 
