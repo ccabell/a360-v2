@@ -9,9 +9,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Validation & Testing
 
-- [ ] **VAL-01**: Every completed phase (1-7) has a validation SQL file that asserts expected row counts, checks for NULL violations, and flags orphan records — returns PASS/FAIL
-- [ ] **VAL-02**: Batch content generation includes a post-generation QC gate checking uniqueness ratio (>80%), product name accuracy (0 mismatches), and evidence specificity
-- [ ] **VAL-03**: Validation can be run idempotently against live Supabase to verify current state matches expected state
+- [x] **VAL-01**: Every completed phase (1-7) has a validation SQL file that asserts expected row counts, checks for NULL violations, and flags orphan records — returns PASS/FAIL
+- [x] **VAL-02**: Batch content generation includes a post-generation QC gate checking uniqueness ratio (>80%), product name accuracy (0 mismatches), and evidence specificity
+- [x] **VAL-03**: Validation can be run idempotently against live Supabase to verify current state matches expected state
 
 ### Execution Pipeline
 
@@ -72,9 +72,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VAL-01 | Phase 08 | Pending |
-| VAL-02 | Phase 08 | Pending |
-| VAL-03 | Phase 08 | Pending |
+| VAL-01 | Phase 08 | Complete |
+| VAL-02 | Phase 08 | Complete |
+| VAL-03 | Phase 08 | Complete |
 | EXEC-01 | Phase 08 | Complete |
 | EXEC-02 | Phase 08 | Complete |
 | EXEC-03 | Phase 08 | Complete |

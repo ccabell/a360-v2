@@ -170,7 +170,7 @@ Plans:
 
 Plans:
 - [x] 08-01-PLAN.md — Build EXECUTION_MANIFEST.json: dependency-ordered inventory of all SQL/TS artifacts across phases 01-07
-- [ ] 08-02-PLAN.md — Create 7 phase validation SQL files + batch QC gate (PASS/FAIL assertions for Supabase)
+- [x] 08-02-PLAN.md — Create 7 phase validation SQL files + batch QC gate (PASS/FAIL assertions for Supabase)
 
 ---
 
@@ -213,6 +213,6 @@ Plans:
 | 05. concern-language | v1.0 | 3/3 | Complete | 2026-06-13 |
 | 06. pairing-engine | v1.0 | 5/5 | Complete | 2026-06-13 |
 | 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
-| 08. execution-manifest-and-validation | v1.1 | 1/2 | In Progress|  |
+| 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete   | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 0/TBD | Not started | - |
 | 10. pairing-sql-reconciliation | v1.1 | 0/TBD | Not started | - |

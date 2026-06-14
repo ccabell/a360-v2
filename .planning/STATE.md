@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Ready to execute
-stopped_at: Completed 08-01-PLAN.md — EXECUTION_MANIFEST.json built with 62 entries
-last_updated: "2026-06-14T04:57:28.717Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 08-02-PLAN.md -- 8 validation SQL files in supabase/validation/
+last_updated: "2026-06-14T05:04:34.305Z"
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -54,6 +54,7 @@ Plan: 2 of 2
 | 09-podcast-data-strategy-and-evidence-provenance | 0/TBD | - | - |
 | 10-pairing-sql-reconciliation | 0/TBD | - | - |
 | Phase 08-execution-manifest-and-validation P01 | 3 | 1 tasks | 1 files |
+| Phase 08-execution-manifest-and-validation P02 | 3min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -66,6 +67,8 @@ Plan: 2 of 2
 - [v1.1 roadmap]: Existing phase directories 08-combination-intelligence, 09-care-plan-modules, 10-agent-fuel-compilation will be renumbered to 11, 12, 13 when that content work resumes in a future milestone
 - [Phase 08-01]: All three Phase 6 INSERT files (canonical-common, conditional-compatible, do-not-market) flagged out_of_sync: true — grep confirmed all have WARNING/DO NOT EXECUTE headers, not just canonical-common as initially assumed
 - [Phase 08-01]: 07-03-pair-timing.sql set to blocked (not pending) because its dependency chain includes three deferred 06-02 files
+- [Phase 08-02]: Phase 6 canonical/common validation checks use WARN (not FAIL) -- 06-02-canonical-common-inserts.sql is do_not_execute until Phase 10 regenerates it
+- [Phase 08-02]: All count assertions use >= (not =) to prevent false FAILs when future phases add rows to validated tables
 
 ### v1.0 Carry-Forward Context
 
@@ -96,7 +99,7 @@ Plan: 2 of 2
 
 ## Session Continuity
 
-Last session: 2026-06-14T04:57:28.713Z
-Stopped at: Completed 08-01-PLAN.md — EXECUTION_MANIFEST.json built with 62 entries
+Last session: 2026-06-14T05:04:34.302Z
+Stopped at: Completed 08-02-PLAN.md -- 8 validation SQL files in supabase/validation/
 Resume file: None
 Next action: `/gsd:plan-phase 08`
