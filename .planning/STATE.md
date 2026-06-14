@@ -1,30 +1,30 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: Milestone complete
-stopped_at: Completed 06-05-PLAN.md Task 1; Task 2 checkpoint pending Chris review
-last_updated: "2026-06-13T21:48:03.121Z"
+milestone: v1.1
+milestone_name: Pipeline Integrity & Data Strategy
+status: Defining requirements
+stopped_at: null
+last_updated: "2026-06-14T00:00:00.000Z"
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 25
-  completed_plans: 25
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-12)
+See: .planning/PROJECT.md (updated 2026-06-14)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 06 — pairing-engine
+**Current focus:** v1.1 — Pipeline Integrity & Data Strategy
 
 ## Current Position
 
-Phase: 07
-Plan: Not started
+Phase: Not started (defining requirements)
+Plan: —
 
 ## Performance Metrics
 

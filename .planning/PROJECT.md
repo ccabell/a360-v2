@@ -24,6 +24,18 @@ The A360 Global Library (GL) is a structured knowledge system for aesthetic medi
 - `sales_education` is the PRIMARY lens — deepest compile effort, no liability ceiling
 - Key sections: combination_therapy, cost_benefit, benefit_framing, objection_reframes, maintenance_story
 
+## Current Milestone: v1.1 Pipeline Integrity & Data Strategy
+
+**Goal:** Fix operational gaps exposed during v1.0 — validation, execution tracking, podcast data strategy, content quality, and pairing SQL reconciliation — before building more content on a shaky foundation.
+
+**Target features:**
+- SQL validation harness (per-phase validation files, content fingerprinting gate)
+- Execution manifest (dependency-ordered inventory of all SQL files with status tracking)
+- Podcast data strategy (two-layer evidence model: research layer with anonymous IDs, production layer with PubMed/FDA/consensus)
+- Pairing SQL reconciliation (regenerate SQL from reviewed cards, reconsider Sculptra tiers, apply Chris's review decisions)
+- Content quality gate (hash-based deduplication, product name verification, evidence specificity check)
+- Evidence provenance cleanup (PubMed URL backfill, podcast contamination audit, research vs production source separation)
+
 ## Current State (2026-06-13)
 
 **Phases 1-5 complete.** 5 phases executed (18 plans total). Phase 6 (pairing-engine) in progress.
