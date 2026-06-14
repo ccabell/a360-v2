@@ -1,5 +1,6 @@
 import type { ResearchCitation } from "@/lib/types/retrieval";
 import { parseCitationSegments, type ResolvedRef } from "./citation-segments";
+import { MarkdownTable } from "./markdown-table";
 
 interface AnswerMessageProps {
   text: string;
@@ -48,6 +49,20 @@ export function AnswerMessage({ text, displayMap, citations }: AnswerMessageProp
             <h3 key={pi} className="mt-4 mb-1 border-l-2 border-primary pl-3 text-base font-semibold text-foreground">
               {headingMatch[1]}
             </h3>
+          );
+        }
+
+        // Table detection: requires header row + separator row (no false positives)
+        const isTable = /^\|.+\|\n\|[-| :]+\|/m.test(trimmed);
+        if (isTable) {
+          return (
+            <MarkdownTable
+              key={pi}
+              raw={trimmed}
+              resolve={resolve}
+              byNumber={byNumber}
+              citations={citations ?? []}
+            />
           );
         }
 
