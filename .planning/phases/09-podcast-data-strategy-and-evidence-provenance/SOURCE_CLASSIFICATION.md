@@ -1,26 +1,74 @@
 # Source Classification Matrix
 
 **Phase:** 09 — Podcast Data Strategy & Evidence Provenance
-**Status:** Governing document — referenced by EVIDENCE_MODEL.md Section 5 (EVID-02)
-**Purpose:** Define which source types are production-citable (appear in `source_reference`, `evidence_links`, and prose citations) and which are research-only (used internally to discover ideas, never cited in production).
+**Status:** Governing document — revised Phase 11 (originally Phase 09)
+**Revised:** Phase 11 — replaced binary production-citable model with practical per-source guidance
+**Purpose:** Define what each source type is authoritative for, how to cite it, and whether it can appear in production fields. Phase 12-14 content generation relies on this document for consistent citation formats and source usage guidance.
 
 ---
 
 ## Source Classification Matrix
 
-| Source Type | Layer | Production-Citable? | Citation Format | Example |
-|-------------|-------|---------------------|-----------------|---------|
-| PubMed | Production | Yes — DOI/PMID required | `PMID: 29876543` or `DOI: 10.xxxx/yyyy` | `pubmed.ncbi.nlm.nih.gov/29876543` |
-| FDA Label / Package Insert | Production | Yes — FDA URL required | `[FDA label, Allergan Inc., 2023]` | `accessdata.fda.gov/drugsatfda_docs/label/...` |
-| DailyMed Label | Production | Yes — DailyMed URL required | `[DailyMed: Botox PI, 2024]` | `dailymed.nlm.nih.gov/dailymed/...` |
-| Medical Society Guidance | Production | Yes — organization + year required | `[ASPS, 2023]` | `ASPS 2023 practice advisory` |
-| Manufacturer Clinical Data | Production | Yes — company + document required | `[Allergan, Vollure XC PI, 2022]` | `Allergan Botox package insert, updated 2024` |
-| Expert Consensus (generic) | Production | Yes — "expert consensus" only, no attribution | `"Expert consensus supports..."` | "Expert consensus supports biostimulator + neurotoxin combination" |
-| Podcast Corpus | Research-only | NO — ideas only, via EC- ID | N/A | EC-a8f3c2e19b74 (internal tracking only) |
-| Conference Presentation | Research-only | NO — unless published in proceedings with DOI | N/A | IMCAS 2024 keynote |
-| Industry Webinar | Research-only | NO — unless backed by published source | N/A | Allergan product training webinar |
-| YouTube (clinical) | Research-only | NO — unless backed by published source | N/A | Injector technique video |
-| Internal A360 Research Files | Research-only | NO — internal artifacts only | N/A | PHASE_6_ANSWERS_PODCAST_SOURCED.md |
+| Source Type | Layer | Authoritative For | Citation Format | Example |
+|-------------|-------|-------------------|-----------------|---------|
+| PubMed | Production | Clinical evidence, outcomes data, comparative studies, timing protocols | `PMID: {id}` and/or `DOI: {doi}` with URL `https://pubmed.ncbi.nlm.nih.gov/{pmid}/` | PMID: 29876543 |
+| FDA Label / Package Insert | Production | Safety profiles, approved indications, dosing ranges, contraindications, boxed warnings | `[FDA label, {manufacturer}, {year}]` with URL `https://accessdata.fda.gov/drugsatfda_docs/label/...` | [FDA label, Allergan Inc., 2023] |
+| DailyMed Label | Production | Same as FDA label (mirror source) | `[DailyMed: {product} PI, {year}]` with URL `https://dailymed.nlm.nih.gov/dailymed/...` | [DailyMed: Botox PI, 2024] |
+| Medical Society Guidance | Production | Practice standards, consensus guidelines, complication management protocols | `[{organization}, {year}]` with society URL if stable | [ASPS, 2023] |
+| Manufacturer Clinical Data | Production | Product-specific education, technique guidance, reconstitution/storage, clinical trial results | `[{company}, {document_title}, {year}]` | [Allergan, Vollure XC PI, 2022] |
+| Manufacturer Video/Training | Production | Injection technique, product handling, patient selection criteria | `[{company} training, "{title}", {year}]` with URL if available | [Galderma training, "Restylane Lyft Technique", 2023] |
+| YouTube (manufacturer channel) | Production | Product demonstrations, technique education from verified manufacturer accounts | `[{channel}, "{title}", {year}]` with URL `https://youtube.com/watch?v={id}&t={seconds}` | [Allergan Aesthetics, "Vollure Injection Technique", 2023] |
+| YouTube (board-certified physician educational) | Production | Clinical technique education, peer teaching, outcome demonstrations | `[{channel}, "{title}", {year}]` with URL + timestamp | [Dr. {Name} (board-certified {specialty}), "{title}", 2023] |
+| Industry Articles (87K corpus chunks) | Production | Market context, expert perspectives, trend analysis, practice management insights | `[{publication}, {author}, {year}]` with URL | [Aesthetic Society News, Smith, 2024] |
+| Expert Consensus (generic) | Production | Practice patterns widely adopted but not yet published; conservative clinical claims | `"Expert consensus supports..."` — no attribution | Expert consensus supports biostimulator + neurotoxin combination |
+| YouTube (influencer/unverified) | Research-only | Discovery of patient concerns, trending topics, consumer sentiment — NOT clinical claims | N/A | Influencer skincare routine video |
+| Podcast Corpus | Research-only | Idea discovery, emerging patterns, expert stacking protocols, hypothesis generation | N/A — tracked via EC- ID internally | EC-a8f3c2e19b74 |
+| Conference Presentation | Research-only | Emerging research, pre-publication data (unless proceedings published with DOI) | N/A (unless DOI → then cite as publication) | IMCAS 2024 keynote |
+| Industry Webinar | Research-only | Training context, product updates (unless backed by published source) | N/A | Allergan product training webinar |
+| Internal A360 Research Files | Research-only | Internal planning only — never evidence | N/A | PHASE_6_ANSWERS_PODCAST_SOURCED.md |
+
+---
+
+## What Each Source Type Is Good For
+
+### FDA Labels / IFUs
+
+**Good for:** Safety, approved indications, dosing, contraindications, boxed warnings, drug interactions.
+**Not good for:** Off-label uses, combination protocols, patient education framing, real-world outcomes.
+**When to reach for this:** Any safety-critical claim, any dosing statement, any contraindication check.
+
+### PubMed / Published Literature
+
+**Good for:** Clinical evidence, efficacy data, comparative studies, timing protocols, complication rates, long-term outcomes.
+**Not good for:** Product-specific technique details (use manufacturer data), practice management, patient communication framing.
+**When to reach for this:** Any clinical claim about efficacy, timing, outcomes, or safety beyond FDA labeling.
+
+### Manufacturer Data (IFUs, training, videos)
+
+**Good for:** Product education, injection technique, reconstitution/storage, product-specific clinical trial results, patient selection.
+**Not good for:** Comparative claims against competitors, off-label applications, pricing/business.
+**When to reach for this:** "How do you use this product?" questions, technique guidance, product handling.
+
+### Industry Articles (87K corpus)
+
+**Good for:** Market context, expert perspectives, practice trends, business of aesthetics, emerging protocols.
+**Not good for:** Safety-critical claims (use FDA), clinical evidence without PubMed backup.
+**When to reach for this:** Contextual framing, trend analysis, expert opinion on practice patterns.
+
+### YouTube (tiered)
+
+**Good for (manufacturer/physician):** Technique demonstration, visual education, product handling.
+**Not good for:** Clinical evidence claims without published backup.
+**Tier rules:**
+- **Manufacturer official channels:** production-citable for product education
+- **Board-certified physician educational content:** production-citable for technique education
+- **Influencer/unverified:** research-only (consumer sentiment, patient concern discovery)
+
+### Podcasts
+
+**Good for:** Idea discovery, hypothesis generation, identifying emerging patterns before publication.
+**Not good for:** Any production citation. Ever.
+**When to reach for this:** Step 1 of enrichment — mine for ideas, then find PubMed/published backup per PODCAST_WORKFLOW.md.
 
 ---
 
@@ -31,44 +79,85 @@ Use this decision tree when writing any production-facing field (`clinical_ratio
 ```
 Step 1: What type is the source?
         |
-        +-- PubMed, FDA label, DailyMed, medical society guidance,
-        |   manufacturer PI, or generic "expert consensus"
-        |   --> PRODUCTION-CITABLE
-        |       Use DOI/PMID/URL/org+year as the citation
-        |       Skip to END
+        +-- FDA label / IFU
+        |   --> Use for: safety, indications, dosing
+        |       Citation: [FDA label, {mfr}, {year}] + accessdata URL
         |
-        +-- Podcast, conference talk, webinar, YouTube, internal file
-            --> RESEARCH-ONLY (go to Step 2)
-
-Step 2: Does the research-only source have a PubMed corroboration?
+        +-- PubMed / published with DOI
+        |   --> Use for: clinical evidence, outcomes, timing
+        |       Citation: PMID: {id} or DOI: {doi}
         |
-        +-- YES: PubMed paper covers the same concept
-        |   --> Cite the PubMed paper in production
-        |       Track the research-only source via EC- ID internally
-        |       Skip to END
+        +-- Manufacturer data (training, video, clinical)
+        |   --> Use for: product education, technique, handling
+        |       Citation: [{company}, {doc}, {year}]
         |
-        +-- NO: No published backup found
-            --> Use "expert consensus" language in production
-                Example: "Expert consensus supports [concept]"
-                Track via EC- ID internally
-                Flag for future PubMed search
-
-END: Never include the research-only source name in any production field.
+        +-- Industry article
+        |   --> Use for: context, perspectives, trends
+        |       Citation: [{pub}, {author}, {year}]
+        |
+        +-- YouTube
+        |   --> Check tier:
+        |       Manufacturer channel? --> production-citable for product education
+        |       Board-certified physician? --> production-citable for technique
+        |       Influencer/unverified? --> research-only
+        |
+        +-- Medical society guidance
+        |   --> Use for: practice standards, consensus guidelines
+        |       Citation: [{org}, {year}]
+        |
+        +-- Expert consensus (generic, no attribution)
+        |   --> Use for: widely-adopted patterns without published paper
+        |       Citation: "Expert consensus supports..."
+        |
+        +-- Podcast, conference (no DOI), webinar, internal file
+            --> RESEARCH-ONLY (see PODCAST_WORKFLOW.md for safe usage)
+                Find published backup or use "expert consensus" language
 ```
+
+---
+
+## Citation Format Reference
+
+| Source Type | Format Template | Required Fields | Example |
+|-------------|-----------------|-----------------|---------|
+| PubMed | `PMID: {pmid}` or `DOI: {doi}` | pmid or doi, url | PMID: 29876543 |
+| FDA label | `[FDA label, {manufacturer}, {year}]` | manufacturer, year, accessdata URL | [FDA label, Allergan Inc., 2023] |
+| DailyMed | `[DailyMed: {product} PI, {year}]` | product name, year, dailymed URL | [DailyMed: Botox PI, 2024] |
+| Medical society | `[{organization}, {year}]` | organization, year | [ASPS, 2023] |
+| Manufacturer doc | `[{company}, {document}, {year}]` | company, document title, year | [Galderma, Restylane Lyft IFU, 2023] |
+| Manufacturer video | `[{company} training, "{title}", {year}]` | company, title, year, URL | [Allergan training, "Vollure Technique", 2023] |
+| YouTube (production) | `[{channel}, "{title}", {year}]` | channel, title, year, URL+timestamp | [Allergan Aesthetics, "Injection Demo", 2023] |
+| Industry article | `[{publication}, {author}, {year}]` | publication, author, year, URL | [Aesthetic Society News, Smith, 2024] |
+| Expert consensus | `"Expert consensus supports..."` | (none) | Expert consensus supports sequential combination |
 
 ---
 
 ## Rationale by Source Type
 
-### Why PubMed is Production-Citable
+### Why PubMed is Authoritative for Clinical Evidence
 
-PubMed indexes peer-reviewed literature. Every article has a stable PMID, a DOI, and a URL. Citations are verifiable, persistent, and linkable in the Evidence tab UI. Authority rank: highest.
+PubMed indexes peer-reviewed literature. Every article has a stable PMID, a DOI, and a URL. Citations are verifiable, persistent, and linkable in the Evidence tab UI. Authority rank: highest. Reach for PubMed when making any clinical claim about efficacy, timing, outcomes, or comparative data.
 
-### Why FDA Labels are Production-Citable
+### Why FDA Labels are Authoritative for Safety
 
-FDA labels are regulatory documents with legal force. They establish indication, contraindication, dosing range, and safety profile. Citations use the accessdata.fda.gov URL structure. Authority rank: highest.
+FDA labels are regulatory documents with legal force. They establish indication, contraindication, dosing range, and safety profile. Citations use the accessdata.fda.gov URL structure. Authority rank: highest. Reach for FDA labels when making any safety-critical claim, any dosing statement, or any contraindication check.
 
-### Why "Expert Consensus" (generic) is Production-Citable
+### Why Manufacturer Data is Authoritative for Product Education
+
+Manufacturers produce IFUs, training videos, and clinical data packages that are the definitive source for how to use their products. Technique guidance, reconstitution, storage, and product-specific trial results come from here. Not authoritative for comparative claims against competitors.
+
+### Why Industry Articles are Authoritative for Context
+
+The 87K-chunk industry corpus captures expert perspectives, market trends, and practice management insights. These are production-citable for contextual framing but should not be the sole source for safety-critical claims (use FDA) or clinical evidence (use PubMed).
+
+### Why YouTube is Tiered
+
+YouTube content varies wildly in authority:
+- **Manufacturer channels** (e.g., Allergan Aesthetics, Galderma) publish official training content vetted by their medical affairs teams — production-citable for product education.
+- **Board-certified physician channels** produce peer teaching and technique demonstrations backed by clinical training — production-citable for technique education.
+- **Influencer/unverified channels** may contain inaccurate claims, undisclosed sponsorships, or non-clinical perspectives — research-only for discovering patient concerns and trending topics.
+
+### Why "Expert Consensus" (generic) is Authoritative for Adopted Patterns
 
 When multiple independent clinical experts converge on a practice pattern that lacks a single published paper, "expert consensus" is an acceptable citation if:
 - It is stated generically ("Expert consensus supports...")
@@ -103,13 +192,18 @@ Files like `PHASE_6_ANSWERS_PODCAST_SOURCED.md` are working documents in the pla
 |-------------|-------------------------------------|-----------------------------------|--------------------------------|
 | PubMed | Yes (pubmed.ncbi.nlm.nih.gov/...) | Yes (PMID: xxxx) | Yes |
 | FDA label | Yes (accessdata.fda.gov/...) | Yes ([FDA label, 2023]) | Yes |
+| DailyMed | Yes (dailymed.nlm.nih.gov/...) | Yes ([DailyMed: {product} PI, 2024]) | Yes |
 | Medical society | Yes (society URL, if stable) | Yes ([ASPS, 2023]) | Yes |
-| Manufacturer PI | No (prefer FDA/DailyMed URL) | Yes ([Allergan Botox PI, 2024]) | Yes |
+| Manufacturer PI/doc | No (prefer FDA/DailyMed URL) | Yes ([Allergan Botox PI, 2024]) | Yes |
+| Manufacturer video | Yes (YouTube/hosted URL) | Yes ([{company} training, "{title}", {year}]) | Yes |
+| YouTube (manufacturer channel) | Yes (youtube.com/watch?v=...) | Yes ([{channel}, "{title}", {year}]) | Yes |
+| YouTube (board-certified physician) | Yes (youtube.com/watch?v=...) | Yes ([{channel}, "{title}", {year}]) | Yes |
+| Industry article | Yes (publication URL) | Yes ([{pub}, {author}, {year}]) | Yes |
 | Expert consensus | No URL | Yes ("expert consensus") | Yes |
+| YouTube (influencer/unverified) | NO | NO | NO |
 | Podcast corpus | NO | NO | NO |
 | Conference (no DOI) | NO | NO | NO |
 | Webinar | NO | NO | NO |
-| YouTube | NO | NO | NO |
 | Internal A360 files | NO | NO | NO |
 
 ---
@@ -118,9 +212,11 @@ Files like `PHASE_6_ANSWERS_PODCAST_SOURCED.md` are working documents in the pla
 
 - **EVIDENCE_MODEL.md** — Two-layer model, anonymous ID scheme, contamination definition
 - **PODCAST_WORKFLOW.md** — Step-by-step workflow for safely converting podcast-derived ideas into production content
+- **ENRICHMENT_PIPELINE.md** — Repeatable enrichment loop: add source, classify, chunk, vectorize, regenerate fuel (created in plan 11-03)
 - **POD-04** (Phase 10) — Contamination audit applying these classifications to all existing SQL files
 
 ---
 
 *Created: Phase 09-01*
-*Requirement: EVID-02*
+*Revised: Phase 11-02 — replaced binary production-citable model with practical per-source guidance and citation formats*
+*Requirement: EVID-02, SRCE-01, SRCE-02*
