@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Executing
-stopped_at: Completed 15-01-PLAN.md — agent runtime backend (tools, executor, SSE route)
-last_updated: "2026-06-14T16:58:19Z"
+status: Ready to execute
+stopped_at: Completed 11.1-02-PLAN.md — fuel doc API routes, Fuel Library sidebar, schema migration SQL
+last_updated: "2026-06-14T17:02:37.085Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-06-14)
 ## Current Position
 
 Phase: 15 (runtime-stabilization) — EXECUTING
-Plan: 1 of 2 complete
+Plan: 2 of 2 complete
 
 ## v2.0 Phases at a Glance (Planned)
 
@@ -101,6 +101,8 @@ Plan: 1 of 2 complete
 - [Phase 15-01]: AI SDK v6 replaced maxSteps with stopWhen(stepCountIs(N)) — executor adapted accordingly
 - [Phase 15-01]: AI SDK v6 tool-call uses 'input' (not 'args'), tool-result uses 'output' (not 'result'), tool-error is a distinct stream part type
 - [Phase 15-01]: Agent runtime tools use jsonSchema() from ai SDK (not Zod) and structured error returns (never throw)
+- [Phase 11.1-02]: COALESCE resolution wired at HTTP layer — GET /api/fuel-docs/{id}?practice_id=X transparently calls getResolvedFuelDoc
+- [Phase 11.1-02]: Migration SQL is reference artifact only — not auto-executed; idempotent with IF NOT EXISTS guards for safe future application
 
 ### v1.0 Carry-Forward Context
 
@@ -140,7 +142,7 @@ Plan: 1 of 2 complete
 
 ## Session Continuity
 
-Last session: 2026-06-14T16:58:19Z
-Stopped at: Completed 15-01-PLAN.md — agent runtime backend (tools, executor, SSE route)
-Resume file: .planning/phases/15-runtime-stabilization/15-02-PLAN.md
+Last session: 2026-06-14T17:02:37.082Z
+Stopped at: Completed 11.1-02-PLAN.md — fuel doc API routes, Fuel Library sidebar, schema migration SQL
+Resume file: None
 Next action: Execute 15-02-PLAN.md (frontend page rewrite)
