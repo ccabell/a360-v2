@@ -15,9 +15,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Execution Pipeline
 
-- [ ] **EXEC-01**: A single manifest file lists all SQL files in dependency order with status (pending/applied/verified) and phase association
-- [ ] **EXEC-02**: Manifest includes pre-execution checklist (schema dependencies, required prior files) and post-execution verification queries
-- [ ] **EXEC-03**: SQL files that are out of sync with their source artifacts (review cards, research specs) are flagged in the manifest
+- [x] **EXEC-01**: A single manifest file lists all SQL files in dependency order with status (pending/applied/verified) and phase association
+- [x] **EXEC-02**: Manifest includes pre-execution checklist (schema dependencies, required prior files) and post-execution verification queries
+- [x] **EXEC-03**: SQL files that are out of sync with their source artifacts (review cards, research specs) are flagged in the manifest
 
 ### Podcast Data Strategy
 
@@ -75,9 +75,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | VAL-01 | Phase 08 | Pending |
 | VAL-02 | Phase 08 | Pending |
 | VAL-03 | Phase 08 | Pending |
-| EXEC-01 | Phase 08 | Pending |
-| EXEC-02 | Phase 08 | Pending |
-| EXEC-03 | Phase 08 | Pending |
+| EXEC-01 | Phase 08 | Complete |
+| EXEC-02 | Phase 08 | Complete |
+| EXEC-03 | Phase 08 | Complete |
 | POD-01 | Phase 09 | Pending |
 | POD-02 | Phase 09 | Pending |
 | POD-03 | Phase 09 | Pending |
