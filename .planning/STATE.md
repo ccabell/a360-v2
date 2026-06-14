@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
 status: Phase complete — ready for verification
-stopped_at: "Stopped at checkpoint:human-verify in 11.1-04-PLAN.md — Task 1 complete, awaiting visual verification"
-last_updated: "2026-06-14T17:16:28.571Z"
+stopped_at: Completed 12-02-PLAN.md — all 37 combination fuel docs generated, QC report created
+last_updated: "2026-06-14T18:24:11.349Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -105,6 +105,9 @@ Plan: 2 of 2 complete
 - [Phase 11.1-02]: Migration SQL is reference artifact only — not auto-executed; idempotent with IF NOT EXISTS guards for safe future application
 - [Phase 11.1-fuel-doc-templates-and-management-ui]: Empty state rendered as conditional block before DataTable — avoids empty DataTable when no docs exist
 - [Phase 11.1-fuel-doc-templates-and-management-ui]: typeFilter and statusFilter held as separate top-level state variables (not nested) for direct handler binding in FuelDocFilters
+- [Phase 12]: Evidence level weak used for all Sculptra combination pairs — FDA label combination caveat is key disclosure
+- [Phase 12]: SKINVIVE pairs set to weak evidence — microdroplet HA is distinct category from volumizing fillers; BoNT-A+filler studies do not apply
+- [Phase 12]: Botox+Morpheus8 set to strong evidence — DOI 10.1111/j.1524-4725.2005.31105 directly supports same-day RF + BoNT-A safety
 
 ### v1.0 Carry-Forward Context
 
@@ -144,7 +147,7 @@ Plan: 2 of 2 complete
 
 ## Session Continuity
 
-Last session: 2026-06-14T17:16:28.567Z
-Stopped at: Stopped at checkpoint:human-verify in 11.1-04-PLAN.md — Task 1 complete, awaiting visual verification
+Last session: 2026-06-14T18:24:11.345Z
+Stopped at: Completed 12-02-PLAN.md — all 37 combination fuel docs generated, QC report created
 Resume file: None
 Next action: Execute 15-02-PLAN.md (frontend page rewrite)

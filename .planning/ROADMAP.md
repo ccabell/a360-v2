@@ -244,13 +244,13 @@ Plans:
   4. Practice-level override support (COALESCE pattern) wired into UI
   5. Template system produces MD files consumable by agents
   6. UI deployable as internal tool (not production-facing yet)
-**Plans:** 3/3 plans complete
+**Plans:** 4/4 plans complete
 
 Plans:
 - [x] 11.1-01-PLAN.md — Types + data access layer + markdown serializer (foundation)
 - [x] 11.1-02-PLAN.md — API routes + sidebar entry + migration SQL
 - [x] 11.1-03-PLAN.md — List page with DataTable, create dialog, filters, badges
-- [ ] 11.1-04-PLAN.md — Detail page with 6 tabs + visual verification checkpoint
+- [x] 11.1-04-PLAN.md — Detail page with 6 tabs + visual verification checkpoint
 
 ---
 
@@ -267,7 +267,7 @@ Plans:
 
 Plans:
 - [x] 12-01-PLAN.md — Fuel doc schema: unify 2 existing JSON formats, define template, design practice-override structure
-- [ ] 12-02-PLAN.md — Content generation: mine corpus + generate fuel doc content for canonical/common pairings
+- [x] 12-02-PLAN.md — Content generation: mine corpus + generate fuel doc content for canonical/common pairings
 - [ ] 12-03-PLAN.md — Review queue assembly + Chris review checkpoint
 
 ---
@@ -321,7 +321,7 @@ Plans:
   3. When a tool fails, the run continues with remaining tools and the failed step is marked with a structured error message identifying what failed and why
   4. Every completed or failed run is saved to `agent_runs` in Agent Manager Supabase — the run is never lost
   5. A run never ends with only "No output generated" — a structured error always identifies which step failed, what completed successfully, and what action is recommended
-**Plans:** 1/2 plans complete
+**Plans:** 2/3 plans executed
 
 Plans:
 - [x] 15-01-PLAN.md — Backend runtime: API route + tool implementations + executor (SSE streaming, 5 tools, run persistence)
@@ -401,8 +401,8 @@ Plans:
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete | 2026-06-14 |
 | 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete   | 2026-06-14 |
-| 11.1 fuel-doc-templates-and-management-ui | v1.2 | 3/4 | In Progress|  |
-| 12. combination-fuel-documents | v1.2 | 1/3 | In Progress|  |
+| 11.1 fuel-doc-templates-and-management-ui | v1.2 | 4/4 | Complete   | 2026-06-14 |
+| 12. combination-fuel-documents | v1.2 | 2/3 | In Progress|  |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
 | 15. runtime-stabilization | v2.0 | 1/2 | In Progress | - |

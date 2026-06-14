@@ -52,9 +52,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Combination Fuel Documents (Phase 12)
 
-- [ ] **COMBO-01**: Every canonical/common pairing has enriched fuel doc with corpus-grounded content
-- [ ] **COMBO-02**: Content sounds like what trained staff would actually say — education tone, not sales pitch
-- [ ] **COMBO-03**: What-not-to-say populated for every combination
+- [x] **COMBO-01**: Every canonical/common pairing has enriched fuel doc with corpus-grounded content
+- [x] **COMBO-02**: Content sounds like what trained staff would actually say — education tone, not sales pitch
+- [x] **COMBO-03**: What-not-to-say populated for every combination
 - [x] **COMBO-04**: Fuel doc schema supports practice-level overrides (gl_*/pl_* COALESCE pattern)
 - [x] **COMBO-05**: Unified JSON format across all fuel docs (2 existing formats reconciled)
 
@@ -157,9 +157,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | SRCE-03 | Phase 11 | Complete |
 | SRCE-04 | Phase 11 | Design Complete |
 | CFRW-01 | Phase 11 | Partial |
-| COMBO-01 | Phase 12 | Pending |
-| COMBO-02 | Phase 12 | Pending |
-| COMBO-03 | Phase 12 | Pending |
+| COMBO-01 | Phase 12 | Complete |
+| COMBO-02 | Phase 12 | Complete |
+| COMBO-03 | Phase 12 | Complete |
 | COMBO-04 | Phase 12 | Complete |
 | COMBO-05 | Phase 12 | Complete |
 | CARE-01 | Phase 13 | Pending |
