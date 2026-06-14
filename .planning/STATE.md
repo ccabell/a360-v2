@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Milestone complete
-stopped_at: Completed 10-01-PLAN.md -- contamination audit clean (37 cards), Sculptra tiers re-evaluated (5 neurotoxin pairs promoted to common), Plan 02 (SQL regeneration) is next
-last_updated: "2026-06-14T06:34:41.633Z"
+status: Ready to execute
+stopped_at: Completed 11-02-PLAN.md — SOURCE_CLASSIFICATION.md revised with practical guidance
+last_updated: "2026-06-14T15:08:35.808Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -19,20 +19,21 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-14)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 10 — pairing-sql-reconciliation
+**Current focus:** Phase 11 — source-framework-and-v1.1-closeout
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
+Phase: 11 (source-framework-and-v1.1-closeout) — EXECUTING
+Plan: 2 of 3
 
-## v1.1 Phases at a Glance
+## v1.2 Phases at a Glance
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 08 | execution-manifest-and-validation | EXEC-01, EXEC-02, EXEC-03, VAL-01, VAL-02, VAL-03 | Not started |
-| 09 | podcast-data-strategy-and-evidence-provenance | POD-01, POD-02, POD-03, EVID-01, EVID-02, EVID-03 | Not started |
-| 10 | pairing-sql-reconciliation | POD-04, PAIR-01, PAIR-02, PAIR-03 | Not started |
+| 11 | source-framework-and-v1.1-closeout | SRCE-01, SRCE-02, SRCE-03, SRCE-04, CFRW-01 | Not started |
+| 12 | combination-fuel-documents | COMBO-01, COMBO-02, COMBO-03, COMBO-04, COMBO-05 | Not started |
+| 13 | concern-fuel-documents | CARE-01, CARE-02, CARE-03, CARE-04 | Not started |
+| 14 | compiled-fuel-packets | FUEL-01, FUEL-02, FUEL-03, FUEL-04, FUEL-05 | Not started |
 
 ## Performance Metrics
 
@@ -41,28 +42,27 @@ Plan: Not started
 - Total plans completed: 21 (phases 01-07)
 - Phases shipped: 7 (01-07), with 03-04 pending
 
-**v1.1 Velocity:**
+**v1.1 Velocity (completed):**
 
-- Total plans completed: 0
+- Total plans completed: 6 (phases 08-10)
+- Phases shipped: 3
+
+**v1.2 Velocity:**
+
+- Total plans completed: 0/12
 - Average duration: N/A
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 08-execution-manifest-and-validation | 0/TBD | - | - |
-| 09-podcast-data-strategy-and-evidence-provenance | 0/TBD | - | - |
-| 10-pairing-sql-reconciliation | 0/TBD | - | - |
-| Phase 08-execution-manifest-and-validation P01 | 3 | 1 tasks | 1 files |
-| Phase 08-execution-manifest-and-validation P02 | 3min | 2 tasks | 8 files |
-| Phase 09-podcast-data-strategy-and-evidence-provenance P01 | 4 | 2 tasks | 3 files |
-| Phase 09-podcast-data-strategy-and-evidence-provenance P09-02 | 8 | 2 tasks | 2 files |
-| Phase 10-pairing-sql-reconciliation P01 | 45min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
 ### Decisions
 
+- [v1.2 architecture]: Sources and fuel are separate concepts — sources are raw authoritative material in vector DBs, fuel is curated agent-ready intelligence derived from sources. Agents use tools to search sources at runtime for edge cases beyond fuel doc coverage.
+- [v1.2 architecture]: Three-layer model: (1) Sources (evidence_links, agent_reference_docs) → (2) Global fuel (gl_agent_fuel_documents, optimal defaults) → (3) Practice fuel (pl_* overrides, practices customize later). COALESCE pattern same as gl_products/pl_products.
+- [v1.2 architecture]: Replace binary "production-citable yes/no" with practical guidance on what each source type is good for. FDA=safety/dosing, PubMed=clinical evidence, manufacturer=product education, industry=context/trends, podcasts=research only.
+- [v1.2 architecture]: Fuel docs cover common cases well. Agent tools (PubMed search, manufacturer data search, etc.) handle the long tail at runtime. Fuel docs don't need to be exhaustive.
+- [v1.2 architecture]: Enrichment pipeline is a repeatable loop, not a one-time build. Add new source → classify → chunk → vector DB → mark affected fuel stale → regenerate.
+- [v1.2 simplification]: No package architecture, tier models, or Full Face Refresh framework in v1.2. Build fuel data first; frameworks can emerge later.
+- [v1.2 simplification]: PHASE_8_QUESTIONS.md (25 questions) is NOT a blocker. Simplified fuel doc approach doesn't need architectural decisions about packages/tiers.
 - [v1.1 roadmap]: Phase 08 inventories SQL files first (EXEC-01-03) then validates them (VAL-01-03) — execution manifest must precede validation harness so there is a single source of truth to validate against
 - [v1.1 roadmap]: Phase 09 defines the two-layer evidence model before Phase 10 reconciles pairing SQL — you cannot audit for podcast contamination without a documented definition of what contamination means
 - [v1.1 roadmap]: POD-04 (contamination audit) placed in Phase 10 (not Phase 09) because its output directly gates pairing SQL regeneration; the model definition (POD-01-03) belongs to Phase 09
@@ -81,6 +81,7 @@ Plan: Not started
 - [Phase 10-pairing-sql-reconciliation]: 5 neurotoxin + Sculptra pairs promoted to common tier — orthogonal mechanisms (neuromodulation vs collagen stimulation) and 7/8 gate pass satisfies common rubric threshold
 - [Phase 10-pairing-sql-reconciliation]: 6 Sculptra pairs remain conditional — HA/SKINVIVE pairs have overlapping tissue territory; Sculptra + Morpheus8 has expert-consensus-only evidence
 - [Phase 10-pairing-sql-reconciliation]: Xeomin antibody language must be hedged — accessory-protein-free formulation is a consideration some providers weigh, not a guarantee against antibody formation
+- [Phase 11]: Decision tree heading retained as question; answers now provide practical per-source guidance instead of binary yes/no
 
 ### v1.0 Carry-Forward Context
 
@@ -97,6 +98,9 @@ Plan: Not started
 - v1.1 milestone created 2026-06-14: quality gate before resuming Phase 11+ content build
 - Phases 08-10 assigned to v1.1 Pipeline Integrity & Data Strategy
 - Original content phases (combination-intelligence, care-plan-modules, agent-fuel-compilation) renumbered to 11+ when they resume
+- v1.2 milestone created 2026-06-14: evidence sources + agent fuel. Sources and fuel separated into distinct concepts. Simplified from original plan — no package architecture, no tier models.
+- Phases 11-14 assigned to v1.2 Evidence Sources & Agent Fuel
+- Track C (Evidence Ask product surface) explicitly out of scope — separate workstream
 
 ### Pending Todos
 
@@ -111,7 +115,7 @@ Plan: Not started
 
 ## Session Continuity
 
-Last session: 2026-06-14T05:49:13.126Z
-Stopped at: Completed 10-01-PLAN.md -- contamination audit clean (37 cards), Sculptra tiers re-evaluated (5 neurotoxin pairs promoted to common), Plan 02 (SQL regeneration) is next
+Last session: 2026-06-14T15:08:35.805Z
+Stopped at: Completed 11-02-PLAN.md — SOURCE_CLASSIFICATION.md revised with practical guidance
 Resume file: None
-Next action: `/gsd:plan-phase 08`
+Next action: `/gsd:plan-phase 11` or `/gsd:discuss-phase 11`

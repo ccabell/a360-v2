@@ -4,7 +4,7 @@
 
 - [x] **v1.0 Foundation** - Phases 01-07 (shipped 2026-06-13)
 - [ ] **v1.1 Pipeline Integrity & Data Strategy** - Phases 08-10 (in progress)
-- [ ] **v2.0 Content Build-Out** - Phases 11+ (planned — combination intelligence, care plans, agent fuel)
+- [ ] **v1.2 Evidence Sources & Agent Fuel** - Phases 11-14 (planned — source framework, combination fuel, concern fuel, compiled packets)
 
 ---
 
@@ -151,7 +151,7 @@ Plans:
 
 ---
 
-### v1.1 Pipeline Integrity & Data Strategy (In Progress)
+### v1.1 Pipeline Integrity & Data Strategy (Complete)
 
 **Milestone Goal:** Fix operational gaps exposed during v1.0 — validation harness, execution manifest, podcast data strategy, evidence provenance cleanup, and pairing SQL reconciliation — before building more content on a shaky foundation.
 
@@ -210,6 +210,81 @@ Plans:
 
 ---
 
+### v1.2 Evidence Sources & Agent Fuel
+
+**Milestone Goal:** Build the evidence source framework and agent fuel intelligence layer. Sources and fuel are separate concepts: sources are raw authoritative material (IFUs, FDA labels, PubMed, manufacturer data, industry articles) searchable in vector DBs; fuel is curated agent-ready intelligence derived from sources. Agents use tools at runtime to search sources for edge cases beyond fuel doc coverage. Framework supports ongoing enrichment as new data is added.
+
+#### Phase 11: source-framework-and-v1.1-closeout
+**Goal**: Get the evidence source infrastructure right — source types classified with what each is good for, enrichment pipeline documented as repeatable loop. Close v1.1 carry-forward items.
+**Depends on**: Phase 10 (v1.1 complete)
+**Requirements**: SRCE-01, SRCE-02, SRCE-03, SRCE-04, CFRW-01
+**Success Criteria** (what must be TRUE):
+  1. SOURCE_CLASSIFICATION.md revised: source types classified with practical guidance on what each is good for (FDA=safety/dosing, PubMed=clinical evidence, manufacturer=product education, industry=context/trends, podcasts=research only)
+  2. Citation format defined per source type (PubMed: PMID/DOI, YouTube: URL+timestamp, IFU: page reference, etc.)
+  3. Enrichment pipeline documented as repeatable loop: add source → classify → chunk → vector DB → mark affected fuel docs for review
+  4. Manufacturer data accessible and searchable for agent tools at runtime
+  5. All v1.1 carry-forward items resolved (PAIR-01 verified, EVID-03 browser test, TIMING_REVIEW.md closed, SQL manifest executed)
+
+Plans:
+- [ ] 11-01-PLAN.md — v1.1 close-out: verify PAIR-01, EVID-03 browser test, TIMING_REVIEW.md closure, SQL manifest execution
+- [x] 11-02-PLAN.md — Source classification update: revise SOURCE_CLASSIFICATION.md with practical source-type guidance + citation formats
+- [ ] 11-03-PLAN.md — Enrichment pipeline design: repeatable loop for ingesting new sources into vector DBs
+
+---
+
+#### Phase 12: combination-fuel-documents
+**Goal**: Enrich the 16 existing pairing fuel docs in `gl_agent_fuel_documents` with corpus-grounded content. Fuel docs are what agents should say — sources are what backs it up. Use PubMed + manufacturer data + corpus as research inputs.
+**Depends on**: Phase 11 (source framework), Phase 6 (pairings), Phase 7 (timing). Chris manufacturer doc population running in parallel.
+**Requirements**: COMBO-01, COMBO-02, COMBO-03, COMBO-04, COMBO-05
+**Success Criteria** (what must be TRUE):
+  1. Every canonical/common pairing has enriched fuel doc with corpus-grounded content (why together, how to explain, timing, what not to say, patient questions, evidence backing)
+  2. Content sounds like what trained staff would actually say — education tone, not sales pitch
+  3. What-not-to-say populated for every combination
+  4. Fuel doc schema supports practice-level overrides (COALESCE pattern)
+  5. Unified JSON format across all 16 fuel docs
+
+Plans:
+- [ ] 12-01-PLAN.md — Fuel doc schema: unify 2 existing JSON formats, define template, design practice-override structure
+- [ ] 12-02-PLAN.md — Content generation: mine corpus + generate fuel doc content for canonical/common pairings
+- [ ] 12-03-PLAN.md — Review queue assembly + Chris review checkpoint
+
+---
+
+#### Phase 13: concern-fuel-documents
+**Goal**: Build concern-based fuel docs for top 10 concern clusters. Same approach as Phase 12 — corpus-grounded, practical, enrichable later.
+**Depends on**: Phase 12 (combination content to reference), Phase 5 (concern clusters), Phase 7 (timing)
+**Requirements**: CARE-01, CARE-02, CARE-03, CARE-04
+**Success Criteria** (what must be TRUE):
+  1. 10 concern clusters each have a fuel doc with treatment arc (what patients say, what's happening, options that help, options that don't, timeline, evidence)
+  2. Treatment arcs grounded in corpus evidence, not LLM-invented
+  3. Documents reference Phase 12 combination fuel where applicable
+  4. In-scope and out-of-scope treatment boundaries defined per concern
+
+Plans:
+- [ ] 13-01-PLAN.md — Prioritize top 10 concern clusters + corpus mining for treatment arc patterns
+- [ ] 13-02-PLAN.md — Content generation: concern fuel docs for top 10 clusters
+- [ ] 13-03-PLAN.md — Review queue + Chris review checkpoint
+
+---
+
+#### Phase 14: compiled-fuel-packets
+**Goal**: Compile all intelligence into denormalized runtime packets (2-5K tokens each). Derived caches, not canonical sources — must remain traceable. Framework allows recompilation as new data is added.
+**Depends on**: Phases 12-13. Can start incrementally (product packets first).
+**Requirements**: FUEL-01, FUEL-02, FUEL-03, FUEL-04, FUEL-05
+**Success Criteria** (what must be TRUE):
+  1. Every enriched entity has a versioned fuel packet
+  2. Single-packet retrieval pattern: one packet + optional evidence pack
+  3. Recompile triggers defined: new source or fuel update marks packet stale
+  4. All packets within 2-5K token budget
+  5. Framework allows recompilation as new data enters the system
+
+Plans:
+- [ ] 14-01-PLAN.md — Packet schema + recompile trigger mapping + stale-flag mechanism
+- [ ] 14-02-PLAN.md — Product packets (18 products) + concern packets (10 clusters)
+- [ ] 14-03-PLAN.md — Combination packets + TypeScript query helpers + coverage report
+
+---
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -223,4 +298,8 @@ Plans:
 | 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 10. pairing-sql-reconciliation | v1.1 | 1/2 | Complete    | 2026-06-14 |
+| 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete    | 2026-06-14 |
+| 11. source-framework-and-v1.1-closeout | v1.2 | 1/3 | In Progress|  |
+| 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
+| 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
+| 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
