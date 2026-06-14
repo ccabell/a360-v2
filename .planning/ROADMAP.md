@@ -1,99 +1,141 @@
-# Roadmap: A360 Citations Infrastructure
+# Roadmap: A360 Evidence Ask
 
-## Overview
+## Milestones
 
-Fix the evidence_links data gaps and wire the compile pipeline to always capture citation locators, enabling the OpenEvidence-style Research/Evidence tab (M6) to render real clickable citations by June 22, 2026.
+- ✅ **v1.0 Citations & Retrieval** - Phases 1-3 (shipped 2026-06-12)
+- 🚧 **v2.0 Heidi Evidence Clone** - Phases 4-7 (in progress — demo June 22, 2026)
 
 ## Phases
 
-- [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
-- [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
-- [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
-
-## Phase Details
+<details>
+<summary>✅ v1.0 Citations & Retrieval (Phases 1-3) — SHIPPED 2026-06-12</summary>
 
 ### Phase 1: citations
 **Goal**: Fix evidence_links data gaps (pmid null, url empty, no page_number column, YouTube timestamps missing) and update the compile pipeline to always capture citation locators going forward.
 **Depends on**: Nothing
-**Canonical refs**:
-- `HANDOFF_CITATIONS.md`
-- `Fable Docs/RETRIEVAL_SERVICE.md`
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
-**Success Criteria** (what must be TRUE):
-  1. All existing PubMed evidence_links rows have pmid populated and url set to `https://pubmed.ncbi.nlm.nih.gov/{pmid}/`
-  2. evidence_links table has page_number column; row-level population deferred to v2
-  3. FDA prescribing info PDFs are in Supabase Storage with accessible URLs in evidence_links
-  4. YouTube CMS chunks have start_seconds/end_seconds captured (not discarded)
-  5. Compile pipeline always captures pmid, doi, url, page_number on new evidence_links inserts
-  6. Research/Evidence tab renders clickable "View on PubMed" and "Open FDA label · p.N" links for at least Botox/Neurotoxins content
-**Plans:** 3/3 plans complete
+**Plans**: 3/3 complete
 
 Plans:
-- [x] 01-01-PLAN.md — Schema migration (page_number column) + PubMed PMID backfill + YouTube timestamp backfill
-- [x] 01-02-PLAN.md — FDA Access Data URL research + FDA URL backfill for 47 evidence_links rows
-- [x] 01-03-PLAN.md — Compile pipeline doc update + demo verification checkpoint
+- [x] 01-01: Schema migration (page_number column) + PubMed PMID backfill + YouTube timestamp backfill
+- [x] 01-02: FDA Access Data URL research + FDA URL backfill for 47 evidence_links rows
+- [x] 01-03: Compile pipeline doc update + demo verification checkpoint
 
 ---
 
 ### Phase 2: dossier-batch
-**Goal**: Compile dossiers for the remaining ~20 demo products (beyond Botox/Neurotoxins already done) using the updated DOSSIER_COMPILE_PIPELINE.md (gateway posture + sales_education primary). Emit structured intelligence rows (item_concerns, item_body_areas, aliases, does_not_solve) alongside each compile. Log all reputable sources encountered to source_registry + ingestion_queue (log-only, no ingestion). Aggressively surface open-access journal articles (JCAD, Cureus, Dermatology and Therapy, ASJ) and flag top 10 highest-authority OA papers in SOURCE CAPTURE REPORT.
-**Depends on**: Phase 1 (citations infrastructure must be in place for evidence_links to include pmid/url)
-**Canonical refs**:
-- `.planning/phases/02-dossier-batch/BATCH_SOURCE_LOGGING_ADDENDUM.md`
-- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
-- `.planning/phases/02-dossier-batch/AESTHETIC_DERMATOLOGY_JOURNAL_REGISTRY.md`
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
-- `Fable Docs/DOSSIER_TEMPLATES.md`
-**Success Criteria** (what must be TRUE):
-  1. All ~20 remaining demo products have at least 3 dossier docs (clinical, sales_education, deep_product) inserted as status='draft'
-  2. Every inserted doc has evidence_links with authority_rank and doi/pmid/url populated (no bare claims)
-  3. item_concerns rows emitted for each product (all major concerns mapped with relevance tier)
-  4. item_body_areas rows emitted for each product (zone-level specificity where clinically valid)
-  5. aliases rows added for every concern/body-area (3-8 patient-language phrases per major concern)
-  6. does_not_solve column populated for each product
-  7. source_registry has new rows for every reputable source encountered (status='review')
-  8. ingestion_queue has rows for ingestible-looking sources (OA/public_domain)
-  9. SOURCE CAPTURE REPORT lists top 10 highest-authority OA papers (JCAD, Cureus, Dermatology and Therapy, ASJ) flagged for immediate Botox/Neurotoxins-related ingestion
-**Plans:** 6/6 plans complete
+**Goal**: Compile dossiers for 20 demo products with structured intelligence emission and source capture.
+**Depends on**: Phase 1
+**Plans**: 6/6 complete
 
 Plans:
-- [x] 02-01-PLAN.md — Schema migration (does_not_solve column) + authority_rank backfill + product list discovery
-- [x] 02-02-PLAN.md — Compile 6 remaining category dossiers (HA Fillers, Biostimulators, Energy/RF, Energy/Laser, Skincare Actives, Body Contouring)
-- [x] 02-03-PLAN.md — Compile HA Filler product dossiers (Juvederm family, Restylane family, RHA, Skinvive)
-- [x] 02-04-PLAN.md — Compile Biostimulator + Body Contouring product dossiers (Sculptra, Radiesse, Kybella, CoolSculpting)
-- [x] 02-05-PLAN.md — Compile Energy/RF + Energy/Laser + Skincare Actives + Dysport product dossiers
-- [x] 02-06-PLAN.md — End-of-batch reports (STRUCTURED_COVERAGE, TAXONOMY_ADDITIONS, SOURCE CAPTURE REPORT with top-10 OA papers)
-
-**Pre-decided (locked from prior session):**
-- Citation rendering: numbered chips `[1][2]` with source panel. Already built in M6.
-- FDA linking: ingest PDFs to Supabase Storage + page_number field
-- Prose wiring: LLM cites `[src_N]` at query time; post-processor resolves. No IDs in content_md.
-- PubMed: CrossRef API (DOI -> PMID) -> construct pubmed URL
-- YouTube: always cite with `?t={startSeconds}s` deep link
-- Podcasts: no citation links in v1
-- Audience: provider-only (clinical + deep_product lens); sales_education = no PubMed footnotes
+- [x] 02-01: Schema migration (does_not_solve column) + authority_rank backfill + product list discovery
+- [x] 02-02: Compile 6 remaining category dossiers
+- [x] 02-03: Compile HA Filler product dossiers
+- [x] 02-04: Compile Biostimulator + Body Contouring product dossiers
+- [x] 02-05: Compile Energy/RF + Energy/Laser + Skincare Actives + Dysport product dossiers
+- [x] 02-06: End-of-batch reports
 
 ---
 
 ### Phase 3: retrieval-wiring
-**Goal**: Wire the M6 Research/Evidence tab from mock data to real evidence_links + agent_reference_docs. Build the minimal retrieval route per RETRIEVAL_SERVICE.md: question -> retrieval -> RetrievedSource objects -> existing citation UI. This is the demo deliverable — an unscripted Botox/Neurotoxins question in the live UI must render prose with clickable PubMed + FDA citations from the real DB.
-**Depends on**: Phase 1 (clean citation data in evidence_links), Phase 2 (real dossier content in agent_reference_docs)
-**Canonical refs**:
-- `Fable Docs/RETRIEVAL_SERVICE.md`
-- `lib/types/retrieval.ts`
-- `components/citations/`
-- `lib/mock/research-data.ts` (the mock this phase replaces)
-**Success Criteria** (what must be TRUE):
-  1. Research/Evidence tab reads from real evidence_links + agent_reference_docs, not mock data
-  2. An unscripted Botox/Neurotoxins question renders a grounded prose response
-  3. Response includes clickable "View on PubMed" links pointing to real pubmed.ncbi.nlm.nih.gov URLs
-  4. Response includes at least one clickable FDA label link pointing to accessdata.fda.gov
-  5. Citation chips `[1][2]` map correctly to source panel entries
-  6. No mock data imports remain in the retrieval path
-**Plans:** 4 plans
+**Goal**: Wire the Research/Evidence tab from mock data to real evidence_links + agent_reference_docs.
+**Depends on**: Phase 1, Phase 2
+**Plans**: 4/4 complete
 
 Plans:
-- [x] 03-01-PLAN.md — Wave 0 prep: add AI_GATEWAY_API_KEY to env example + verify Botox IDs and evidence_links/dossier data
-- [x] 03-02-PLAN.md — Retrieval engine: lib/retrieval/sources.ts (real DB -> RetrievedSource) + app/api/research/chat SSE route (streamText + resolveCitations)
-- [x] 03-03-PLAN.md — Client cutover: lib/retrieval/stream.ts + swap mock import in research-chat.tsx + flip page badge to Live
-- [ ] 03-04-PLAN.md — End-to-end live UI verification: unscripted Botox question with clickable PubMed + FDA citations (SC-2 to SC-5)
+- [x] 03-01: Wave 0 prep + env verification
+- [x] 03-02: Retrieval engine: sources.ts + SSE route
+- [x] 03-03: Client cutover: stream.ts + swap mock import
+- [x] 03-04: End-to-end live UI verification
+
+</details>
+
+---
+
+### 🚧 v2.0 Heidi Evidence Clone (In Progress)
+
+**Milestone Goal:** Adapt Heidi Evidence Ask's proven UX patterns to A360's cool-tone brand — key points cards, structured fact tables, source bars, reliable badges, embed bridge, analytics — demo-ready by June 22, 2026.
+
+#### Phase 4: answer-structure
+**Goal**: Users see answers structured as Heidi-pattern content: a Key Points summary card at top, visually distinct section headers, and product fact tables / comparison tables rendered as accessible HTML.
+**Depends on**: Phase 3
+**Requirements**: ANS-01, ANS-02, ANS-03, ANS-04
+**Success Criteria** (what must be TRUE):
+  1. A Key Points card appears above the answer prose with 3-7 bulleted takeaways, each followed by inline authority badge(s)
+  2. Section headings in the answer render as styled `<h3>` elements with clear visual separation from body text
+  3. Markdown tables in LLM output render as `<table>` elements with headers, per-cell inline source badges, and readable column widths
+  4. Tables on a narrow viewport (mobile) scroll horizontally without breaking the page layout
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — KeyPointsCard + shared citation parser + KEY_POINTS extraction + h3 heading upgrade
+- [ ] 04-02-PLAN.md — MarkdownTable component + table detection in AnswerMessage + visual checkpoint
+
+---
+
+#### Phase 5: source-display
+**Goal**: Users see a trustworthiness hierarchy in the source list — a source count bar before the answer, "Reliable" green badges on high-trust sources, category pills on each reference card, and a consistent color system across every citation surface.
+**Depends on**: Phase 4
+**Requirements**: SRC-01, SRC-02, SRC-03, SRC-04, SRC-05
+**Success Criteria** (what must be TRUE):
+  1. A bar reading "N sources found" appears before the answer body with a "View sources" toggle that expands/collapses the reference list
+  2. FDA, manufacturer label, and peer-reviewed/academic sources carry a green "Reliable" badge in the reference list
+  3. Each reference card shows a category pill (Journal, Regulatory, Government Medical Authority, Manufacturer, Clinical Education, etc.)
+  4. FDA/Manufacturer sources render in green tones, PubMed/Research in blue tones, and Industry/Podcast/Video in neutral across all citation surfaces (inline badges, hover cards, reference cards)
+**Plans**: TBD
+
+Plans:
+- [ ] 05-01: SourceCountBar component + tier color token audit (green/blue/neutral mapping to OKLch tokens)
+- [ ] 05-02: ReliableBadge + CategoryPill on reference cards; propagate tier colors to InlineAuthorityBadge + CitationHoverCard
+**UI hint**: yes
+
+---
+
+#### Phase 6: embed-and-analytics
+**Goal**: The /embed/ask surface can be safely iframed by Boulevard (and other allowlisted hosts), sends postMessage events the parent can act on, and every key user interaction fires a named analytics event to ask_log.
+**Depends on**: Phase 3
+**Requirements**: EMB-01, EMB-02, EMB-03, EMB-04, ANLY-01, ANLY-02, ANLY-03
+**Success Criteria** (what must be TRUE):
+  1. /embed/ask renders AskExperience without headline, nav, or footer, and accepts a transparent background
+  2. The embed sends `a360:ready`, `a360:ask_sent`, `a360:answer_complete`, and `a360:resize` postMessage events at the correct lifecycle moments
+  3. An iframe from an unlisted origin is rejected (CSP frame-ancestors blocks it); Boulevard demo host is allowlisted and loads cleanly
+  4. `evidence_unauth_ask`, `evidence_answer_complete` (with latency_ms and citation_count), and `citation_click` events are recorded in ask_log on every qualifying interaction
+**Plans**: TBD
+
+Plans:
+- [ ] 06-01: /embed/ask route verification + postMessage bridge implementation
+- [ ] 06-02: CSP frame-ancestors middleware + EMBED_ALLOWED_ORIGINS env + Boulevard allowlist
+- [ ] 06-03: Analytics event instrumentation (unauth_ask, answer_complete, citation_click)
+
+---
+
+#### Phase 7: trust-interaction-demo
+**Goal**: All trust and compliance surfaces are verified working, follow-up pills and suggestion chips are polished to A360 brand spec, and the Boulevard demo scenario passes end-to-end without a script.
+**Depends on**: Phase 4, Phase 5, Phase 6
+**Requirements**: TRST-01, TRST-02, TRST-03, INTR-01, INTR-02, DEMO-01
+**Success Criteria** (what must be TRUE):
+  1. The persistent disclaimer bar is visible on every /ask and /embed/ask page load without blocking any content
+  2. Clicking an inline citation badge either opens the hover card popover or scrolls to and highlights the matching reference card
+  3. No answer contains an uncited claim about dosing, contraindications, safety, sequencing, pregnancy, complications, off-label use, or adverse events
+  4. Follow-up suggestion pills render in A360 brand styling (bg-accent, cool-tone palette) and are clickable, seeding a new question
+  5. `/ask?query=Can+Botox+and+filler+be+done+the+same+day` loads without login, auto-submits, streams a cited answer with Key Points card, section headers, at least one table, Reliable-badged references, visible disclaimer, and follow-up pills
+**Plans**: TBD
+
+Plans:
+- [ ] 07-01: Trust surface audit — verify disclaimer, citation click behavior, uncited-claim guardrails in prompt
+- [ ] 07-02: Interaction polish — follow-up pill A360 styling, suggestion chip verification
+- [ ] 07-03: DEMO-01 end-to-end acceptance test
+
+---
+
+## Progress
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. citations | v1.0 | 3/3 | Complete | 2026-06-12 |
+| 2. dossier-batch | v1.0 | 6/6 | Complete | 2026-06-12 |
+| 3. retrieval-wiring | v1.0 | 4/4 | Complete | 2026-06-12 |
+| 4. answer-structure | v2.0 | 0/2 | Not started | - |
+| 5. source-display | v2.0 | 0/2 | Not started | - |
+| 6. embed-and-analytics | v2.0 | 0/3 | Not started | - |
+| 7. trust-interaction-demo | v2.0 | 0/3 | Not started | - |
