@@ -21,9 +21,9 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Podcast Data Strategy
 
-- [ ] **POD-01**: Two-layer evidence model defined and documented: research layer (podcast IDEAS/CONCEPTS with anonymous hash identifiers) and production layer (PubMed, FDA, society guidance, expert consensus)
-- [ ] **POD-02**: Anonymous identifier scheme implemented — podcast-derived knowledge referenced by content hash or concept ID, no speaker names, show names, or episode IDs in any production-facing field
-- [ ] **POD-03**: Workflow documented: podcast -> discover idea -> find PubMed/published backup -> save both layers
+- [x] **POD-01**: Two-layer evidence model defined and documented: research layer (podcast IDEAS/CONCEPTS with anonymous hash identifiers) and production layer (PubMed, FDA, society guidance, expert consensus)
+- [x] **POD-02**: Anonymous identifier scheme implemented — podcast-derived knowledge referenced by content hash or concept ID, no speaker names, show names, or episode IDs in any production-facing field
+- [x] **POD-03**: Workflow documented: podcast -> discover idea -> find PubMed/published backup -> save both layers
 - [ ] **POD-04**: All existing SQL files and review cards audited for podcast contamination in production fields (rationale, patient_education, staff_talking_points, evidence_notes)
 
 ### Pairing Reconciliation
@@ -35,7 +35,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 ### Evidence Provenance
 
 - [ ] **EVID-01**: 36 PubMed evidence_links rows with NULL url backfilled using DOI
-- [ ] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
+- [x] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
 - [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations
 
 ## v2 Requirements (Deferred — Phase 11-13)
@@ -78,11 +78,11 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | EXEC-01 | Phase 08 | Complete |
 | EXEC-02 | Phase 08 | Complete |
 | EXEC-03 | Phase 08 | Complete |
-| POD-01 | Phase 09 | Pending |
-| POD-02 | Phase 09 | Pending |
-| POD-03 | Phase 09 | Pending |
+| POD-01 | Phase 09 | Complete |
+| POD-02 | Phase 09 | Complete |
+| POD-03 | Phase 09 | Complete |
 | EVID-01 | Phase 09 | Pending |
-| EVID-02 | Phase 09 | Pending |
+| EVID-02 | Phase 09 | Complete |
 | EVID-03 | Phase 09 | Pending |
 | POD-04 | Phase 10 | Pending |
 | PAIR-01 | Phase 10 | Pending |

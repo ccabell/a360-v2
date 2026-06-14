@@ -188,8 +188,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
-- [ ] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
+- [x] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
+- [x] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
 
 ---
 
@@ -222,5 +222,5 @@ Plans:
 | 06. pairing-engine | v1.0 | 5/5 | Complete | 2026-06-13 |
 | 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 0/TBD | Not started | - |
+| 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete   | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 0/TBD | Not started | - |
