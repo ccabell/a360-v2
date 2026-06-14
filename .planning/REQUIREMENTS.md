@@ -38,11 +38,11 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Source Display
 
-- [ ] **SRC-01**: "N sources found" bar appears before answer body with "View sources" toggle; count reflects deduplicated cited sources (REQ-SRCBAR-01 to SRCBAR-04)
+- [x] **SRC-01**: "N sources found" bar appears before answer body with "View sources" toggle; count reflects deduplicated cited sources (REQ-SRCBAR-01 to SRCBAR-04)
 - [ ] **SRC-02**: "Reliable" green badge on Tier 1 (FDA/manufacturer label) and Tier 2 (peer-reviewed/academic) sources in reference list (REQ-REF-04, REQ-TIER-01)
 - [ ] **SRC-03**: Category pills on each reference: "Journal", "Multi-Specialty", "Regulatory", "Government medical Authority", "Clinical Education", "Manufacturer", etc. (REQ-REF-03)
-- [ ] **SRC-04**: Source tier visual hierarchy — FDA/Manufacturer in green tones (highest trust), PubMed/Research in blue tones, Industry/Podcast/Video in neutral treatment (REQ-TIER-01, REQ-TIER-02)
-- [ ] **SRC-05**: Inline authority badges and reference cards use consistent tier color system (REQ-CIT-05, REQ-DES-09)
+- [x] **SRC-04**: Source tier visual hierarchy — FDA/Manufacturer in green tones (highest trust), PubMed/Research in blue tones, Industry/Podcast/Video in neutral treatment (REQ-TIER-01, REQ-TIER-02)
+- [x] **SRC-05**: Inline authority badges and reference cards use consistent tier color system (REQ-CIT-05, REQ-DES-09)
 
 ### Trust & Compliance
 
@@ -143,11 +143,11 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 | ANS-02 | Phase 4 | Complete |
 | ANS-03 | Phase 4 | Complete |
 | ANS-04 | Phase 4 | Complete |
-| SRC-01 | Phase 5 | Pending |
+| SRC-01 | Phase 5 | Complete |
 | SRC-02 | Phase 5 | Pending |
 | SRC-03 | Phase 5 | Pending |
-| SRC-04 | Phase 5 | Pending |
-| SRC-05 | Phase 5 | Pending |
+| SRC-04 | Phase 5 | Complete |
+| SRC-05 | Phase 5 | Complete |
 | EMB-01 | Phase 6 | Pending |
 | EMB-02 | Phase 6 | Pending |
 | EMB-03 | Phase 6 | Pending |

@@ -85,7 +85,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Tier color OKLch tokens + CORPUS_META chip revision + source count bar with View sources toggle
+- [x] 05-01-PLAN.md — Tier color OKLch tokens + CORPUS_META chip revision + source count bar with View sources toggle
 - [ ] 05-02-PLAN.md — Reliable badge + category pill on citation cards; tier color consistency in hover cards + visual checkpoint
 
 ---
@@ -135,6 +135,6 @@ Plans:
 | 2. dossier-batch | v1.0 | 6/6 | Complete | 2026-06-12 |
 | 3. retrieval-wiring | v1.0 | 4/4 | Complete | 2026-06-12 |
 | 4. answer-structure | v2.0 | 2/2 | Complete   | 2026-06-14 |
-| 5. source-display | v2.0 | 0/2 | Not started | - |
+| 5. source-display | v2.0 | 1/2 | In Progress|  |
 | 6. embed-and-analytics | v2.0 | 0/3 | Not started | - |
 | 7. trust-interaction-demo | v2.0 | 0/3 | Not started | - |
