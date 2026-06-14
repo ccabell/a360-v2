@@ -46,8 +46,8 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 - [x] **SRCE-01**: Source types classified with practical guidance on what each is good for (FDA=safety/dosing, PubMed=clinical evidence, manufacturer=product education, industry=context/trends, podcasts=research only)
 - [x] **SRCE-02**: Citation format defined per source type (PubMed: PMID/DOI, YouTube: URL+timestamp, IFU: page reference)
-- [ ] **SRCE-03**: Enrichment pipeline documented as repeatable loop — add source, classify, chunk, vector DB, mark affected fuel docs for review
-- [ ] **SRCE-04**: Manufacturer data accessible and searchable for agent tools at runtime
+- [x] **SRCE-03**: Enrichment pipeline documented as repeatable loop — add source, classify, chunk, vector DB, mark affected fuel docs for review
+- [x] **SRCE-04**: Manufacturer data accessible and searchable for agent tools at runtime
 - [ ] **CFRW-01**: All v1.1 carry-forward items resolved (PAIR-01, EVID-03, TIMING_REVIEW.md, SQL manifest) *(Partial — PAIR-01 complete; EVID-03, TIMING_REVIEW, SQL execution all deferred)*
 
 ### Combination Fuel Documents (Phase 12)
@@ -108,8 +108,8 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | PAIR-03 | Phase 10 | Complete |
 | SRCE-01 | Phase 11 | Complete |
 | SRCE-02 | Phase 11 | Complete |
-| SRCE-03 | Phase 11 | Pending |
-| SRCE-04 | Phase 11 | Pending |
+| SRCE-03 | Phase 11 | Complete |
+| SRCE-04 | Phase 11 | Complete |
 | CFRW-01 | Phase 11 | Partial |
 | COMBO-01 | Phase 12 | Pending |
 | COMBO-02 | Phase 12 | Pending |

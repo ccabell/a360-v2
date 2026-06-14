@@ -228,7 +228,7 @@ Plans:
 Plans:
 - [x] 11-01-PLAN.md — v1.1 close-out: verify PAIR-01, EVID-03 browser test, TIMING_REVIEW.md closure, SQL manifest execution
 - [x] 11-02-PLAN.md — Source classification update: revise SOURCE_CLASSIFICATION.md with practical source-type guidance + citation formats
-- [ ] 11-03-PLAN.md — Enrichment pipeline design: repeatable loop for ingesting new sources into vector DBs
+- [x] 11-03-PLAN.md — Enrichment pipeline design: repeatable loop for ingesting new sources into vector DBs
 
 ---
 
@@ -299,7 +299,7 @@ Plans:
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 11. source-framework-and-v1.1-closeout | v1.2 | 2/3 | In Progress|  |
+| 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete   | 2026-06-14 |
 | 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
@@ -316,7 +316,7 @@ Plans:
   3. Review/approval workflow so practice edits go through QC before agents consume them
   4. Fuel docs become first-class managed entities rather than opaque DB rows
 **Requirements**: TBD
-**Plans:** 0 plans
+**Plans:** 3/3 plans complete
 
 Plans:
 - [ ] TBD (promote with /gsd:review-backlog when ready)

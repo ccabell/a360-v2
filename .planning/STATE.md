@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Ready to execute
-stopped_at: Completed 11-02-PLAN.md — SOURCE_CLASSIFICATION.md revised with practical guidance
-last_updated: "2026-06-14T15:08:35.808Z"
+status: Phase complete — ready for verification
+stopped_at: Completed 11-03-PLAN.md — enrichment pipeline, manufacturer data access, and journal discovery ingestion
+last_updated: "2026-06-14T15:24:29.488Z"
 progress:
   total_phases: 3
   completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
+  total_plans: 6
+  completed_plans: 6
 ---
 
 # Project State
@@ -83,6 +83,9 @@ Plan: 3 of 3
 - [Phase 10-pairing-sql-reconciliation]: Xeomin antibody language must be hedged — accessory-protein-free formulation is a consideration some providers weigh, not a guarantee against antibody formation
 - [Phase 11]: Decision tree heading retained as question; answers now provide practical per-source guidance instead of binary yes/no
 - [v1.1 closeout]: CFRW-01 partial — PAIR-01 verified complete (no podcast contamination, 31+ inserts); EVID-03 deferred (no API key provisioned), TIMING_REVIEW deferred, SQL manifest execution deferred. All three carry-forward items deferred to future milestone.
+- [Phase 11]: Enrichment pipeline is a 5-step repeatable loop: Add, Classify, Chunk, Vector DB, Mark Stale
+- [Phase 11]: Manufacturer data follows same vector collection + RPC pattern as existing CMS Supabase collections (match_manufacturer_docs)
+- [Phase 11]: Non-PubMed journal articles (301 found, 146 Tier-A) classified as production-citable; vector collection decision deferred to Phase 12
 
 ### v1.0 Carry-Forward Context
 
@@ -120,7 +123,7 @@ Plan: 3 of 3
 
 ## Session Continuity
 
-Last session: 2026-06-14T15:08:35.805Z
-Stopped at: Completed 11-01-PLAN.md — v1.1 carry-forward close-out (PAIR-01 complete, 3 items deferred)
+Last session: 2026-06-14T15:24:29.484Z
+Stopped at: Completed 11-03-PLAN.md — enrichment pipeline, manufacturer data access, and journal discovery ingestion
 Resume file: None
 Next action: `/gsd:plan-phase 11` or `/gsd:discuss-phase 11`
