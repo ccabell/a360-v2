@@ -299,7 +299,7 @@ Plans:
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete   | 2026-06-14 |
+| 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete    | 2026-06-14 |
 | 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
