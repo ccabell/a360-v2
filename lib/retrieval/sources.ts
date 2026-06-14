@@ -15,8 +15,9 @@ import type {
 // RAG service (WS-B) — 4-corpus vector search
 // ---------------------------------------------------------------------------
 
-const RAG_SEARCH_URL =
-  process.env.RAG_SEARCH_URL || "http://127.0.0.1:8100";
+const RAG_SEARCH_URL = process.env.RAG_SEARCH_URL || "";
+const RAG_ENABLED =
+  RAG_SEARCH_URL.startsWith("http://") || RAG_SEARCH_URL.startsWith("https://");
 
 interface RagChunk {
   text: string;
@@ -43,6 +44,7 @@ interface RagChunk {
 }
 
 async function searchRag(query: string, topK = 12): Promise<RagChunk[]> {
+  if (!RAG_ENABLED) return [];
   try {
     const res = await fetch(`${RAG_SEARCH_URL}/search`, {
       method: "POST",
