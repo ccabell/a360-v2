@@ -449,7 +449,7 @@ export function AskExperience({
                             key={fu}
                             onClick={() => send(fu)}
                             disabled={busy}
-                            className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-foreground transition-colors hover:border-primary/50 hover:bg-muted disabled:opacity-50"
+                            className="rounded-full border border-primary/20 bg-accent px-3 py-1.5 text-xs text-accent-foreground transition-colors hover:bg-accent/80 hover:border-primary/40 disabled:opacity-50"
                           >
                             {fu}
                           </button>
