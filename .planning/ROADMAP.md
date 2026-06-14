@@ -1,27 +1,21 @@
-# Roadmap: A360 Citations Infrastructure
+# Roadmap: A360 Global Library
 
-## Overview
+## Milestones
 
-Fix the evidence_links data gaps and wire the compile pipeline to always capture citation locators, enabling the OpenEvidence-style Research/Evidence tab (M6) to render real clickable citations by June 22, 2026.
+- [x] **v1.0 Foundation** - Phases 01-07 (shipped 2026-06-13)
+- [ ] **v1.1 Pipeline Integrity & Data Strategy** - Phases 08-10 (in progress)
+- [ ] **v2.0 Content Build-Out** - Phases 11+ (planned — combination intelligence, care plans, agent fuel)
+
+---
 
 ## Phases
 
-- [x] **Phase 1: citations** - Fix evidence_links data gaps + update compile pipeline for real clickable citations (completed 2026-06-12)
-- [x] **Phase 2: dossier-batch** - Compile dossiers for 20 demo products with structured intelligence emission and source capture (completed 2026-06-12)
-- [ ] **Phase 3: retrieval-wiring** - Wire Research/Evidence tab from mock data to real evidence_links + agent_reference_docs (demo deliverable)
-- [x] **Phase 4: source-ingestion** - Triage source_registry, ensure FDA source document links, verify evidence_links URLs (completed 2026-06-13)
-- [x] **Phase 5: concern-language** - Mine 122 transcripts + coaching playbooks for real patient language; expand aliases; build concern clusters (completed 2026-06-13)
-- [x] **Phase 6: pairing-engine** - 8-gate legitimacy test for product pairings; tier all 190 pairs; emit item_relationships rows (completed 2026-06-13)
-
-## Phase Details
+<details>
+<summary>v1.0 Foundation (Phases 01-07) - SHIPPED 2026-06-13</summary>
 
 ### Phase 1: citations
 **Goal**: Fix evidence_links data gaps (pmid null, url empty, no page_number column, YouTube timestamps missing) and update the compile pipeline to always capture citation locators going forward.
 **Depends on**: Nothing
-**Canonical refs**:
-- `HANDOFF_CITATIONS.md`
-- `Fable Docs/RETRIEVAL_SERVICE.md`
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
 **Success Criteria** (what must be TRUE):
   1. All existing PubMed evidence_links rows have pmid populated and url set to `https://pubmed.ncbi.nlm.nih.gov/{pmid}/`
   2. evidence_links table has page_number column; row-level population deferred to v2
@@ -39,53 +33,33 @@ Plans:
 ---
 
 ### Phase 2: dossier-batch
-**Goal**: Compile dossiers for the remaining ~20 demo products (beyond Botox/Neurotoxins already done) using the updated DOSSIER_COMPILE_PIPELINE.md (gateway posture + sales_education primary). Emit structured intelligence rows (item_concerns, item_body_areas, aliases, does_not_solve) alongside each compile. Log all reputable sources encountered to source_registry + ingestion_queue (log-only, no ingestion). Aggressively surface open-access journal articles (JCAD, Cureus, Dermatology and Therapy, ASJ) and flag top 10 highest-authority OA papers in SOURCE CAPTURE REPORT.
-**Depends on**: Phase 1 (citations infrastructure must be in place for evidence_links to include pmid/url)
-**Canonical refs**:
-- `.planning/phases/02-dossier-batch/BATCH_SOURCE_LOGGING_ADDENDUM.md`
-- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
-- `.planning/phases/02-dossier-batch/AESTHETIC_DERMATOLOGY_JOURNAL_REGISTRY.md`
-- `Fable Docs/DOSSIER_COMPILE_PIPELINE.md`
-- `Fable Docs/DOSSIER_TEMPLATES.md`
+**Goal**: Compile dossiers for the remaining ~20 demo products using the updated DOSSIER_COMPILE_PIPELINE.md (gateway posture + sales_education primary). Emit structured intelligence rows (item_concerns, item_body_areas, aliases, does_not_solve). Log all reputable sources to source_registry + ingestion_queue.
+**Depends on**: Phase 1
 **Success Criteria** (what must be TRUE):
   1. All ~20 remaining demo products have at least 3 dossier docs (clinical, sales_education, deep_product) inserted as status='draft'
   2. Every inserted doc has evidence_links with authority_rank and doi/pmid/url populated (no bare claims)
-  3. item_concerns rows emitted for each product (all major concerns mapped with relevance tier)
-  4. item_body_areas rows emitted for each product (zone-level specificity where clinically valid)
-  5. aliases rows added for every concern/body-area (3-8 patient-language phrases per major concern)
+  3. item_concerns rows emitted for each product
+  4. item_body_areas rows emitted for each product
+  5. aliases rows added for every concern/body-area
   6. does_not_solve column populated for each product
-  7. source_registry has new rows for every reputable source encountered (status='review')
-  8. ingestion_queue has rows for ingestible-looking sources (OA/public_domain)
-  9. SOURCE CAPTURE REPORT lists top 10 highest-authority OA papers (JCAD, Cureus, Dermatology and Therapy, ASJ) flagged for immediate Botox/Neurotoxins-related ingestion
+  7. source_registry has new rows for every reputable source encountered
+  8. ingestion_queue has rows for ingestible-looking sources
+  9. SOURCE CAPTURE REPORT lists top 10 highest-authority OA papers
 **Plans:** 6/6 plans complete
 
 Plans:
 - [x] 02-01-PLAN.md — Schema migration (does_not_solve column) + authority_rank backfill + product list discovery
-- [x] 02-02-PLAN.md — Compile 6 remaining category dossiers (HA Fillers, Biostimulators, Energy/RF, Energy/Laser, Skincare Actives, Body Contouring)
-- [x] 02-03-PLAN.md — Compile HA Filler product dossiers (Juvederm family, Restylane family, RHA, Skinvive)
-- [x] 02-04-PLAN.md — Compile Biostimulator + Body Contouring product dossiers (Sculptra, Radiesse, Kybella, CoolSculpting)
+- [x] 02-02-PLAN.md — Compile 6 remaining category dossiers
+- [x] 02-03-PLAN.md — Compile HA Filler product dossiers
+- [x] 02-04-PLAN.md — Compile Biostimulator + Body Contouring product dossiers
 - [x] 02-05-PLAN.md — Compile Energy/RF + Energy/Laser + Skincare Actives + Dysport product dossiers
-- [x] 02-06-PLAN.md — End-of-batch reports (STRUCTURED_COVERAGE, TAXONOMY_ADDITIONS, SOURCE CAPTURE REPORT with top-10 OA papers)
-
-**Pre-decided (locked from prior session):**
-- Citation rendering: numbered chips `[1][2]` with source panel. Already built in M6.
-- FDA linking: ingest PDFs to Supabase Storage + page_number field
-- Prose wiring: LLM cites `[src_N]` at query time; post-processor resolves. No IDs in content_md.
-- PubMed: CrossRef API (DOI -> PMID) -> construct pubmed URL
-- YouTube: always cite with `?t={startSeconds}s` deep link
-- Podcasts: no citation links in v1
-- Audience: provider-only (clinical + deep_product lens); sales_education = no PubMed footnotes
+- [x] 02-06-PLAN.md — End-of-batch reports (STRUCTURED_COVERAGE, TAXONOMY_ADDITIONS, SOURCE CAPTURE REPORT)
 
 ---
 
 ### Phase 3: retrieval-wiring
-**Goal**: Wire the M6 Research/Evidence tab from mock data to real evidence_links + agent_reference_docs. Build the minimal retrieval route per RETRIEVAL_SERVICE.md: question -> retrieval -> RetrievedSource objects -> existing citation UI. This is the demo deliverable — an unscripted Botox/Neurotoxins question in the live UI must render prose with clickable PubMed + FDA citations from the real DB.
-**Depends on**: Phase 1 (clean citation data in evidence_links), Phase 2 (real dossier content in agent_reference_docs)
-**Canonical refs**:
-- `Fable Docs/RETRIEVAL_SERVICE.md`
-- `lib/types/retrieval.ts`
-- `components/citations/`
-- `lib/mock/research-data.ts` (the mock this phase replaces)
+**Goal**: Wire the M6 Research/Evidence tab from mock data to real evidence_links + agent_reference_docs. Build the minimal retrieval route per RETRIEVAL_SERVICE.md. This is the demo deliverable.
+**Depends on**: Phase 1, Phase 2
 **Success Criteria** (what must be TRUE):
   1. Research/Evidence tab reads from real evidence_links + agent_reference_docs, not mock data
   2. An unscripted Botox/Neurotoxins question renders a grounded prose response
@@ -93,43 +67,36 @@ Plans:
   4. Response includes at least one clickable FDA label link pointing to accessdata.fda.gov
   5. Citation chips `[1][2]` map correctly to source panel entries
   6. No mock data imports remain in the retrieval path
-**Plans:** 4 plans
+**Plans:** 3/4 plans complete
 
 Plans:
 - [x] 03-01-PLAN.md — Wave 0 prep: add AI_GATEWAY_API_KEY to env example + verify Botox IDs and evidence_links/dossier data
-- [x] 03-02-PLAN.md — Retrieval engine: lib/retrieval/sources.ts (real DB -> RetrievedSource) + app/api/research/chat SSE route (streamText + resolveCitations)
-- [x] 03-03-PLAN.md — Client cutover: lib/retrieval/stream.ts + swap mock import in research-chat.tsx + flip page badge to Live
-- [ ] 03-04-PLAN.md — End-to-end live UI verification: unscripted Botox question with clickable PubMed + FDA citations (SC-2 to SC-5)
+- [x] 03-02-PLAN.md — Retrieval engine: lib/retrieval/sources.ts + app/api/research/chat SSE route
+- [x] 03-03-PLAN.md — Client cutover: lib/retrieval/stream.ts + swap mock import + flip page badge to Live
+- [ ] 03-04-PLAN.md — End-to-end live UI verification: unscripted Botox question with clickable PubMed + FDA citations
 
 ---
 
 ### Phase 4: source-ingestion
-**Goal**: Triage the source_registry map from Phase 02 (review -> active or rejected), ensure all products link to their FDA source documents via evidence_links, and download FDA PDFs to Supabase Storage for link stability. CMS vector corpus writes are out of scope (separate project).
-**Depends on**: Phase 2 (the captured registry)
-**Canonical refs**:
-- `.planning/phases/02-dossier-batch/BATCH_SOURCE_LOGGING_ADDENDUM.md`
-- `.planning/phases/02-dossier-batch/AESTHETIC_DERMATOLOGY_JOURNAL_REGISTRY.md`
-- `.planning/phases/04-source-ingestion/04-RESEARCH.md`
-- `GL_GSD_ROADMAP.md`
+**Goal**: Triage the source_registry map from Phase 2, ensure all products link to their FDA source documents via evidence_links, and download FDA PDFs to Supabase Storage for link stability.
+**Depends on**: Phase 2
 **Success Criteria** (what must be TRUE):
-  1. All source_registry rows with status='review' triaged to either 'active' or 'rejected' with reason
+  1. All source_registry rows with status='review' triaged to either 'active' or 'retired' with reason
   2. ingestion_queue items either ingested (FDA) or explicitly rejected with reason
   3. Every product with an FDA regulatory source has a working evidence_links URL
   4. FDA PDFs stored in Supabase Storage (or fallback to accessdata.fda.gov URLs documented)
-  5. Rights classification documented for each source category (public_domain, CC-BY, manufacturer-permitted, restricted)
+  5. Rights classification documented for each source category
 **Plans:** 2/2 plans complete
 
 Plans:
-- [x] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue (deduplicate, promote, reject)
-- [x] 04-02-PLAN.md — Download FDA PDFs to Supabase Storage + backfill evidence_links FDA URLs for Phase 2 products
+- [x] 04-01-PLAN.md — Audit live DB state + triage source_registry and ingestion_queue
+- [x] 04-02-PLAN.md — Download FDA PDFs to Supabase Storage + backfill evidence_links FDA URLs
+
+---
 
 ### Phase 5: concern-language
-**Goal**: Mine the 122 consultation transcripts, Sales Excellence Framework, and coaching playbooks for real patient language at scale. Massively expand aliases; add legitimate missing concerns; build concern-cluster groupings (tired look, lower-face heaviness, post-weight-loss laxity). This is the layer that enables concern-first routing ("I look tired" -> candidate mechanisms -> products).
-**Depends on**: Phase 2 (taxonomy conventions established)
-**Canonical refs**:
-- `GL_GSD_ROADMAP.md`
-- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
-- `.planning/phases/05-concern-language/05-RESEARCH.md`
+**Goal**: Mine the 122 consultation transcripts, Sales Excellence Framework, and coaching playbooks for real patient language at scale. Massively expand aliases; add legitimate missing concerns; build concern-cluster groupings.
+**Depends on**: Phase 2
 **Success Criteria** (what must be TRUE):
   1. Every concern has >=3 patient-language aliases
   2. Concern clusters defined and documented (tired look, lower-face heaviness, etc.)
@@ -140,46 +107,38 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — DB prep: execute outstanding Phase 2 SQL + verify aliases schema + create concern_clusters tables + add missing concerns
-- [x] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL + execute and verify >=3 aliases per concern
-- [x] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md report
+- [x] 05-02-PLAN.md — Mine 122 transcripts for patient concern language + emit alias SQL
+- [x] 05-03-PLAN.md — Populate 4 concern clusters + run routing demo query + generate TAXONOMY_ADDITIONS_P5.md
 
 ---
 
 ### Phase 6: pairing-engine
-**Goal**: The dedicated item_relationships build. Generate within-catalog pairing candidates, run each through the 8-gate legitimacy test (concern, mechanism, limitation, timing, safety, commercial, patient clarity, source support), score, tier (canonical/common/conditional/compatible_only/do_not_market/rejected), and emit draft relationship rows with clinical_rationale, timing_guidance, same_session_ok, patient_education_text, staff_talking_points. Human review gates publication.
-**Depends on**: Phase 2 (product intelligence + does_not_solve), Phase 5 (concern routing). Key input: does_not_solve — "what A doesn't solve" is "why B joins."
-**Canonical refs**:
-- `.planning/GL_GSD_ROADMAP.md`
-- `.planning/phases/02-dossier-batch/STRUCTURED_EMISSION_ADDENDUM.md`
-- `.planning/phases/05-concern-language/CONCERN_CLUSTERS.md`
+**Goal**: Generate within-catalog pairing candidates, run each through the 8-gate legitimacy test, score, tier, and emit draft item_relationships rows with clinical_rationale, timing_guidance, same_session_ok, patient_education_text, staff_talking_points. Human review gates publication.
+**Depends on**: Phase 2, Phase 5
 **Success Criteria** (what must be TRUE):
-  1. All 190 possible pairs among 20 products explicitly tiered (most rejected — that's correct)
+  1. All 153 pairs among 18 products explicitly tiered
   2. Canonical/common pairs reviewed by Chris
   3. Zero forced pairings — every pairing backed by clinical rationale
-  4. Each relationship row has clinical_rationale, timing_guidance, same_session_ok, patient_education_text, staff_talking_points
+  4. Each relationship row has all 5 required fields
   5. 8-gate legitimacy test documented and applied consistently
 **Plans:** 5/5 plans complete
 
 Plans:
 - [x] 06-01-PLAN.md — Foundation: schema migration (pairing_tier column) + does_not_solve backfill + PAIRING_RUBRIC.md
-- [x] 06-02-PLAN.md — SQL pre-screen: enumerate all 190 pairs + compute concern overlap and limitation signals
-- [x] 06-03-PLAN.md — Corpus-first 8-gate evaluation for all 190 pairs (batch by category-pair per D-11)
+- [x] 06-02-PLAN.md — SQL pre-screen: enumerate all 153 pairs + compute concern overlap and limitation signals
+- [x] 06-03-PLAN.md — Corpus-first 8-gate evaluation for all 153 pairs
 - [x] 06-04-PLAN.md — DB emission: write + execute item_relationships INSERTs + QA validation report
 - [x] 06-05-PLAN.md — Review artifacts (PAIRING_REVIEW.md + per-pair files) + Chris review checkpoint
 
 ---
 
 ### Phase 7: timing-rules
-**Goal**: Promote timing from prose to queryable data. Add product-level cadence/downtime fields to gl_products and pair-level timing/staging/safety fields to item_relationships. Populate for 20 products and ~30 canonical/common pairs. Human review gates safety-critical rules.
-**Depends on**: Phase 2 (product intelligence), Phase 6 (pairing engine / item_relationships rows)
-**Canonical refs**:
-- `.planning/GL_GSD_ROADMAP.md`
-- `.planning/phases/07-timing-rules/07-CONTEXT.md`
-- `.planning/phases/07-timing-rules/PHASE_7_TIMING_RESEARCH_SPEC.md`
+**Goal**: Promote timing from prose to queryable data. Add product-level cadence/downtime fields to gl_products and pair-level timing/staging/safety fields to item_relationships. Populate for 18 products and ~30 canonical/common pairs.
+**Depends on**: Phase 2, Phase 6
 **Success Criteria** (what must be TRUE):
-  1. gl_products has 11 cadence/downtime columns populated for all ~20 products
+  1. gl_products has 11 cadence/downtime columns populated for all 18 products
   2. item_relationships has 11 timing/staging/safety columns populated for ~30 canonical/common pairs
-  3. Safety-critical rules flagged (safety_critical=true, timing_warning_level set) for all ~8-10 hard stops
+  3. Safety-critical rules flagged (safety_critical=true, timing_warning_level set) for all hard stops
   4. Booking-logic agent can answer "can these be same-day?" and "work backward from date" from structured data alone
   5. TIMING_REVIEW.md produced with safety-critical items for Chris review
 **Plans:** 2/2 plans complete
@@ -187,3 +146,69 @@ Plans:
 Plans:
 - [x] 07-01-PLAN.md — Schema migration (22 timing columns) + product cadence UPDATEs for 18 products
 - [x] 07-02-PLAN.md — Pair timing UPDATEs for ~30 canonical/common pairs + TIMING_EVALUATION.md + TIMING_REVIEW.md
+
+</details>
+
+---
+
+### v1.1 Pipeline Integrity & Data Strategy (In Progress)
+
+**Milestone Goal:** Fix operational gaps exposed during v1.0 — validation harness, execution manifest, podcast data strategy, evidence provenance cleanup, and pairing SQL reconciliation — before building more content on a shaky foundation.
+
+#### Phase 8: execution-manifest-and-validation
+**Goal**: Inventory every SQL file across phases 01-07 in a single dependency-ordered manifest, then build idempotent validation files for each phase that assert pass/fail against live Supabase.
+**Depends on**: Phases 01-07 (inspects their output)
+**Requirements**: EXEC-01, EXEC-02, EXEC-03, VAL-01, VAL-02, VAL-03
+**Success Criteria** (what must be TRUE):
+  1. A single manifest file lists all SQL files across phases 01-07 in dependency order, with status (pending/applied/verified) and phase association
+  2. Every completed phase (01-07) has a corresponding validation SQL file that returns PASS/FAIL against expected row counts, NULL violations, and orphan records
+  3. Manifest includes pre-execution checklist and post-execution verification queries for each file
+  4. SQL files that are out of sync with their source artifacts are flagged in the manifest
+  5. Validation can be run idempotently against live Supabase — running twice produces the same result
+  6. Batch content generation QC gate (uniqueness ratio >80%, 0 product name mismatches, evidence specificity check) is defined and documented for use in future phases
+**Plans**: TBD
+
+---
+
+#### Phase 9: podcast-data-strategy-and-evidence-provenance
+**Goal**: Define and document the two-layer evidence model (research layer vs production layer), implement anonymous identifiers for podcast-derived knowledge, and clean up existing evidence_links provenance gaps.
+**Depends on**: Phase 8 (manifest establishes which SQL files exist to audit)
+**Requirements**: POD-01, POD-02, POD-03, EVID-01, EVID-02, EVID-03
+**Success Criteria** (what must be TRUE):
+  1. Two-layer evidence model is documented: research layer (podcast-derived ideas with anonymous content hash IDs) and production layer (PubMed, FDA, society guidance, expert consensus) — no speaker names, show names, or episode IDs appear in any production-facing field
+  2. Anonymous identifier scheme implemented — a podcast-sourced concept can be referenced by content hash alone, with no attribution to show/episode/speaker
+  3. Workflow documented: podcast -> discover idea -> find PubMed/published backup -> save both layers
+  4. Source classification matrix exists distinguishing research-only sources (podcast, conference, webinar) from production-citable sources (PubMed, FDA, society, expert consensus)
+  5. 36 PubMed evidence_links rows with NULL url have url backfilled using their DOI
+  6. Phase 3 plan 03-04 (live UI verification) completed — an unscripted question in the live UI renders real citations from real DB
+**Plans**: TBD
+
+---
+
+#### Phase 10: pairing-sql-reconciliation
+**Goal**: Audit all existing pairing SQL and review cards for podcast contamination, then regenerate the canonical/common INSERT file from Chris's reviewed cards with podcast attribution scrubbed from all production fields.
+**Depends on**: Phase 9 (two-layer model defined before reconciliation can apply it)
+**Requirements**: POD-04, PAIR-01, PAIR-02, PAIR-03
+**Success Criteria** (what must be TRUE):
+  1. All 37 review cards audited for podcast attribution (speaker, show, episode) in production fields — contamination findings documented
+  2. 06-02-canonical-common-inserts.sql regenerated from Chris's approved pairing cards with no raw podcast references in any production field
+  3. Sculptra pair tier decisions re-evaluated against Chris's actual feedback — any previous session's overcorrection is documented and corrected
+  4. All 37 review cards confirmed clean: podcast-derived IDEAS preserved, podcast ATTRIBUTION removed from rationale/patient_education/staff_talking_points fields
+**Plans**: TBD
+
+---
+
+## Progress
+
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 01. citations | v1.0 | 3/3 | Complete | 2026-06-12 |
+| 02. dossier-batch | v1.0 | 6/6 | Complete | 2026-06-12 |
+| 03. retrieval-wiring | v1.0 | 3/4 | In progress | - |
+| 04. source-ingestion | v1.0 | 2/2 | Complete | 2026-06-13 |
+| 05. concern-language | v1.0 | 3/3 | Complete | 2026-06-13 |
+| 06. pairing-engine | v1.0 | 5/5 | Complete | 2026-06-13 |
+| 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
+| 08. execution-manifest-and-validation | v1.1 | 0/TBD | Not started | - |
+| 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 0/TBD | Not started | - |
+| 10. pairing-sql-reconciliation | v1.1 | 0/TBD | Not started | - |

@@ -5,7 +5,7 @@
 
 ## v1.1 Requirements
 
-Quality gate before resuming Phase 8-10 content build. Fix the foundation.
+Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Validation & Testing
 
@@ -38,21 +38,21 @@ Quality gate before resuming Phase 8-10 content build. Fix the foundation.
 - [ ] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
 - [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations
 
-## v2 Requirements (Deferred — Phase 8-10)
+## v2 Requirements (Deferred — Phase 11-13)
 
-### Combination Intelligence (Phase 8)
+### Combination Intelligence (Phase 11)
 
 - **COMBO-01**: Every canonical pairing has reviewed combination content in agent_fuel_documents
 - **COMBO-02**: Combination content passes "would trained staff actually say this" test
 - **COMBO-03**: Do-not-say lists defined for every canonical/common pairing
 
-### Care Plan Modules (Phase 9)
+### Care Plan Modules (Phase 12)
 
 - **CARE-01**: Top ~10 concern clusters each have a reviewable care-plan module
 - **CARE-02**: Care plans use 3-phase model (Foundation/Correction/Maintenance)
 - **CARE-03**: Essential/Enhanced/Comprehensive budget tiers defined
 
-### Agent Fuel Compilation (Phase 10)
+### Agent Fuel Compilation (Phase 13)
 
 - **FUEL-01**: Every published entity has a current, versioned fuel packet
 - **FUEL-02**: Runtime agents retrieve one packet + optionally one evidence pack
@@ -64,7 +64,7 @@ Quality gate before resuming Phase 8-10 content build. Fix the foundation.
 |---------|--------|
 | Shadow-run pattern (transaction rollback testing) | Nice-to-have but adds complexity; validation files achieve 80% of the value |
 | Automated CI gate on SQL merge | No CI pipeline exists; manual validation is sufficient for current scale |
-| Phase 11-14 (governance, RLS, services, catalog) | Post-Phase-10; not in current planning horizon |
+| Phase 14+ (governance, RLS, services, catalog) | Post-Phase-13; not in current planning horizon |
 | Regional legal configuration (France restriction) | Separate feature; not a data quality issue |
 | Rejuran pair rules | Product not in 18-product manifest; document-only |
 
@@ -72,13 +72,28 @@ Quality gate before resuming Phase 8-10 content build. Fix the foundation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated during roadmap creation) | | |
+| VAL-01 | Phase 08 | Pending |
+| VAL-02 | Phase 08 | Pending |
+| VAL-03 | Phase 08 | Pending |
+| EXEC-01 | Phase 08 | Pending |
+| EXEC-02 | Phase 08 | Pending |
+| EXEC-03 | Phase 08 | Pending |
+| POD-01 | Phase 09 | Pending |
+| POD-02 | Phase 09 | Pending |
+| POD-03 | Phase 09 | Pending |
+| EVID-01 | Phase 09 | Pending |
+| EVID-02 | Phase 09 | Pending |
+| EVID-03 | Phase 09 | Pending |
+| POD-04 | Phase 10 | Pending |
+| PAIR-01 | Phase 10 | Pending |
+| PAIR-02 | Phase 10 | Pending |
+| PAIR-03 | Phase 10 | Pending |
 
 **Coverage:**
-- v1.1 requirements: 15 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 15
+- v1.1 requirements: 16 total
+- Mapped to phases: 16
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-06-14*
-*Last updated: 2026-06-14 after milestone v1.1 definition*
+*Last updated: 2026-06-14 — traceability populated after roadmap creation*
