@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Zap,
   CheckCircle,
@@ -71,22 +70,19 @@ function TimelineItem({
 }) {
   const elapsed = ((event.timestamp - startTime) / 1000).toFixed(1);
 
-  // Status events
   if (event.type === "status") {
     return (
-      <div className="flex items-start gap-2 py-1.5 px-2">
+      <div className="flex items-start gap-2 py-1.5 px-3">
         <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
           <Bot className="h-3 w-3 text-blue-500" />
         </div>
-        <div className="min-w-0 flex-1">
-          <span className="text-xs text-muted-foreground">
-            {event.stage === "run_created"
-              ? "Run created"
-              : event.stage === "streaming"
-                ? `Streaming · ${event.model}`
-                : String(event.stage)}
-          </span>
-        </div>
+        <span className="text-xs text-muted-foreground flex-1 min-w-0">
+          {event.stage === "run_created"
+            ? "Run created"
+            : event.stage === "streaming"
+              ? `Streaming · ${event.model}`
+              : String(event.stage)}
+        </span>
         <span className="shrink-0 text-[10px] tabular-nums text-muted-foreground/60">
           {elapsed}s
         </span>
@@ -94,12 +90,20 @@ function TimelineItem({
     );
   }
 
-  // Tool events
   const isCall = event.type === "tool_call";
   const isResult = event.type === "tool_result";
   const isError = event.type === "tool_error";
 
-  const icon = isResult ? (
+  const resultHasWarning =
+    isResult &&
+    event.result &&
+    typeof event.result === "object" &&
+    "success" in (event.result as Record<string, unknown>) &&
+    (event.result as { success: boolean }).success === false;
+
+  const icon = resultHasWarning ? (
+    <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
+  ) : isResult ? (
     <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
   ) : isError ? (
     <XCircle className="h-3.5 w-3.5 text-red-500" />
@@ -107,17 +111,12 @@ function TimelineItem({
     <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-400" />
   );
 
-  // Extract a one-line summary from the result
   const summary = (() => {
     if (isCall) {
       const input = event.input as Record<string, unknown> | undefined;
       if (!input) return "Calling...";
-      const vals = Object.values(input).filter(
-        (v) => typeof v === "string",
-      );
-      return vals.length > 0
-        ? vals.join(", ").slice(0, 60)
-        : "Calling...";
+      const vals = Object.values(input).filter((v) => typeof v === "string");
+      return vals.length > 0 ? vals.join(", ").slice(0, 60) : "Calling...";
     }
     if (isError) return event.error?.slice(0, 80) ?? "Error";
     if (isResult) {
@@ -141,27 +140,14 @@ function TimelineItem({
 
   const detail = isCall ? event.input : isResult ? event.result : event.error;
 
-  const resultHasWarning =
-    isResult &&
-    event.result &&
-    typeof event.result === "object" &&
-    "success" in (event.result as Record<string, unknown>) &&
-    (event.result as { success: boolean }).success === false;
-
   return (
-    <div className="group">
+    <div>
       <button
         type="button"
-        className="flex w-full items-start gap-2 rounded-md py-1.5 px-2 text-left hover:bg-muted/50 transition-colors"
+        className="flex w-full items-start gap-2 rounded-md py-1.5 px-3 text-left hover:bg-muted/50 transition-colors"
         onClick={onToggle}
       >
-        <div className="mt-0.5 shrink-0">
-          {resultHasWarning ? (
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-500" />
-          ) : (
-            icon
-          )}
-        </div>
+        <div className="mt-0.5 shrink-0">{icon}</div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
             <code className="text-xs font-semibold text-foreground">
@@ -213,22 +199,21 @@ export default function AgentTesterPage() {
   const [output, setOutput] = useState<string>("");
   const [toolEvents, setToolEvents] = useState<ToolEvent[]>([]);
   const [runMeta, setRunMeta] = useState<RunMeta | null>(null);
-  const [expandedEvents, setExpandedEvents] = useState<Set<number>>(
-    new Set(),
-  );
+  const [expandedEvents, setExpandedEvents] = useState<Set<number>>(new Set());
   const [runStartTime, setRunStartTime] = useState<number>(0);
 
-  const outputEndRef = useRef<HTMLDivElement>(null);
-  const timelineEndRef = useRef<HTMLDivElement>(null);
+  const outputScrollRef = useRef<HTMLDivElement>(null);
+  const timelineScrollRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll output as tokens arrive
+  // Auto-scroll: scroll the container to bottom, not a sentinel element
   useEffect(() => {
-    outputEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = outputScrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [output]);
 
-  // Auto-scroll timeline as events arrive
   useEffect(() => {
-    timelineEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = timelineScrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [toolEvents]);
 
   // ---- Data loading ----
@@ -320,10 +305,7 @@ export default function AgentTesterPage() {
             if (event.type === "token") {
               setOutput((prev) => prev + event.text);
             } else if (event.type === "status") {
-              setToolEvents((prev) => [
-                ...prev,
-                { ...event, timestamp: ts },
-              ]);
+              setToolEvents((prev) => [...prev, { ...event, timestamp: ts }]);
               if (event.model) {
                 setRunMeta((prev) => ({ ...prev, model: event.model }));
               }
@@ -332,10 +314,7 @@ export default function AgentTesterPage() {
               event.type === "tool_result" ||
               event.type === "tool_error"
             ) {
-              setToolEvents((prev) => [
-                ...prev,
-                { ...event, timestamp: ts },
-              ]);
+              setToolEvents((prev) => [...prev, { ...event, timestamp: ts }]);
             } else if (event.type === "done") {
               setRunMeta((prev) => ({
                 ...prev,
@@ -343,13 +322,10 @@ export default function AgentTesterPage() {
                 durationMs: event.durationMs,
               }));
             } else if (event.type === "error") {
-              setRunMeta((prev) => ({
-                ...prev,
-                error: event.message,
-              }));
+              setRunMeta((prev) => ({ ...prev, error: event.message }));
             }
           } catch {
-            // skip malformed SSE lines
+            /* skip malformed SSE */
           }
         }
       }
@@ -361,7 +337,6 @@ export default function AgentTesterPage() {
     }
   }, [selectedAgentId, selectedPatientId, userMessage, running]);
 
-  // Submit on Ctrl+Enter
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
@@ -383,12 +358,13 @@ export default function AgentTesterPage() {
 
   const hasResults = output.length > 0 || toolEvents.length > 0 || runMeta;
 
+  // Use viewport-based height: 100vh minus the header (~130px)
+  // This ensures the page is always exactly one screen, never overflows
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* ── Config Bar ── */}
       <div className="shrink-0 border-b border-border bg-background px-6 py-3">
         <div className="flex items-end gap-3">
-          {/* Agent */}
           <div className="flex flex-col gap-1 min-w-[200px]">
             <label
               className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
@@ -411,7 +387,6 @@ export default function AgentTesterPage() {
             </select>
           </div>
 
-          {/* Patient */}
           <div className="flex flex-col gap-1 min-w-[180px]">
             <label
               className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
@@ -434,7 +409,6 @@ export default function AgentTesterPage() {
             </select>
           </div>
 
-          {/* Message */}
           <div className="flex flex-1 flex-col gap-1">
             <label
               className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
@@ -458,7 +432,6 @@ export default function AgentTesterPage() {
             </div>
           </div>
 
-          {/* Run */}
           <Button
             onClick={handleRun}
             disabled={!selectedAgentId || !userMessage.trim() || running}
@@ -479,7 +452,6 @@ export default function AgentTesterPage() {
           </Button>
         </div>
 
-        {/* Agent description subtitle */}
         {selectedAgent && (
           <p className="mt-1.5 text-[11px] text-muted-foreground truncate">
             {selectedAgent.description}
@@ -487,75 +459,73 @@ export default function AgentTesterPage() {
         )}
       </div>
 
-      {/* ── Split Pane ── */}
+      {/* ── Main Area ── */}
       {!hasResults && !running ? (
-        /* Empty state */
-        <div className="flex flex-1 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center min-h-0">
           <div className="text-center space-y-3">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
               <Zap className="h-6 w-6 text-muted-foreground" />
             </div>
-            <div>
-              <p className="text-sm font-medium text-foreground">
-                Agent Tester
-              </p>
-              <p className="mt-1 text-xs text-muted-foreground max-w-sm">
-                Select an agent, optionally choose a patient for context, type a
-                message, and hit Run. Output streams on the left, tool activity
-                on the right.
-              </p>
-            </div>
+            <p className="text-sm font-medium text-foreground">Agent Tester</p>
+            <p className="text-xs text-muted-foreground max-w-sm">
+              Select an agent, optionally choose a patient for context, type a
+              message, and hit Run.
+            </p>
           </div>
         </div>
       ) : (
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 min-h-0">
           {/* ── Left: Output ── */}
-          <div className="flex-[3] border-r border-border flex flex-col min-w-0">
-            {/* Error banner */}
+          <div className="flex flex-[3] flex-col min-w-0 min-h-0 border-r border-border">
             {runMeta?.error && (
               <div className="shrink-0 border-b border-red-300 bg-red-50 px-6 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">
                 {runMeta.error}
               </div>
             )}
 
-            <div className="flex-1 overflow-auto">
-              <div className="px-8 py-6">
-                {output ? (
-                  <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-code:text-xs prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                    <ReactMarkdown>{output}</ReactMarkdown>
-                  </div>
-                ) : running ? (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    Waiting for output...
-                  </div>
-                ) : null}
-                <div ref={outputEndRef} />
-              </div>
+            <div
+              ref={outputScrollRef}
+              className="flex-1 overflow-y-auto min-h-0 px-8 py-6"
+            >
+              {output ? (
+                <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-code:text-xs prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
+                  <ReactMarkdown>{output}</ReactMarkdown>
+                </div>
+              ) : running ? (
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Waiting for output...
+                </div>
+              ) : null}
             </div>
           </div>
 
           {/* ── Right: Activity Timeline ── */}
-          <div className="flex-[2] flex flex-col min-w-0 bg-muted/20">
-            {/* Timeline header */}
+          <div className="flex flex-[2] flex-col min-w-0 min-h-0 bg-muted/20">
             <div className="shrink-0 border-b border-border px-4 py-2.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-semibold text-foreground">
                   Activity
                 </span>
                 {toolEvents.filter(
-                  (e) => e.type === "tool_call" || e.type === "tool_result" || e.type === "tool_error",
+                  (e) =>
+                    e.type === "tool_call" ||
+                    e.type === "tool_result" ||
+                    e.type === "tool_error",
                 ).length > 0 && (
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-1.5 py-0"
+                  >
                     {
                       toolEvents.filter(
-                        (e) => e.type === "tool_result" || e.type === "tool_error",
+                        (e) =>
+                          e.type === "tool_result" ||
+                          e.type === "tool_error",
                       ).length
                     }
                     /
-                    {
-                      toolEvents.filter((e) => e.type === "tool_call").length
-                    }{" "}
+                    {toolEvents.filter((e) => e.type === "tool_call").length}{" "}
                     tools
                   </Badge>
                 )}
@@ -570,27 +540,26 @@ export default function AgentTesterPage() {
               )}
             </div>
 
-            {/* Timeline events */}
-            <ScrollArea className="flex-1">
-              <div className="py-1 px-1">
-                {toolEvents.length === 0 && running && (
-                  <div className="flex items-center gap-2 px-3 py-4 text-xs text-muted-foreground">
-                    <Loader2 className="h-3 w-3 animate-spin" />
-                    Waiting for tool calls...
-                  </div>
-                )}
-                {toolEvents.map((evt, idx) => (
-                  <TimelineItem
-                    key={idx}
-                    event={evt}
-                    isExpanded={expandedEvents.has(idx)}
-                    onToggle={() => toggleEvent(idx)}
-                    startTime={runStartTime}
-                  />
-                ))}
-                <div ref={timelineEndRef} />
-              </div>
-            </ScrollArea>
+            <div
+              ref={timelineScrollRef}
+              className="flex-1 overflow-y-auto min-h-0 py-1"
+            >
+              {toolEvents.length === 0 && running && (
+                <div className="flex items-center gap-2 px-3 py-4 text-xs text-muted-foreground">
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                  Waiting for tool calls...
+                </div>
+              )}
+              {toolEvents.map((evt, idx) => (
+                <TimelineItem
+                  key={idx}
+                  event={evt}
+                  isExpanded={expandedEvents.has(idx)}
+                  onToggle={() => toggleEvent(idx)}
+                  startTime={runStartTime}
+                />
+              ))}
+            </div>
           </div>
         </div>
       )}
