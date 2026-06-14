@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
-import { Eye, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Eye, ThumbsUp, ThumbsDown, ShieldCheck } from "lucide-react";
 import type { ResearchCitation } from "@/lib/types/retrieval";
 import { locatorUrl } from "@/lib/retrieval/locator";
-import { CORPUS_META } from "./source-meta";
+import { CORPUS_META, TIER_RELIABLE } from "./source-meta";
 
 /** Worded confidence chip — never a percentage (compliance). */
 function confidenceLabel(relevance?: number): {
@@ -149,6 +149,12 @@ export function CitationHoverCard({
               <meta.Icon className="h-2.5 w-2.5" />
               {meta.label}
             </span>
+            {TIER_RELIABLE.has(cite.corpus) && (
+              <span className="inline-flex items-center gap-0.5 rounded-full bg-tier-trusted-bg px-1.5 py-0.5 text-[0.55rem] font-semibold text-tier-trusted-fg">
+                <ShieldCheck className="h-2.5 w-2.5" />
+                Reliable
+              </span>
+            )}
             <span
               className={`rounded-full px-1.5 py-0.5 text-[0.6rem] font-medium ${conf.className}`}
             >
