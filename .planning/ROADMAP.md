@@ -185,7 +185,11 @@ Plans:
   4. Source classification matrix exists distinguishing research-only sources (podcast, conference, webinar) from production-citable sources (PubMed, FDA, society, expert consensus)
   5. 36 PubMed evidence_links rows with NULL url have url backfilled using their DOI
   6. Phase 3 plan 03-04 (live UI verification) completed — an unscripted question in the live UI renders real citations from real DB
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
+- [ ] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
 
 ---
 
@@ -198,7 +202,11 @@ Plans:
   2. 06-02-canonical-common-inserts.sql regenerated from Chris's approved pairing cards with no raw podcast references in any production field
   3. Sculptra pair tier decisions re-evaluated against Chris's actual feedback — any previous session's overcorrection is documented and corrected
   4. All 37 review cards confirmed clean: podcast-derived IDEAS preserved, podcast ATTRIBUTION removed from rationale/patient_education/staff_talking_points fields
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
+- [ ] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
 
 ---
 
