@@ -90,6 +90,12 @@ None — no external service configuration required.
 - System prompt now explicitly guardrails all clinical safety topics
 - Ready for Phase 07 Plan 02
 
+## Self-Check: PASSED
+
+- FOUND: app/api/ask/route.ts
+- FOUND: .planning/phases/07-trust-interaction-demo/07-01-SUMMARY.md
+- FOUND: commit a92dc76 (feat: safety guardrails)
+
 ---
 *Phase: 07-trust-interaction-demo*
 *Completed: 2026-06-13*
