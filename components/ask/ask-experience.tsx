@@ -24,6 +24,7 @@ import { SourcePill } from "@/components/grounding/source-pill";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { AskSuggestionChips } from "./ask-suggestion-chips";
 import { KeyPointsCard } from "@/components/grounding/key-points-card";
+import { RelatedVideos } from "@/components/grounding/related-videos";
 
 export type AskVariant = "dashboard" | "public" | "embed";
 
@@ -439,6 +440,11 @@ export function AskExperience({
                           defaultRefsExpanded={variant !== "embed"}
                         />
                       </>
+                    )}
+
+                    {/* Related YouTube videos — always shown when available */}
+                    {m.done && m.sources.length > 0 && (
+                      <RelatedVideos sources={m.sources} max={3} />
                     )}
 
                     {/* Follow-up suggestion chips */}
