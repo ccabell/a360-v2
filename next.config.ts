@@ -15,6 +15,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // All other routes: deny framing entirely
+        source: "/:path*",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'none'",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+        ],
+      },
     ];
   },
 };
