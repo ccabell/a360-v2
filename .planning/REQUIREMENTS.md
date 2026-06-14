@@ -55,8 +55,8 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 - [ ] **COMBO-01**: Every canonical/common pairing has enriched fuel doc with corpus-grounded content
 - [ ] **COMBO-02**: Content sounds like what trained staff would actually say — education tone, not sales pitch
 - [ ] **COMBO-03**: What-not-to-say populated for every combination
-- [ ] **COMBO-04**: Fuel doc schema supports practice-level overrides (gl_*/pl_* COALESCE pattern)
-- [ ] **COMBO-05**: Unified JSON format across all fuel docs (2 existing formats reconciled)
+- [x] **COMBO-04**: Fuel doc schema supports practice-level overrides (gl_*/pl_* COALESCE pattern)
+- [x] **COMBO-05**: Unified JSON format across all fuel docs (2 existing formats reconciled)
 
 ### Concern Fuel Documents (Phase 13)
 
@@ -73,10 +73,56 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 - [ ] **FUEL-04**: All packets within 2-5K token budget (hybrid JSON metadata + markdown prose)
 - [ ] **FUEL-05**: Framework allows recompilation as new data enters the system
 
+## v2.0 Requirements — Agent Runtime Inspector
+
+**Architecture principle:** The agent runtime executes in-project (Next.js API routes + Supabase + Claude API on Vercel). No Prompt Runner dependency. Three Supabase instances: Agent Manager (agent defs/versions/tools/runs), CMS (RAG vectorized content), PR Supabase (transcripts/patients). Runtime emits structured trace events that stream live AND persist for replay.
+
+### Runtime Trace
+
+- [ ] **TRACE-01**: Runtime emits structured AgentRunEvent for every major step: run start, agent load, patient load, context build, tool call start/complete/fail, retrieval start/complete, model call start/token/complete, artifact creation, output save, run complete/fail
+- [ ] **TRACE-02**: Events stream to UI live over SSE, rendering immediately without waiting for final answer
+- [ ] **TRACE-03**: Every run persists to `agent_runs`; every event to `agent_run_events`; every artifact to `agent_run_artifacts` in Agent Manager Supabase
+- [ ] **TRACE-04**: Completed run can be replayed from stored events without rerunning model or tools
+
+### Execution UI
+
+- [ ] **UI-01**: Left panel shows live vertical timeline with status icon, step title, tool name, duration, summary, and expandable details for every event
+- [ ] **UI-02**: Clicking a timeline step opens detail drawer with tabs: Summary, Input, Output, Sources, Raw JSON, Errors, Timing
+- [ ] **UI-03**: Tool-specific readable cards for: get_patient_context, search_fuel_documents, get_evidence_links, search_clinical_literature, get_product_info — each showing input, result count, key items, source/fuel distinction, duration, errors
+- [ ] **UI-04**: Universal output viewer supporting markdown, JSON, table, checklist, care plan, timeline, evidence list, and plain text fallback with tabs: Rendered, Raw, Citations/Sources, Save status
+
+### Agent Runtime
+
+- [ ] **RUN-01**: Agent runtime executes in-project (Next.js API route + Supabase + Claude API) — no Prompt Runner dependency
+- [ ] **RUN-02**: Runtime loads agent definition and active version prompt from Agent Manager Supabase
+- [ ] **RUN-03**: Runtime provides tools that query real data: patient context (PR Supabase), fuel docs (Agent Manager), evidence links (Agent Manager), clinical literature (CMS Supabase), product info (Agent Manager)
+- [ ] **RUN-04**: When a tool fails, runtime continues with remaining tools and marks failed step with structured error
+- [ ] **RUN-05**: Run never ends with only "No output generated" — structured error identifies which step failed, what completed, and recommended action
+
+### Observability
+
+- [ ] **OBS-01**: Each run displays metrics: total duration, time to first event, tool call count, successful/failed tool counts, token usage, source count, artifact count, output save status
+- [ ] **OBS-02**: Runtime shows observable trace only — tool inputs/outputs, retrieved context, model-visible messages, generated tokens, artifacts, errors — never hidden chain-of-thought
+
+### Demo
+
+- [ ] **DEMO-01**: Page includes seeded demo scenarios with known-good patients and agents (minimum: Sofia Reyes + Consultation Analyst)
+- [ ] **DEMO-02**: Run mode selector: Live / Replay / Load Demo Run
+- [ ] **DEMO-03**: Each major step has a plain-English "why this matters" label for non-engineer demo audiences
+
+## v2.1 Requirements (Deferred)
+
+- **PRIV-01**: PHI/PII redaction by default with admin-only raw access and access logging
+- **CMP-01**: Side-by-side comparison of two runs of same patient/agent
+
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
+| Prompt Runner integration | Decision: runtime is in-project, not Railway |
+| Hidden chain-of-thought exposure | Privacy/IP risk — show observable trace only |
+| Custom agent builder UI | This is an inspector/debugger, not an agent IDE |
+| Multi-agent workflow orchestration | Single-agent runs first; workflows later |
 | Evidence Ask product surface (/ask, /embed/ask) | Separate workstream — not GL content intelligence |
 | Package architecture / tier models / Full Face Refresh framework | Premature; build fuel data first, frameworks can emerge later |
 | Practice fuel doc editing UI | Post-v1.2; practice-override STRUCTURE built now, UI later |
@@ -114,8 +160,8 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | COMBO-01 | Phase 12 | Pending |
 | COMBO-02 | Phase 12 | Pending |
 | COMBO-03 | Phase 12 | Pending |
-| COMBO-04 | Phase 12 | Pending |
-| COMBO-05 | Phase 12 | Pending |
+| COMBO-04 | Phase 12 | Complete |
+| COMBO-05 | Phase 12 | Complete |
 | CARE-01 | Phase 13 | Pending |
 | CARE-02 | Phase 13 | Pending |
 | CARE-03 | Phase 13 | Pending |
@@ -125,13 +171,30 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | FUEL-03 | Phase 14 | Pending |
 | FUEL-04 | Phase 14 | Pending |
 | FUEL-05 | Phase 14 | Pending |
+| RUN-01 | Phase 15 | Pending |
+| RUN-02 | Phase 15 | Pending |
+| RUN-03 | Phase 15 | Pending |
+| RUN-04 | Phase 15 | Pending |
+| RUN-05 | Phase 15 | Pending |
+| TRACE-01 | Phase 16 | Pending |
+| TRACE-02 | Phase 16 | Pending |
+| TRACE-03 | Phase 16 | Pending |
+| TRACE-04 | Phase 16 | Pending |
+| OBS-01 | Phase 16 | Pending |
+| OBS-02 | Phase 16 | Pending |
+| UI-01 | Phase 17 | Pending |
+| UI-02 | Phase 17 | Pending |
+| UI-03 | Phase 17 | Pending |
+| UI-04 | Phase 18 | Pending |
+| DEMO-01 | Phase 19 | Pending |
+| DEMO-02 | Phase 19 | Pending |
+| DEMO-03 | Phase 19 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 16 total (14 complete, 1 deferred carry-forward, 1 pending carry-forward)
-- v1.2 requirements: 19 total
-- All mapped to phases
-- Unmapped: 0
+- v1.2 requirements: 19 total (5 complete/partial, 14 pending)
+- v2.0 requirements: 18 total (18 mapped, 0 unmapped) ✓
 
 ---
 *Requirements defined: 2026-06-14*
-*Last updated: 2026-06-14 — CFRW-01 partial close-out; EVID-03/TIMING_REVIEW/SQL deferred*
+*Last updated: 2026-06-14 — v2.0 Agent Runtime Inspector traceability mapped to phases 15-19*

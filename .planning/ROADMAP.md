@@ -266,7 +266,7 @@ Plans:
   5. Unified JSON format across all 16 fuel docs
 
 Plans:
-- [ ] 12-01-PLAN.md — Fuel doc schema: unify 2 existing JSON formats, define template, design practice-override structure
+- [x] 12-01-PLAN.md — Fuel doc schema: unify 2 existing JSON formats, define template, design practice-override structure
 - [ ] 12-02-PLAN.md — Content generation: mine corpus + generate fuel doc content for canonical/common pairings
 - [ ] 12-03-PLAN.md — Review queue assembly + Chris review checkpoint
 
@@ -321,7 +321,7 @@ Plans:
   3. When a tool fails, the run continues with remaining tools and the failed step is marked with a structured error message identifying what failed and why
   4. Every completed or failed run is saved to `agent_runs` in Agent Manager Supabase — the run is never lost
   5. A run never ends with only "No output generated" — a structured error always identifies which step failed, what completed successfully, and what action is recommended
-**Plans:** 2 plans
+**Plans:** 1/3 plans executed
 
 Plans:
 - [ ] 15-01-PLAN.md — Backend runtime: API route + tool implementations + executor (SSE streaming, 5 tools, run persistence)
@@ -402,7 +402,7 @@ Plans:
 | 10. pairing-sql-reconciliation | v1.1 | 2/2 | Complete | 2026-06-14 |
 | 11. source-framework-and-v1.1-closeout | v1.2 | 3/3 | Complete | 2026-06-14 |
 | 11.1 fuel-doc-templates-and-management-ui | v1.2 | 0/4 | Not started | - |
-| 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
+| 12. combination-fuel-documents | v1.2 | 1/3 | In Progress|  |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
 | 15. runtime-stabilization | v2.0 | 0/2 | Not started | - |

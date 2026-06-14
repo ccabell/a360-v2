@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Milestone complete
-stopped_at: Completed 11-03-PLAN.md — enrichment pipeline, manufacturer data access, and journal discovery ingestion
-last_updated: "2026-06-14T15:29:53.805Z"
+status: Ready to execute
+stopped_at: "Completed 12-01-PLAN.md: schema audit and SQL migration for combination fuel docs"
+last_updated: "2026-06-14T16:50:50.214Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -19,21 +19,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-14)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 11 — source-framework-and-v1.1-closeout
+**Current focus:** Phase 15 — runtime-stabilization
 
 ## Current Position
 
-Phase: 11
-Plan: Not started
+Phase: 15 (runtime-stabilization) — EXECUTING
+Plan: 2 of 2
 
-## v1.2 Phases at a Glance
+## v2.0 Phases at a Glance (Planned)
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 11 | source-framework-and-v1.1-closeout | SRCE-01, SRCE-02, SRCE-03, SRCE-04, CFRW-01 | Not started |
-| 12 | combination-fuel-documents | COMBO-01, COMBO-02, COMBO-03, COMBO-04, COMBO-05 | Not started |
-| 13 | concern-fuel-documents | CARE-01, CARE-02, CARE-03, CARE-04 | Not started |
-| 14 | compiled-fuel-packets | FUEL-01, FUEL-02, FUEL-03, FUEL-04, FUEL-05 | Not started |
+| 15 | runtime-stabilization | RUN-01 through RUN-05 | Not started |
+| 16 | trace-contract-and-persistence | TRACE-01 through TRACE-04, OBS-01, OBS-02 | Not started |
+| 17 | inspector-ui | UI-01, UI-02, UI-03 | Not started |
+| 18 | output-viewer | UI-04 | Not started |
+| 19 | demo-mode | DEMO-01, DEMO-02, DEMO-03 | Not started |
 
 ## Performance Metrics
 
@@ -56,6 +57,12 @@ Plan: Not started
 
 ### Decisions
 
+- [v2.0 architecture]: Runtime executes in-project — Next.js API routes + Supabase + Claude API on Vercel. No Prompt Runner dependency.
+- [v2.0 architecture]: Three Supabase instances: Agent Manager (agent defs/versions/tools/runs/events/artifacts), CMS (RAG vectorized content), PR Supabase (transcripts/patients).
+- [v2.0 architecture]: Runtime emits structured trace events that stream live over SSE AND persist for replay. Both are required — live streaming and stored events share the same AgentRunEvent schema.
+- [v2.0 architecture]: Current agent-tester page is 100% mock (pickScenario + setTimeout). Phase 15 replaces it entirely before adding trace infrastructure in Phase 16.
+- [v2.0 architecture]: OBS-01 and OBS-02 (observability metrics) assigned to Phase 16 alongside trace — metrics are computable from stored events, not a separate system.
+- [v2.0 scope]: PHI/PII redaction (PRIV-01) and run comparison (CMP-01) deferred to v2.1.
 - [v1.2 architecture]: Sources and fuel are separate concepts — sources are raw authoritative material in vector DBs, fuel is curated agent-ready intelligence derived from sources. Agents use tools to search sources at runtime for edge cases beyond fuel doc coverage.
 - [v1.2 architecture]: Three-layer model: (1) Sources (evidence_links, agent_reference_docs) → (2) Global fuel (gl_agent_fuel_documents, optimal defaults) → (3) Practice fuel (pl_* overrides, practices customize later). COALESCE pattern same as gl_products/pl_products.
 - [v1.2 architecture]: Replace binary "production-citable yes/no" with practical guidance on what each source type is good for. FDA=safety/dosing, PubMed=clinical evidence, manufacturer=product education, industry=context/trends, podcasts=research only.
@@ -86,6 +93,9 @@ Plan: Not started
 - [Phase 11]: Enrichment pipeline is a 5-step repeatable loop: Add, Classify, Chunk, Vector DB, Mark Stale
 - [Phase 11]: Manufacturer data follows same vector collection + RPC pattern as existing CMS Supabase collections (match_manufacturer_docs)
 - [Phase 11]: Non-PubMed journal articles (301 found, 146 Tier-A) classified as production-citable; vector collection decision deferred to Phase 12
+- [Phase 12]: Live table is agent_fuel_documents (not gl_agent_fuel_documents) and JSON column is content (not agent_fuel_json) — all downstream SQL must use these names
+- [Phase 12]: Zero pairing_fuel rows exist in live DB — Phase 12-01 SQL uses INSERT not UPDATE; pair_key in content JSONB is the idempotency key
+- [Phase 12]: TypeScript type GLAgentFuelDocument (lib/types/data-sources.ts) is stale and does not reflect live agent_fuel_documents schema — deferred fix
 
 ### v1.0 Carry-Forward Context
 
@@ -105,6 +115,8 @@ Plan: Not started
 - v1.2 milestone created 2026-06-14: evidence sources + agent fuel. Sources and fuel separated into distinct concepts. Simplified from original plan — no package architecture, no tier models.
 - Phases 11-14 assigned to v1.2 Evidence Sources & Agent Fuel
 - Track C (Evidence Ask product surface) explicitly out of scope — separate workstream
+- Phase 11.1 inserted after Phase 11: fuel-doc-templates-and-management-ui (INSERTED) — promotes backlog 999.1 into active scope; must complete before Phase 12 content generation. Scope expanded from original plan: more template fields (logically grouped), SOPs/preferences/room requirements as data, internal management UI
+- v2.0 milestone created 2026-06-14: Agent Runtime Inspector. Phases 15-19. Runtime is in-project (Next.js + Supabase + Claude API). Existing agent-tester page is 100% mock; Phase 15 replaces it entirely.
 
 ### Pending Todos
 
@@ -123,7 +135,7 @@ Plan: Not started
 
 ## Session Continuity
 
-Last session: 2026-06-14T15:24:29.484Z
-Stopped at: Completed 11-03-PLAN.md — enrichment pipeline, manufacturer data access, and journal discovery ingestion
+Last session: 2026-06-14T16:50:50.210Z
+Stopped at: Completed 12-01-PLAN.md: schema audit and SQL migration for combination fuel docs
 Resume file: None
-Next action: `/gsd:plan-phase 11` or `/gsd:discuss-phase 11`
+Next action: `/gsd:plan-phase 11.1` or `/gsd:plan-phase 15` to begin v2.0
