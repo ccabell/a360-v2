@@ -1039,9 +1039,10 @@
       "type": "data",
       "execution_method": "supabase_dashboard_sql",
       "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
-      "status": "deferred",
-      "out_of_sync": true,
-      "do_not_execute": true,
+      "reconciled": "2026-06-14 — source references cleaned per EVIDENCE_MODEL.md (Phase 10)",
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
       "pre_exec_checklist": [
         "BLOCKED: This file must NOT be executed. It is out of sync with review cards.",
         "File must be regenerated from finalized review cards after Chris's review (Phase 10 work)",
@@ -1059,9 +1060,10 @@
       "type": "data",
       "execution_method": "supabase_dashboard_sql",
       "depends_on": ["supabase/compile_sql/06-00-schema.sql"],
-      "status": "deferred",
-      "out_of_sync": true,
-      "do_not_execute": true,
+      "reconciled": "2026-06-14 — source references cleaned per EVIDENCE_MODEL.md (Phase 10)",
+      "status": "pending",
+      "out_of_sync": false,
+      "do_not_execute": false,
       "pre_exec_checklist": [
         "BLOCKED: This file must NOT be executed. It is out of sync with review cards.",
         "File must be regenerated from finalized review cards after Chris's review (Phase 10 work)",
@@ -1117,19 +1119,17 @@
       "type": "data",
       "execution_method": "supabase_dashboard_sql",
       "depends_on": ["supabase/compile_sql/07-01-timing-schema.sql", "supabase/compile_sql/06-02-canonical-common-inserts.sql", "supabase/compile_sql/06-02-conditional-compatible-inserts.sql", "supabase/compile_sql/06-02-do-not-market-inserts.sql"],
-      "status": "blocked",
+      "status": "pending",
       "out_of_sync": false,
       "do_not_execute": false,
       "pre_exec_checklist": [
-        "item_relationships has >= 37 rows with pairing_tier IN ('canonical','common') — confirms 06-02-canonical-common-inserts.sql has been regenerated and applied (Phase 10)",
-        "06-02-canonical-common-inserts.sql has been regenerated from finalized review cards and applied",
-        "06-02-conditional-compatible-inserts.sql regenerated and applied",
-        "06-02-do-not-market-inserts.sql regenerated and applied",
+        "All three 06-02 SQL files have been applied (canonical-common, conditional-compatible, do-not-market)",
+        "item_relationships has >= 37 rows with pairing_tier IN ('canonical','common')",
         "Timing columns exist on item_relationships: same_session_ok, staging_required, safety_critical, timing_warning_level"
       ],
       "post_exec_verification": "SELECT COUNT(*) FROM item_relationships WHERE same_session_ok IS NOT NULL; -- expected >= 27. SELECT COUNT(*) FROM item_relationships WHERE safety_critical = true; -- expected >= 4. SELECT timing_warning_level, COUNT(*) FROM item_relationships WHERE timing_warning_level IS NOT NULL GROUP BY timing_warning_level;",
       "source_artifact": ".planning/phases/07-timing-rules/07-03-PLAN.md",
-      "notes": "Updates timing on pairs. Depends on Phase 6 INSERT files being applied first. Currently blocked until 06-02-canonical-common-inserts.sql is regenerated and applied (Phase 10 work). Will only update conditional/compatible/do-not-market rows until 06-02 canonical-common is resolved. Has trailing verification SELECT in file."
+      "notes": "Updates timing on pairs. Depends on Phase 6 INSERT files being applied first. All 06-02 files reconciled in Phase 10. Has trailing verification SELECT in file."
     }
   ]
 }

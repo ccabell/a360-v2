@@ -1,4 +1,6 @@
--- Phase 06 Plan 04: Do Not Market tier INSERT statements
+-- Phase 06 Plan 04 / Phase 10 Reconciled: Do Not Market tier INSERT statements
+-- Source references cleaned of podcast attribution per EVIDENCE_MODEL.md (Phase 09)
+-- Reconciled: 2026-06-14
 -- 17 do_not_market pairs: 10 neurotoxin alternatives + 7 HA filler alternatives
 -- Per D-02: Emit as relationship_type='alternative'::relationship_type + pairing_tier='do_not_market'
 -- Per D-16: Alternatives always get rows (substitution intelligence)
@@ -13,70 +15,70 @@
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid, '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Same BoNT-A mechanism. Alternative neurotoxins. Daxxify has longer duration (peptide formulation, median 6 months). Substitution decision based on duration preference, cost, and provider experience. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions. Dr. Eccleston same-session two-toxin practice acknowledged but does not change do_not_market tier.'
+true, false, 'Expert consensus:neurotoxin comparison discussions. same-session two-toxin practice acknowledged in expert community but does not change do_not_market tier.'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid AND item_b_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid) OR (item_a_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid AND item_b_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid));
 
 -- #132: Botox vs Dysport
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid, 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Same BoNT-A mechanism. Dysport has broader diffusion pattern, different dosing (2.5:1 unit ratio). Classic substitution choice. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid AND item_b_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid) OR (item_a_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid AND item_b_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid));
 
 -- #133: Botox vs Jeuveau
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid, '8adda68a-9fd2-49ad-8852-641970135131'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Same BoNT-A mechanism. Jeuveau often positioned on price (aesthetics-only brand). Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid AND item_b_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid) OR (item_a_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid AND item_b_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid));
 
 -- #134: Botox vs Xeomin
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid, '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Same BoNT-A mechanism. Xeomin is pure toxin (no complexing proteins), may have lower antibody risk. 1:1 Botox equivalence. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid AND item_b_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid) OR (item_a_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid AND item_b_id = '4b92be36-e84e-432c-8549-f5d85a767fdb'::uuid));
 
 -- #135: Daxxify vs Dysport
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid, 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives with different properties. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid AND item_b_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid) OR (item_a_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid AND item_b_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid));
 
 -- #136: Daxxify vs Jeuveau
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid, '8adda68a-9fd2-49ad-8852-641970135131'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid AND item_b_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid) OR (item_a_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid AND item_b_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid));
 
 -- #137: Daxxify vs Xeomin
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid, '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid AND item_b_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid) OR (item_a_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid AND item_b_id = '007d98fd-58b5-4d20-be11-caf421c0dccb'::uuid));
 
 -- #138: Dysport vs Jeuveau
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid, '8adda68a-9fd2-49ad-8852-641970135131'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid AND item_b_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid) OR (item_a_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid AND item_b_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid));
 
 -- #139: Dysport vs Xeomin
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid, '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid AND item_b_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid) OR (item_a_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid AND item_b_id = 'a7e1b29e-da10-40de-bea8-70d6e6624f43'::uuid));
 
 -- #140: Jeuveau vs Xeomin
 INSERT INTO item_relationships (id, item_a_id, item_b_id, relationship_type, relationship_strength, pairing_tier, clinical_rationale, is_bidirectional, is_active, source_reference)
 SELECT gen_random_uuid(), '8adda68a-9fd2-49ad-8852-641970135131'::uuid, '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid, 'alternative'::relationship_type, 'strong'::relationship_strength, 'do_not_market',
 'Both are BoNT-A alternatives. Substitution decision. Not a combination.',
-true, false, 'PHASE_6_ANSWERS_PODCAST_SOURCED.md: neurotoxin comparison discussions'
+true, false, 'Expert consensus:neurotoxin comparison discussions'
 WHERE NOT EXISTS (SELECT 1 FROM item_relationships WHERE (item_a_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid AND item_b_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid) OR (item_a_id = '92a05fe8-d349-4d2f-9a3f-bc5901f94dfa'::uuid AND item_b_id = '8adda68a-9fd2-49ad-8852-641970135131'::uuid));
 
 
