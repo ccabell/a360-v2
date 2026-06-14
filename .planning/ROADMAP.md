@@ -185,7 +185,7 @@ Plans:
   4. Source classification matrix exists distinguishing research-only sources (podcast, conference, webinar) from production-citable sources (PubMed, FDA, society, expert consensus)
   5. 36 PubMed evidence_links rows with NULL url have url backfilled using their DOI
   6. Phase 3 plan 03-04 (live UI verification) completed — an unscripted question in the live UI renders real citations from real DB
-**Plans:** 2 plans
+**Plans:** 2/2 plans complete
 
 Plans:
 - [x] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
@@ -205,8 +205,8 @@ Plans:
 **Plans:** 2 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
-- [ ] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
+- [x] 09-01-PLAN.md — Evidence model documentation (EVIDENCE_MODEL.md, PODCAST_WORKFLOW.md, SOURCE_CLASSIFICATION.md)
+- [x] 09-02-PLAN.md — PubMed URL backfill SQL + Phase 3 live UI verification (EVID-03)
 
 ---
 

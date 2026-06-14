@@ -34,7 +34,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Evidence Provenance
 
-- [ ] **EVID-01**: 36 PubMed evidence_links rows with NULL url backfilled using DOI
+- [x] **EVID-01**: 36 PubMed evidence_links rows with NULL url backfilled using DOI
 - [x] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
 - [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations
 
@@ -81,7 +81,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | POD-01 | Phase 09 | Complete |
 | POD-02 | Phase 09 | Complete |
 | POD-03 | Phase 09 | Complete |
-| EVID-01 | Phase 09 | Pending |
+| EVID-01 | Phase 09 | Complete |
 | EVID-02 | Phase 09 | Complete |
 | EVID-03 | Phase 09 | Pending |
 | POD-04 | Phase 10 | Pending |

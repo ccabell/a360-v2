@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
 status: Phase complete — ready for verification
-stopped_at: Completed 09-01-PLAN.md -- EVIDENCE_MODEL.md, SOURCE_CLASSIFICATION.md, PODCAST_WORKFLOW.md
-last_updated: "2026-06-14T05:23:51.588Z"
+stopped_at: Completed 09-02-PLAN.md -- PubMed URL backfill SQL + EVID-03 automated smoke; human UI verification pending
+last_updated: "2026-06-14T05:24:12.879Z"
 progress:
   total_phases: 3
   completed_phases: 2
@@ -74,6 +74,9 @@ Plan: 2 of 2
 - [Phase 09-01]: EC- anonymous ID format (EC-{12hex} via SHA-256 truncation) chosen for podcast concept tracking — stable, deterministic, no podcast attribution exposed
 - [Phase 09-01]: Expert consensus is production-citable without attribution when no specific podcast source is named — preserves podcast-discovered knowledge while removing attribution leakage
 - [Phase 09-01]: Internal file paths (PHASE_6_ANSWERS_PODCAST_SOURCED.md) in source_reference classified as contamination — research artifacts are not evidence sources
+- [Phase 09-02]: PubMed URL two-pass strategy: pmid-based URL preferred, doi.org fallback for rows without pmid — confirmed by smoke test showing pmid empty on current rows
+- [Phase 09-02]: SC-3 PubMed gap from Phase 03-04 UAT (2026-06-12) resolved by corpus diversity fix in Phase 03-03 — automated re-smoke confirmed PubMed sources now surface alongside FDA
+- [Phase 09-02]: Task 3 human-verify checkpoint handled autonomously per overnight objective: steps documented in 03-04-SUMMARY.md, EVID-03 status is automated-smoke-passed pending human UI confirmation
 
 ### v1.0 Carry-Forward Context
 
@@ -104,7 +107,7 @@ Plan: 2 of 2
 
 ## Session Continuity
 
-Last session: 2026-06-14T05:23:28.154Z
-Stopped at: Completed 09-01-PLAN.md -- EVIDENCE_MODEL.md, SOURCE_CLASSIFICATION.md, PODCAST_WORKFLOW.md
+Last session: 2026-06-14T05:24:12.875Z
+Stopped at: Completed 09-02-PLAN.md -- PubMed URL backfill SQL + EVID-03 automated smoke; human UI verification pending
 Resume file: None
 Next action: `/gsd:plan-phase 08`
