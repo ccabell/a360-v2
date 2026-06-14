@@ -46,9 +46,9 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Trust & Compliance
 
-- [ ] **TRST-01**: Persistent disclaimer bar: "Medical knowledge only. Check sources and use your clinical judgement." — never blocks content (REQ-COMP-01 to COMP-02) [EXISTS — verify]
-- [ ] **TRST-02**: Citation click either opens popover (if time permits) or scrolls/highlights the reference card (REQ-POP-05 P0 fallback) [EXISTS — verify hover card works]
-- [ ] **TRST-03**: No uncited clinical claims about dosing, contraindications, safety, sequencing, pregnancy, complications, off-label use, or adverse events (REQ-CIT-06, REQ-COMP-08 to COMP-10)
+- [x] **TRST-01**: Persistent disclaimer bar: "Medical knowledge only. Check sources and use your clinical judgement." — never blocks content (REQ-COMP-01 to COMP-02) [EXISTS — verify]
+- [x] **TRST-02**: Citation click either opens popover (if time permits) or scrolls/highlights the reference card (REQ-POP-05 P0 fallback) [EXISTS — verify hover card works]
+- [x] **TRST-03**: No uncited clinical claims about dosing, contraindications, safety, sequencing, pregnancy, complications, off-label use, or adverse events (REQ-CIT-06, REQ-COMP-08 to COMP-10)
 
 ### Embed & Distribution
 
@@ -59,8 +59,8 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Interaction
 
-- [ ] **INTR-01**: Follow-up suggestion pills after answer completion with A360-brand styling (REQ-FUP-01 to FUP-03) [EXISTS — polish styling]
-- [ ] **INTR-02**: Suggestion chips on initial state, config-driven, grouped by intent (REQ-SUG-01 to SUG-05) [EXISTS — verify]
+- [x] **INTR-01**: Follow-up suggestion pills after answer completion with A360-brand styling (REQ-FUP-01 to FUP-03) [EXISTS — polish styling]
+- [x] **INTR-02**: Suggestion chips on initial state, config-driven, grouped by intent (REQ-SUG-01 to SUG-05) [EXISTS — verify]
 
 ### Analytics
 
@@ -157,7 +157,7 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 | ANLY-03 | Phase 6 | Complete |
 | TRST-01 | Phase 7 | Pending (verify) |
 | TRST-02 | Phase 7 | Pending (verify) |
-| TRST-03 | Phase 7 | Pending |
+| TRST-03 | Phase 7 | Complete |
 | INTR-01 | Phase 7 | Pending (polish) |
 | INTR-02 | Phase 7 | Pending (verify) |
 | DEMO-01 | Phase 7 | Pending |

@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Heidi Evidence Clone
-status: Phase complete — ready for verification
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-06-14T05:39:42.917Z"
+status: Ready to execute
+stopped_at: Completed 07-02-PLAN.md
+last_updated: "2026-06-14T05:52:18.296Z"
 progress:
   total_phases: 4
-  completed_phases: 2
-  total_plans: 6
-  completed_plans: 5
+  completed_phases: 3
+  total_plans: 9
+  completed_plans: 8
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-13)
 
 **Core value:** Every clinical claim backed by cited, linkable data that providers can tap to verify
-**Current focus:** Phase 06 — embed-and-analytics
+**Current focus:** Phase 07 — trust-interaction-demo
 
 ## Current Position
 
-Phase: 06 (embed-and-analytics) — EXECUTING
-Plan: 2 of 2
+Phase: 07 (trust-interaction-demo) — EXECUTING
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -56,6 +56,8 @@ Plan: 2 of 2
 - [Phase 06-02]: Catch-all header rule placed AFTER /embed/:path* so Next.js first-match wins for embed routes; X-Frame-Options DENY added as legacy-browser fallback; Boulevard domains documented in .env.local.example comments
 - [Phase 06-embed-and-analytics]: fire-and-forget trackEvent: keepalive POST to /api/ask/event, errors swallowed — analytics never block UX
 - [Phase 06-embed-and-analytics]: ask_log event rows use status=event + question field encoding (event:{name}:...) for queryability without schema change
+- [Phase 07-trust-interaction-demo]: SYSTEM prompt safety guardrails: explicit topic list (dosing, contraindications, adverse events, off-label, pregnancy) added inline before KEY_POINTS instruction
+- [Phase 07]: Follow-up pills use bg-accent (A360 cool-tone) with border-primary/20 — consistent with brand palette, avoids generic bg-card
 
 ### Pending Todos
 
@@ -68,6 +70,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T05:39:42.914Z
-Stopped at: Completed 06-01-PLAN.md
+Last session: 2026-06-14T05:52:18.292Z
+Stopped at: Completed 07-02-PLAN.md
 Resume file: None
