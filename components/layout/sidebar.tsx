@@ -19,6 +19,7 @@ import {
   FileText,
   UserRound,
   Images,
+  BookOpen,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -34,6 +35,12 @@ const menuItems = [
     name: "Agent Manager",
     href: "/dashboard/agents",
     icon: Sparkles,
+    scope: "internal",
+  },
+  {
+    name: "Fuel Library",
+    href: "/dashboard/fuel-library",
+    icon: BookOpen,
     scope: "internal",
   },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
