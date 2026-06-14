@@ -10,8 +10,6 @@ import {
   AlertCircle,
   Bookmark,
   Check,
-  Eye,
-  EyeOff,
 } from "lucide-react";
 import type {
   RetrievedSource,
@@ -342,25 +340,19 @@ export function AskExperience({
                       </div>
                     )}
 
-                    {/* Retrieved source pills with toggle */}
+                    {/* Source count bar */}
                     {m.sources.length > 0 && (
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                            Retrieved sources ({m.sources.length})
-                          </p>
+                        <div className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
+                          <span className="text-sm font-medium text-foreground">
+                            {m.sources.length} sources found
+                          </span>
                           <button
                             type="button"
                             onClick={() => setShowSources((v) => !v)}
-                            className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs text-muted-foreground hover:text-foreground"
-                            title={showSources ? "Hide sources" : "Show sources"}
+                            className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
                           >
-                            {showSources ? (
-                              <EyeOff className="h-3 w-3" />
-                            ) : (
-                              <Eye className="h-3 w-3" />
-                            )}
-                            {showSources ? "Hide" : "Show"}
+                            {showSources ? "Hide sources" : "View sources"}
                           </button>
                         </div>
                         {showSources && (
@@ -402,20 +394,16 @@ export function AskExperience({
                             Color = source authority:&nbsp;
                             <span className="inline-flex items-center gap-2">
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-teal-500" />
-                                FDA
+                                <span className="h-2 w-2 rounded-full bg-tier-trusted-bg border border-tier-trusted-fg/30" />
+                                FDA / Manufacturer
                               </span>
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-blue-500" />
-                                Manufacturer
+                                <span className="h-2 w-2 rounded-full bg-tier-evidence-bg border border-tier-evidence-fg/30" />
+                                Research / Practice
                               </span>
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                                Peer-reviewed
-                              </span>
-                              <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-amber-500" />
-                                Industry
+                                <span className="h-2 w-2 rounded-full bg-tier-general-bg border border-tier-general-fg/30" />
+                                Industry / Media
                               </span>
                             </span>
                           </p>
