@@ -19,7 +19,11 @@ source marker in square brackets like [src_3]; you may cite multiple: [src_1][sr
 Structure your answer with short bold section headings on their own line (e.g. **Safety Considerations**,
 **Recommended Protocol**, **Maintenance Scheduling**). Use 2 to 4 sections, each 1-2 paragraphs.
 If the sources do not support an answer, say so.
-Never invent PMIDs, URLs, or citations — cite ONLY src markers that appear in the source list.`;
+Never invent PMIDs, URLs, or citations — cite ONLY src markers that appear in the source list.
+Before your main answer, output a KEY_POINTS block with 3-7 short takeaways:
+KEY_POINTS: <takeaway 1>[src_N]|<takeaway 2>[src_N]|<takeaway 3>[src_N]
+Then a blank line, then your structured answer.
+When writing tables, output them as standard markdown pipe tables with NO blank lines between header, separator, and data rows.`;
 
 function buildSystemPrompt(sources: RetrievedSource[], knowledge: string): string {
   const sourceBlocks = sources
@@ -54,6 +58,18 @@ function extractFollowUps(text: string): { cleanText: string; followUps: string[
     .filter(Boolean)
     .slice(0, 3);
   return { cleanText, followUps };
+}
+
+function extractKeyPoints(text: string): { cleanText: string; keyPoints: string[] } {
+  const match = text.match(/^KEY_POINTS:\s*(.+)\n/);
+  if (!match) return { cleanText: text, keyPoints: [] };
+  const cleanText = text.slice(match[0].length).trimStart();
+  const keyPoints = match[1]
+    .split("|")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .slice(0, 7);
+  return { cleanText, keyPoints };
 }
 
 function fallbackProse(sources: RetrievedSource[]): string {
@@ -327,7 +343,7 @@ export async function POST(req: NextRequest) {
               system: buildSystemPrompt(sources, knowledge),
               prompt: buildPrompt(q),
               temperature: 0.3,
-              maxOutputTokens: 600,
+              maxOutputTokens: 800,
             });
             for await (const delta of result.textStream) {
               fullText += delta;
@@ -345,9 +361,10 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        // Strip follow-up suggestions from the LLM output
+        // Strip follow-up suggestions and key points from the LLM output
         const { cleanText: answerText, followUps } = extractFollowUps(fullText);
-        fullText = answerText;
+        const { cleanText: finalText, keyPoints } = extractKeyPoints(answerText);
+        fullText = finalText;
 
         const { citations, displayMap } = resolveCitations(fullText, sources);
         emit({ type: "citations", citations, displayMap });
@@ -356,6 +373,7 @@ export async function POST(req: NextRequest) {
           runId: `run_${Date.now()}`,
           usage: { inputTokens: 0, outputTokens: 0, durationMs: Date.now() - startTime },
           followUps,
+          keyPoints,
         });
 
         // 7. Log

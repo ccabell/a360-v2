@@ -24,6 +24,7 @@ import { StatusIndicator } from "@/components/research/status-indicator";
 import { SourcePill } from "@/components/grounding/source-pill";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { AskSuggestionChips } from "./ask-suggestion-chips";
+import { KeyPointsCard } from "@/components/grounding/key-points-card";
 
 export type AskVariant = "dashboard" | "public" | "embed";
 
@@ -63,6 +64,7 @@ interface AssistantMessage {
   done: boolean;
   error?: string;
   followUps?: string[];
+  keyPoints?: string[];
 }
 type ChatMessage = UserMessage | AssistantMessage;
 
@@ -238,6 +240,7 @@ export function AskExperience({
               done: true,
               stage: null,
               followUps: ev.followUps,
+              keyPoints: ev.keyPoints,
             }));
             onAnswerComplete?.({
               messageId: asstId,
@@ -416,6 +419,13 @@ export function AskExperience({
                               </span>
                             </span>
                           </p>
+                        )}
+                        {m.done && m.keyPoints && m.keyPoints.length > 0 && (
+                          <KeyPointsCard
+                            keyPoints={m.keyPoints}
+                            displayMap={m.displayMap}
+                            citations={m.citations}
+                          />
                         )}
                         <GroundedAnswer
                           text={m.text}
