@@ -33,8 +33,8 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 - [x] **ANS-01**: Answer displays a Key Points summary card at top with 3-7 bulleted takeaways, each sourced with inline authority badges (REQ-KP-01 to KP-05)
 - [x] **ANS-02**: Section headings render as visually distinct styled headers with clear separation between content sections (REQ-SEC-01 to SEC-02)
-- [ ] **ANS-03**: Structured tables render as accessible HTML tables with per-cell inline citations — product fact tables (drug class, mechanism, duration, max dose) and comparison tables (aging factor vs modality, product vs duration) (REQ-TBL-01 to TBL-04)
-- [ ] **ANS-04**: Tables wrap cleanly on mobile with proper headers and accessible semantics (REQ-TBL-03, REQ-A11Y-08)
+- [x] **ANS-03**: Structured tables render as accessible HTML tables with per-cell inline citations — product fact tables (drug class, mechanism, duration, max dose) and comparison tables (aging factor vs modality, product vs duration) (REQ-TBL-01 to TBL-04)
+- [x] **ANS-04**: Tables wrap cleanly on mobile with proper headers and accessible semantics (REQ-TBL-03, REQ-A11Y-08)
 
 ### Source Display
 
@@ -141,8 +141,8 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 |-------------|-------|--------|
 | ANS-01 | Phase 4 | Complete |
 | ANS-02 | Phase 4 | Complete |
-| ANS-03 | Phase 4 | Pending |
-| ANS-04 | Phase 4 | Pending |
+| ANS-03 | Phase 4 | Complete |
+| ANS-04 | Phase 4 | Complete |
 | SRC-01 | Phase 5 | Pending |
 | SRC-02 | Phase 5 | Pending |
 | SRC-03 | Phase 5 | Pending |
