@@ -16,6 +16,7 @@ import { WhatNotToSayTab } from "@/components/fuel-docs/tabs/what-not-to-say-tab
 import { SopTab } from "@/components/fuel-docs/tabs/sop-tab"
 import { MetadataTab } from "@/components/fuel-docs/tabs/metadata-tab"
 import type { FuelDoc, ReviewStatus } from "@/lib/types/fuel-docs"
+import { SEED_FUEL_DOCS } from "@/lib/fuel-docs/seed-data"
 
 export default function FuelDocDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -27,6 +28,13 @@ export default function FuelDocDetailPage() {
   const [saving, setSaving] = React.useState(false)
 
   const fetchDoc = React.useCallback(async () => {
+    // Check seed data first for seed- prefixed IDs
+    const seedDoc = SEED_FUEL_DOCS.find((d) => d.id === id)
+    if (seedDoc) {
+      setDoc(seedDoc)
+      setLoading(false)
+      return
+    }
     try {
       const res = await fetch(`/api/fuel-docs/${id}`)
       if (!res.ok) throw new Error("Fuel doc not found")

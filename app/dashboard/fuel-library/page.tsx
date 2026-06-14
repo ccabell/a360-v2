@@ -10,6 +10,7 @@ import { FuelTypeBadge } from "@/components/fuel-docs/fuel-type-badge"
 import { FuelDocFilters } from "@/components/fuel-docs/fuel-doc-filters"
 import { CreateFuelDocDialog } from "@/components/fuel-docs/create-fuel-doc-dialog"
 import type { FuelDoc, FuelDocType, ReviewStatus } from "@/lib/types/fuel-docs"
+import { SEED_FUEL_DOCS } from "@/lib/fuel-docs/seed-data"
 
 const columns: ColumnDef<FuelDoc & Record<string, unknown>>[] = [
   {
@@ -74,9 +75,15 @@ export default function FuelLibraryPage() {
       if (statusFilter) params.set("status", statusFilter)
       const res = await fetch(`/api/fuel-docs?${params}`)
       if (!res.ok) throw new Error("Failed to fetch fuel docs")
-      setDocs(await res.json())
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error")
+      const data = await res.json()
+      // If the API returns data, use it; otherwise fall back to seed data
+      setDocs(data.length > 0 ? data : SEED_FUEL_DOCS)
+    } catch {
+      // API unavailable — show seed data so the UI is usable
+      let seeds = SEED_FUEL_DOCS
+      if (typeFilter) seeds = seeds.filter((d) => d.fuel_type === typeFilter)
+      if (statusFilter) seeds = seeds.filter((d) => d.review_status === statusFilter)
+      setDocs(seeds)
     } finally {
       setLoading(false)
     }
