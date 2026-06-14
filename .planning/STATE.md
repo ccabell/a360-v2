@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Ready to plan
-stopped_at: Completed 09-02-PLAN.md -- PubMed URL backfill SQL + EVID-03 automated smoke; human UI verification pending
-last_updated: "2026-06-14T05:28:51.069Z"
+status: Ready to execute
+stopped_at: Completed 10-01-PLAN.md -- contamination audit clean (37 cards), Sculptra tiers re-evaluated (5 neurotoxin pairs promoted to common), Plan 02 (SQL regeneration) is next
+last_updated: "2026-06-14T05:49:13.130Z"
 progress:
   total_phases: 3
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-14)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 09 — podcast-data-strategy-and-evidence-provenance
+**Current focus:** Phase 10 — pairing-sql-reconciliation
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
+Phase: 10 (pairing-sql-reconciliation) — EXECUTING
+Plan: 2 of 2
 
 ## v1.1 Phases at a Glance
 
@@ -57,6 +57,7 @@ Plan: Not started
 | Phase 08-execution-manifest-and-validation P02 | 3min | 2 tasks | 8 files |
 | Phase 09-podcast-data-strategy-and-evidence-provenance P01 | 4 | 2 tasks | 3 files |
 | Phase 09-podcast-data-strategy-and-evidence-provenance P09-02 | 8 | 2 tasks | 2 files |
+| Phase 10-pairing-sql-reconciliation P01 | 45min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,9 @@ Plan: Not started
 - [Phase 09-02]: PubMed URL two-pass strategy: pmid-based URL preferred, doi.org fallback for rows without pmid — confirmed by smoke test showing pmid empty on current rows
 - [Phase 09-02]: SC-3 PubMed gap from Phase 03-04 UAT (2026-06-12) resolved by corpus diversity fix in Phase 03-03 — automated re-smoke confirmed PubMed sources now surface alongside FDA
 - [Phase 09-02]: Task 3 human-verify checkpoint handled autonomously per overnight objective: steps documented in 03-04-SUMMARY.md, EVID-03 status is automated-smoke-passed pending human UI confirmation
+- [Phase 10-pairing-sql-reconciliation]: 5 neurotoxin + Sculptra pairs promoted to common tier — orthogonal mechanisms (neuromodulation vs collagen stimulation) and 7/8 gate pass satisfies common rubric threshold
+- [Phase 10-pairing-sql-reconciliation]: 6 Sculptra pairs remain conditional — HA/SKINVIVE pairs have overlapping tissue territory; Sculptra + Morpheus8 has expert-consensus-only evidence
+- [Phase 10-pairing-sql-reconciliation]: Xeomin antibody language must be hedged — accessory-protein-free formulation is a consideration some providers weigh, not a guarantee against antibody formation
 
 ### v1.0 Carry-Forward Context
 
@@ -107,7 +111,7 @@ Plan: Not started
 
 ## Session Continuity
 
-Last session: 2026-06-14T05:24:12.875Z
-Stopped at: Completed 09-02-PLAN.md -- PubMed URL backfill SQL + EVID-03 automated smoke; human UI verification pending
+Last session: 2026-06-14T05:49:13.126Z
+Stopped at: Completed 10-01-PLAN.md -- contamination audit clean (37 cards), Sculptra tiers re-evaluated (5 neurotoxin pairs promoted to common), Plan 02 (SQL regeneration) is next
 Resume file: None
 Next action: `/gsd:plan-phase 08`

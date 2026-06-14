@@ -202,10 +202,10 @@ Plans:
   2. 06-02-canonical-common-inserts.sql regenerated from Chris's approved pairing cards with no raw podcast references in any production field
   3. Sculptra pair tier decisions re-evaluated against Chris's actual feedback — any previous session's overcorrection is documented and corrected
   4. All 37 review cards confirmed clean: podcast-derived IDEAS preserved, podcast ATTRIBUTION removed from rationale/patient_education/staff_talking_points fields
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
-- [ ] 10-01-PLAN.md — Contamination audit of 37 review cards + Sculptra tier re-evaluation + Chris light-revision feedback
+- [x] 10-01-PLAN.md — Contamination audit of 37 review cards + Sculptra tier re-evaluation + Chris light-revision feedback
 - [ ] 10-02-PLAN.md — Regenerate all three 06-02 SQL files from clean review cards + update EXECUTION_MANIFEST.json
 
 ---
@@ -223,4 +223,4 @@ Plans:
 | 07. timing-rules | v1.0 | 2/2 | Complete | 2026-06-13 |
 | 08. execution-manifest-and-validation | v1.1 | 2/2 | Complete    | 2026-06-14 |
 | 09. podcast-data-strategy-and-evidence-provenance | v1.1 | 2/2 | Complete    | 2026-06-14 |
-| 10. pairing-sql-reconciliation | v1.1 | 0/2 | Not started | - |
+| 10. pairing-sql-reconciliation | v1.1 | 1/2 | In Progress|  |
