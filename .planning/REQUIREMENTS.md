@@ -36,7 +36,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 - [x] **EVID-01**: 36 PubMed evidence_links rows with NULL url backfilled using DOI
 - [x] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
-- [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations
+- [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations *(Deferred — not tested, no API key provisioned)*
 
 ## v1.2 Requirements — Evidence Sources & Agent Fuel
 
@@ -48,7 +48,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 - [x] **SRCE-02**: Citation format defined per source type (PubMed: PMID/DOI, YouTube: URL+timestamp, IFU: page reference)
 - [ ] **SRCE-03**: Enrichment pipeline documented as repeatable loop — add source, classify, chunk, vector DB, mark affected fuel docs for review
 - [ ] **SRCE-04**: Manufacturer data accessible and searchable for agent tools at runtime
-- [ ] **CFRW-01**: All v1.1 carry-forward items resolved (PAIR-01, EVID-03, TIMING_REVIEW.md, SQL manifest)
+- [ ] **CFRW-01**: All v1.1 carry-forward items resolved (PAIR-01, EVID-03, TIMING_REVIEW.md, SQL manifest) *(Partial — PAIR-01 complete; EVID-03, TIMING_REVIEW, SQL execution all deferred)*
 
 ### Combination Fuel Documents (Phase 12)
 
@@ -101,7 +101,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | POD-03 | Phase 09 | Complete |
 | EVID-01 | Phase 09 | Complete |
 | EVID-02 | Phase 09 | Complete |
-| EVID-03 | Phase 09 | Pending |
+| EVID-03 | Phase 09 | Deferred |
 | POD-04 | Phase 10 | Complete |
 | PAIR-01 | Phase 10 | Complete |
 | PAIR-02 | Phase 10 | Complete |
@@ -110,7 +110,7 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | SRCE-02 | Phase 11 | Complete |
 | SRCE-03 | Phase 11 | Pending |
 | SRCE-04 | Phase 11 | Pending |
-| CFRW-01 | Phase 11 | Pending |
+| CFRW-01 | Phase 11 | Partial |
 | COMBO-01 | Phase 12 | Pending |
 | COMBO-02 | Phase 12 | Pending |
 | COMBO-03 | Phase 12 | Pending |
@@ -127,11 +127,11 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | FUEL-05 | Phase 14 | Pending |
 
 **Coverage:**
-- v1.1 requirements: 16 total (14 complete, 2 pending carry-forward)
+- v1.1 requirements: 16 total (14 complete, 1 deferred carry-forward, 1 pending carry-forward)
 - v1.2 requirements: 19 total
 - All mapped to phases
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-06-14*
-*Last updated: 2026-06-14 — v1.2 requirements added*
+*Last updated: 2026-06-14 — CFRW-01 partial close-out; EVID-03/TIMING_REVIEW/SQL deferred*

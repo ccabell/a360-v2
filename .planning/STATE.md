@@ -82,6 +82,7 @@ Plan: 2 of 3
 - [Phase 10-pairing-sql-reconciliation]: 6 Sculptra pairs remain conditional — HA/SKINVIVE pairs have overlapping tissue territory; Sculptra + Morpheus8 has expert-consensus-only evidence
 - [Phase 10-pairing-sql-reconciliation]: Xeomin antibody language must be hedged — accessory-protein-free formulation is a consideration some providers weigh, not a guarantee against antibody formation
 - [Phase 11]: Decision tree heading retained as question; answers now provide practical per-source guidance instead of binary yes/no
+- [v1.1 closeout]: CFRW-01 partial — PAIR-01 verified complete (no podcast contamination, 31+ inserts); EVID-03 deferred (no API key provisioned), TIMING_REVIEW deferred, SQL manifest execution deferred. All three carry-forward items deferred to future milestone.
 
 ### v1.0 Carry-Forward Context
 
@@ -104,14 +105,18 @@ Plan: 2 of 3
 
 ### Pending Todos
 
-- Chris to review 37 per-pair review cards in .planning/phases/06-pairing-engine/ before Phase 10 can complete PAIR-01/PAIR-02/PAIR-03
-- Sculptra pair tier decisions need re-evaluation (PAIR-02) — determine if previous session's downgrading was correct or overcorrection
-- Phase 3 plan 03-04 live UI verification pending (EVID-03 in Phase 09)
+- ~~Chris to review 37 per-pair review cards~~ — Done; PAIR-01/PAIR-02/PAIR-03 all complete
+- ~~Sculptra pair tier decisions~~ — Done; PAIR-02 resolved in Phase 10
+- EVID-03 live UI verification — Deferred (no AI_GATEWAY_API_KEY provisioned)
+- TIMING_REVIEW.md closure — Deferred to future milestone
+- SQL manifest execution (51 files pending) — Deferred to future milestone
 
 ### Blockers/Concerns
 
-- Chris review of pairing cards is a prerequisite for Phase 10 (PAIR-01, PAIR-02, PAIR-03)
-- AI_GATEWAY_API_KEY must be provisioned in .env.local for LLM generation (EVID-03 depends on live UI)
+- ~~Chris review of pairing cards~~ — Resolved; Phase 10 complete
+- AI_GATEWAY_API_KEY not provisioned — EVID-03 deferred until key available
+- SQL manifest execution deferred — 51 files pending Supabase execution
+- TIMING_REVIEW.md deferred — safety-critical timing decisions not yet reviewed by Chris
 
 ## Session Continuity
 
