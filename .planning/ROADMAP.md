@@ -68,7 +68,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — KeyPointsCard + shared citation parser + KEY_POINTS extraction + h3 heading upgrade
+- [x] 04-01-PLAN.md — KeyPointsCard + shared citation parser + KEY_POINTS extraction + h3 heading upgrade
 - [ ] 04-02-PLAN.md — MarkdownTable component + table detection in AnswerMessage + visual checkpoint
 
 ---
@@ -135,7 +135,7 @@ Plans:
 | 1. citations | v1.0 | 3/3 | Complete | 2026-06-12 |
 | 2. dossier-batch | v1.0 | 6/6 | Complete | 2026-06-12 |
 | 3. retrieval-wiring | v1.0 | 4/4 | Complete | 2026-06-12 |
-| 4. answer-structure | v2.0 | 0/2 | Not started | - |
+| 4. answer-structure | v2.0 | 1/2 | In Progress|  |
 | 5. source-display | v2.0 | 0/2 | Not started | - |
 | 6. embed-and-analytics | v2.0 | 0/3 | Not started | - |
 | 7. trust-interaction-demo | v2.0 | 0/3 | Not started | - |
