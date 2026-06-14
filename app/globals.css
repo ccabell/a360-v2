@@ -31,6 +31,19 @@
   --chart-4: oklch(0.378 0.015 216);
   --chart-5: oklch(0.275 0.011 216.9);
   --radius: 0.625rem;
+  /* Source trust tiers */
+  --tier-trusted-bg: oklch(0.95 0.04 155);
+  --tier-trusted-fg: oklch(0.35 0.1 155);
+  --tier-trusted-bg-dark: oklch(0.22 0.04 155);
+  --tier-trusted-fg-dark: oklch(0.78 0.1 155);
+  --tier-evidence-bg: oklch(0.94 0.035 230);
+  --tier-evidence-fg: oklch(0.4 0.1 230);
+  --tier-evidence-bg-dark: oklch(0.22 0.035 230);
+  --tier-evidence-fg-dark: oklch(0.78 0.08 230);
+  --tier-general-bg: oklch(0.95 0.005 250);
+  --tier-general-fg: oklch(0.42 0.015 250);
+  --tier-general-bg-dark: oklch(0.25 0.01 250);
+  --tier-general-fg-dark: oklch(0.72 0.01 250);
   --sidebar: oklch(0.987 0.002 197.1);
   --sidebar-foreground: oklch(0.148 0.004 228.8);
   --sidebar-primary: oklch(0.609 0.126 221.723);
@@ -66,6 +79,12 @@
   --chart-3: oklch(0.45 0.017 213.2);
   --chart-4: oklch(0.378 0.015 216);
   --chart-5: oklch(0.275 0.011 216.9);
+  --tier-trusted-bg: var(--tier-trusted-bg-dark);
+  --tier-trusted-fg: var(--tier-trusted-fg-dark);
+  --tier-evidence-bg: var(--tier-evidence-bg-dark);
+  --tier-evidence-fg: var(--tier-evidence-fg-dark);
+  --tier-general-bg: var(--tier-general-bg-dark);
+  --tier-general-fg: var(--tier-general-fg-dark);
   --sidebar: oklch(0.218 0.008 223.9);
   --sidebar-foreground: oklch(0.987 0.002 197.1);
   --sidebar-primary: oklch(0.715 0.143 215.221);
@@ -113,6 +132,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-tier-trusted-bg: var(--tier-trusted-bg);
+  --color-tier-trusted-fg: var(--tier-trusted-fg);
+  --color-tier-evidence-bg: var(--tier-evidence-bg);
+  --color-tier-evidence-fg: var(--tier-evidence-fg);
+  --color-tier-general-bg: var(--tier-general-bg);
+  --color-tier-general-fg: var(--tier-general-fg);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
