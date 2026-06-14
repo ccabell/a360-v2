@@ -82,12 +82,11 @@ Plans:
   2. FDA, manufacturer label, and peer-reviewed/academic sources carry a green "Reliable" badge in the reference list
   3. Each reference card shows a category pill (Journal, Regulatory, Government Medical Authority, Manufacturer, Clinical Education, etc.)
   4. FDA/Manufacturer sources render in green tones, PubMed/Research in blue tones, and Industry/Podcast/Video in neutral across all citation surfaces (inline badges, hover cards, reference cards)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 05-01: SourceCountBar component + tier color token audit (green/blue/neutral mapping to OKLch tokens)
-- [ ] 05-02: ReliableBadge + CategoryPill on reference cards; propagate tier colors to InlineAuthorityBadge + CitationHoverCard
-**UI hint**: yes
+- [ ] 05-01-PLAN.md — Tier color OKLch tokens + CORPUS_META chip revision + source count bar with View sources toggle
+- [ ] 05-02-PLAN.md — Reliable badge + category pill on citation cards; tier color consistency in hover cards + visual checkpoint
 
 ---
 
