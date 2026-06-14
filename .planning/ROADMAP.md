@@ -99,12 +99,11 @@ Plans:
   2. The embed sends `a360:ready`, `a360:ask_sent`, `a360:answer_complete`, and `a360:resize` postMessage events at the correct lifecycle moments
   3. An iframe from an unlisted origin is rejected (CSP frame-ancestors blocks it); Boulevard demo host is allowlisted and loads cleanly
   4. `evidence_unauth_ask`, `evidence_answer_complete` (with latency_ms and citation_count), and `citation_click` events are recorded in ask_log on every qualifying interaction
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: /embed/ask route verification + postMessage bridge implementation
-- [ ] 06-02: CSP frame-ancestors middleware + EMBED_ALLOWED_ORIGINS env + Boulevard allowlist
-- [ ] 06-03: Analytics event instrumentation (unauth_ask, answer_complete, citation_click)
+- [ ] 06-01-PLAN.md — Analytics event instrumentation: trackEvent helper, /api/ask/event route, AskExperience wiring
+- [x] 06-02-PLAN.md — CSP frame-ancestors hardening, Boulevard allowlist, embed surface verification checkpoint
 
 ---
 
@@ -135,6 +134,6 @@ Plans:
 | 2. dossier-batch | v1.0 | 6/6 | Complete | 2026-06-12 |
 | 3. retrieval-wiring | v1.0 | 4/4 | Complete | 2026-06-12 |
 | 4. answer-structure | v2.0 | 2/2 | Complete   | 2026-06-14 |
-| 5. source-display | v2.0 | 1/2 | In Progress|  |
-| 6. embed-and-analytics | v2.0 | 0/3 | Not started | - |
+| 5. source-display | v2.0 | 2/2 | Complete |  |
+| 6. embed-and-analytics | v2.0 | 1/2 | In Progress|  |
 | 7. trust-interaction-demo | v2.0 | 0/3 | Not started | - |

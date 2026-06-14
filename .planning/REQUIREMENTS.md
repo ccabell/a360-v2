@@ -52,10 +52,10 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Embed & Distribution
 
-- [ ] **EMB-01**: `/embed/ask` uses same AskExperience component, removes headline/nav/footer, supports transparent bg (REQ-EMB-01 to EMB-03) [PARTIAL — verify]
-- [ ] **EMB-02**: PostMessage bridge: `a360:ready`, `a360:ask_sent`, `a360:answer_complete`, `a360:resize` from embed to parent (REQ bridge events)
-- [ ] **EMB-03**: Frame-ancestors from `EMBED_ALLOWED_ORIGINS` env; reject untrusted origins (REQ-EMBSEC-01 to EMBSEC-05)
-- [ ] **EMB-04**: Boulevard demo host allowlisted for demo (REQ-EMBSEC-05)
+- [x] **EMB-01**: `/embed/ask` uses same AskExperience component, removes headline/nav/footer, supports transparent bg (REQ-EMB-01 to EMB-03) [PARTIAL — verify]
+- [x] **EMB-02**: PostMessage bridge: `a360:ready`, `a360:ask_sent`, `a360:answer_complete`, `a360:resize` from embed to parent (REQ bridge events)
+- [x] **EMB-03**: Frame-ancestors from `EMBED_ALLOWED_ORIGINS` env; reject untrusted origins (REQ-EMBSEC-01 to EMBSEC-05)
+- [x] **EMB-04**: Boulevard demo host allowlisted for demo (REQ-EMBSEC-05)
 
 ### Interaction
 
@@ -64,9 +64,9 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 
 ### Analytics
 
-- [ ] **ANLY-01**: `evidence_unauth_ask` event on public/embed question submit (REQ analytics events)
-- [ ] **ANLY-02**: `evidence_answer_complete` event with latency_ms, citation_count, status
-- [ ] **ANLY-03**: `citation_click` event when user clicks source badge/reference link
+- [x] **ANLY-01**: `evidence_unauth_ask` event on public/embed question submit (REQ analytics events)
+- [x] **ANLY-02**: `evidence_answer_complete` event with latency_ms, citation_count, status
+- [x] **ANLY-03**: `citation_click` event when user clicks source badge/reference link
 
 ### Demo Acceptance
 
@@ -148,13 +148,13 @@ These are live in the codebase and should NOT be re-implemented. Requirements re
 | SRC-03 | Phase 5 | Complete |
 | SRC-04 | Phase 5 | Complete |
 | SRC-05 | Phase 5 | Complete |
-| EMB-01 | Phase 6 | Pending |
-| EMB-02 | Phase 6 | Pending |
-| EMB-03 | Phase 6 | Pending |
-| EMB-04 | Phase 6 | Pending |
-| ANLY-01 | Phase 6 | Pending |
-| ANLY-02 | Phase 6 | Pending |
-| ANLY-03 | Phase 6 | Pending |
+| EMB-01 | Phase 6 | Complete |
+| EMB-02 | Phase 6 | Complete |
+| EMB-03 | Phase 6 | Complete |
+| EMB-04 | Phase 6 | Complete |
+| ANLY-01 | Phase 6 | Complete |
+| ANLY-02 | Phase 6 | Complete |
+| ANLY-03 | Phase 6 | Complete |
 | TRST-01 | Phase 7 | Pending (verify) |
 | TRST-02 | Phase 7 | Pending (verify) |
 | TRST-03 | Phase 7 | Pending |

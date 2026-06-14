@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: Heidi Evidence Clone
 status: Phase complete — ready for verification
-stopped_at: Completed 05-02-PLAN.md
-last_updated: "2026-06-14T05:25:59.839Z"
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-06-14T05:39:42.917Z"
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
 ---
 
 # Project State
@@ -19,11 +19,11 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-13)
 
 **Core value:** Every clinical claim backed by cited, linkable data that providers can tap to verify
-**Current focus:** Phase 05 — source-display
+**Current focus:** Phase 06 — embed-and-analytics
 
 ## Current Position
 
-Phase: 05 (source-display) — EXECUTING
+Phase: 06 (embed-and-analytics) — EXECUTING
 Plan: 2 of 2
 
 ## Performance Metrics
@@ -53,6 +53,9 @@ Plan: 2 of 2
 - [Phase 05-source-display]: 3-tier color system: green=trusted (FDA/manufacturer), blue=evidence (pubmed/practice), neutral=general (youtube/podcast/industry)
 - [Phase 05-source-display]: TIER_RELIABLE and corpusTier exported from source-meta.ts for reliable badge consumption in Plan 02
 - [Phase 05-source-display]: Reliable badge uses bg-tier-trusted-bg (green) matching trusted tier chip for visual consistency; typeTag pill uses bg-muted for softer secondary label
+- [Phase 06-02]: Catch-all header rule placed AFTER /embed/:path* so Next.js first-match wins for embed routes; X-Frame-Options DENY added as legacy-browser fallback; Boulevard domains documented in .env.local.example comments
+- [Phase 06-embed-and-analytics]: fire-and-forget trackEvent: keepalive POST to /api/ask/event, errors swallowed — analytics never block UX
+- [Phase 06-embed-and-analytics]: ask_log event rows use status=event + question field encoding (event:{name}:...) for queryability without schema change
 
 ### Pending Todos
 
@@ -65,6 +68,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-14T05:25:59.835Z
-Stopped at: Completed 05-02-PLAN.md
+Last session: 2026-06-14T05:39:42.914Z
+Stopped at: Completed 06-01-PLAN.md
 Resume file: None
