@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Phase complete — ready for verification
-stopped_at: Completed 11.1-01-PLAN.md — fuel doc types, data access, serializer
-last_updated: "2026-06-14T16:56:38.033Z"
+status: Executing
+stopped_at: Completed 15-01-PLAN.md — agent runtime backend (tools, executor, SSE route)
+last_updated: "2026-06-14T16:58:19Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-06-14)
 ## Current Position
 
 Phase: 15 (runtime-stabilization) — EXECUTING
-Plan: 2 of 2
+Plan: 1 of 2 complete
 
 ## v2.0 Phases at a Glance (Planned)
 
@@ -98,6 +98,9 @@ Plan: 2 of 2
 - [Phase 12]: TypeScript type GLAgentFuelDocument (lib/types/data-sources.ts) is stale and does not reflect live agent_fuel_documents schema — deferred fix
 - [Phase 11.1-01]: source_type column (existing) used as fuel_type discriminator in DB queries — avoids schema migration in this plan
 - [Phase 11.1-01]: COALESCE resolution implemented in TypeScript (not SQL) — more flexible, merges content via object spread without migration
+- [Phase 15-01]: AI SDK v6 replaced maxSteps with stopWhen(stepCountIs(N)) — executor adapted accordingly
+- [Phase 15-01]: AI SDK v6 tool-call uses 'input' (not 'args'), tool-result uses 'output' (not 'result'), tool-error is a distinct stream part type
+- [Phase 15-01]: Agent runtime tools use jsonSchema() from ai SDK (not Zod) and structured error returns (never throw)
 
 ### v1.0 Carry-Forward Context
 
@@ -137,7 +140,7 @@ Plan: 2 of 2
 
 ## Session Continuity
 
-Last session: 2026-06-14T16:56:38.029Z
-Stopped at: Completed 11.1-01-PLAN.md — fuel doc types, data access, serializer
-Resume file: None
-Next action: `/gsd:plan-phase 11.1` or `/gsd:plan-phase 15` to begin v2.0
+Last session: 2026-06-14T16:58:19Z
+Stopped at: Completed 15-01-PLAN.md — agent runtime backend (tools, executor, SSE route)
+Resume file: .planning/phases/15-runtime-stabilization/15-02-PLAN.md
+Next action: Execute 15-02-PLAN.md (frontend page rewrite)

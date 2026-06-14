@@ -93,11 +93,11 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Agent Runtime
 
-- [ ] **RUN-01**: Agent runtime executes in-project (Next.js API route + Supabase + Claude API) — no Prompt Runner dependency
-- [ ] **RUN-02**: Runtime loads agent definition and active version prompt from Agent Manager Supabase
-- [ ] **RUN-03**: Runtime provides tools that query real data: patient context (PR Supabase), fuel docs (Agent Manager), evidence links (Agent Manager), clinical literature (CMS Supabase), product info (Agent Manager)
-- [ ] **RUN-04**: When a tool fails, runtime continues with remaining tools and marks failed step with structured error
-- [ ] **RUN-05**: Run never ends with only "No output generated" — structured error identifies which step failed, what completed, and recommended action
+- [x] **RUN-01**: Agent runtime executes in-project (Next.js API route + Supabase + Claude API) — no Prompt Runner dependency
+- [x] **RUN-02**: Runtime loads agent definition and active version prompt from Agent Manager Supabase
+- [x] **RUN-03**: Runtime provides tools that query real data: patient context (PR Supabase), fuel docs (Agent Manager), evidence links (Agent Manager), clinical literature (CMS Supabase), product info (Agent Manager)
+- [x] **RUN-04**: When a tool fails, runtime continues with remaining tools and marks failed step with structured error
+- [x] **RUN-05**: Run never ends with only "No output generated" — structured error identifies which step failed, what completed, and recommended action
 
 ### Observability
 
@@ -171,11 +171,11 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 | FUEL-03 | Phase 14 | Pending |
 | FUEL-04 | Phase 14 | Pending |
 | FUEL-05 | Phase 14 | Pending |
-| RUN-01 | Phase 15 | Pending |
-| RUN-02 | Phase 15 | Pending |
-| RUN-03 | Phase 15 | Pending |
-| RUN-04 | Phase 15 | Pending |
-| RUN-05 | Phase 15 | Pending |
+| RUN-01 | Phase 15 | Complete |
+| RUN-02 | Phase 15 | Complete |
+| RUN-03 | Phase 15 | Complete |
+| RUN-04 | Phase 15 | Complete |
+| RUN-05 | Phase 15 | Complete |
 | TRACE-01 | Phase 16 | Pending |
 | TRACE-02 | Phase 16 | Pending |
 | TRACE-03 | Phase 16 | Pending |
