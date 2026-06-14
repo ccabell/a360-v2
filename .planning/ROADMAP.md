@@ -303,3 +303,20 @@ Plans:
 | 12. combination-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 13. concern-fuel-documents | v1.2 | 0/3 | Not started | - |
 | 14. compiled-fuel-packets | v1.2 | 0/3 | Not started | - |
+
+---
+
+## Backlog
+
+#### Phase 999.1: agent-fuel-document-management-ui (BACKLOG)
+**Goal**: Build a template system for agent fuel documents with a practice-facing UI for managing them. Templates define the standard structure per document type (combination, concern, product); the UI sits on top so practices can view, edit, and override fuel docs without touching the database directly. This is the missing layer between the raw fuel doc data (Phases 12-14) and the agents that consume them.
+**Key pieces**:
+  1. Standardized fuel doc templates per document type (combination, concern, product) — defining sections like why-together, timing, what-not-to-say, patient questions, evidence backing
+  2. CRUD UI for viewing/editing fuel docs with practice-level overrides (COALESCE pattern already designed in gl/pl schema)
+  3. Review/approval workflow so practice edits go through QC before agents consume them
+  4. Fuel docs become first-class managed entities rather than opaque DB rows
+**Requirements**: TBD
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (promote with /gsd:review-backlog when ready)
