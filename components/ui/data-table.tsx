@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils"
 
 export interface ColumnDef<T> {
   key: string
-  header: string
+  header: string | (() => React.ReactNode)
   sortable?: boolean
   className?: string
   render?: (row: T) => React.ReactNode
@@ -114,27 +114,30 @@ export function DataTable<T extends Record<string, unknown>>({
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
-              {columns.map((col) => (
-                <TableHead key={col.key} className={col.className}>
-                  {col.sortable ? (
-                    <button
-                      className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
-                      onClick={() => toggleSort(col.key)}
-                    >
-                      {col.header}
-                      {sortKey === col.key && sortDir === "asc" ? (
-                        <ArrowUp className="h-3.5 w-3.5" />
-                      ) : sortKey === col.key && sortDir === "desc" ? (
-                        <ArrowDown className="h-3.5 w-3.5" />
-                      ) : (
-                        <ArrowUpDown className="h-3.5 w-3.5 opacity-40" />
-                      )}
-                    </button>
-                  ) : (
-                    col.header
-                  )}
-                </TableHead>
-              ))}
+              {columns.map((col) => {
+                const headerContent = typeof col.header === "function" ? col.header() : col.header
+                return (
+                  <TableHead key={col.key} className={col.className}>
+                    {col.sortable ? (
+                      <button
+                        className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+                        onClick={() => toggleSort(col.key)}
+                      >
+                        {headerContent}
+                        {sortKey === col.key && sortDir === "asc" ? (
+                          <ArrowUp className="h-3.5 w-3.5" />
+                        ) : sortKey === col.key && sortDir === "desc" ? (
+                          <ArrowDown className="h-3.5 w-3.5" />
+                        ) : (
+                          <ArrowUpDown className="h-3.5 w-3.5 opacity-40" />
+                        )}
+                      </button>
+                    ) : (
+                      headerContent
+                    )}
+                  </TableHead>
+                )
+              })}
             </TableRow>
           </TableHeader>
           <TableBody>

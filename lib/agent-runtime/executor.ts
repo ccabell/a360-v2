@@ -1,7 +1,7 @@
 import { streamText, stepCountIs } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { getAgent, getVersion } from "@/lib/api/agents";
-import { createRun, updateRun } from "@/lib/api/runs";
+import { createAgentOutput, updateAgentOutput } from "@/lib/api/runs";
 import { buildTools } from "./tools";
 
 // ---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ export async function executeAgentRun(
   emit: EmitFn,
 ): Promise<void> {
   const startMs = Date.now();
-  let runId: string | undefined;
+  let outputId: string | undefined;
 
   try {
     // 1. Load agent
@@ -53,21 +53,27 @@ export async function executeAgentRun(
     // 2. Load version
     const version = await getVersion(agent.active_version_id);
 
-    // 3. Create run record
-    const run = await createRun({
-      agent_id: agent.id,
-      version_id: version.id,
-      input: {
+    // 3. Create agent_output record
+    // practice_id is NOT NULL — use a demo practice for tester runs
+    const DEMO_PRACTICE_ID =
+      process.env.DEMO_PRACTICE_ID ?? "a0000000-0000-0000-0000-000000000001";
+    const output = await createAgentOutput({
+      patient_id: params.patientId,
+      practice_id: DEMO_PRACTICE_ID,
+      agent_key: agent.agent_key,
+      agent_version: version.version,
+      input_envelope: {
         user_message: params.userMessage,
         patient_id: params.patientId,
       },
       status: "running",
     });
-    runId = run.id;
-    emit({ type: "status", stage: "run_created", runId: run.id });
+    outputId = output.id;
+    emit({ type: "status", stage: "run_created", runId: output.id });
 
-    // 4. Build tools
-    const tools = buildTools(version.tool_config);
+    // 4. Build tools — use knowledge_config.tools if available, otherwise all tools
+    const toolNames = version.knowledge_config?.tools;
+    const tools = buildTools(toolNames);
 
     // 5. Create Anthropic provider
     const apiKey =
@@ -75,27 +81,43 @@ export async function executeAgentRun(
     if (!apiKey) {
       const errMsg = "No API key configured (ANTHROPIC_API_KEY or AI_GATEWAY_API_KEY)";
       emit({ type: "error", message: errMsg });
-      await updateRun(run.id, {
+      await updateAgentOutput(output.id, {
         status: "failed",
-        output: { error: errMsg, recommendation: "Set ANTHROPIC_API_KEY" },
-        duration_ms: Date.now() - startMs,
+        result: { error: errMsg, recommendation: "Set ANTHROPIC_API_KEY" },
+        latency_ms: Date.now() - startMs,
       });
       return;
     }
     const anthropic = createAnthropic({ apiKey });
 
-    // 6. Call streamText
+    // 6. Resolve model — strip provider prefix and map friendly names to API IDs
+    const MODEL_ALIASES: Record<string, string> = {
+      "claude-haiku-4.5": "claude-haiku-4-5-20251001",
+      "claude-sonnet-4.5": "claude-sonnet-4-5-20250514",
+      "claude-sonnet-4.6": "claude-sonnet-4-6-20250514",
+      "claude-opus-4.6": "claude-opus-4-6-20250514",
+    };
+    const rawModel = (version.model ?? agent.model ?? "claude-haiku-4-5-20251001")
+      .replace(/^anthropic\//, "");
+    const modelId = MODEL_ALIASES[rawModel] ?? rawModel;
+
+    // 7. Call streamText — include patient_id in prompt if provided
+    const userPrompt = params.patientId
+      ? `Patient ID: ${params.patientId}\n\n${params.userMessage}`
+      : params.userMessage;
+    const maxToolRounds = version.model_params?.max_tool_rounds ?? 5;
     const result = streamText({
-      model: anthropic(version.model ?? "claude-haiku-4-5-20251001"),
-      system: version.system_prompt ?? "You are a helpful assistant.",
-      prompt: params.userMessage,
-      stopWhen: stepCountIs(version.constraints?.max_tool_rounds ?? 5),
-      temperature: version.constraints?.temperature ?? 0.3,
-      maxOutputTokens: version.constraints?.max_tokens ?? 4096,
+      model: anthropic(modelId),
+      system: version.prompt_text ?? "You are a helpful assistant.",
+      prompt: userPrompt,
+      stopWhen: stepCountIs(maxToolRounds),
+      temperature: version.model_params?.temperature ?? 0.3,
+      maxOutputTokens: version.model_params?.max_tokens ?? 4096,
       tools,
     });
 
-    // 7. Iterate fullStream
+    // 8. Iterate fullStream
+    emit({ type: "status", stage: "streaming", model: modelId });
     let fullText = "";
     const toolErrors: string[] = [];
     const completedTools: string[] = [];
@@ -121,7 +143,6 @@ export async function executeAgentRun(
             toolName: part.toolName,
             result: part.output,
           });
-          // Track tool success/failure from structured error returns
           if (
             part.output &&
             typeof part.output === "object" &&
@@ -143,43 +164,48 @@ export async function executeAgentRun(
       }
     }
 
-    // 8. Persist run
+    // 9. Persist result
+    const durationMs = Date.now() - startMs;
     if (fullText.trim().length > 0) {
-      await updateRun(run.id, {
+      await updateAgentOutput(output.id, {
         status: "completed",
-        output: { text: fullText },
-        duration_ms: Date.now() - startMs,
+        result: { text: fullText, completed_tools: completedTools },
+        latency_ms: durationMs,
       });
     } else {
-      await updateRun(run.id, {
+      await updateAgentOutput(output.id, {
         status: "failed",
-        output: {
+        result: {
           error: "No output generated",
           failed_tools: toolErrors,
           completed_tools: completedTools,
-          recommendation:
-            "Check tool configurations and API key availability",
+          recommendation: "Check tool configurations and API key availability",
         },
-        duration_ms: Date.now() - startMs,
+        latency_ms: durationMs,
       });
     }
 
-    // 9. Done
-    emit({ type: "done", runId: run.id, durationMs: Date.now() - startMs });
+    // 10. Done
+    emit({ type: "done", runId: output.id, durationMs });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
+    const message =
+      err instanceof Error
+        ? err.message
+        : typeof err === "object" && err !== null && "message" in err
+          ? String((err as { message: unknown }).message)
+          : JSON.stringify(err);
+    console.error("[agent-runner] Error:", message);
     emit({ type: "error", message });
 
-    // Update run to failed if we have a run ID
-    if (runId) {
+    if (outputId) {
       try {
-        await updateRun(runId, {
+        await updateAgentOutput(outputId, {
           status: "failed",
-          error: message,
-          duration_ms: Date.now() - startMs,
+          result: { error: message },
+          latency_ms: Date.now() - startMs,
         });
       } catch {
-        // Swallow — run persistence failure should not mask the original error
+        // Swallow — persistence failure should not mask the original error
       }
     }
   }

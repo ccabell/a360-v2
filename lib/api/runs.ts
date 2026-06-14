@@ -1,85 +1,87 @@
-import { agentSupabase } from "@/lib/supabase";
-import type { AgentRun, AgentCitation, EvalResult } from "@/lib/types";
+import { opsSupabase } from "@/lib/supabase";
 
-// --- Runs ---
+// ---------------------------------------------------------------------------
+// Agent Outputs — persisted in Ops Supabase `agent_outputs` table
+// ---------------------------------------------------------------------------
 
-export async function listRuns(opts?: {
-  agentId?: string;
-  workflowId?: string;
+export interface AgentOutput {
+  id: string;
+  consultation_id: string | null;
+  patient_id: string | null;
+  practice_id: string | null;
+  agent_key: string;
+  agent_version: string | null;
+  input_envelope: Record<string, unknown> | null;
+  result: Record<string, unknown> | null;
+  evidence_used: Record<string, unknown> | null;
+  confidence: number | null;
+  guardrail_results: Record<string, unknown> | null;
+  status: string;
+  latency_ms: number | null;
+  created_at: string;
+  is_demo_canonical: boolean | null;
+}
+
+// --- List outputs ---
+
+export async function listAgentOutputs(opts?: {
+  agentKey?: string;
+  patientId?: string;
   status?: string;
   limit?: number;
 }) {
   const limit = opts?.limit || 50;
-  let query = agentSupabase
-    .from("agent_runs")
+  let query = opsSupabase
+    .from("agent_outputs")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
 
-  if (opts?.agentId) query = query.eq("agent_id", opts.agentId);
-  if (opts?.workflowId) query = query.eq("workflow_id", opts.workflowId);
+  if (opts?.agentKey) query = query.eq("agent_key", opts.agentKey);
+  if (opts?.patientId) query = query.eq("patient_id", opts.patientId);
   if (opts?.status) query = query.eq("status", opts.status);
 
   const { data, error } = await query;
   if (error) throw error;
-  return data as AgentRun[];
+  return data as AgentOutput[];
 }
 
-export async function getRun(id: string) {
-  const { data, error } = await agentSupabase
-    .from("agent_runs")
+// --- Get single output ---
+
+export async function getAgentOutput(id: string) {
+  const { data, error } = await opsSupabase
+    .from("agent_outputs")
     .select("*")
     .eq("id", id)
     .single();
   if (error) throw error;
-  return data as AgentRun;
+  return data as AgentOutput;
 }
 
-export async function createRun(run: Partial<AgentRun>) {
-  const { data, error } = await agentSupabase
-    .from("agent_runs")
-    .insert(run)
+// --- Create output (used by executor at run start) ---
+
+export async function createAgentOutput(output: Partial<AgentOutput>) {
+  const { data, error } = await opsSupabase
+    .from("agent_outputs")
+    .insert(output)
     .select()
     .single();
   if (error) throw error;
-  return data as AgentRun;
+  return data as AgentOutput;
 }
 
-export async function updateRun(id: string, updates: Partial<AgentRun>) {
-  const { data, error } = await agentSupabase
-    .from("agent_runs")
+// --- Update output (used by executor at run end) ---
+
+export async function updateAgentOutput(
+  id: string,
+  updates: Partial<AgentOutput>,
+) {
+  const { data, error } = await opsSupabase
+    .from("agent_outputs")
     .update(updates)
     .eq("id", id)
     .select()
     .single();
   if (error) throw error;
-  return data as AgentRun;
-}
-
-// --- Citations ---
-
-export async function listCitations(runId: string) {
-  const { data, error } = await agentSupabase
-    .from("agent_citations")
-    .select("*")
-    .eq("run_id", runId)
-    .order("created_at");
-  if (error) throw error;
-  return data as AgentCitation[];
-}
-
-// --- Eval Results ---
-
-export async function listEvalResults(opts?: { agentId?: string; runId?: string }) {
-  let query = agentSupabase
-    .from("eval_results")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (opts?.agentId) query = query.eq("agent_id", opts.agentId);
-  if (opts?.runId) query = query.eq("run_id", opts.runId);
-
-  const { data, error } = await query;
-  if (error) throw error;
-  return data as EvalResult[];
+  return data as AgentOutput;
 }

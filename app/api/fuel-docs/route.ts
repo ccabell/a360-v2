@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listFuelDocs, createFuelDoc } from "@/lib/api/fuel-docs";
+import { listFuelDocs, createFuelDoc, bulkCreateFuelDocs } from "@/lib/api/fuel-docs";
 import type { FuelDocType, ReviewStatus } from "@/lib/types/fuel-docs";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +22,14 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
+    // Bulk import: { docs: [...] }
+    if (Array.isArray(body.docs)) {
+      const created = await bulkCreateFuelDocs(body.docs);
+      return NextResponse.json({ created: created.length, docs: created }, { status: 201 });
+    }
+
+    // Single create
     const doc = await createFuelDoc(body);
     return NextResponse.json(doc, { status: 201 });
   } catch (err) {

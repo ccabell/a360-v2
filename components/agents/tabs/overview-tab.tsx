@@ -11,7 +11,7 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select"
-import { AgentStatusBadge, VersionStatusBadge, RuntimeBadge } from "@/components/agents/status-badge"
+import { AgentStatusBadge, VersionStatusBadge } from "@/components/agents/status-badge"
 import { Save } from "lucide-react"
 import type { Agent, AgentVersion, AgentStatus, AgentCategory } from "@/lib/types"
 
@@ -151,27 +151,27 @@ export function OverviewTab({ agent, activeVersion, onUpdate }: OverviewTabProps
                   <VersionStatusBadge status={activeVersion.status} />
                 </div>
               </Field>
-              <Field label="Runtime">
-                <RuntimeBadge runtime={activeVersion.runtime_type} />
+              <Field label="Type">
+                <span className="text-muted-foreground capitalize">{agent.type ?? "—"}</span>
               </Field>
               <Field label="Model">
                 <span className="text-muted-foreground">{activeVersion.model ?? "—"}</span>
               </Field>
               <Field label="Tools">
                 <span className="text-muted-foreground">
-                  {activeVersion.tool_config?.filter((t) => t.enabled).length ?? 0} enabled
+                  {activeVersion.knowledge_config?.tools?.length ?? 0} configured
                 </span>
               </Field>
-              <Field label="Promoted">
+              <Field label="Created">
                 <span className="text-sm text-muted-foreground">
-                  {activeVersion.promoted_at
-                    ? new Date(activeVersion.promoted_at).toLocaleString()
+                  {activeVersion.created_at
+                    ? new Date(activeVersion.created_at).toLocaleString()
                     : "—"}
                 </span>
               </Field>
-              {activeVersion.notes && (
-                <Field label="Notes">
-                  <span className="text-sm text-muted-foreground">{activeVersion.notes}</span>
+              {activeVersion.guardrail_config && (
+                <Field label="Guardrails">
+                  <span className="text-sm text-muted-foreground">Configured</span>
                 </Field>
               )}
             </div>

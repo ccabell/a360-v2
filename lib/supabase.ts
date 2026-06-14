@@ -12,8 +12,17 @@ function createSupabaseClient(urlKey: string, keyKey: string): SupabaseClient {
 }
 
 /**
- * Agent Manager Supabase — agent definitions, versions, tools, workflows, runs, documents.
- * Project: aejskvmpembryunnbgrk
+ * Ops Supabase — patients, consultations, transcripts, extractions, agents, agent_outputs.
+ * Project: uedajrdzcjfrmbiznflf (A360 Ops)
+ */
+export const opsSupabase = createSupabaseClient(
+  "OPS_SUPABASE_URL",
+  "OPS_SUPABASE_SERVICE_KEY"
+);
+
+/**
+ * Agent Manager Supabase — Global Library: products, offerings, fuel docs, evidence_links, compliance.
+ * Project: aejskvmpembryunnbgrk (Global V3)
  */
 export const agentSupabase = createSupabaseClient(
   "NEXT_PUBLIC_AGENT_SUPABASE_URL",

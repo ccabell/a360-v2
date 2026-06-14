@@ -12,11 +12,10 @@ import { X } from "lucide-react"
 import type { FuelDocType, ReviewStatus } from "@/lib/types/fuel-docs"
 
 const fuelDocTypes: FuelDocType[] = ["combination", "product", "concern"]
-const reviewStatuses: ReviewStatus[] = ["draft", "in_review", "approved", "active"]
+const reviewStatuses: ReviewStatus[] = ["draft", "approved", "active"]
 
-const statusLabels: Record<ReviewStatus, string> = {
+const statusLabels: Partial<Record<ReviewStatus, string>> = {
   draft: "Draft",
-  in_review: "In Review",
   approved: "Approved",
   active: "Active",
 }

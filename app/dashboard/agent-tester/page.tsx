@@ -68,11 +68,13 @@ export default function AgentTesterPage() {
 
     fetch("/api/patients")
       .then((r) => r.json())
-      .then((data) =>
+      .then((data) => {
+        const raw: Array<{ id: string; first_name: string; last_name: string }> =
+          Array.isArray(data) ? data : data?.data ?? [];
         setPatients(
-          Array.isArray(data) ? data : (data as { patients?: PatientOption[] }).patients ?? [],
-        ),
-      )
+          raw.map((p) => ({ id: p.id, name: `${p.first_name} ${p.last_name}` })),
+        );
+      })
       .catch(() => setPatients([]));
   }, []);
 

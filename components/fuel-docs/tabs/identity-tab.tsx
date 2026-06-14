@@ -32,7 +32,13 @@ export function IdentityTab({ doc, editing, onSave }: TabProps) {
       ? ((c.mechanism_summary as string) ?? "")
       : ((c.patient_language as string[]) ?? []).join(", ")
   )
-  const [audience, setAudience] = React.useState<string[]>(doc.audience ?? [])
+  const rawAudience = doc.audience
+  const audienceArr = Array.isArray(rawAudience)
+    ? rawAudience
+    : typeof rawAudience === "string"
+    ? [rawAudience]
+    : []
+  const [audience, setAudience] = React.useState<string[]>(audienceArr)
   const [patientSafe, setPatientSafe] = React.useState(doc.patient_safe ?? false)
   const [saving, setSaving] = React.useState(false)
 

@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -71,6 +71,23 @@ export default function FuelDocDetailPage() {
     [id, fetchDoc]
   )
 
+  async function handleStatusChange(status: ReviewStatus) {
+    setSaving(true)
+    try {
+      const res = await fetch(`/api/fuel-docs/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ review_status: status }),
+      })
+      if (!res.ok) throw new Error("Failed to update status")
+      await fetchDoc()
+    } catch (err) {
+      console.error("Status update failed:", err)
+    } finally {
+      setSaving(false)
+    }
+  }
+
   if (loading) {
     return <div className="p-6 text-muted-foreground">Loading fuel doc...</div>
   }
@@ -91,6 +108,11 @@ export default function FuelDocDetailPage() {
     )
   }
 
+  const currentStatus = (doc.review_status ?? "draft") as ReviewStatus
+  const isSeed = doc.id.startsWith("seed-")
+  const canApprove = !isSeed && (currentStatus === "draft" || currentStatus === "in_review")
+  const canReject = !isSeed && (currentStatus === "approved" || currentStatus === "active" || currentStatus === "in_review")
+
   return (
     <div className="p-8 space-y-6">
       {/* Header */}
@@ -106,17 +128,46 @@ export default function FuelDocDetailPage() {
           <h1 className="text-xl font-semibold leading-tight">{doc.product_name}</h1>
           <div className="flex items-center gap-2 mt-1">
             <FuelTypeBadge type={doc.fuel_type} />
-            <ReviewStatusBadge status={(doc.review_status ?? "draft") as ReviewStatus} />
+            <ReviewStatusBadge status={currentStatus} />
+            {doc.reviewed_by && (
+              <span className="text-xs text-muted-foreground">
+                Approved by {doc.reviewed_by}
+              </span>
+            )}
           </div>
         </div>
-        <Button
-          variant={editing ? "default" : "outline"}
-          size="sm"
-          onClick={() => setEditing(!editing)}
-          disabled={saving}
-        >
-          {editing ? "Done Editing" : "Edit"}
-        </Button>
+        <div className="flex items-center gap-2">
+          {canApprove && (
+            <Button
+              size="sm"
+              onClick={() => handleStatusChange("approved")}
+              disabled={saving}
+              className="bg-green-600 hover:bg-green-700 text-white"
+            >
+              <CheckCircle2 className="h-3.5 w-3.5 mr-1.5" />
+              {saving ? "Saving..." : "Approve"}
+            </Button>
+          )}
+          {canReject && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleStatusChange("draft")}
+              disabled={saving}
+            >
+              <XCircle className="h-3.5 w-3.5 mr-1.5 text-red-500" />
+              Reject
+            </Button>
+          )}
+          <Button
+            variant={editing ? "default" : "outline"}
+            size="sm"
+            onClick={() => setEditing(!editing)}
+            disabled={saving}
+          >
+            {editing ? "Done Editing" : "Edit"}
+          </Button>
+        </div>
       </div>
 
       {/* Tabs */}

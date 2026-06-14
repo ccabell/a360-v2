@@ -42,9 +42,9 @@ export interface Agent {
   type: AgentType
   status: AgentStatus
   model: string | null
-  prompt_file: string | null
+  execution_target: string | null
   gl_data_sources: Record<string, any> | null
-  url: string | null
+  owner: string | null
   active_version_id: string | null
   created_at: string
   updated_at: string
@@ -60,29 +60,31 @@ export interface AgentVersion {
   agent_key: string
   version: string // semver e.g. "1.0.0"
   status: VersionStatus
-  system_prompt: string | null
+  prompt_text: string | null
   model: string | null
-  runtime_type: AgentRuntimeType
-  tool_config: ToolBinding[]
-  source_policies: Record<string, string[]> // table → allowed fields
+  model_params: ModelParams | null
+  fuel_contract: Record<string, any> | null
+  input_schema: Record<string, any> | null
   output_schema: Record<string, any> | null
-  constraints: AgentConstraints
-  knowledge_config: LayerRecipe | null
-  fuel_contract: Record<string, any> | null // Legacy — see LAYERED_CONTEXT_MODEL.md §8
-  eval_profile: string | null
   guardrail_config: Record<string, any> | null
-  notes: string | null
-  created_by: string | null
-  promoted_at: string | null
+  knowledge_config: VersionKnowledgeConfig | null
   created_at: string
 }
 
-export interface AgentConstraints {
-  max_tool_rounds?: number
-  citation_required?: boolean
-  approval_required?: boolean
+/** Model parameters stored in agent_versions.model_params */
+export interface ModelParams {
   temperature?: number
   max_tokens?: number
+  max_tool_rounds?: number
+}
+
+/** @deprecated Use ModelParams — kept for agent management UI compatibility */
+export type AgentConstraints = ModelParams
+
+/** Knowledge config on agent_versions — includes tool list */
+export interface VersionKnowledgeConfig {
+  tools?: string[]
+  [key: string]: unknown
 }
 
 // --- Layer Recipe (populates knowledge_config on agent_versions) ---

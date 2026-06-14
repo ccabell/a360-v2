@@ -47,10 +47,11 @@ export function CreateFuelDocDialog({ open, onOpenChange, onCreated }: CreateFue
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          product_name: productName.trim(),
-          source_type: fuelType,
-          content: useSample ? SAMPLE_TEMPLATES[fuelType] : createEmptyContent(fuelType),
-          metadata: { template_version: "1.0", fuel_type: fuelType },
+          fuel_type: fuelType,
+          content: {
+            ...(useSample ? SAMPLE_TEMPLATES[fuelType] : createEmptyContent(fuelType)),
+            template_version: "1.0",
+          },
         }),
       })
 

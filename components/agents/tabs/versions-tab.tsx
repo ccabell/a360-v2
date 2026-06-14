@@ -13,7 +13,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { ArrowUpCircle } from "lucide-react"
-import type { Agent, AgentVersion } from "@/lib/types"
+import type { Agent, AgentVersion, AgentRuntimeType } from "@/lib/types"
 
 interface VersionsTabProps {
   agent: Agent
@@ -69,7 +69,7 @@ export function VersionsTab({ agent, versions, onUpdate }: VersionsTabProps) {
                 <div className="flex items-center gap-3">
                   <span className="font-mono font-medium text-foreground">v{v.version}</span>
                   <VersionStatusBadge status={v.status} />
-                  <RuntimeBadge runtime={v.runtime_type} />
+                  <RuntimeBadge runtime={(agent.type ?? "builtin") as AgentRuntimeType} />
                   {v.model && (
                     <span className="text-xs text-muted-foreground font-mono">{v.model}</span>
                   )}
@@ -98,30 +98,27 @@ export function VersionsTab({ agent, versions, onUpdate }: VersionsTabProps) {
               <div className="mt-3 grid grid-cols-3 gap-4 text-sm">
                 <div>
                   <span className="text-muted-foreground">Tools: </span>
-                  <span>{v.tool_config?.filter((t) => t.enabled).length ?? 0} enabled</span>
+                  <span>{v.knowledge_config?.tools?.length ?? 0} configured</span>
                 </div>
                 <div>
                   <span className="text-muted-foreground">Temp: </span>
-                  <span>{v.constraints?.temperature ?? "—"}</span>
+                  <span>{v.model_params?.temperature ?? "—"}</span>
                 </div>
                 <div>
-                  <span className="text-muted-foreground">Citations: </span>
-                  <span>{v.constraints?.citation_required ? "required" : "optional"}</span>
+                  <span className="text-muted-foreground">Max tokens: </span>
+                  <span>{v.model_params?.max_tokens ?? "—"}</span>
                 </div>
               </div>
 
-              {v.notes && (
-                <p className="mt-2 text-sm text-muted-foreground italic">{v.notes}</p>
-              )}
 
               {/* Prompt preview */}
-              {v.system_prompt && (
+              {v.prompt_text && (
                 <details className="mt-3">
                   <summary className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">
-                    Show prompt ({v.system_prompt.length} chars)
+                    Show prompt ({v.prompt_text.length} chars)
                   </summary>
                   <pre className="mt-2 p-3 rounded-lg bg-muted/50 text-xs overflow-auto max-h-48 whitespace-pre-wrap">
-                    {v.system_prompt}
+                    {v.prompt_text}
                   </pre>
                 </details>
               )}

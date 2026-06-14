@@ -1,4 +1,4 @@
-import { agentSupabase } from "@/lib/supabase";
+import { opsSupabase } from "@/lib/supabase";
 import type { Agent, AgentVersion, AgentStatus, AgentCategory } from "@/lib/types";
 
 // --- List / Filter Agents ---
@@ -8,7 +8,7 @@ export async function listAgents(filters?: {
   category?: AgentCategory;
   search?: string;
 }) {
-  let query = agentSupabase
+  let query = opsSupabase
     .from("agents")
     .select("*")
     .order("name");
@@ -25,7 +25,7 @@ export async function listAgents(filters?: {
 // --- Get Single Agent ---
 
 export async function getAgent(id: string) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agents")
     .select("*")
     .eq("id", id)
@@ -37,7 +37,7 @@ export async function getAgent(id: string) {
 // --- Get Agent by Key ---
 
 export async function getAgentByKey(agentKey: string) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agents")
     .select("*")
     .eq("agent_key", agentKey)
@@ -49,7 +49,7 @@ export async function getAgentByKey(agentKey: string) {
 // --- Create Agent ---
 
 export async function createAgent(agent: Partial<Agent>) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agents")
     .insert(agent)
     .select()
@@ -61,7 +61,7 @@ export async function createAgent(agent: Partial<Agent>) {
 // --- Update Agent ---
 
 export async function updateAgent(id: string, updates: Partial<Agent>) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agents")
     .update({ ...updates, updated_at: new Date().toISOString() })
     .eq("id", id)
@@ -74,7 +74,7 @@ export async function updateAgent(id: string, updates: Partial<Agent>) {
 // --- Versions ---
 
 export async function listVersions(agentId: string) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agent_versions")
     .select("*")
     .eq("agent_id", agentId)
@@ -84,7 +84,7 @@ export async function listVersions(agentId: string) {
 }
 
 export async function getVersion(versionId: string) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agent_versions")
     .select("*")
     .eq("id", versionId)
@@ -94,7 +94,7 @@ export async function getVersion(versionId: string) {
 }
 
 export async function createVersion(version: Partial<AgentVersion>) {
-  const { data, error } = await agentSupabase
+  const { data, error } = await opsSupabase
     .from("agent_versions")
     .insert(version)
     .select()
@@ -105,13 +105,13 @@ export async function createVersion(version: Partial<AgentVersion>) {
 
 export async function promoteVersion(versionId: string, agentId: string) {
   // Set version to active, update agent's active_version_id
-  const { error: vErr } = await agentSupabase
+  const { error: vErr } = await opsSupabase
     .from("agent_versions")
-    .update({ status: "active", promoted_at: new Date().toISOString() })
+    .update({ status: "active" })
     .eq("id", versionId);
   if (vErr) throw vErr;
 
-  const { error: aErr } = await agentSupabase
+  const { error: aErr } = await opsSupabase
     .from("agents")
     .update({ active_version_id: versionId, updated_at: new Date().toISOString() })
     .eq("id", agentId);

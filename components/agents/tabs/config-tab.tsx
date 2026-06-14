@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Save } from "lucide-react"
-import type { Agent, AgentVersion, AgentRuntimeType, AgentConstraints, ToolBinding } from "@/lib/types"
+import type { Agent, AgentVersion, AgentRuntimeType, AgentConstraints } from "@/lib/types"
 
 const models = [
   "claude-sonnet-4-20250514",
@@ -31,7 +31,6 @@ const runtimes: AgentRuntimeType[] = [
 interface ConfigTabProps {
   agent: Agent
   activeVersion?: AgentVersion
-  toolConfig: ToolBinding[]
   onSaved: () => void
 }
 
@@ -39,14 +38,13 @@ const defaultConstraints: AgentConstraints = {
   temperature: 0.3,
   max_tokens: 4096,
   max_tool_rounds: 5,
-  citation_required: true,
 }
 
-export function ConfigTab({ agent, activeVersion, toolConfig, onSaved }: ConfigTabProps) {
-  const [systemPrompt, setSystemPrompt] = React.useState(activeVersion?.system_prompt ?? "")
+export function ConfigTab({ agent, activeVersion, onSaved }: ConfigTabProps) {
+  const [systemPrompt, setSystemPrompt] = React.useState(activeVersion?.prompt_text ?? "")
   const [model, setModel] = React.useState(activeVersion?.model ?? models[0])
-  const [runtime, setRuntime] = React.useState<AgentRuntimeType>(activeVersion?.runtime_type ?? "prompt_runner")
-  const [constraints, setConstraints] = React.useState<AgentConstraints>(activeVersion?.constraints ?? defaultConstraints)
+  const [runtime, setRuntime] = React.useState<AgentRuntimeType>(agent.type as AgentRuntimeType ?? "prompt_runner")
+  const [constraints, setConstraints] = React.useState<AgentConstraints>(activeVersion?.model_params ?? defaultConstraints)
   const [outputSchema, setOutputSchema] = React.useState(
     activeVersion?.output_schema ? JSON.stringify(activeVersion.output_schema, null, 2) : ""
   )
@@ -86,11 +84,9 @@ export function ConfigTab({ agent, activeVersion, toolConfig, onSaved }: ConfigT
           agent_key: agent.agent_key,
           version: nextVersion,
           status: "draft",
-          system_prompt: systemPrompt || null,
+          prompt_text: systemPrompt || null,
           model,
-          runtime_type: runtime,
-          tool_config: toolConfig,
-          constraints,
+          model_params: constraints,
           output_schema: parsedSchema,
           notes: notes.trim() || null,
         }),
@@ -208,16 +204,6 @@ export function ConfigTab({ agent, activeVersion, toolConfig, onSaved }: ConfigT
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="citation_required"
-                checked={constraints.citation_required ?? true}
-                onChange={(e) => setConstraints((c) => ({ ...c, citation_required: e.target.checked }))}
-                className="h-4 w-4 rounded border-border"
-              />
-              <label htmlFor="citation_required" className="text-sm">Citations required</label>
-            </div>
           </CardContent>
         </Card>
       </div>

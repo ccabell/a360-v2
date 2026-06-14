@@ -1,6 +1,5 @@
 import { tool, jsonSchema } from "ai";
-import { agentSupabase, cmsSupabase } from "@/lib/supabase";
-import type { ToolBinding } from "@/lib/types/agents";
+import { agentSupabase, cmsSupabase, opsSupabase } from "@/lib/supabase";
 
 // ---------------------------------------------------------------------------
 // Tool definitions for the agent runtime.
@@ -10,7 +9,7 @@ import type { ToolBinding } from "@/lib/types/agents";
 function patientContextTool() {
   return tool({
     description:
-      "Fetch patient demographics and recent transcripts from the Prompt Runner API.",
+      "Fetch patient demographics and most recent consultation from Ops Supabase.",
     inputSchema: jsonSchema<{ patient_id: string }>({
       type: "object",
       properties: {
@@ -20,35 +19,46 @@ function patientContextTool() {
     }),
     execute: async ({ patient_id }) => {
       try {
-        const baseUrl = process.env.NEXT_PUBLIC_PROMPT_RUNNER_URL;
-        const apiKey = process.env.PROMPT_RUNNER_API_KEY;
-        if (!baseUrl || !apiKey) {
-          return {
-            success: false,
-            tool: "get_patient_context",
-            error: "Prompt Runner not configured",
-            recommendation:
-              "Set NEXT_PUBLIC_PROMPT_RUNNER_URL and PROMPT_RUNNER_API_KEY environment variables",
-          };
+        // Fetch patient
+        const { data: patient, error: pErr } = await opsSupabase
+          .from("patients")
+          .select("id, first_name, last_name, birth_date, biological_sex, ethnicity, patient_summary, medical_history")
+          .eq("id", patient_id)
+          .single();
+        if (pErr) {
+          return { success: false, tool: "get_patient_context", error: pErr.message };
         }
-        const res = await fetch(`${baseUrl}/api/patients/${patient_id}`, {
-          headers: { "x-api-key": apiKey },
-        });
-        if (!res.ok) {
-          return {
-            success: false,
-            tool: "get_patient_context",
-            error: `HTTP ${res.status}: ${res.statusText}`,
-            recommendation: "Verify patient_id exists and Prompt Runner is reachable",
-          };
+
+        // Fetch most recent consultation
+        const { data: consults } = await opsSupabase
+          .from("consultations")
+          .select("id, status, consult_type, started_at, duration_minutes, details")
+          .eq("patient_id", patient_id)
+          .order("started_at", { ascending: false })
+          .limit(1);
+
+        // Fetch latest extraction if consultation exists
+        let extraction = null;
+        if (consults && consults.length > 0) {
+          const { data: ext } = await opsSupabase
+            .from("extractions")
+            .select("*")
+            .eq("consultation_id", consults[0].id)
+            .limit(1);
+          extraction = ext?.[0] ?? null;
         }
-        return await res.json();
+
+        return {
+          success: true,
+          patient,
+          consultation: consults?.[0] ?? null,
+          extraction,
+        };
       } catch (err) {
         return {
           success: false,
           tool: "get_patient_context",
           error: err instanceof Error ? err.message : "Unknown error",
-          recommendation: "Check Prompt Runner connectivity",
         };
       }
     },
@@ -58,37 +68,49 @@ function patientContextTool() {
 function searchFuelDocsTool() {
   return tool({
     description:
-      "Search agent fuel documents by title in the Global Library.",
-    inputSchema: jsonSchema<{ query: string; limit?: number }>({
+      "Search agent fuel documents by product name. Joins through products table to find fuel docs for matching products.",
+    inputSchema: jsonSchema<{ product_name: string; limit?: number }>({
       type: "object",
       properties: {
-        query: { type: "string", description: "Search term to match against fuel doc titles" },
+        product_name: { type: "string", description: "Product name to search for (partial match)" },
         limit: { type: "number", description: "Max results (default 5)" },
       },
-      required: ["query"],
+      required: ["product_name"],
     }),
-    execute: async ({ query, limit }) => {
+    execute: async ({ product_name, limit }) => {
       try {
-        const { data, error } = await agentSupabase
-          .from("gl_agent_fuel_documents")
-          .select("id, title, document_type, content")
-          .ilike("title", `%${query}%`)
-          .limit(limit ?? 5);
-        if (error) {
-          return {
-            success: false,
-            tool: "search_fuel_documents",
-            error: error.message,
-            recommendation: "Check Agent Manager Supabase connectivity and table access",
-          };
+        // Find matching products first, then get their fuel docs
+        const { data: products, error: pErr } = await agentSupabase
+          .from("products")
+          .select("id, name")
+          .ilike("name", `%${product_name}%`)
+          .limit(5);
+        if (pErr) {
+          return { success: false, tool: "search_fuel_documents", error: pErr.message };
         }
-        return { success: true, results: data ?? [] };
+        if (!products || products.length === 0) {
+          return { success: true, results: [], message: `No products matching "${product_name}"` };
+        }
+
+        const productIds = products.map((p) => p.id);
+        const { data: docs, error: dErr } = await agentSupabase
+          .from("agent_fuel_documents")
+          .select("id, offering_id, fuel_type, content, status")
+          .in("offering_id", productIds)
+          .limit(limit ?? 5);
+        if (dErr) {
+          return { success: false, tool: "search_fuel_documents", error: dErr.message };
+        }
+        return {
+          success: true,
+          matched_products: products.map((p) => p.name),
+          results: docs ?? [],
+        };
       } catch (err) {
         return {
           success: false,
           tool: "search_fuel_documents",
           error: err instanceof Error ? err.message : "Unknown error",
-          recommendation: "Check Agent Manager Supabase connectivity",
         };
       }
     },
@@ -195,8 +217,8 @@ function getProductInfoTool() {
     execute: async ({ product_id, product_name }) => {
       try {
         let query = agentSupabase
-          .from("v2_products")
-          .select("id, name, manufacturer_id, category_id, fda_status, description");
+          .from("products")
+          .select("id, name, brand_name, description, indications, contraindications, fda_approved_areas, onset_time, duration_of_effect, active_ingredients, regulatory_status");
         if (product_id) {
           query = query.eq("id", product_id);
         } else if (product_name) {
@@ -206,16 +228,15 @@ function getProductInfoTool() {
             success: false,
             tool: "get_product_info",
             error: "Either product_id or product_name is required",
-            recommendation: "Provide at least one search parameter",
           };
         }
+        query = query.limit(5);
         const { data, error } = await query;
         if (error) {
           return {
             success: false,
             tool: "get_product_info",
             error: error.message,
-            recommendation: "Check Agent Manager Supabase connectivity and table access",
           };
         }
         return { success: true, results: data ?? [] };
@@ -224,7 +245,6 @@ function getProductInfoTool() {
           success: false,
           tool: "get_product_info",
           error: err instanceof Error ? err.message : "Unknown error",
-          recommendation: "Check Agent Manager Supabase connectivity",
         };
       }
     },
@@ -245,13 +265,14 @@ const TOOL_REGISTRY: Record<string, () => ReturnType<typeof tool<any, any>>> = {
 };
 
 /**
- * Build a tools object for the AI SDK based on the agent version's tool bindings.
- * If bindings is empty/undefined, all tools are included (default for agents without config).
+ * Build a tools object for the AI SDK based on the agent version's tool list.
+ * If toolNames is empty/undefined, all tools are included (default for agents without config).
+ * toolNames comes from agent_versions.knowledge_config.tools (string array of tool keys).
  */
-export function buildTools(bindings?: ToolBinding[]) {
+export function buildTools(toolNames?: string[]) {
   const enabledKeys =
-    bindings && bindings.length > 0
-      ? bindings.filter((b) => b.enabled).map((b) => b.tool_key)
+    toolNames && toolNames.length > 0
+      ? toolNames
       : Object.keys(TOOL_REGISTRY);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

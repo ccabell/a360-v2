@@ -45,7 +45,7 @@ export function TestTab({ agent, activeVersion }: TestTabProps) {
   const [result, setResult] = React.useState<RunResult | null>(null)
   const [error, setError] = React.useState<string | null>(null)
 
-  const runtimeType = activeVersion?.runtime_type ?? "prompt_runner"
+  const runtimeType = agent.execution_target ?? "agent_service"
   const isPromptRunner = runtimeType === "prompt_runner"
 
   // Fetch transcripts when switching to transcript mode

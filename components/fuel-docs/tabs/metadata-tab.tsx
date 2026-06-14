@@ -13,15 +13,13 @@ interface TabProps {
 }
 
 const statusTransitions: Partial<Record<ReviewStatus, ReviewStatus>> = {
-  draft: "in_review",
+  draft: "approved",
   in_review: "approved",
-  approved: "active",
 }
 
 const promoteLabels: Partial<Record<ReviewStatus, string>> = {
-  draft: "Submit for review",
+  draft: "Approve",
   in_review: "Approve",
-  approved: "Activate",
 }
 
 function formatDate(iso: string | null | undefined): string {

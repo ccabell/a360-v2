@@ -37,7 +37,9 @@ export default function AgentDetailPage() {
       // Initialize tool_config from active version on first load
       if (!toolConfigInitialized.current) {
         const active = (v ?? []).find((ver: AgentVersion) => ver.id === agentData.active_version_id)
-        setToolConfig(active?.tool_config ?? [])
+        setToolConfig(
+          (active?.knowledge_config?.tools ?? []).map((t: string) => ({ tool_key: t, enabled: true }))
+        )
         toolConfigInitialized.current = true
       }
     } catch (err) {
@@ -110,7 +112,7 @@ export default function AgentDetailPage() {
         </TabsContent>
 
         <TabsContent value="config">
-          <ConfigTab agent={agent} activeVersion={activeVersion} toolConfig={toolConfig} onSaved={fetchAgent} />
+          <ConfigTab agent={agent} activeVersion={activeVersion} onSaved={fetchAgent} />
         </TabsContent>
 
         <TabsContent value="tools">
