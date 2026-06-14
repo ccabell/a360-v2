@@ -117,12 +117,12 @@ Plans:
   3. No answer contains an uncited claim about dosing, contraindications, safety, sequencing, pregnancy, complications, off-label use, or adverse events
   4. Follow-up suggestion pills render in A360 brand styling (bg-accent, cool-tone palette) and are clickable, seeding a new question
   5. `/ask?query=Can+Botox+and+filler+be+done+the+same+day` loads without login, auto-submits, streams a cited answer with Key Points card, section headers, at least one table, Reliable-badged references, visible disclaimer, and follow-up pills
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 07-01: Trust surface audit — verify disclaimer, citation click behavior, uncited-claim guardrails in prompt
-- [ ] 07-02: Interaction polish — follow-up pill A360 styling, suggestion chip verification
-- [ ] 07-03: DEMO-01 end-to-end acceptance test
+- [ ] 07-01-PLAN.md — Trust surface audit: disclaimer verification, citation hover card check, system prompt safety guardrails
+- [ ] 07-02-PLAN.md — Interaction polish: follow-up pill A360 brand styling, suggestion chip verification
+- [ ] 07-03-PLAN.md — DEMO-01 end-to-end acceptance test with live human verification
 
 ---
 
