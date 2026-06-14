@@ -86,7 +86,7 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md — Tier color OKLch tokens + CORPUS_META chip revision + source count bar with View sources toggle
-- [ ] 05-02-PLAN.md — Reliable badge + category pill on citation cards; tier color consistency in hover cards + visual checkpoint
+- [x] 05-02-PLAN.md — Reliable badge + category pill on citation cards; tier color consistency in hover cards + visual checkpoint
 
 ---
 
