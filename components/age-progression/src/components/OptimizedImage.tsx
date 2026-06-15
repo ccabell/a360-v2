@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { keyframes } from "@emotion/react";
 import { Box } from "@mui/material";
 
@@ -27,6 +27,12 @@ export interface OptimizedImageProps extends Omit<
   aspectRatio?: string;
   /** Additional className */
   className?: string;
+  /** Animation type on src change */
+  animationType?:
+    | "zoom-fade"
+    | "spring-morph"
+    | "cross-dissolve"
+    | "iris-reveal";
 }
 
 /**
@@ -126,10 +132,26 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   style,
   onLoad,
   onError,
+  animationType,
   ...rest
 }) => {
   const [loaded, setLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  // state for transition
+  const [currentSrc, setCurrentSrc] = useState(src);
+  const [nextSrc, setNextSrc] = useState<string | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Trigger swap when src changes
+  useEffect(() => {
+    if (src !== currentSrc && animationType) {
+      setNextSrc(src);
+      setIsAnimating(true);
+    } else {
+      setCurrentSrc(src);
+    }
+  }, [src]);
 
   const effectivePlaceholder = placeholderSrc ?? getPlaceholder(src);
   const effectiveSrcSet = srcSetProp ?? getSrcSet(src);
@@ -225,17 +247,41 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
           loading="eager"
         />
       )}
+      {/* Old image stays underneath */}
       <img
-        src={src}
+        src={currentSrc}
         alt={alt}
         loading={lazy ? "lazy" : "eager"}
         srcSet={effectiveSrcSet}
         sizes={sizes}
         onLoad={handleLoad}
         onError={handleError}
-        style={{ ...mainImageStyle, ...style }}
+        style={{ ...mainImageStyle, ...style, position: "absolute", inset: 0 }}
         {...rest}
       />
+
+      {/* New image animates on top */}
+      {nextSrc && animationType && (
+        <img
+          src={nextSrc}
+          alt={alt}
+          loading="eager"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+          className={`anim-${animationType}`}
+          onAnimationEnd={() => {
+            setCurrentSrc(nextSrc);
+            setNextSrc(null);
+            setIsAnimating(false);
+            setLoaded(true);
+          }}
+        />
+      )}
     </Box>
   );
 };

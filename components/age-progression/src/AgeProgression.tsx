@@ -28,6 +28,7 @@ import backgroundPattern from "./assets/background-pattern.png";
 import type { AgeMediaItem } from "./types";
 import { theme } from "./theme";
 import { useContainerSize } from "./hooks/useContainerSize";
+import "./theme/style.css";
 
 export interface AgeMark {
   age: number; // Age value (e.g., 20, 25, 30)
@@ -223,6 +224,7 @@ const ThemeProviderWrapper: React.FC<{ children: ReactNode }> = ({
 }) => {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       {children}
     </ThemeProvider>
   );
@@ -331,11 +333,12 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
           ""
       : "",
   );
-  const [_preloadedImages, setPreloadedImages] = useState<
+  const [preloadedImages, setPreloadedImages] = useState<
     Map<number, HTMLImageElement>
   >(new Map());
   const [imageReady, setImageReady] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const allImagesLoaded = useRef(false);
   const [error, setError] = useState<string | null>(null);
   const [showInfo, setShowInfo] = useState(false);
   // If there's only one item, show list view instead of fullscreen grid
@@ -499,18 +502,16 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
   }, [currentAge, ageMarkItems]);
 
   useEffect(() => {
-    // Preload all images for current progression
     const loadImages = async () => {
+      setIsLoading(true);
+      setImageReady(false);
       const imageMap = new Map<number, HTMLImageElement>();
       const loadPromises: Promise<void>[] = [];
 
       currentAgeMarks.forEach((mark) => {
-        // Get all image URLs for this age mark
         const urls = mark.imageUrls || (mark.imageUrl ? [mark.imageUrl] : []);
-
         urls.forEach((url) => {
           if (!url) return;
-
           loadPromises.push(
             new Promise<void>((resolve) => {
               const img = new Image();
@@ -519,10 +520,7 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
                 imageMap.set(mark.age, img);
                 resolve();
               };
-              img.onerror = () => {
-                console.error(`Failed to preload image: ${url}`);
-                resolve();
-              };
+              img.onerror = () => resolve();
               img.src = url;
             }),
           );
@@ -531,16 +529,15 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
 
       await Promise.all(loadPromises);
       setPreloadedImages(imageMap);
+      allImagesLoaded.current = true;
       setIsLoading(false);
-      if (imageMap.has(currentAge)) {
-        setImageReady(true);
-      }
+      setImageReady(true); // all done, show everything
     };
 
     if (currentAgeMarks.length > 0) {
       loadImages();
     }
-  }, [currentAgeMarks, currentAge]);
+  }, [currentAgeMarks]);
 
   const handleItemSelect = useCallback((item: AgeMediaItem) => {
     // If selecting a main age progression item
@@ -753,15 +750,10 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
     const url1 = mark?.imageUrls?.[0] || mark?.imageUrl;
     const url2 = mark?.imageUrls?.[1] || mark?.imageUrls?.[0];
     if (mark && url1 && url1 !== currentImageUrl) {
-      // Always reset imageReady to trigger animation
-      setImageReady(false);
-      setIsLoading(true);
-      setTimeout(() => {
-        setCurrentImageUrl(url1);
-        if (url2) setCurrentImageUrl2(url2);
-        // Even if preloaded, wait a bit to show the animation
-        // The onLoad handler will set imageReady to true
-      }, 150);
+      setCurrentImageUrl(url1);
+      if (url2) setCurrentImageUrl2(url2);
+      // imageReady and isLoading are never touched here —
+      // all images are preloaded upfront so no spinner ever flashes
     }
   };
 
@@ -948,7 +940,7 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
                     </Typography>
                   </ProductBox>
                 </Box>
-                {isLoading && !imageReady && (
+                {!allImagesLoaded.current && !imageReady && (
                   <LoadingContainer>
                     <CircularProgress size={60} sx={{ color: "white" }} />
                     <Typography variant="body2" sx={{ color: "white" }}>
@@ -981,9 +973,9 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
                     }}
                   >
                     <OptimizedImage
-                      key={`${currentImageUrl}-${currentAge}`}
                       src={currentImageUrl}
                       alt={`${currentTitle} - Age ${currentAge}`}
+                      animationType="iris-reveal"
                       loading="eager"
                       draggable={false}
                       style={{
@@ -1010,9 +1002,9 @@ const AgeProgression: React.FC<AgeProgressionProps> = ({
                     }}
                   >
                     <OptimizedImage
-                      key={`${currentImageUrl2}-${currentAge}-right`}
                       src={currentImageUrl2}
                       alt={`${currentTitle} - Age ${currentAge} (Comparison)`}
+                      animationType="iris-reveal"
                       loading="eager"
                       draggable={false}
                       style={{

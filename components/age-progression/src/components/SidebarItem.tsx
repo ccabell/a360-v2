@@ -47,6 +47,18 @@ const GridCard = styled(Card, {
   },
 }));
 
+const ImageWrapper = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isActive",
+})<{ isActive: boolean }>(({ isActive }) => ({
+  position: "relative",
+  aspectRatio: "4 / 3",
+  overflow: "hidden",
+  borderTopLeftRadius: "inherit",
+  borderTopRightRadius: "inherit",
+  filter: isActive ? "none" : "blur(3px)",
+  transition: "filter 0.2s ease",
+}));
+
 const TypeBadge = styled(Box)(({ theme }) => ({
   position: "absolute",
   bottom: theme.spacing(1),
@@ -85,7 +97,9 @@ const TypeBadge = styled(Box)(({ theme }) => ({
   },
 }));
 
-const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+const StyledListItemButton = styled(ListItemButton, {
+  shouldForwardProp: (prop) => prop !== "isActive",
+})<{ isActive: boolean }>(({ theme }) => ({
   borderRadius: theme.spacing(1),
   marginBottom: theme.spacing(0.5),
   transition: "all 0.2s ease",
@@ -113,11 +127,9 @@ const GridView: React.FC<Omit<SidebarItemProps, "viewMode">> = memo(
     return (
       <GridCard onClick={onClick} isActive={isActive} elevation={0}>
         <Box sx={{ position: "relative" }}>
-          <Box
+          <ImageWrapper
+            isActive={isActive}
             sx={{
-              position: "relative",
-              aspectRatio: "4 / 3",
-              overflow: "hidden",
               borderTopLeftRadius: (theme) => theme.spacing(1.5),
               borderTopRightRadius: (theme) => theme.spacing(1.5),
             }}
@@ -130,7 +142,7 @@ const GridView: React.FC<Omit<SidebarItemProps, "viewMode">> = memo(
                 (e.target as HTMLImageElement).style.display = "none";
               }}
             />
-          </Box>
+          </ImageWrapper>
           <TypeBadge>
             <AgeIcon sx={{ fontSize: { xs: 12, sm: 14, md: 16 } }} />
           </TypeBadge>
@@ -164,7 +176,11 @@ const ListView: React.FC<Omit<SidebarItemProps, "viewMode">> = memo(
     const displayTitle = getDisplayTitle(item);
 
     return (
-      <StyledListItemButton onClick={onClick} selected={isActive}>
+      <StyledListItemButton
+        onClick={onClick}
+        selected={isActive}
+        isActive={isActive}
+      >
         <ListItemIcon
           sx={{
             minWidth: { xs: 32, sm: 36 },
