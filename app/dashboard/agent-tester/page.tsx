@@ -362,7 +362,7 @@ export default function AgentTesterPage() {
   // This ensures the page is always exactly one screen, never overflows
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* ── Config Bar ── */}
+      {/* -- Config Bar -- */}
       <div className="shrink-0 border-b border-border bg-background px-6 py-3">
         <div className="flex items-end gap-3">
           <div className="flex flex-col gap-1 min-w-[200px]">
@@ -459,7 +459,7 @@ export default function AgentTesterPage() {
         )}
       </div>
 
-      {/* ── Main Area ── */}
+      {/* -- Main Area -- */}
       {!hasResults && !running ? (
         <div className="flex flex-1 items-center justify-center min-h-0">
           <div className="text-center space-y-3">
@@ -475,7 +475,7 @@ export default function AgentTesterPage() {
         </div>
       ) : (
         <div className="flex flex-1 min-h-0">
-          {/* ── Left: Output ── */}
+          {/* -- Left: Output -- */}
           <div className="flex flex-[3] flex-col min-w-0 min-h-0 border-r border-border">
             {runMeta?.error && (
               <div className="shrink-0 border-b border-red-300 bg-red-50 px-6 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">
@@ -500,7 +500,7 @@ export default function AgentTesterPage() {
             </div>
           </div>
 
-          {/* ── Right: Activity Timeline ── */}
+          {/* -- Right: Activity Timeline -- */}
           <div className="flex flex-[2] flex-col min-w-0 min-h-0 bg-muted/20">
             <div className="shrink-0 border-b border-border px-4 py-2.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -564,7 +564,7 @@ export default function AgentTesterPage() {
         </div>
       )}
 
-      {/* ── Footer Status Bar ── */}
+      {/* -- Footer Status Bar -- */}
       {runMeta && (runMeta.runId || runMeta.durationMs) && (
         <div className="shrink-0 border-t border-border bg-background px-6 py-2 flex items-center gap-6 text-[11px] text-muted-foreground">
           {runMeta.runId && (

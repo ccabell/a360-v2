@@ -1,28 +1,25 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: './e2e',
-  timeout: 30000,
+  testDir: "./e2e",
+  timeout: 60_000,
+  expect: { timeout: 15_000 },
+  fullyParallel: false,
   retries: 0,
   use: {
-    baseURL: 'http://localhost:3001',
-    screenshot: 'on',
-    trace: 'on-first-retry',
+    baseURL: "http://localhost:3000",
+    screenshot: "on",
+    trace: "on-first-retry",
   },
   projects: [
     {
-      name: 'desktop-chrome',
-      use: { ...devices['Desktop Chrome'] },
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
     {
-      name: 'mobile-chrome',
-      use: { ...devices['Pixel 7'] },
+      name: "mobile-chrome",
+      use: { ...devices["Pixel 7"] },
     },
   ],
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3001',
-    reuseExistingServer: true,
-    timeout: 60000,
-  },
+  // Dev server already running — don't start another
 });

@@ -30,19 +30,13 @@ export const agentSupabase = createSupabaseClient(
 );
 
 /**
- * CMS Supabase — vectorized RAG content (podcasts, YouTube, PubMed, industry articles).
+ * RAG Supabase — vectorized RAG content (podcasts, YouTube, PubMed, industry articles).
  * Project: gjqicqldjgvrwmtkliie
  */
-export const cmsSupabase = createSupabaseClient(
-  "NEXT_PUBLIC_CMS_SUPABASE_URL",
-  "CMS_SUPABASE_SERVICE_KEY"
+export const ragSupabase = createSupabaseClient(
+  "RAG_SUPABASE_URL",
+  "RAG_SUPABASE_KEY"
 );
 
-/**
- * Prompt Runner Supabase — transcripts, extraction runs, prompts, evaluation.
- * Project: ksutsaiogmicgaarocba
- */
-export const prSupabase = createSupabaseClient(
-  "NEXT_PUBLIC_PR_SUPABASE_URL",
-  "PR_SUPABASE_SERVICE_KEY"
-);
+// PR Supabase (ksutsaiogmicgaarocba) REMOVED 2026-06-14.
+// Prompt Runner is accessed via HTTP API (lib/prompt-runner.ts), not direct Supabase.

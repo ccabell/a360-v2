@@ -128,5 +128,7 @@ export type ResearchEvent =
       type: "done";
       runId: string;
       usage: { inputTokens: number; outputTokens: number; durationMs: number };
+      followUps?: string[];
+      keyPoints?: string[];
     }
   | { type: "error"; code: string; message: string; retryable: boolean };

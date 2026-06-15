@@ -1,9 +1,32 @@
-# Requirements: A360 Global Library
+# Requirements: A360 Evidence Ask & Global Library
 
 **Defined:** 2026-06-14
-**Core Value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
+**Core Value:** Every clinical claim backed by cited, linkable data that providers can tap to verify
+**Milestone:** v2.0 — Adapt Heidi Evidence Ask UX patterns to A360 brand; deliver demo-ready public + embeddable evidence Q&A
 
-## v1.1 Requirements
+---
+
+## Existing Capabilities (already built — verify, don't rebuild)
+
+These are live in the codebase and should NOT be re-implemented. Requirements reference them as dependencies.
+
+- [x] `AskExperience` component with dashboard/public/embed variants
+- [x] `/ask` page with `?query=` seeding and auto-submit
+- [x] `/api/ask` SSE wrapper with rate limiting (10/hr session, 30/day IP), caching (24h), session tracking
+- [x] Streaming event sequence: status -> sources -> token* -> citations -> done
+- [x] Inline authority badges (`InlineAuthorityBadge`) with per-corpus colors
+- [x] Citation hover cards (`CitationHoverCard`) with pager, confidence, feedback
+- [x] Citation cards (`CitationCard`) with YouTube viewer, deep links, relevance bars
+- [x] Follow-up suggestions (LLM-generated via FOLLOW_UPS extraction)
+- [x] Suggestion chips (verb-grouped, config-driven)
+- [x] Out-of-scope handling with nearest-topic chips
+- [x] Persistent disclaimer at page bottom
+- [x] Demo bypass token for rate limits
+- [x] `ask_log` table with session/surface/question/answer/citations/status
+
+---
+
+## v1.1 Requirements (GL Pipeline Integrity)
 
 Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
@@ -21,180 +44,205 @@ Quality gate before resuming Phase 11+ content build. Fix the foundation.
 
 ### Podcast Data Strategy
 
-- [x] **POD-01**: Two-layer evidence model defined and documented: research layer (podcast IDEAS/CONCEPTS with anonymous hash identifiers) and production layer (PubMed, FDA, society guidance, expert consensus)
-- [x] **POD-02**: Anonymous identifier scheme implemented — podcast-derived knowledge referenced by content hash or concept ID, no speaker names, show names, or episode IDs in any production-facing field
+- [x] **POD-01**: Two-layer evidence model defined and documented
+- [x] **POD-02**: Anonymous identifier scheme implemented
 - [x] **POD-03**: Workflow documented: podcast -> discover idea -> find PubMed/published backup -> save both layers
-- [x] **POD-04**: All existing SQL files and review cards audited for podcast contamination in production fields (rationale, patient_education, staff_talking_points, evidence_notes)
+- [x] **POD-04**: All existing SQL files and review cards audited for podcast contamination in production fields
 
 ### Pairing Reconciliation
 
-- [x] **PAIR-01**: 06-02-canonical-common-inserts.sql regenerated from Chris's reviewed/approved pairing cards with no raw podcast references
-- [x] **PAIR-02**: Sculptra pair tier decisions re-evaluated against Chris's actual feedback — was the previous session's aggressive downgrading correct or overcorrection?
-- [x] **PAIR-03**: All 37 review cards confirmed clean of podcast attribution (speaker, show, episode) in production fields while preserving podcast-derived IDEAS
+- [x] **PAIR-01**: 06-02-canonical-common-inserts.sql regenerated from Chris's reviewed/approved pairing cards
+- [x] **PAIR-02**: Sculptra pair tier decisions re-evaluated
+- [x] **PAIR-03**: All 37 review cards confirmed clean of podcast attribution
 
 ### Evidence Provenance
 
 - [x] **EVID-01**: 36 PubMed evidence_links rows with NULL url backfilled using DOI
-- [x] **EVID-02**: Source classification documented — which sources are research-only (podcast, conference, webinar) vs production-citable (PubMed, FDA, society, expert consensus)
-- [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed — unscripted question renders real citations *(Deferred — not tested, no API key provisioned)*
+- [x] **EVID-02**: Source classification documented
+- [ ] **EVID-03**: Phase 3 plan 03-04 (live UI verification) completed *(Deferred — not tested, no API key provisioned)*
 
-## v1.2 Requirements — Evidence Sources & Agent Fuel
+---
 
-**Architecture principle:** Sources and fuel are separate concepts. Sources are raw authoritative material searchable in vector DBs. Fuel is curated agent-ready intelligence derived from sources. Agents use tools at runtime to search sources for edge cases beyond fuel doc coverage. Framework supports ongoing enrichment.
+## v2.0 P0 Requirements — Demo-Critical (Evidence Ask)
 
-### Source Framework (Phase 11)
+### Answer Structure
 
-- [x] **SRCE-01**: Source types classified with practical guidance on what each is good for (FDA=safety/dosing, PubMed=clinical evidence, manufacturer=product education, industry=context/trends, podcasts=research only)
-- [x] **SRCE-02**: Citation format defined per source type (PubMed: PMID/DOI, YouTube: URL+timestamp, IFU: page reference)
-- [x] **SRCE-03**: Enrichment pipeline documented as repeatable loop — add source, classify, chunk, vector DB, mark affected fuel docs for review
-- [ ] **SRCE-04**: Manufacturer data accessible and searchable for agent tools at runtime *(Design complete — MANUFACTURER_DATA_ACCESS.md defines vector collection, RPC, and agent tool pattern; runtime infrastructure deferred to Phase 12+ implementation)*
-- [ ] **CFRW-01**: All v1.1 carry-forward items resolved (PAIR-01, EVID-03, TIMING_REVIEW.md, SQL manifest) *(Partial — PAIR-01 complete; EVID-03, TIMING_REVIEW, SQL execution all deferred)*
+- [x] **ANS-01**: Answer displays a Key Points summary card at top with 3-7 bulleted takeaways, each sourced with inline authority badges
+- [x] **ANS-02**: Section headings render as visually distinct styled headers with clear separation between content sections
+- [x] **ANS-03**: Structured tables render as accessible HTML tables with per-cell inline citations
+- [x] **ANS-04**: Tables wrap cleanly on mobile with proper headers and accessible semantics
 
-### Combination Fuel Documents (Phase 12)
+### Source Display
 
-- [x] **COMBO-01**: Every canonical/common pairing has enriched fuel doc with corpus-grounded content
-- [x] **COMBO-02**: Content sounds like what trained staff would actually say — education tone, not sales pitch
-- [x] **COMBO-03**: What-not-to-say populated for every combination
-- [x] **COMBO-04**: Fuel doc schema supports practice-level overrides (gl_*/pl_* COALESCE pattern)
-- [x] **COMBO-05**: Unified JSON format across all fuel docs (2 existing formats reconciled)
+- [x] **SRC-01**: "N sources found" bar appears before answer body with "View sources" toggle
+- [x] **SRC-02**: "Reliable" green badge on Tier 1 and Tier 2 sources in reference list
+- [x] **SRC-03**: Category pills on each reference
+- [x] **SRC-04**: Source tier visual hierarchy — FDA/Manufacturer in green tones, PubMed/Research in blue tones, Industry/Podcast/Video in neutral
+- [x] **SRC-05**: Inline authority badges and reference cards use consistent tier color system
 
-### Concern Fuel Documents (Phase 13)
+### Trust & Compliance
 
-- [ ] **CARE-01**: 10 concern clusters each have a fuel doc with treatment arc
-- [ ] **CARE-02**: Treatment arcs grounded in corpus evidence, not LLM-invented
-- [ ] **CARE-03**: Documents reference Phase 12 combination fuel where applicable
-- [ ] **CARE-04**: In-scope and out-of-scope treatment boundaries defined per concern
+- [x] **TRST-01**: Persistent disclaimer bar visible on every page load
+- [x] **TRST-02**: Citation click opens popover or scrolls/highlights the reference card
+- [x] **TRST-03**: No uncited clinical claims about dosing, contraindications, safety, etc.
 
-### Compiled Fuel Packets (Phase 14)
+### Embed & Distribution
 
-- [ ] **FUEL-01**: Every enriched entity has a versioned fuel packet
-- [ ] **FUEL-02**: Single-packet retrieval pattern (one packet + optional evidence pack)
-- [ ] **FUEL-03**: Recompile triggers defined (new source or fuel update marks packet stale)
-- [ ] **FUEL-04**: All packets within 2-5K token budget (hybrid JSON metadata + markdown prose)
-- [ ] **FUEL-05**: Framework allows recompilation as new data enters the system
+- [x] **EMB-01**: `/embed/ask` uses same AskExperience component, removes headline/nav/footer
+- [x] **EMB-02**: PostMessage bridge events
+- [x] **EMB-03**: Frame-ancestors from `EMBED_ALLOWED_ORIGINS` env
+- [x] **EMB-04**: Boulevard demo host allowlisted for demo
+
+### Interaction
+
+- [x] **INTR-01**: Follow-up suggestion pills after answer completion with A360-brand styling
+- [x] **INTR-02**: Suggestion chips on initial state, config-driven, grouped by intent
+
+### Analytics
+
+- [x] **ANLY-01**: `evidence_unauth_ask` event on public/embed question submit
+- [x] **ANLY-02**: `evidence_answer_complete` event with latency_ms, citation_count, status
+- [x] **ANLY-03**: `citation_click` event when user clicks source badge/reference link
+
+### Demo Acceptance
+
+- [x] **DEMO-01**: `/ask?query=Can+Botox+and+filler+be+done+the+same+day` loads, auto-submits, streams cited answer
+
+---
+
+## v2.0 P1 Requirements — Fast Follow
+
+### Source Display
+- **SRC-06**: Impact factor (IF: X.X) on journal/academic references
+
+### Interaction
+- **INTR-03**: Sticky bottom composer on long answers
+- **INTR-04**: Thumbs up/down feedback + copy + share action bar
+
+### Source Popover
+- **POP-01**: Full source popover with title, publisher, evidence excerpt, confidence, category pills
+
+### Funnel
+- **CTA-01**: Soft CTA card after 3rd completed answer in session
+
+### Embed
+- **EMB-05**: Full postMessage event set
+
+### Analytics
+- **ANLY-04**: Full analytics event suite
+- **ANLY-05**: ask_log analytics view / KPI dashboard queries
+
+### History
+- **HIST-01**: Lightweight session sidebar on desktop with New Chat and recent questions
+
+---
+
+## v2.0 P2 Requirements — Post-Demo
+
+### SEO
+- **SEO-01**: `/answers` index + `/answers/[slug]` from approved `answer_pages`
+
+### Platform
+- **CTX-01**: Context selector mapped to GL lenses
+- **RLS-01**: RLS hardening before sustained public traffic
+- **BUDGET-01**: Model budget review and caching optimization
+
+---
 
 ## v2.0 Requirements — Agent Runtime Inspector
 
-**Architecture principle:** The agent runtime executes in-project (Next.js API routes + Supabase + Claude API on Vercel). No Prompt Runner dependency. Three Supabase instances: Agent Manager (agent defs/versions/tools/runs), CMS (RAG vectorized content), PR Supabase (transcripts/patients). Runtime emits structured trace events that stream live AND persist for replay.
-
 ### Runtime Trace
-
-- [ ] **TRACE-01**: Runtime emits structured AgentRunEvent for every major step: run start, agent load, patient load, context build, tool call start/complete/fail, retrieval start/complete, model call start/token/complete, artifact creation, output save, run complete/fail
-- [ ] **TRACE-02**: Events stream to UI live over SSE, rendering immediately without waiting for final answer
-- [ ] **TRACE-03**: Every run persists to `agent_runs`; every event to `agent_run_events`; every artifact to `agent_run_artifacts` in Agent Manager Supabase
-- [ ] **TRACE-04**: Completed run can be replayed from stored events without rerunning model or tools
+- [ ] **TRACE-01**: Runtime emits structured AgentRunEvent for every major step
+- [ ] **TRACE-02**: Events stream to UI live over SSE
+- [ ] **TRACE-03**: Every run persists to agent_runs/agent_run_events/agent_run_artifacts
+- [ ] **TRACE-04**: Completed run can be replayed from stored events
 
 ### Execution UI
-
-- [ ] **UI-01**: Left panel shows live vertical timeline with status icon, step title, tool name, duration, summary, and expandable details for every event
-- [ ] **UI-02**: Clicking a timeline step opens detail drawer with tabs: Summary, Input, Output, Sources, Raw JSON, Errors, Timing
-- [ ] **UI-03**: Tool-specific readable cards for: get_patient_context, search_fuel_documents, get_evidence_links, search_clinical_literature, get_product_info — each showing input, result count, key items, source/fuel distinction, duration, errors
-- [ ] **UI-04**: Universal output viewer supporting markdown, JSON, table, checklist, care plan, timeline, evidence list, and plain text fallback with tabs: Rendered, Raw, Citations/Sources, Save status
+- [ ] **UI-01**: Left panel shows live vertical timeline with status icon, step title, duration
+- [ ] **UI-02**: Clicking a timeline step opens detail drawer
+- [ ] **UI-03**: Tool-specific readable cards
+- [ ] **UI-04**: Universal output viewer
 
 ### Agent Runtime
-
-- [x] **RUN-01**: Agent runtime executes in-project (Next.js API route + Supabase + Claude API) — no Prompt Runner dependency
-- [x] **RUN-02**: Runtime loads agent definition and active version prompt from Agent Manager Supabase
-- [x] **RUN-03**: Runtime provides tools that query real data: patient context (PR Supabase), fuel docs (Agent Manager), evidence links (Agent Manager), clinical literature (CMS Supabase), product info (Agent Manager)
-- [x] **RUN-04**: When a tool fails, runtime continues with remaining tools and marks failed step with structured error
-- [x] **RUN-05**: Run never ends with only "No output generated" — structured error identifies which step failed, what completed, and recommended action
+- [x] **RUN-01**: Agent runtime executes in-project (Next.js API route + Supabase + Claude API)
+- [x] **RUN-02**: Runtime loads agent definition and active version prompt
+- [x] **RUN-03**: Runtime provides tools that query real data
+- [x] **RUN-04**: When a tool fails, runtime continues with remaining tools
+- [x] **RUN-05**: Run never ends with only "No output generated"
 
 ### Observability
-
-- [ ] **OBS-01**: Each run displays metrics: total duration, time to first event, tool call count, successful/failed tool counts, token usage, source count, artifact count, output save status
-- [ ] **OBS-02**: Runtime shows observable trace only — tool inputs/outputs, retrieved context, model-visible messages, generated tokens, artifacts, errors — never hidden chain-of-thought
+- [ ] **OBS-01**: Each run displays metrics
+- [ ] **OBS-02**: Runtime shows observable trace only
 
 ### Demo
-
-- [ ] **DEMO-01**: Page includes seeded demo scenarios with known-good patients and agents (minimum: Sofia Reyes + Consultation Analyst)
 - [ ] **DEMO-02**: Run mode selector: Live / Replay / Load Demo Run
-- [ ] **DEMO-03**: Each major step has a plain-English "why this matters" label for non-engineer demo audiences
+- [ ] **DEMO-03**: Plain-English "why this matters" labels
 
-## v2.1 Requirements (Deferred)
-
-- **PRIV-01**: PHI/PII redaction by default with admin-only raw access and access logging
-- **CMP-01**: Side-by-side comparison of two runs of same patient/agent
+---
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
+| Heidi visual identity (yellow/sand) | A360 brand palette only |
+| Retrieval pipeline changes | lib/retrieval/* frozen — wrap only |
+| Patient-facing mode | Professional-facing per gateway posture |
+| Real-time voice input | Separate feature track |
+| OAuth/social login | /ask stays ungated |
+| Mobile native app | Web-first |
 | Prompt Runner integration | Decision: runtime is in-project, not Railway |
 | Hidden chain-of-thought exposure | Privacy/IP risk — show observable trace only |
 | Custom agent builder UI | This is an inspector/debugger, not an agent IDE |
 | Multi-agent workflow orchestration | Single-agent runs first; workflows later |
-| Evidence Ask product surface (/ask, /embed/ask) | Separate workstream — not GL content intelligence |
-| Package architecture / tier models / Full Face Refresh framework | Premature; build fuel data first, frameworks can emerge later |
-| Practice fuel doc editing UI | Post-v1.2; practice-override STRUCTURE built now, UI later |
-| Shadow-run pattern (transaction rollback testing) | Validation files achieve 80% of the value |
-| Automated CI gate on SQL merge | No CI pipeline; manual validation sufficient |
-| Phase 15+ (governance, RLS, services, catalog) | Post-v1.2 planning horizon |
-| Regional legal configuration (France restriction) | Separate feature |
-| Rejuran pair rules | Product not in 18-product manifest |
+| Package architecture / tier models | Premature; build fuel data first |
+
+---
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VAL-01 | Phase 08 | Complete |
-| VAL-02 | Phase 08 | Complete |
-| VAL-03 | Phase 08 | Complete |
-| EXEC-01 | Phase 08 | Complete |
-| EXEC-02 | Phase 08 | Complete |
-| EXEC-03 | Phase 08 | Complete |
-| POD-01 | Phase 09 | Complete |
-| POD-02 | Phase 09 | Complete |
-| POD-03 | Phase 09 | Complete |
-| EVID-01 | Phase 09 | Complete |
-| EVID-02 | Phase 09 | Complete |
-| EVID-03 | Phase 09 | Deferred |
-| POD-04 | Phase 10 | Complete |
-| PAIR-01 | Phase 10 | Complete |
-| PAIR-02 | Phase 10 | Complete |
-| PAIR-03 | Phase 10 | Complete |
-| SRCE-01 | Phase 11 | Complete |
-| SRCE-02 | Phase 11 | Complete |
-| SRCE-03 | Phase 11 | Complete |
-| SRCE-04 | Phase 11 | Design Complete |
-| CFRW-01 | Phase 11 | Partial |
-| COMBO-01 | Phase 12 | Complete |
-| COMBO-02 | Phase 12 | Complete |
-| COMBO-03 | Phase 12 | Complete |
-| COMBO-04 | Phase 12 | Complete |
-| COMBO-05 | Phase 12 | Complete |
-| CARE-01 | Phase 13 | Pending |
-| CARE-02 | Phase 13 | Pending |
-| CARE-03 | Phase 13 | Pending |
-| CARE-04 | Phase 13 | Pending |
-| FUEL-01 | Phase 14 | Pending |
-| FUEL-02 | Phase 14 | Pending |
-| FUEL-03 | Phase 14 | Pending |
-| FUEL-04 | Phase 14 | Pending |
-| FUEL-05 | Phase 14 | Pending |
+| ANS-01 | Phase 4 | Complete |
+| ANS-02 | Phase 4 | Complete |
+| ANS-03 | Phase 4 | Complete |
+| ANS-04 | Phase 4 | Complete |
+| SRC-01 | Phase 5 | Complete |
+| SRC-02 | Phase 5 | Complete |
+| SRC-03 | Phase 5 | Complete |
+| SRC-04 | Phase 5 | Complete |
+| SRC-05 | Phase 5 | Complete |
+| EMB-01 | Phase 6 | Complete |
+| EMB-02 | Phase 6 | Complete |
+| EMB-03 | Phase 6 | Complete |
+| EMB-04 | Phase 6 | Complete |
+| ANLY-01 | Phase 6 | Complete |
+| ANLY-02 | Phase 6 | Complete |
+| ANLY-03 | Phase 6 | Complete |
+| TRST-01 | Phase 7 | Complete |
+| TRST-02 | Phase 7 | Complete |
+| TRST-03 | Phase 7 | Complete |
+| INTR-01 | Phase 7 | Complete |
+| INTR-02 | Phase 7 | Complete |
+| DEMO-01 | Phase 7 | Complete |
 | RUN-01 | Phase 15 | Complete |
 | RUN-02 | Phase 15 | Complete |
 | RUN-03 | Phase 15 | Complete |
 | RUN-04 | Phase 15 | Complete |
 | RUN-05 | Phase 15 | Complete |
-| TRACE-01 | Phase 16 | Pending |
-| TRACE-02 | Phase 16 | Pending |
-| TRACE-03 | Phase 16 | Pending |
-| TRACE-04 | Phase 16 | Pending |
-| OBS-01 | Phase 16 | Pending |
-| OBS-02 | Phase 16 | Pending |
-| UI-01 | Phase 17 | Pending |
-| UI-02 | Phase 17 | Pending |
-| UI-03 | Phase 17 | Pending |
-| UI-04 | Phase 18 | Pending |
-| DEMO-01 | Phase 19 | Pending |
-| DEMO-02 | Phase 19 | Pending |
-| DEMO-03 | Phase 19 | Pending |
 
 **Coverage:**
-- v1.1 requirements: 16 total (14 complete, 1 deferred carry-forward, 1 pending carry-forward)
-- v1.2 requirements: 19 total (5 complete/partial, 14 pending)
-- v2.0 requirements: 18 total (18 mapped, 0 unmapped) ✓
+- v2.0 P0 Evidence Ask requirements: 22 total, all complete
+- v2.0 Agent Runtime requirements: 18 total (5 complete, 13 pending)
+- v1.1 GL requirements: 16 total (14 complete, 1 deferred, 1 pending)
+
+## Open Decisions
+
+1. Final public name: `A360 Evidence`, `A360 Evidence Ask`, or `Global Library Ask`
+2. Exact source tier colors in A360 palette
+3. Full source popover in P0 or P1
+4. Which Boulevard staging domains in `EMBED_ALLOWED_ORIGINS`
+5. Whether SEO hub shown as clickable prototype in demo or roadmap only
 
 ---
 *Requirements defined: 2026-06-14*
-*Last updated: 2026-06-14 — v2.0 Agent Runtime Inspector traceability mapped to phases 15-19*
+*Last updated: 2026-06-14 after merge of AbhishekEdits + feat/ask-sidebar-tab*

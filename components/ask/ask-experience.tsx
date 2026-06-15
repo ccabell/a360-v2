@@ -1,9 +1,17 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { trackEvent } from "@/lib/ask/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Send, Sparkles, AlertCircle, Bookmark, Check } from "lucide-react";
+import {
+  ArrowUp,
+  Loader2,
+  Sparkles,
+  AlertCircle,
+  Bookmark,
+  Check,
+} from "lucide-react";
 import type {
   RetrievedSource,
   ResearchCitation,
@@ -15,6 +23,8 @@ import { StatusIndicator } from "@/components/research/status-indicator";
 import { SourcePill } from "@/components/grounding/source-pill";
 import { GroundedAnswer } from "@/components/grounding/grounded-answer";
 import { AskSuggestionChips } from "./ask-suggestion-chips";
+import { KeyPointsCard } from "@/components/grounding/key-points-card";
+import { RelatedVideos } from "@/components/grounding/related-videos";
 
 export type AskVariant = "dashboard" | "public" | "embed";
 
@@ -53,6 +63,8 @@ interface AssistantMessage {
   displayMap: Record<string, number>;
   done: boolean;
   error?: string;
+  followUps?: string[];
+  keyPoints?: string[];
 }
 type ChatMessage = UserMessage | AssistantMessage;
 
@@ -122,11 +134,13 @@ export function AskExperience({
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [showSources, setShowSources] = useState(true);
   const idRef = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
   const didAutoSubmit = useRef(false);
   const lastCitationsRef = useRef<ResearchCitation[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const startTimeRef = useRef(0);
 
   useEffect(() => {
     // Autofocus on desktop only (skip to avoid keyboard pop on mobile)
@@ -168,6 +182,7 @@ export function AskExperience({
     const q = query.trim();
     if (!q || busy) return;
 
+    startTimeRef.current = Date.now();
     const userId = `u_${++idRef.current}`;
     const asstId = `a_${++idRef.current}`;
 
@@ -190,6 +205,9 @@ export function AskExperience({
     lastCitationsRef.current = [];
 
     onAskSent?.({ messageId: asstId, ts: Date.now() });
+    if (variant === "public" || variant === "embed") {
+      trackEvent("evidence_unauth_ask", { surface: variant, question: q });
+    }
 
     const patch = (fn: (m: AssistantMessage) => AssistantMessage) =>
       setMessages((prev) =>
@@ -222,11 +240,24 @@ export function AskExperience({
             }));
             break;
           case "done":
-            patch((m) => ({ ...m, done: true, stage: null }));
+            patch((m) => ({
+              ...m,
+              done: true,
+              stage: null,
+              followUps: ev.followUps,
+              keyPoints: ev.keyPoints,
+            }));
             onAnswerComplete?.({
               messageId: asstId,
               citationsCount: lastCitationsRef.current.length,
             });
+            if (variant === "public" || variant === "embed") {
+              trackEvent("evidence_answer_complete", {
+                surface: variant,
+                latency_ms: Date.now() - startTimeRef.current,
+                citation_count: lastCitationsRef.current.length,
+              });
+            }
             break;
           case "error":
             patch((m) => ({ ...m, error: ev.message, done: true, stage: null }));
@@ -245,12 +276,16 @@ export function AskExperience({
     }
   }
 
-  // T3 — passive citation click instrumentation (no-op unless onCitationClick provided)
+  // T3 — passive citation click instrumentation
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!onCitationClick) return;
     const anchor = (e.target as HTMLElement).closest("a");
     if (anchor?.href) {
-      onCitationClick({ url: anchor.href, tier: "citation" });
+      onCitationClick?.({ url: anchor.href, tier: "citation" });
+      trackEvent("citation_click", {
+        citation_url: anchor.href,
+        citation_tier: "citation",
+        surface: variant,
+      });
     }
   };
 
@@ -323,38 +358,49 @@ export function AskExperience({
                       </div>
                     )}
 
-                    {/* Retrieved source pills */}
+                    {/* Source count bar */}
                     {m.sources.length > 0 && (
                       <div className="space-y-2">
-                        <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                          Retrieved sources ({m.sources.length})
-                        </p>
-                        <div className="flex flex-wrap gap-2">
-                          {m.sources.map((s) => {
-                            const number = m.displayMap[s.retrievalId];
-                            const cited = number != null;
-                            const resolved = m.citations.length > 0;
-                            return (
-                              <SourcePill
-                                key={s.retrievalId}
-                                source={s}
-                                number={cited ? number : undefined}
-                                dimmed={resolved && !cited}
-                                onClick={
-                                  cited
-                                    ? () =>
-                                        document
-                                          .getElementById(`cite-${number}`)
-                                          ?.scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "center",
-                                          })
-                                    : undefined
-                                }
-                              />
-                            );
-                          })}
+                        <div className="flex items-center justify-between rounded-lg bg-muted/50 px-3 py-2">
+                          <span className="text-sm font-medium text-foreground">
+                            {m.sources.length} sources found
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setShowSources((v) => !v)}
+                            className="text-xs font-medium text-primary hover:text-primary/80 transition-colors"
+                          >
+                            {showSources ? "Hide sources" : "View sources"}
+                          </button>
                         </div>
+                        {showSources && (
+                          <div className="flex flex-wrap gap-2">
+                            {m.sources.map((s) => {
+                              const number = m.displayMap[s.retrievalId];
+                              const cited = number != null;
+                              const resolved = m.citations.length > 0;
+                              return (
+                                <SourcePill
+                                  key={s.retrievalId}
+                                  source={s}
+                                  number={cited ? number : undefined}
+                                  dimmed={resolved && !cited}
+                                  onClick={
+                                    cited
+                                      ? () =>
+                                          document
+                                            .getElementById(`cite-${number}`)
+                                            ?.scrollIntoView({
+                                              behavior: "smooth",
+                                              block: "center",
+                                            })
+                                      : undefined
+                                  }
+                                />
+                              );
+                            })}
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -366,30 +412,55 @@ export function AskExperience({
                             Color = source authority:&nbsp;
                             <span className="inline-flex items-center gap-2">
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-teal-500" />
-                                FDA
+                                <span className="h-2 w-2 rounded-full bg-tier-trusted-bg border border-tier-trusted-fg/30" />
+                                FDA / Manufacturer
                               </span>
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-blue-500" />
-                                Manufacturer
+                                <span className="h-2 w-2 rounded-full bg-tier-evidence-bg border border-tier-evidence-fg/30" />
+                                Research / Practice
                               </span>
                               <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                                Peer-reviewed
-                              </span>
-                              <span className="inline-flex items-center gap-1">
-                                <span className="h-2 w-2 rounded-full bg-amber-500" />
-                                Industry
+                                <span className="h-2 w-2 rounded-full bg-tier-general-bg border border-tier-general-fg/30" />
+                                Industry / Media
                               </span>
                             </span>
                           </p>
+                        )}
+                        {m.done && m.keyPoints && m.keyPoints.length > 0 && (
+                          <KeyPointsCard
+                            keyPoints={m.keyPoints}
+                            displayMap={m.displayMap}
+                            citations={m.citations}
+                          />
                         )}
                         <GroundedAnswer
                           text={m.text}
                           displayMap={m.displayMap}
                           citations={m.citations}
+                          defaultRefsExpanded={variant !== "embed"}
                         />
                       </>
+                    )}
+
+                    {/* Related YouTube videos — always shown when available */}
+                    {m.done && m.sources.length > 0 && (
+                      <RelatedVideos sources={m.sources} max={3} />
+                    )}
+
+                    {/* Follow-up suggestion chips */}
+                    {m.done && m.followUps && m.followUps.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {m.followUps.map((fu) => (
+                          <button
+                            key={fu}
+                            onClick={() => send(fu)}
+                            disabled={busy}
+                            className="rounded-full border border-primary/20 bg-accent px-3 py-1.5 text-xs text-accent-foreground transition-colors hover:bg-accent/80 hover:border-primary/40 disabled:opacity-50"
+                          >
+                            {fu}
+                          </button>
+                        ))}
+                      </div>
                     )}
 
                     {/* Save to history (dashboard only) */}
@@ -439,7 +510,11 @@ export function AskExperience({
         >
           <Input
             ref={inputRef}
-            placeholder={placeholder}
+            placeholder={
+              messages.length > 0
+                ? "Ask a follow-up question…"
+                : placeholder
+            }
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -456,7 +531,11 @@ export function AskExperience({
             disabled={busy || !input.trim()}
             size="icon"
           >
-            <Send className="h-4 w-4" />
+            {busy ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <ArrowUp className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>

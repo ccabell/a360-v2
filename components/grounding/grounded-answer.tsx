@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
-import { BookOpen } from "lucide-react";
+import { useMemo, useState } from "react";
+import { ChevronDown, ListIcon } from "lucide-react";
 import type { RetrievedSource, ResearchCitation } from "@/lib/types/retrieval";
 import { resolveCitations } from "@/lib/retrieval/post-process";
+import { CORPUS_META } from "./source-meta";
 import { AnswerMessage } from "./answer-message";
 import { CitationCard } from "./citation-card";
 
@@ -24,6 +25,8 @@ interface GroundedAnswerProps {
   citations?: ResearchCitation[];
   displayMap?: Record<string, number>;
   showReferences?: boolean;
+  /** Default expanded state. Public = true, embed = false. */
+  defaultRefsExpanded?: boolean;
 }
 
 export function GroundedAnswer({
@@ -32,12 +35,15 @@ export function GroundedAnswer({
   citations,
   displayMap,
   showReferences = true,
+  defaultRefsExpanded = true,
 }: GroundedAnswerProps) {
   const resolved = useMemo(() => {
     if (citations && displayMap) return { citations, displayMap };
     if (sources) return resolveCitations(text, sources);
     return { citations: [] as ResearchCitation[], displayMap: {} };
   }, [text, sources, citations, displayMap]);
+
+  const [refsExpanded, setRefsExpanded] = useState(defaultRefsExpanded);
 
   return (
     <div className="space-y-4">
@@ -48,16 +54,46 @@ export function GroundedAnswer({
       />
 
       {showReferences && resolved.citations.length > 0 && (
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-            <BookOpen className="h-4 w-4" />
-            References ({resolved.citations.length})
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {resolved.citations.map((c) => (
-              <CitationCard key={c.number} citation={c} />
-            ))}
-          </div>
+        <div className="border-t border-border pt-4">
+          <button
+            type="button"
+            onClick={() => setRefsExpanded((v) => !v)}
+            className="flex items-center gap-2 text-sm font-semibold text-foreground transition-colors hover:text-foreground/80"
+          >
+            <ListIcon className="h-4 w-4" />
+            {resolved.citations.length} cited
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${
+                refsExpanded ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {refsExpanded && (
+            <div className="mt-3 space-y-3">
+              {resolved.citations.map((c) => {
+                const meta = CORPUS_META[c.corpus];
+                return (
+                  <div key={c.number} className="flex items-start gap-3">
+                    {/* Numbered index */}
+                    <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-primary/10 text-xs font-bold text-primary">
+                      {c.number}
+                    </span>
+                    {/* Type tag */}
+                    <span
+                      className={`mt-1 shrink-0 rounded-full px-2 py-0.5 text-[0.6rem] font-medium ${meta.chip}`}
+                    >
+                      {meta.typeTag}
+                    </span>
+                    {/* Card */}
+                    <div className="min-w-0 flex-1">
+                      <CitationCard citation={c} />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       )}
     </div>

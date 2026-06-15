@@ -20,6 +20,7 @@ import {
   UserRound,
   Images,
   BookOpen,
+  BookOpenCheck,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -27,6 +28,7 @@ const menuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Research", href: "/dashboard/research", icon: Telescope },
+  { name: "Ask", href: "/dashboard/ask", icon: BookOpenCheck },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },

@@ -22,7 +22,7 @@ export function ToolsTab({ agent, toolConfig, onToolConfigChange }: ToolsTabProp
   React.useEffect(() => {
     fetch("/api/tools")
       .then((r) => r.json())
-      .then(setTools)
+      .then((data) => setTools(Array.isArray(data) ? data : []))
       .catch(() => setTools([]))
       .finally(() => setLoading(false))
   }, [])
