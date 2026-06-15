@@ -1,8 +1,16 @@
 import { NextRequest } from "next/server";
-import { gateway } from "@ai-sdk/gateway";
+import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText, stepCountIs } from "ai";
 import { agentSupabase, opsSupabase } from "@/lib/supabase";
 import { agentTools } from "@/lib/agent-runtime/tools";
+
+/** Resolve an AI SDK model — use direct Anthropic provider (gateway has auth issues on preview). */
+function resolveModel(modelId: string) {
+  const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  // modelId may be "anthropic/claude-haiku-4.5" → strip provider prefix
+  const bareModel = modelId.includes("/") ? modelId.split("/").slice(1).join("/") : modelId;
+  return anthropic(bareModel);
+}
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
@@ -136,7 +144,7 @@ Use your tools step by step:
         emit({ type: "step", step: "Starting agent execution..." });
 
         const result = streamText({
-          model: gateway(modelId),
+          model: resolveModel(modelId),
           system: systemPrompt,
           messages: [{ role: "user", content: userMessage }],
           tools,
