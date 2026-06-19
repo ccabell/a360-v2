@@ -77,11 +77,13 @@ function TimelineItem({
   isExpanded,
   onToggle,
   startTime,
+  isRunning,
 }: {
   event: ToolEvent;
   isExpanded: boolean;
   onToggle: () => void;
   startTime: number;
+  isRunning: boolean;
 }) {
   const elapsed = ((event.timestamp - startTime) / 1000).toFixed(1);
 
@@ -122,8 +124,10 @@ function TimelineItem({
     <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
   ) : isError ? (
     <XCircle className="h-3.5 w-3.5 text-red-500" />
-  ) : (
+  ) : isCall && isRunning ? (
     <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-400" />
+  ) : (
+    <CheckCircle className="h-3.5 w-3.5 text-blue-400" />
   );
 
   const summary = (() => {
@@ -606,6 +610,7 @@ export default function AgentTesterPage() {
                   isExpanded={expandedEvents.has(idx)}
                   onToggle={() => toggleEvent(idx)}
                   startTime={runStartTime}
+                  isRunning={running}
                 />
               ))}
             </div>
