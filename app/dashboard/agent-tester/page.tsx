@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+import type { Components } from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -67,6 +68,107 @@ const EXAMPLE_PROMPTS = [
   "What's the onset and duration of Botox?",
   "Compare Botox and Dysport for the glabella",
 ];
+
+// ---------------------------------------------------------------------------
+// Markdown renderer — gives agent output real visual structure
+// ---------------------------------------------------------------------------
+
+function getLeadingText(node: unknown): string {
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const t = getLeadingText(child);
+      if (t) return t;
+    }
+  }
+  return "";
+}
+
+const mdComponents: Components = {
+  h1: ({ children }) => (
+    <h1 className="mt-6 mb-2 pb-2 text-base font-bold tracking-tight text-foreground border-b border-border">
+      {children}
+    </h1>
+  ),
+  h2: ({ children }) => (
+    <h2 className="mt-6 mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+      {children}
+    </h2>
+  ),
+  h3: ({ children }) => (
+    <h3 className="mt-4 mb-1.5 text-sm font-semibold text-foreground">
+      {children}
+    </h3>
+  ),
+  p: ({ children }) => {
+    const lead = getLeadingText(children);
+    if (lead.startsWith("🚩")) {
+      return (
+        <div className="my-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300">
+          {children}
+        </div>
+      );
+    }
+    if (lead.startsWith("⚠️")) {
+      return (
+        <div className="my-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
+          {children}
+        </div>
+      );
+    }
+    if (lead.startsWith("✅") || lead.startsWith("✓")) {
+      return (
+        <div className="my-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
+          {children}
+        </div>
+      );
+    }
+    return (
+      <p className="mb-2.5 text-sm leading-relaxed text-foreground/85">
+        {children}
+      </p>
+    );
+  },
+  hr: () => <div className="my-5 border-t border-border" />,
+  ul: ({ children }) => (
+    <ul className="mb-3 ml-4 space-y-1 list-disc marker:text-muted-foreground/50">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="mb-3 ml-4 space-y-1 list-decimal marker:text-muted-foreground/50">
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => (
+    <li className="text-sm leading-relaxed text-foreground/85">{children}</li>
+  ),
+  strong: ({ children }) => (
+    <strong className="font-semibold text-foreground">{children}</strong>
+  ),
+  em: ({ children }) => (
+    <em className="italic text-foreground/70">{children}</em>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="my-3 border-l-2 border-primary/40 pl-4 text-sm italic text-muted-foreground">
+      {children}
+    </blockquote>
+  ),
+  code: ({ children, className }) => {
+    if (className?.startsWith("language-")) {
+      return (
+        <pre className="my-3 overflow-auto rounded-lg bg-muted p-4 text-xs font-mono leading-relaxed">
+          <code>{children}</code>
+        </pre>
+      );
+    }
+    return (
+      <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">
+        {children}
+      </code>
+    );
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Activity Timeline Item
@@ -541,8 +643,8 @@ export default function AgentTesterPage() {
               className="flex-1 overflow-y-auto min-h-0 px-8 py-6"
             >
               {output ? (
-                <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-code:text-xs prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                  <ReactMarkdown>{output}</ReactMarkdown>
+                <div className="max-w-none">
+                  <ReactMarkdown components={mdComponents}>{output}</ReactMarkdown>
                 </div>
               ) : running ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
