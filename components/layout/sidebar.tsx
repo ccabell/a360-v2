@@ -21,6 +21,7 @@ import {
   Images,
   BookOpen,
   BookOpenCheck,
+  Blocks,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -46,6 +47,7 @@ const menuItems = [
     scope: "internal",
   },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
+  { name: "Studio", href: "/dashboard/studio", icon: Blocks },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
   { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },

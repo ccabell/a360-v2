@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, forwardRef, useImperativeHandle } from "react";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -40,6 +40,10 @@ export interface BlockCardProps {
   disabled?: boolean;
   onComplete?: (output: string) => void;
   defaultExpanded?: boolean;
+}
+
+export interface BlockCardHandle {
+  run: () => void;
 }
 
 type BlockStatus = "idle" | "running" | "done" | "error";
@@ -215,7 +219,7 @@ const MD_COMPONENTS = makeMarkdownComponents();
 
 // ── BlockCard ─────────────────────────────────────────────────────────────────
 
-export function BlockCard({
+export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function BlockCard({
   icon: Icon,
   title,
   subtitle,
@@ -226,7 +230,7 @@ export function BlockCard({
   disabled = false,
   onComplete,
   defaultExpanded = false,
-}: BlockCardProps) {
+}: BlockCardProps, ref) {
   const c = COLORS[color];
 
   const [status, setStatus] = useState<BlockStatus>("idle");
@@ -375,6 +379,8 @@ export function BlockCard({
   const stop = useCallback(() => {
     abortRef.current?.abort();
   }, []);
+
+  useImperativeHandle(ref, () => ({ run }), [run]);
 
   // ── Derived display values ─────────────────────────────────────────────────
 
@@ -530,6 +536,7 @@ export function BlockCard({
         <div className="flex items-center gap-2">
           {/* Run / Stop / Re-run */}
           {status === "idle" && (
+
             <Button
               size="sm"
               variant="outline"
@@ -587,4 +594,4 @@ export function BlockCard({
       </div>
     </div>
   );
-}
+});
