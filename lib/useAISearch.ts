@@ -21,6 +21,7 @@ export interface Message {
   role: "user" | "assistant";
   content: string;
   citations?: Citation[];
+  followups?: string[];
 }
 
 function buildSystemPrompt(
@@ -64,12 +65,18 @@ RESPONSE GUIDELINES:
    Estimate realistic section/page numbers based on typical operator manual structure.
    Include 2-4 citations per answer.
    Use the actual page numbers from the PDF content provided above — do not estimate.
-5. If you cannot answer from manual context, say so clearly.`;
+5. After citations, suggest 2-3 natural follow-up questions the clinician might ask next, based on your answer and the manual content. Output them as:
+   <followups>
+   ["Follow-up question 1?", "Follow-up question 2?", "Follow-up question 3?"]
+   </followups>
+   Keep them concise, clinically relevant, and different from what was already asked.
+6. If you cannot answer from manual context, say so clearly.`;
 }
 
 function parseResponse(raw: string): {
   content: string;
   citations: Citation[];
+  followups: string[];
 } {
   const citationMatch = raw.match(/<citations>([\s\S]*?)<\/citations>/);
   let citations: Citation[] = [];
@@ -81,10 +88,22 @@ function parseResponse(raw: string): {
     } catch {
       citations = [];
     }
-    content = raw.replace(/<citations>[\s\S]*?<\/citations>/, "").trim();
+    content = content.replace(/<citations>[\s\S]*?<\/citations>/, "").trim();
   }
 
-  return { content, citations };
+  const followupMatch = content.match(/<followups>([\s\S]*?)<\/followups>/);
+  let followups: string[] = [];
+
+  if (followupMatch) {
+    try {
+      followups = JSON.parse(followupMatch[1].trim());
+    } catch {
+      followups = [];
+    }
+    content = content.replace(/<followups>[\s\S]*?<\/followups>/, "").trim();
+  }
+
+  return { content, citations, followups };
 }
 
 async function callOpenAI(
@@ -164,7 +183,7 @@ export function useAISearch(patient: PatientInfo | null) {
           systemPrompt,
           abortRef.current.signal,
         );
-        const { content, citations } = parseResponse(raw);
+        const { content, citations, followups } = parseResponse(raw);
 
         setMessages((prev) => [
           ...prev,
@@ -173,6 +192,7 @@ export function useAISearch(patient: PatientInfo | null) {
             role: "assistant",
             content,
             citations: citations.length > 0 ? citations : undefined,
+            followups: followups.length > 0 ? followups : undefined,
           },
         ]);
       } catch (err: unknown) {

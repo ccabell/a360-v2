@@ -3,9 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { messages, systemPrompt } = await req.json();
 
-  if (!process.env.ANTHROPIC_KEY) {
+  const apiKey = process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_KEY;
+  if (!apiKey) {
     return NextResponse.json(
-      { error: { message: "ANTHROPIC_KEY is not set on the server." } },
+      { error: { message: "ANTHROPIC_API_KEY is not set on the server." } },
       { status: 500 },
     );
   }
@@ -14,11 +15,11 @@ export async function POST(req: NextRequest) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": process.env.ANTHROPIC_KEY,
+      "x-api-key": apiKey,
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-5",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 800,
       temperature: 0.3,
       system: systemPrompt,

@@ -9,6 +9,7 @@ import {
   User,
   RotateCcw,
   AlertCircle,
+  MessageCircle,
 } from "lucide-react";
 import { useAISearch } from "../../lib/useAISearch";
 import type { PatientInfo } from "../../lib/useAISearch";
@@ -222,6 +223,37 @@ export function SearchPanel({
                       p.{cite.page}
                     </span>
                     <ExternalLink size={9} />
+                  </button>
+                ))}
+              </div>
+            )}
+            {msg.followups && msg.followups.length > 0 && (
+              <div className="flex flex-col gap-1.5 w-full" style={{ marginTop: 4 }}>
+                <div className="flex items-center gap-1" style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                  <MessageCircle size={10} />
+                  <span>Follow-up questions</span>
+                </div>
+                {msg.followups.map((q) => (
+                  <button
+                    key={q}
+                    onClick={() => sendMessage(q)}
+                    disabled={isLoading}
+                    className="text-left rounded-lg border border-border transition-colors"
+                    style={{
+                      padding: "6px 10px",
+                      fontSize: 12,
+                      color: "var(--foreground)",
+                      background: "var(--card)",
+                      opacity: isLoading ? 0.5 : 1,
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isLoading) e.currentTarget.style.background = "var(--accent)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = "var(--card)";
+                    }}
+                  >
+                    {q}
                   </button>
                 ))}
               </div>

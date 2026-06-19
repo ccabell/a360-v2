@@ -15,6 +15,7 @@ import {
   Clock,
   Bot,
   Send,
+  Hash,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -51,6 +52,7 @@ interface RunMeta {
   durationMs?: number;
   error?: string;
   model?: string;
+  tokenUsage?: { inputTokens?: number; outputTokens?: number; totalTokens?: number };
 }
 
 // ---------------------------------------------------------------------------
@@ -62,11 +64,13 @@ function TimelineItem({
   isExpanded,
   onToggle,
   startTime,
+  pending,
 }: {
   event: ToolEvent;
   isExpanded: boolean;
   onToggle: () => void;
   startTime: number;
+  pending: boolean;
 }) {
   const elapsed = ((event.timestamp - startTime) / 1000).toFixed(1);
 
@@ -107,8 +111,10 @@ function TimelineItem({
     <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
   ) : isError ? (
     <XCircle className="h-3.5 w-3.5 text-red-500" />
-  ) : (
+  ) : pending ? (
     <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-400" />
+  ) : (
+    <CheckCircle className="h-3.5 w-3.5 text-blue-400" />
   );
 
   const summary = (() => {
@@ -320,6 +326,7 @@ export default function AgentTesterPage() {
                 ...prev,
                 runId: event.runId,
                 durationMs: event.durationMs,
+                tokenUsage: event.tokenUsage as RunMeta["tokenUsage"],
               }));
             } else if (event.type === "error") {
               setRunMeta((prev) => ({ ...prev, error: event.message }));
@@ -550,15 +557,28 @@ export default function AgentTesterPage() {
                   Waiting for tool calls...
                 </div>
               )}
-              {toolEvents.map((evt, idx) => (
-                <TimelineItem
-                  key={idx}
-                  event={evt}
-                  isExpanded={expandedEvents.has(idx)}
-                  onToggle={() => toggleEvent(idx)}
-                  startTime={runStartTime}
-                />
-              ))}
+              {toolEvents.map((evt, idx) => {
+                // A tool_call is "pending" only while running AND no matching result/error exists yet
+                const pending =
+                  running &&
+                  evt.type === "tool_call" &&
+                  !toolEvents.some(
+                    (e, j) =>
+                      j > idx &&
+                      (e.type === "tool_result" || e.type === "tool_error") &&
+                      e.toolName === evt.toolName,
+                  );
+                return (
+                  <TimelineItem
+                    key={idx}
+                    event={evt}
+                    isExpanded={expandedEvents.has(idx)}
+                    onToggle={() => toggleEvent(idx)}
+                    startTime={runStartTime}
+                    pending={pending}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>
@@ -583,6 +603,15 @@ export default function AgentTesterPage() {
             <span className="flex items-center gap-1">
               <Zap className="h-3 w-3" />
               {runMeta.model}
+            </span>
+          )}
+          {runMeta.tokenUsage?.totalTokens != null && (
+            <span className="flex items-center gap-1">
+              <Hash className="h-3 w-3" />
+              {runMeta.tokenUsage.totalTokens.toLocaleString()} tokens
+              <span className="text-muted-foreground/50">
+                ({runMeta.tokenUsage.inputTokens?.toLocaleString()}in / {runMeta.tokenUsage.outputTokens?.toLocaleString()}out)
+              </span>
             </span>
           )}
           {!runMeta.error && runMeta.runId && (

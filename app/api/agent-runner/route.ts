@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
             agentId: body.agent_id!,
             userMessage: body.user_message!.trim(),
             patientId: body.patient_id,
+            signal: req.signal,
           },
           emit,
         );

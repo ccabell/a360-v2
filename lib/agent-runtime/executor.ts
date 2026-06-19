@@ -12,6 +12,7 @@ export interface ExecuteParams {
   agentId: string;
   userMessage: string;
   patientId?: string;
+  signal?: AbortSignal;
 }
 
 export interface AgentRunnerEvent {
@@ -93,9 +94,9 @@ export async function executeAgentRun(
     // 6. Resolve model — strip provider prefix and map friendly names to API IDs
     const MODEL_ALIASES: Record<string, string> = {
       "claude-haiku-4.5": "claude-haiku-4-5-20251001",
-      "claude-sonnet-4.5": "claude-sonnet-4-5-20250514",
-      "claude-sonnet-4.6": "claude-sonnet-4-6-20250514",
-      "claude-opus-4.6": "claude-opus-4-6-20250514",
+      "claude-sonnet-4.5": "claude-sonnet-4-5-20250929",
+      "claude-sonnet-4.6": "claude-sonnet-4-6",
+      "claude-opus-4.6": "claude-opus-4-6",
     };
     const rawModel = (version.model ?? agent.model ?? "claude-haiku-4-5-20251001")
       .replace(/^anthropic\//, "");
@@ -106,6 +107,15 @@ export async function executeAgentRun(
       ? `Patient ID: ${params.patientId}\n\n${params.userMessage}`
       : params.userMessage;
     const maxToolRounds = version.model_params?.max_tool_rounds ?? 5;
+    const MAX_OUTPUT_CHARS = 50_000;  // Hard cap on total output chars (~15K tokens)
+    const MAX_WALL_TIME_MS = 55_000;  // Hard cap: 55s (under Vercel's 60s limit)
+    const abortController = new AbortController();
+
+    // If the caller passes a signal (e.g. client disconnect), abort the LLM call
+    if (params.signal) {
+      params.signal.addEventListener("abort", () => abortController.abort(), { once: true });
+    }
+
     const result = streamText({
       model: anthropic(modelId),
       system: version.prompt_text ?? "You are a helpful assistant.",
@@ -114,18 +124,34 @@ export async function executeAgentRun(
       temperature: version.model_params?.temperature ?? 0.3,
       maxOutputTokens: version.model_params?.max_tokens ?? 4096,
       tools,
+      abortSignal: abortController.signal,
     });
 
     // 8. Iterate fullStream
     emit({ type: "status", stage: "streaming", model: modelId });
     let fullText = "";
+    let totalChars = 0;
     const toolErrors: string[] = [];
     const completedTools: string[] = [];
 
     for await (const part of result.fullStream) {
+      // Safety: abort if total output exceeds hard cap
+      if (totalChars > MAX_OUTPUT_CHARS) {
+        abortController.abort();
+        emit({ type: "error", message: `Output cap reached (${MAX_OUTPUT_CHARS} chars). Run stopped to prevent runaway token usage.` });
+        break;
+      }
+      // Safety: abort if wall time exceeded (stay under Vercel timeout)
+      if (Date.now() - startMs > MAX_WALL_TIME_MS) {
+        abortController.abort();
+        emit({ type: "error", message: "Run time limit reached (55s). Run stopped." });
+        break;
+      }
+
       switch (part.type) {
         case "text-delta":
           fullText += part.text;
+          totalChars += part.text.length;
           emit({ type: "token", text: part.text });
           break;
 
@@ -137,7 +163,9 @@ export async function executeAgentRun(
           });
           break;
 
-        case "tool-result":
+        case "tool-result": {
+          const outputStr = JSON.stringify(part.output);
+          totalChars += outputStr.length;
           emit({
             type: "tool_result",
             toolName: part.toolName,
@@ -156,6 +184,7 @@ export async function executeAgentRun(
             completedTools.push(part.toolName);
           }
           break;
+        }
 
         case "tool-error":
           emit({ type: "tool_error", toolName: part.toolName, error: String(part.error) });
@@ -164,12 +193,29 @@ export async function executeAgentRun(
       }
     }
 
-    // 9. Persist result
+    // 9. Capture token usage
+    let tokenUsage: { inputTokens?: number; outputTokens?: number; totalTokens?: number } = {};
+    try {
+      const usage = await result.totalUsage;
+      tokenUsage = {
+        inputTokens: usage.inputTokens,
+        outputTokens: usage.outputTokens,
+        totalTokens: usage.totalTokens,
+      };
+    } catch {
+      // Usage unavailable (e.g. aborted stream) — proceed without it
+    }
+
+    // 10. Persist result
     const durationMs = Date.now() - startMs;
     if (fullText.trim().length > 0) {
       await updateAgentOutput(output.id, {
         status: "completed",
-        result: { text: fullText, completed_tools: completedTools },
+        result: {
+          text: fullText,
+          completed_tools: completedTools,
+          token_usage: tokenUsage,
+        },
         latency_ms: durationMs,
       });
     } else {
@@ -179,14 +225,20 @@ export async function executeAgentRun(
           error: "No output generated",
           failed_tools: toolErrors,
           completed_tools: completedTools,
+          token_usage: tokenUsage,
           recommendation: "Check tool configurations and API key availability",
         },
         latency_ms: durationMs,
       });
     }
 
-    // 10. Done
-    emit({ type: "done", runId: output.id, durationMs });
+    // 11. Done
+    emit({
+      type: "done",
+      runId: output.id,
+      durationMs,
+      tokenUsage,
+    });
   } catch (err) {
     const message =
       err instanceof Error
