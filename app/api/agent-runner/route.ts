@@ -10,6 +10,7 @@ export async function POST(req: NextRequest) {
     agent_id?: string;
     user_message?: string;
     patient_id?: string;
+    tools_override?: string[];
   };
 
   if (!body.agent_id || !body.user_message?.trim()) {
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest) {
             userMessage: body.user_message!.trim(),
             patientId: body.patient_id,
             signal: req.signal,
+            toolsOverride: body.tools_override,
           },
           emit,
         );

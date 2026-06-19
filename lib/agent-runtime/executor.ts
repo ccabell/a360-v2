@@ -13,6 +13,8 @@ export interface ExecuteParams {
   userMessage: string;
   patientId?: string;
   signal?: AbortSignal;
+  /** Override the agent version's tool list for this run only */
+  toolsOverride?: string[];
 }
 
 export interface AgentRunnerEvent {
@@ -72,8 +74,8 @@ export async function executeAgentRun(
     outputId = output.id;
     emit({ type: "status", stage: "run_created", runId: output.id });
 
-    // 4. Build tools — use knowledge_config.tools if available, otherwise all tools
-    const toolNames = version.knowledge_config?.tools;
+    // 4. Build tools — toolsOverride > knowledge_config.tools > all tools
+    const toolNames = params.toolsOverride ?? (version.knowledge_config?.tools as string[] | undefined);
     const tools = buildTools(toolNames);
 
     // 5. Create Anthropic provider

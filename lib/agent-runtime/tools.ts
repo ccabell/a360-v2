@@ -15,6 +15,39 @@ const RAG_SEARCH_URL =
   process.env.RAG_SEARCH_URL || "http://127.0.0.1:8100";
 
 // ---------------------------------------------------------------------------
+// Shared helper
+// ---------------------------------------------------------------------------
+
+function formatChunk(c: Record<string, unknown>) {
+  return {
+    source: c.source,
+    title: c.title,
+    url: c.url,
+    text: ((c.text as string) ?? "").slice(0, 800),
+    similarity: c.similarity,
+    metadata: {
+      journal: (c.metadata as Record<string, unknown>)?.journal,
+      year: (c.metadata as Record<string, unknown>)?.year,
+      channel: (c.metadata as Record<string, unknown>)?.channel,
+      show: (c.metadata as Record<string, unknown>)?.show,
+    },
+  };
+}
+
+async function callRagSearch(query: string, topK: number, corpus?: string) {
+  const body: Record<string, unknown> = { query, top_k: topK };
+  if (corpus) body.corpus = corpus;
+  const res = await fetch(`${RAG_SEARCH_URL}/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!res.ok) throw new Error(`RAG search failed: ${res.status}`);
+  return (await res.json()) as Array<Record<string, unknown>>;
+}
+
+// ---------------------------------------------------------------------------
 // Tool: get_patient_context
 // ---------------------------------------------------------------------------
 
@@ -90,16 +123,12 @@ export const searchFuelDocuments = {
     additionalProperties: false,
   }),
   execute: async ({ query }: { query: string }): Promise<Record<string, unknown>> => {
-    // Join through products to get the product name; content is JSONB so we
-    // search by casting to text. fuel_type is an enum, not free text.
     const { data, error } = await agentSupabase
       .from("agent_fuel_documents")
       .select("id, fuel_type, offering_id, content, products!inner(name)")
       .ilike("products.name", `%${query}%`)
       .limit(5);
 
-    // Fallback: if the inner join found nothing, try a broader search
-    // by casting JSONB content to text (covers category_fuel docs with no offering_id)
     if (!error && (!data || data.length === 0)) {
       const { data: fallback, error: fbErr } = await agentSupabase
         .from("agent_fuel_documents")
@@ -107,7 +136,6 @@ export const searchFuelDocuments = {
         .textSearch("content", query, { type: "plain" })
         .limit(5);
 
-      // If text search isn't supported on JSONB, try filter on fuel_type
       if (fbErr || !fallback?.length) {
         const { data: byType } = await agentSupabase
           .from("agent_fuel_documents")
@@ -140,7 +168,7 @@ export const searchFuelDocuments = {
       results: (data ?? []).map((d) => ({
         id: d.id,
         fuel_type: d.fuel_type,
-        product_name: (d as any).products?.name ?? null,
+        product_name: (d as Record<string, unknown> & { products?: { name?: string } }).products?.name ?? null,
         content_preview: JSON.stringify(d.content).slice(0, 3000),
       })),
     };
@@ -200,12 +228,12 @@ export const getEvidenceLinks = {
 };
 
 // ---------------------------------------------------------------------------
-// Tool: search_clinical_literature
+// Tool: search_clinical_literature  (all corpora)
 // ---------------------------------------------------------------------------
 
 export const searchClinicalLiterature = {
   description:
-    "Search the clinical literature corpus: PubMed articles, manufacturer YouTube training videos, podcast expert discussions, and industry articles.",
+    "Search the clinical literature corpus: PubMed articles, manufacturer YouTube training videos, podcast expert discussions, and industry articles. Use when you need broad evidence across all source types.",
   inputSchema: jsonSchema<{ query: string; top_k?: number }>({
     type: "object",
     properties: {
@@ -217,33 +245,70 @@ export const searchClinicalLiterature = {
   }),
   execute: async ({ query, top_k }: { query: string; top_k?: number }): Promise<Record<string, unknown>> => {
     try {
-      const res = await fetch(`${RAG_SEARCH_URL}/search`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, top_k: top_k ?? 8 }),
-        signal: AbortSignal.timeout(15_000),
-      });
-
-      if (!res.ok) return { error: `RAG search failed: ${res.status}`, results: [] };
-
-      const chunks = (await res.json()) as Array<Record<string, unknown>>;
-      return {
-        results: chunks.map((c) => ({
-          source: c.source,
-          title: c.title,
-          url: c.url,
-          text: ((c.text as string) ?? "").slice(0, 800),
-          similarity: c.similarity,
-          metadata: {
-            journal: (c.metadata as Record<string, unknown>)?.journal,
-            year: (c.metadata as Record<string, unknown>)?.year,
-            channel: (c.metadata as Record<string, unknown>)?.channel,
-            show: (c.metadata as Record<string, unknown>)?.show,
-          },
-        })),
-      };
+      const chunks = await callRagSearch(query, top_k ?? 8);
+      return { results: chunks.map(formatChunk) };
     } catch {
       return { error: "RAG search service unavailable", results: [] };
+    }
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Tool: search_podcast  (podcast-only corpus)
+// ---------------------------------------------------------------------------
+
+export const searchPodcast = {
+  description:
+    "Search expert aesthetic medicine podcast discussions (202K+ chunks). Best for: patient consultation language, clinical pearls, real-world practitioner insights, objection handling techniques.",
+  inputSchema: jsonSchema<{ query: string; top_k?: number }>({
+    type: "object",
+    properties: {
+      query: { type: "string", description: "Topic or question to find in podcast discussions" },
+      top_k: { type: "number", description: "Number of results (default 6)" },
+    },
+    required: ["query"],
+    additionalProperties: false,
+  }),
+  execute: async ({ query, top_k }: { query: string; top_k?: number }): Promise<Record<string, unknown>> => {
+    try {
+      const chunks = await callRagSearch(query, top_k ?? 6, "podcast");
+      // Post-filter if service doesn't support corpus param
+      const results = chunks
+        .filter((c) => !c.source || String(c.source).toLowerCase().includes("podcast"))
+        .map(formatChunk);
+      // If filtering removed everything, return all (service handled filtering)
+      return { results: results.length > 0 ? results : chunks.map(formatChunk) };
+    } catch {
+      return { error: "Podcast search unavailable", results: [] };
+    }
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Tool: search_youtube  (YouTube-only corpus)
+// ---------------------------------------------------------------------------
+
+export const searchYoutube = {
+  description:
+    "Search manufacturer YouTube training videos and procedure demonstrations (63K+ chunks). Best for: technique guidance, injection protocols, before/after context, product demonstration details.",
+  inputSchema: jsonSchema<{ query: string; top_k?: number }>({
+    type: "object",
+    properties: {
+      query: { type: "string", description: "Topic or technique to find in training videos" },
+      top_k: { type: "number", description: "Number of results (default 6)" },
+    },
+    required: ["query"],
+    additionalProperties: false,
+  }),
+  execute: async ({ query, top_k }: { query: string; top_k?: number }): Promise<Record<string, unknown>> => {
+    try {
+      const chunks = await callRagSearch(query, top_k ?? 6, "youtube");
+      const results = chunks
+        .filter((c) => !c.source || String(c.source).toLowerCase().includes("youtube"))
+        .map(formatChunk);
+      return { results: results.length > 0 ? results : chunks.map(formatChunk) };
+    } catch {
+      return { error: "YouTube search unavailable", results: [] };
     }
   },
 };
@@ -295,6 +360,64 @@ export const getProductInfo = {
 };
 
 // ---------------------------------------------------------------------------
+// Tool: query_product_database  (broad product search)
+// ---------------------------------------------------------------------------
+
+export const queryProductDatabase = {
+  description:
+    "Search the Global Library product catalog broadly — by name, brand, concern area, or category. Use when you need to discover what products exist for a given treatment area or patient concern.",
+  inputSchema: jsonSchema<{ query: string; limit?: number }>({
+    type: "object",
+    properties: {
+      query: { type: "string", description: "Product name, brand, treatment area, or concern to search" },
+      limit: { type: "number", description: "Max products to return (default 10)" },
+    },
+    required: ["query"],
+    additionalProperties: false,
+  }),
+  execute: async ({ query, limit }: { query: string; limit?: number }): Promise<Record<string, unknown>> => {
+    const { data: products } = await agentSupabase
+      .from("products")
+      .select("id, name, brand_name, generic_name, regulatory_status, fda_approved_areas, description")
+      .or(`name.ilike.%${query}%,brand_name.ilike.%${query}%,generic_name.ilike.%${query}%`)
+      .limit(limit ?? 10);
+
+    if (!products?.length) {
+      // Fallback: search in indications / description fields
+      const { data: fallback } = await agentSupabase
+        .from("products")
+        .select("id, name, brand_name, generic_name, regulatory_status, fda_approved_areas, description")
+        .or(`indications.ilike.%${query}%,description.ilike.%${query}%`)
+        .limit(limit ?? 10);
+
+      return {
+        products: (fallback ?? []).map((p) => ({
+          id: p.id,
+          name: p.name,
+          brand_name: p.brand_name,
+          regulatory_status: p.regulatory_status,
+          fda_approved_areas: p.fda_approved_areas,
+          description: ((p.description as string) ?? "").slice(0, 300),
+        })),
+        count: fallback?.length ?? 0,
+      };
+    }
+
+    return {
+      products: products.map((p) => ({
+        id: p.id,
+        name: p.name,
+        brand_name: p.brand_name,
+        regulatory_status: p.regulatory_status,
+        fda_approved_areas: p.fda_approved_areas,
+        description: ((p.description as string) ?? "").slice(0, 300),
+      })),
+      count: products.length,
+    };
+  },
+};
+
+// ---------------------------------------------------------------------------
 // Export all tools as a map for the AI SDK
 // ---------------------------------------------------------------------------
 
@@ -304,7 +427,54 @@ export const agentTools: Record<string, any> = {
   search_fuel_documents: searchFuelDocuments,
   get_evidence_links: getEvidenceLinks,
   search_clinical_literature: searchClinicalLiterature,
+  search_podcast: searchPodcast,
+  search_youtube: searchYoutube,
   get_product_info: getProductInfo,
+  query_product_database: queryProductDatabase,
+};
+
+/** Human-readable tool metadata for UI display */
+export const TOOL_METADATA: Record<string, { label: string; description: string; icon: string }> = {
+  get_patient_context: {
+    label: "Patient Context",
+    description: "Loads patient demographics, consultation transcript, and extraction outputs",
+    icon: "user",
+  },
+  search_fuel_documents: {
+    label: "GL Fuel Docs",
+    description: "Searches curated GL product intelligence, pairing guides, and treatment protocols",
+    icon: "book",
+  },
+  get_evidence_links: {
+    label: "Evidence Links",
+    description: "Fetches FDA labels, PubMed citations, and manufacturer documentation",
+    icon: "link",
+  },
+  search_clinical_literature: {
+    label: "Clinical Literature",
+    description: "Searches PubMed, YouTube, podcasts, and industry articles (all sources)",
+    icon: "microscope",
+  },
+  search_podcast: {
+    label: "Podcast Search",
+    description: "Searches expert podcast discussions — patient language, clinical pearls, objection handling",
+    icon: "mic",
+  },
+  search_youtube: {
+    label: "YouTube Search",
+    description: "Searches manufacturer training videos — technique protocols, injection demos",
+    icon: "video",
+  },
+  get_product_info: {
+    label: "Product Info",
+    description: "Retrieves detailed product data, FDA status, and treatment relationships",
+    icon: "package",
+  },
+  query_product_database: {
+    label: "Product Database",
+    description: "Broad search across all 425+ GL products by name, brand, or treatment area",
+    icon: "database",
+  },
 };
 
 /** Build a filtered tool map for the executor — returns all tools if no names specified. */

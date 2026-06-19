@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,12 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { BlockCard } from "@/components/studio/BlockCard";
+import type { BlockCardHandle } from "@/components/studio/BlockCard";
 import { BlockConnector } from "@/components/studio/BlockConnector";
 import {
-  Radio,
-  Compass,
-  MessageSquare,
-  ListOrdered,
+  UserSearch,
+  Lightbulb,
+  MessageSquareText,
+  CalendarClock,
 } from "lucide-react";
 
 interface PatientOption {
@@ -32,15 +33,184 @@ interface AgentRecord {
 
 type BlockStatus = "idle" | "running" | "done" | "error";
 
+const BLOCKS = [
+  {
+    keys: ["consultation_summarizer"],
+    icon: UserSearch,
+    title: "Signal Extraction",
+    subtitle: "Patient opportunity signals & intent markers",
+    color: "blue" as const,
+    tools: ["get_patient_context", "search_podcast"],
+    prompt: `You are a patient signal analyst for a medical aesthetics practice. Analyze this patient's consultation data and extract actionable reach signals.
+
+## What to Extract
+
+**Primary Opportunity Signal**
+- What is the single highest-priority re-engagement opportunity for this patient?
+- What treatment did they show the most interest in but didn't convert on?
+
+**Intent Markers**
+- Budget sensitivity level (high/medium/low) and any specific signals
+- Timeline urgency (upcoming event, seasonal motivation, or open-ended)
+- Objections raised and whether they were resolved
+- Emotional drivers (confidence, special occasion, health concern)
+
+**Patient Profile Tags**
+- Consultation outcome (converted / interested / lost)
+- Treatment history at this practice (new / returning)
+- Communication preference signals from transcript
+
+**Re-engagement Strategy Hint**
+- Recommended outreach angle: educational, social proof, urgency/offer, or nurture
+- Best channel: email, SMS, or in-person follow-up
+- Ideal timing window for outreach
+
+Be specific. Pull directly from consultation transcript signals. This feeds the campaign strategy and message copy.`,
+  },
+  {
+    keys: ["reach_plan_agent", "consultation_summarizer"],
+    icon: Lightbulb,
+    title: "Campaign Strategy",
+    subtitle: "Outreach angle, timing & channel plan",
+    color: "violet" as const,
+    tools: ["search_podcast", "search_fuel_documents", "query_product_database"],
+    prompt: `You are a patient re-engagement strategist for a medical aesthetics practice. Based on the signal extraction above, design a targeted outreach campaign strategy.
+
+## Campaign Strategy Output
+
+**Campaign Objective**
+One sentence: what specific action do you want this patient to take?
+
+**Messaging Angle**
+Choose one primary angle and explain why it fits this patient:
+- Educational (teach them something they didn't know during consult)
+- Social proof (patient outcomes, before/after context)
+- Urgency/scarcity (seasonal timing, limited availability)
+- Value anchoring (reframe cost as investment, payment options)
+- Nurture (build trust over time, not a push)
+
+**Channel & Timing Plan**
+| Touch | Channel | Timing | Goal |
+|-------|---------|--------|------|
+| 1 | (email/SMS/call) | (e.g. 3 days post-consult) | (goal) |
+| 2 | ... | ... | ... |
+| 3 | ... | ... | ... |
+
+**Content Themes**
+2-3 specific topics or proof points to weave into the outreach.
+
+**Success Metric**
+How do you know this campaign worked?`,
+  },
+  {
+    keys: ["reach_plan_agent", "consultation_summarizer"],
+    icon: MessageSquareText,
+    title: "Message Copy",
+    subtitle: "Personalized outreach copy for each touch",
+    color: "emerald" as const,
+    tools: ["search_podcast", "search_fuel_documents"],
+    prompt: `You are a patient communications copywriter for a medical aesthetics practice. Based on the signal extraction and campaign strategy above, write the actual outreach copy.
+
+Write personalized message copy for each touchpoint in the campaign strategy.
+
+## Format for Each Message
+
+**Touch [N] — [Channel] — [Day X Post-Consult]**
+
+Subject line (if email): [subject]
+
+---
+[Full message body — use patient's first name, reference specific treatments discussed]
+
+---
+CTA: [specific call to action]
+
+---
+
+**Requirements:**
+- Use patient's first name throughout
+- Reference the specific treatments they discussed (not generic messaging)
+- Avoid clinical jargon in patient-facing copy unless the patient showed clinical interest
+- Never fabricate outcomes or make unsubstantiated medical claims
+- Include a clear, low-friction CTA in every message
+- Keep email under 200 words; SMS under 160 characters
+
+Write all touches in this response.`,
+  },
+  {
+    keys: ["reach_plan_agent", "consultation_summarizer"],
+    icon: CalendarClock,
+    title: "Follow-Up Schedule",
+    subtitle: "Cadence, automation rules & re-engagement triggers",
+    color: "orange" as const,
+    tools: ["search_podcast"],
+    prompt: `You are a patient retention specialist for a medical aesthetics practice. Based on all prior analysis, design the complete follow-up schedule and automation rules for this patient.
+
+## Follow-Up Schedule
+
+**Immediate Follow-Up (0-7 days)**
+Actions to take within the first week post-consultation.
+
+**Short-Term Nurture (1-4 weeks)**
+Touchpoints to maintain engagement if patient hasn't booked.
+
+**Long-Term Retention (1-6 months)**
+Ongoing relationship touchpoints after initial engagement or booking.
+
+**Re-Activation Triggers**
+| Trigger | Action | Channel | Timing |
+|---------|--------|---------|--------|
+| ... | ... | ... | ... |
+
+**Practice Staff Actions**
+Items requiring human touch: personal calls, handwritten notes, in-clinic check-ins.
+
+**Exit Criteria**
+When to stop outreach / move patient to dormant status.
+
+Be specific and actionable. A practice coordinator should be able to follow this schedule directly.`,
+  },
+];
+
+function buildContextPrefix(outputs: string[], upToIndex: number): string {
+  const parts: string[] = [];
+  for (let i = 0; i < upToIndex; i++) {
+    if (outputs[i]?.trim()) {
+      parts.push(`## ${BLOCKS[i].title}\n\n${outputs[i].trim()}`);
+    }
+  }
+  if (parts.length === 0) return "";
+  return (
+    `## Context from Prior Analysis\n\n` +
+    parts.join("\n\n---\n\n") +
+    `\n\n---\n\nUsing the above context, now perform your specific task:`
+  );
+}
+
+function resolveAgent(
+  keys: string[],
+  agents: Record<string, string | null>,
+): string | null {
+  for (const key of keys) {
+    if (agents[key]) return agents[key];
+  }
+  return null;
+}
+
 export default function ReachPage() {
   const [patients, setPatients] = useState<PatientOption[]>([]);
   const [selectedPatientId, setSelectedPatientId] = useState("");
   const [agents, setAgents] = useState<Record<string, string | null>>({});
-  const [blockStatuses, setBlockStatuses] = useState<BlockStatus[]>(["idle", "idle", "idle", "idle"]);
+  const [blockStatuses, setBlockStatuses] = useState<BlockStatus[]>(
+    () => new Array(BLOCKS.length).fill("idle") as BlockStatus[],
+  );
   const [completedCount, setCompletedCount] = useState(0);
   const [runAllActive, setRunAllActive] = useState(false);
 
-  const runRefs = useRef<Array<(() => void) | null>>([null, null, null, null]);
+  const blockRefs = useRef<Array<React.RefObject<BlockCardHandle | null>>>(
+    BLOCKS.map(() => React.createRef<BlockCardHandle | null>()),
+  );
+  const outputsRef = useRef<string[]>(new Array(BLOCKS.length).fill(""));
 
   useEffect(() => {
     fetch("/api/patients")
@@ -48,7 +218,9 @@ export default function ReachPage() {
       .then((data) => {
         const raw: Array<{ id: string; first_name: string; last_name: string }> =
           Array.isArray(data) ? data : (data?.data ?? []);
-        setPatients(raw.map((p) => ({ id: p.id, name: `${p.first_name} ${p.last_name}` })));
+        setPatients(
+          raw.map((p) => ({ id: p.id, name: `${p.first_name} ${p.last_name}` })),
+        );
       })
       .catch(() => {});
 
@@ -64,73 +236,37 @@ export default function ReachPage() {
       .catch(() => {});
   }, []);
 
-  const BLOCKS = [
-    {
-      key: "consultation_summarizer",
-      icon: Radio,
-      title: "Patient Signals",
-      subtitle: "Outcome status, objections & signal tags",
-      color: "blue" as const,
-      prompt:
-        "Extract the key patient signals for follow-up: outcome status (booked/not-booked/undecided), objections raised, signal tags (booked/price_objection/needs_to_think/future_interest/referred_out), and urgency level. Be specific.",
-    },
-    {
-      key: "reach_plan_agent",
-      icon: Compass,
-      title: "Campaign Strategy",
-      subtitle: "Approach, timing & channel priority",
-      color: "violet" as const,
-      prompt:
-        "Based on this patient's signals, define the follow-up campaign strategy: primary approach type, timing of first touch, channel priority, and the core message angle. Strategy only — no copy yet.",
-    },
-    {
-      key: "reach_plan_agent",
-      icon: MessageSquare,
-      title: "Message Copy",
-      subtitle: "First touch, objection handling & value reinforcement",
-      color: "emerald" as const,
-      prompt:
-        "Generate the actual message copy for the follow-up sequence: first touch message, objection-handling touchpoint (if applicable), and value-reinforcement message. Pull language from coaching_fuel and reach_fuel docs. Include the specific language, not just descriptions.",
-    },
-    {
-      key: "reach_plan_agent",
-      icon: ListOrdered,
-      title: "Follow-Up Schedule",
-      subtitle: "Complete numbered execution plan",
-      color: "orange" as const,
-      prompt:
-        "Output the complete follow-up plan as a numbered schedule: each touchpoint with timing (Day 1, Day 3, Day 7, etc.), channel (text/email/call), action, and the message to use. Make it something the practice can execute directly.",
-    },
-  ];
-
   const handleComplete = useCallback(
-    (blockIndex: number) => (_output: string) => {
+    (blockIndex: number) => (output: string) => {
+      outputsRef.current[blockIndex] = output;
       setCompletedCount((n) => n + 1);
       setBlockStatuses((prev) => {
         const next = [...prev] as BlockStatus[];
         next[blockIndex] = "done";
         return next;
       });
+
       const nextIndex = blockIndex + 1;
       if (nextIndex < BLOCKS.length) {
+        const context = buildContextPrefix(outputsRef.current, nextIndex);
         setTimeout(() => {
-          runRefs.current[nextIndex]?.();
+          blockRefs.current[nextIndex]?.current?.run(context || undefined);
         }, 0);
       } else {
         setRunAllActive(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   const handleRunAll = useCallback(() => {
     if (!selectedPatientId) return;
     setRunAllActive(true);
     setCompletedCount(0);
-    setBlockStatuses(["idle", "idle", "idle", "idle"]);
+    outputsRef.current = new Array(BLOCKS.length).fill("");
+    setBlockStatuses(new Array(BLOCKS.length).fill("idle") as BlockStatus[]);
     setTimeout(() => {
-      runRefs.current[0]?.();
+      blockRefs.current[0]?.current?.run();
     }, 0);
   }, [selectedPatientId]);
 
@@ -139,7 +275,6 @@ export default function ReachPage() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* Sticky header */}
       <div className="shrink-0 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 px-6 py-4 sticky top-0 z-10">
         <div className="max-w-3xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
@@ -148,18 +283,23 @@ export default function ReachPage() {
             </div>
             <div>
               <h1 className="text-sm font-semibold leading-none text-foreground">
-                Reach Campaign
+                A360 Reach
               </h1>
               <p className="mt-1 text-xs text-muted-foreground">
-                Agent-generated follow-up campaigns from consultation signals
+                4-agent campaign pipeline · signals → strategy → copy → schedule
               </p>
             </div>
           </div>
 
           <div className="flex items-end gap-3 flex-wrap">
             <div className="flex flex-col gap-1.5 min-w-[260px]">
-              <label className="text-xs font-medium text-muted-foreground">Patient</label>
-              <Select value={selectedPatientId} onValueChange={(v) => setSelectedPatientId(v ?? "")}>
+              <label className="text-xs font-medium text-muted-foreground">
+                Patient
+              </label>
+              <Select
+                value={selectedPatientId}
+                onValueChange={(v) => setSelectedPatientId(v ?? "")}
+              >
                 <SelectTrigger className="h-9 w-full">
                   <SelectValue placeholder="Select a patient…" />
                 </SelectTrigger>
@@ -180,25 +320,26 @@ export default function ReachPage() {
             >
               {runAllActive
                 ? `${completedCount} / ${BLOCKS.length} complete…`
-                : "Run All"}
+                : "Run Campaign"}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Block chain */}
       <div className="flex-1 overflow-y-auto min-h-0 px-6 py-6">
         <div className="max-w-3xl mx-auto space-y-0">
           {BLOCKS.map((block, i) => (
-            <div key={`${block.key}-${i}`}>
+            <div key={i}>
               <BlockCard
+                ref={blockRefs.current[i]}
                 icon={block.icon}
                 title={block.title}
                 subtitle={block.subtitle}
                 color={block.color}
-                agentId={agents[block.key] ?? null}
+                agentId={resolveAgent(block.keys, agents)}
                 patientId={selectedPatientId}
                 prompt={block.prompt}
+                toolsOverride={block.tools}
                 disabled={!selectedPatientId}
                 onComplete={handleComplete(i)}
                 defaultExpanded={false}

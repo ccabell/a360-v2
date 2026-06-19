@@ -100,6 +100,9 @@ export default function StudioPage() {
   const [savedFlash, setSavedFlash] = useState(false);
   const [shouldStartRun, setShouldStartRun] = useState(false);
 
+  // Accumulate block outputs for context chaining
+  const outputsRef = useRef<Record<string, string>>({});
+
   // Stable ref map: block id → ref
   const refsMap = useRef<Map<string, React.RefObject<BlockCardHandle | null>>>(
     new Map(),
@@ -217,6 +220,7 @@ export default function StudioPage() {
 
   const handleComplete = useCallback(
     (blockIndex: number) => (_output: string) => {
+      outputsRef.current[blocks[blockIndex].id] = _output;
       setCompletedCount((n) => n + 1);
       setBlockStatuses((prev) => {
         const next = [...prev] as BlockStatus[];
@@ -225,8 +229,19 @@ export default function StudioPage() {
       });
       const nextIndex = blockIndex + 1;
       if (nextIndex < blocks.length) {
+        // Build context from all previous outputs
+        const parts: string[] = [];
+        for (let i = 0; i < nextIndex; i++) {
+          const out = outputsRef.current[blocks[i].id];
+          if (out?.trim()) {
+            parts.push(`## ${blocks[i].name}\n\n${out.trim()}`);
+          }
+        }
+        const context = parts.length > 0
+          ? `## Context from Prior Blocks\n\n${parts.join("\n\n---\n\n")}\n\n---\n\nUsing the above context, now perform your specific task:`
+          : undefined;
         const ref = getRef(blocks[nextIndex].id);
-        setTimeout(() => ref.current?.run(), 0);
+        setTimeout(() => ref.current?.run(context), 0);
       } else {
         setRunAllActive(false);
       }
@@ -237,6 +252,7 @@ export default function StudioPage() {
 
   const handleRunAll = useCallback(() => {
     if (!selectedPatientId || blocks.length === 0) return;
+    outputsRef.current = {};
     setRunAllActive(true);
     setCompletedCount(0);
     setBlockStatuses(new Array(blocks.length).fill("idle") as BlockStatus[]);
@@ -416,6 +432,7 @@ export default function StudioPage() {
                     agentId={agentMap[block.agentKey] ?? null}
                     patientId={selectedPatientId}
                     prompt={block.prompt}
+                    toolsOverride={block.toolsOverride}
                     disabled={!selectedPatientId}
                     onComplete={handleComplete(i)}
                     defaultExpanded={false}

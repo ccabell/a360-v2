@@ -1,6 +1,7 @@
 "use client";
 
-import { Trash2, ChevronUp, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Trash2, ChevronUp, ChevronDown, ChevronRight, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +22,7 @@ export interface BlockConfig {
   agentKey: string;
   color: BlockColor;
   prompt: string;
+  toolsOverride?: string[];
 }
 
 export interface AgentOption {
@@ -32,14 +34,7 @@ export interface AgentOption {
 // ── Color palette ─────────────────────────────────────────────────────────────
 
 const ALL_COLORS: BlockColor[] = [
-  "blue",
-  "violet",
-  "teal",
-  "amber",
-  "emerald",
-  "rose",
-  "indigo",
-  "orange",
+  "blue", "violet", "teal", "amber", "emerald", "rose", "indigo", "orange",
 ];
 
 const COLOR_DOT: Record<BlockColor, string> = {
@@ -52,6 +47,19 @@ const COLOR_DOT: Record<BlockColor, string> = {
   indigo: "bg-indigo-500",
   orange: "bg-orange-500",
 };
+
+// ── Available tools ────────────────────────────────────────────────────────────
+
+const ALL_TOOLS: Array<{ key: string; label: string; description: string }> = [
+  { key: "get_patient_context", label: "Patient Context", description: "Demographics, transcript, extraction outputs" },
+  { key: "search_fuel_documents", label: "GL Fuel Docs", description: "Product intelligence, pairing guides, protocols" },
+  { key: "get_evidence_links", label: "Evidence Links", description: "FDA labels, PubMed, manufacturer docs" },
+  { key: "search_clinical_literature", label: "Clinical Literature", description: "PubMed + YouTube + podcast + industry (all)" },
+  { key: "search_podcast", label: "Podcast Search", description: "Expert discussions, patient language, clinical pearls" },
+  { key: "search_youtube", label: "YouTube Search", description: "Manufacturer training videos, technique demos" },
+  { key: "get_product_info", label: "Product Info", description: "Detailed product data, FDA status, relationships" },
+  { key: "query_product_database", label: "Product Database", description: "Broad search across 425+ GL products" },
+];
 
 // ── BuilderBlock ──────────────────────────────────────────────────────────────
 
@@ -76,6 +84,17 @@ export function BuilderBlock({
   onMoveDown,
   onDelete,
 }: BuilderBlockProps) {
+  const [toolsOpen, setToolsOpen] = useState(false);
+
+  const selectedTools = config.toolsOverride ?? [];
+
+  function toggleTool(key: string) {
+    const next = selectedTools.includes(key)
+      ? selectedTools.filter((k) => k !== key)
+      : [...selectedTools, key];
+    onChange({ ...config, toolsOverride: next.length === 0 ? undefined : next });
+  }
+
   return (
     <div className="rounded-xl border border-border bg-card p-4 space-y-3">
       {/* Row 1: index + name + subtitle + controls */}
@@ -169,6 +188,58 @@ export function BuilderBlock({
         className="w-full rounded-md border border-input bg-muted/40 px-3 py-2 text-xs resize-none min-h-[72px] focus:outline-none focus:ring-1 focus:ring-ring placeholder:text-muted-foreground"
         rows={3}
       />
+
+      {/* Row 4: Tool selector (collapsible) */}
+      <div>
+        <button
+          type="button"
+          onClick={() => setToolsOpen((v) => !v)}
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <ChevronRight
+            className={`h-3 w-3 transition-transform ${toolsOpen ? "rotate-90" : ""}`}
+          />
+          <Wrench className="h-3 w-3" />
+          <span>
+            {selectedTools.length === 0
+              ? "Tools — all enabled (click to restrict)"
+              : `${selectedTools.length} tool${selectedTools.length !== 1 ? "s" : ""} selected`}
+          </span>
+        </button>
+
+        {toolsOpen && (
+          <div className="mt-2 rounded-lg border border-border/60 bg-muted/20 p-3 grid grid-cols-2 gap-2">
+            {ALL_TOOLS.map((tool) => {
+              const checked = selectedTools.includes(tool.key);
+              return (
+                <label
+                  key={tool.key}
+                  className={`flex items-start gap-2 rounded-lg border p-2 cursor-pointer transition-all ${
+                    checked
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-border/40 hover:border-border hover:bg-muted/40"
+                  }`}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleTool(tool.key)}
+                    className="mt-0.5 h-3 w-3 accent-primary shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-medium text-foreground/90 leading-tight">
+                      {tool.label}
+                    </p>
+                    <p className="text-xs text-muted-foreground/70 leading-tight mt-0.5">
+                      {tool.description}
+                    </p>
+                  </div>
+                </label>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
