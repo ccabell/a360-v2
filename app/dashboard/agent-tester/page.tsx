@@ -2,8 +2,17 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
+import type { Components } from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Zap,
   CheckCircle,
@@ -16,6 +25,7 @@ import {
   Bot,
   Send,
   Hash,
+  Sparkles,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -54,6 +64,113 @@ interface RunMeta {
   model?: string;
   tokenUsage?: { inputTokens?: number; outputTokens?: number; totalTokens?: number };
 }
+
+const EXAMPLE_PROMPTS = [
+  "Summarize the safety profile of Botox Cosmetic",
+  "What's the onset and duration of Botox?",
+  "Compare Botox and Dysport for the glabella",
+];
+
+// ---------------------------------------------------------------------------
+// Markdown renderer — gives agent output real visual structure
+// ---------------------------------------------------------------------------
+
+function getLeadingText(node: unknown): string {
+  if (typeof node === "string") return node;
+  if (Array.isArray(node)) {
+    for (const child of node) {
+      const t = getLeadingText(child);
+      if (t) return t;
+    }
+  }
+  return "";
+}
+
+const mdComponents: Components = {
+  h1: ({ children }) => (
+    <h1 className="mt-6 mb-2 pb-2 text-base font-bold tracking-tight text-foreground border-b border-border">
+      {children}
+    </h1>
+  ),
+  h2: ({ children }) => (
+    <h2 className="mt-6 mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+      {children}
+    </h2>
+  ),
+  h3: ({ children }) => (
+    <h3 className="mt-4 mb-1.5 text-sm font-semibold text-foreground">
+      {children}
+    </h3>
+  ),
+  p: ({ children }) => {
+    const lead = getLeadingText(children);
+    if (lead.startsWith("🚩")) {
+      return (
+        <div className="my-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm leading-relaxed text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300">
+          {children}
+        </div>
+      );
+    }
+    if (lead.startsWith("⚠️")) {
+      return (
+        <div className="my-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300">
+          {children}
+        </div>
+      );
+    }
+    if (lead.startsWith("✅") || lead.startsWith("✓")) {
+      return (
+        <div className="my-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-relaxed text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300">
+          {children}
+        </div>
+      );
+    }
+    return (
+      <p className="mb-2.5 text-sm leading-relaxed text-foreground/85">
+        {children}
+      </p>
+    );
+  },
+  hr: () => <div className="my-5 border-t border-border" />,
+  ul: ({ children }) => (
+    <ul className="mb-3 ml-4 space-y-1 list-disc marker:text-muted-foreground/50">
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol className="mb-3 ml-4 space-y-1 list-decimal marker:text-muted-foreground/50">
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => (
+    <li className="text-sm leading-relaxed text-foreground/85">{children}</li>
+  ),
+  strong: ({ children }) => (
+    <strong className="font-semibold text-foreground">{children}</strong>
+  ),
+  em: ({ children }) => (
+    <em className="italic text-foreground/70">{children}</em>
+  ),
+  blockquote: ({ children }) => (
+    <blockquote className="my-3 border-l-2 border-primary/40 pl-4 text-sm italic text-muted-foreground">
+      {children}
+    </blockquote>
+  ),
+  code: ({ children, className }) => {
+    if (className?.startsWith("language-")) {
+      return (
+        <pre className="my-3 overflow-auto rounded-lg bg-muted p-4 text-xs font-mono leading-relaxed">
+          <code>{children}</code>
+        </pre>
+      );
+    }
+    return (
+      <code className="rounded bg-muted px-1.5 py-0.5 text-xs font-mono text-foreground">
+        {children}
+      </code>
+    );
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Activity Timeline Item
@@ -253,8 +370,10 @@ export default function AgentTesterPage() {
   const selectedAgent = agents.find((a) => a.id === selectedAgentId);
 
   // ---- Run handler ----
-  const handleRun = useCallback(async () => {
-    if (!selectedAgentId || !userMessage.trim() || running) return;
+  const handleRun = useCallback(async (override?: string) => {
+    const message = (override ?? userMessage).trim();
+    if (!selectedAgentId || !message || running) return;
+    if (override) setUserMessage(override);
     const start = Date.now();
     setRunning(true);
     setOutput("");
@@ -269,7 +388,7 @@ export default function AgentTesterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           agent_id: selectedAgentId,
-          user_message: userMessage.trim(),
+          user_message: message,
           patient_id: selectedPatientId || undefined,
         }),
       });
@@ -369,98 +488,106 @@ export default function AgentTesterPage() {
   // This ensures the page is always exactly one screen, never overflows
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* -- Config Bar -- */}
-      <div className="shrink-0 border-b border-border bg-background px-6 py-3">
+      {/* ── Config Bar ── */}
+      <div className="shrink-0 border-b border-border bg-background px-6 py-4">
+        <div className="mb-3 flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+            <Bot className="h-4 w-4 text-primary" />
+          </div>
+          <div className="min-w-0">
+            <h1 className="text-sm font-semibold leading-none text-foreground">
+              Agent Tester
+            </h1>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Run any agent against live patient and library data — watch every
+              tool call as it works.
+            </p>
+          </div>
+        </div>
+
+
         <div className="flex items-end gap-3">
-          <div className="flex flex-col gap-1 min-w-[200px]">
-            <label
-              className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
-              htmlFor="agent-select"
-            >
+          <div className="flex min-w-[220px] flex-col gap-1.5">
+            <label className="text-xs font-medium text-muted-foreground">
               Agent
             </label>
-            <select
-              id="agent-select"
+            <Select
               value={selectedAgentId}
-              onChange={(e) => setSelectedAgentId(e.target.value)}
-              className="h-9 rounded-md border border-border bg-transparent px-2.5 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+              onValueChange={(v) => v && setSelectedAgentId(v)}
             >
-              <option value="">Select agent...</option>
-              {runnableAgents.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="h-9 w-full">
+                <SelectValue placeholder="Select an agent…" />
+              </SelectTrigger>
+              <SelectContent>
+                {runnableAgents.map((a) => (
+                  <SelectItem key={a.id} value={a.id}>
+                    {a.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="flex flex-col gap-1 min-w-[180px]">
-            <label
-              className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
-              htmlFor="patient-select"
-            >
-              Patient
+          <div className="flex min-w-[190px] flex-col gap-1.5">
+            <label className="text-xs font-medium text-muted-foreground">
+              Patient context
             </label>
-            <select
-              id="patient-select"
+            <Select
               value={selectedPatientId}
-              onChange={(e) => setSelectedPatientId(e.target.value)}
-              className="h-9 rounded-md border border-border bg-transparent px-2.5 text-sm text-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
+              onValueChange={(v) => setSelectedPatientId(v ?? "")}
             >
-              <option value="">No patient context</option>
-              {patients.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger className="h-9 w-full">
+                <SelectValue placeholder="No patient" />
+              </SelectTrigger>
+              <SelectContent>
+                {patients.map((p) => (
+                  <SelectItem key={p.id} value={p.id}>
+                    {p.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="flex flex-1 flex-col gap-1">
-            <label
-              className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground"
-              htmlFor="user-message"
-            >
+          <div className="flex flex-1 flex-col gap-1.5">
+            <label className="text-xs font-medium text-muted-foreground">
               Message
             </label>
             <div className="relative">
-              <input
-                id="user-message"
-                type="text"
+              <Input
                 value={userMessage}
                 onChange={(e) => setUserMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="h-9 w-full rounded-md border border-border bg-transparent px-3 pr-20 text-sm text-foreground placeholder-muted-foreground focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/50"
-                placeholder="Enter a message for the agent..."
+                className="h-9 pr-20"
+                placeholder="Ask the agent something…"
               />
               <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-muted-foreground/50">
-                Ctrl+Enter
+                ⌘/Ctrl ↵
               </span>
             </div>
           </div>
 
           <Button
-            onClick={handleRun}
+            onClick={() => handleRun()}
             disabled={!selectedAgentId || !userMessage.trim() || running}
-            size="sm"
-            className="h-9 gap-1.5 px-4"
+            className="h-9 gap-1.5 px-5"
           >
             {running ? (
               <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 Running
               </>
             ) : (
               <>
-                <Send className="h-3.5 w-3.5" />
-                Run
+                <Send className="h-4 w-4" />
+                Run agent
               </>
             )}
           </Button>
         </div>
 
-        {selectedAgent && (
-          <p className="mt-1.5 text-[11px] text-muted-foreground truncate">
+        {selectedAgent?.description && (
+          <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground">
             {selectedAgent.description}
           </p>
         )}
@@ -468,22 +595,47 @@ export default function AgentTesterPage() {
 
       {/* -- Main Area -- */}
       {!hasResults && !running ? (
-        <div className="flex flex-1 items-center justify-center min-h-0">
-          <div className="text-center space-y-3">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-              <Zap className="h-6 w-6 text-muted-foreground" />
+        <div className="flex flex-1 items-center justify-center min-h-0 px-6">
+          <div className="w-full max-w-md text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+              <Sparkles className="h-6 w-6 text-primary" />
             </div>
-            <p className="text-sm font-medium text-foreground">Agent Tester</p>
-            <p className="text-xs text-muted-foreground max-w-sm">
-              Select an agent, optionally choose a patient for context, type a
-              message, and hit Run.
+            <p className="mt-4 text-base font-semibold text-foreground">
+              Run an agent
             </p>
+            <p className="mx-auto mt-1.5 max-w-sm text-sm leading-relaxed text-muted-foreground">
+              {selectedAgent?.description ??
+                "Pick an agent, add a patient for context if you like, and ask it something — you'll see every tool call and the answer stream in live."}
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {EXAMPLE_PROMPTS.map((ex) => (
+                <button
+                  key={ex}
+                  type="button"
+                  onClick={() => handleRun(ex)}
+                  disabled={!selectedAgentId || running}
+                  className="rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {ex}
+                </button>
+              ))}
+            </div>
+            {!selectedAgentId && (
+              <p className="mt-3.5 text-[11px] text-muted-foreground/60">
+                Select an agent above to try one.
+              </p>
+            )}
           </div>
         </div>
       ) : (
         <div className="flex flex-1 min-h-0">
           {/* -- Left: Output -- */}
           <div className="flex flex-[3] flex-col min-w-0 min-h-0 border-r border-border">
+            <div className="shrink-0 border-b border-border px-8 py-2.5">
+              <span className="text-xs font-semibold text-foreground">
+                Output
+              </span>
+            </div>
             {runMeta?.error && (
               <div className="shrink-0 border-b border-red-300 bg-red-50 px-6 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">
                 {runMeta.error}
@@ -495,8 +647,8 @@ export default function AgentTesterPage() {
               className="flex-1 overflow-y-auto min-h-0 px-8 py-6"
             >
               {output ? (
-                <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-code:text-xs prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:rounded">
-                  <ReactMarkdown>{output}</ReactMarkdown>
+                <div className="max-w-none">
+                  <ReactMarkdown components={mdComponents}>{output}</ReactMarkdown>
                 </div>
               ) : running ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -558,7 +710,6 @@ export default function AgentTesterPage() {
                 </div>
               )}
               {toolEvents.map((evt, idx) => {
-                // A tool_call is "pending" only while running AND no matching result/error exists yet
                 const pending =
                   running &&
                   evt.type === "tool_call" &&
