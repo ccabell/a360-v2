@@ -159,6 +159,7 @@ export async function executeAgentRun(
           emit({
             type: "tool_call",
             toolName: part.toolName,
+            toolCallId: part.toolCallId,
             input: part.input,
           });
           break;
@@ -169,6 +170,7 @@ export async function executeAgentRun(
           emit({
             type: "tool_result",
             toolName: part.toolName,
+            toolCallId: part.toolCallId,
             result: part.output,
           });
           if (

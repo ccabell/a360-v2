@@ -49,6 +49,7 @@ interface PatientOption {
 interface ToolEvent {
   type: string;
   toolName?: string;
+  toolCallId?: string;
   input?: unknown;
   result?: unknown;
   error?: string;
@@ -93,7 +94,7 @@ const mdComponents: Components = {
     </h1>
   ),
   h2: ({ children }) => (
-    <h2 className="mt-6 mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+    <h2 className="mt-6 mb-2 pb-1.5 text-base font-bold text-foreground border-b border-border first:mt-0">
       {children}
     </h2>
   ),
@@ -327,6 +328,7 @@ export default function AgentTesterPage() {
 
   const outputScrollRef = useRef<HTMLDivElement>(null);
   const timelineScrollRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   // Auto-scroll: scroll the container to bottom, not a sentinel element
   useEffect(() => {
@@ -383,9 +385,12 @@ export default function AgentTesterPage() {
     setRunStartTime(start);
 
     try {
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
       const res = await fetch("/api/agent-runner", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
         body: JSON.stringify({
           agent_id: selectedAgentId,
           user_message: message,
@@ -567,23 +572,25 @@ export default function AgentTesterPage() {
             </div>
           </div>
 
-          <Button
-            onClick={() => handleRun()}
-            disabled={!selectedAgentId || !userMessage.trim() || running}
-            className="h-9 gap-1.5 px-5"
-          >
-            {running ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Running
-              </>
-            ) : (
-              <>
-                <Send className="h-4 w-4" />
-                Run agent
-              </>
-            )}
-          </Button>
+          {running ? (
+            <Button
+              onClick={() => { abortControllerRef.current?.abort(); setRunning(false); }}
+              variant="destructive"
+              className="h-9 gap-1.5 px-5"
+            >
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Stop
+            </Button>
+          ) : (
+            <Button
+              onClick={() => handleRun()}
+              disabled={!selectedAgentId || !userMessage.trim()}
+              className="h-9 gap-1.5 px-5"
+            >
+              <Send className="h-4 w-4" />
+              Run agent
+            </Button>
+          )}
         </div>
 
         {selectedAgent?.description && (
@@ -717,7 +724,9 @@ export default function AgentTesterPage() {
                     (e, j) =>
                       j > idx &&
                       (e.type === "tool_result" || e.type === "tool_error") &&
-                      e.toolName === evt.toolName,
+                      (evt.toolCallId
+                        ? e.toolCallId === evt.toolCallId
+                        : e.toolName === evt.toolName),
                   );
                 return (
                   <TimelineItem
