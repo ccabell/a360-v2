@@ -26,47 +26,28 @@ import {
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
 const menuItems = [
+  // ── Core product ─────────────────────────────────────────────────────────
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
+  { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
+  { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
+  { name: "Reach", href: "/dashboard/reach", icon: Share2 },
+  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
+  // ── Intelligence tools ───────────────────────────────────────────────────
   { name: "Research", href: "/dashboard/research", icon: Telescope },
   { name: "Ask", href: "/dashboard/ask", icon: BookOpenCheck },
-  { name: "History", href: "/dashboard/history", icon: History },
-  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
-  { name: "Reach", href: "/dashboard/reach", icon: Share2 },
-  { name: "RAG", href: "/dashboard/rag", icon: SearchIcon },
-  {
-    name: "Agent Manager",
-    href: "/dashboard/agents",
-    icon: Sparkles,
-    scope: "internal",
-  },
-  {
-    name: "Fuel Library",
-    href: "/dashboard/fuel-library",
-    icon: BookOpen,
-    scope: "internal",
-  },
+  { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },
+  { name: "Age Progression", href: "/dashboard/age-progression", icon: UserRound },
+  // ── Agent runtime (builder / tester) ────────────────────────────────────
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
   { name: "Studio", href: "/dashboard/studio", icon: Blocks },
-  { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
-  { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
-  { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },
-  {
-    name: "Age Progression",
-    href: "/dashboard/age-progression",
-    icon: UserRound,
-  },
-  {
-    name: "Before After",
-    href: "/dashboard/before-after",
-    icon: Images,
-  },
-  {
-    name: "Components",
-    href: "/dashboard/components",
-    icon: Settings,
-    scope: "internal",
-  },
+  // ── Internal only ────────────────────────────────────────────────────────
+  { name: "History", href: "/dashboard/history", icon: History, scope: "internal" },
+  { name: "RAG", href: "/dashboard/rag", icon: SearchIcon, scope: "internal" },
+  { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
+  { name: "Fuel Library", href: "/dashboard/fuel-library", icon: BookOpen, scope: "internal" },
+  { name: "Before After", href: "/dashboard/before-after", icon: Images, scope: "internal" },
+  { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
 ] as const;
 
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
