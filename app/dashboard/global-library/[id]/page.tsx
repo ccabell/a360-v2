@@ -22,6 +22,8 @@ import {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
+interface TimeField { display: string; unit?: string; value_min?: number; value_max?: number }
+
 interface Product {
   id: string;
   name: string;
@@ -29,14 +31,14 @@ interface Product {
   kind: string;
   regulatory_status: string | null;
   description: string | null;
-  indications: string | null;
-  fda_approved_areas: string | null;
+  indications: string[] | string | null;
+  fda_approved_areas: string[] | string | null;
   contraindications: string | null;
   warnings: string | null;
   side_effects: string | null;
-  onset_time: string | null;
-  duration_of_effect: string | null;
-  social_downtime: string | null;
+  onset_time: TimeField | string | null;
+  duration_of_effect: TimeField | string | null;
+  social_downtime: TimeField | string | null;
   logo_path: string | null;
   manufacturer: { id: string; name: string } | null;
 }
@@ -90,6 +92,18 @@ const SOURCE_STYLE: Record<string, { label: string; className: string }> = {
   clinical_trial: { label: "Clinical Trial", className: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300" },
   industry:    { label: "Industry",     className: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-300" },
 };
+
+function timeDisplay(field: { display: string } | string | null | undefined): string | null {
+  if (!field) return null;
+  if (typeof field === "string") return field;
+  return field.display ?? null;
+}
+
+function arrayOrString(val: string[] | string | null | undefined): string | null {
+  if (!val) return null;
+  if (Array.isArray(val)) return val.join(", ");
+  return val;
+}
 
 function sourceStyle(source: string | null) {
   if (!source) return { label: "Source", className: "bg-muted text-muted-foreground" };
@@ -240,9 +254,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   );
 
   const stats: Array<{ icon: React.ElementType; label: string; value: string | null }> = [
-    { icon: Clock, label: "Onset", value: product.onset_time },
-    { icon: Timer, label: "Duration", value: product.duration_of_effect },
-    { icon: CalendarClock, label: "Downtime", value: product.social_downtime },
+    { icon: Clock, label: "Onset", value: timeDisplay(product.onset_time) },
+    { icon: Timer, label: "Duration", value: timeDisplay(product.duration_of_effect) },
+    { icon: CalendarClock, label: "Downtime", value: timeDisplay(product.social_downtime) },
   ].filter((s) => s.value);
 
   return (
@@ -330,7 +344,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 {stats.map(({ icon, label, value }) => (
                   <StatCard key={label} icon={icon} label={label} value={value!} />
                 ))}
-                {product.fda_approved_areas && (
+                {arrayOrString(product.fda_approved_areas) && (
                   <div className="rounded-xl border border-border bg-card px-4 py-3.5 sm:col-span-3">
                     <div className="flex items-start gap-3">
                       <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
@@ -338,7 +352,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       </div>
                       <div>
                         <p className="text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground leading-none mb-1.5">FDA-Approved Areas</p>
-                        <p className="text-sm text-foreground/80 leading-snug">{product.fda_approved_areas}</p>
+                        <p className="text-sm text-foreground/80 leading-snug">{arrayOrString(product.fda_approved_areas)}</p>
                       </div>
                     </div>
                   </div>
