@@ -49,11 +49,11 @@ interface FuelDoc {
 
 interface EvidenceLink {
   id: string;
-  label: string;
-  url: string;
-  source_type: string | null;
-  evidence_tier: string | null;
-  notes: string | null;
+  source: string | null;
+  source_reference: string | null;
+  url: string | null;
+  snippet: string | null;
+  authority_rank: number | null;
 }
 
 interface NamedItem { id: string; name: string }
@@ -66,7 +66,9 @@ interface ProductDetail {
   concerns: NamedItem[];
   relationships: Array<{
     relationship_type: string;
-    notes: string | null;
+    clinical_rationale: string | null;
+    timing_guidance: string | null;
+    pairing_tier: string | null;
     related: { id: string; name: string } | null;
   }>;
 }
@@ -79,13 +81,20 @@ const REGULATORY_BADGE: Record<string, { label: string; className: string }> = {
   otc: { label: "OTC", className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" },
 };
 
-const EVIDENCE_TIER_STYLE: Record<string, string> = {
-  FDA: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
-  PubMed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
-  manufacturer: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
-  clinical_trial: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300",
-  industry: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
+const SOURCE_STYLE: Record<string, { label: string; className: string }> = {
+  fda_label:   { label: "FDA Label",    className: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
+  pubmed:      { label: "PubMed",       className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300" },
+  ifu:         { label: "Manufacturer", className: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300" },
+  youtube:     { label: "YouTube",      className: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300" },
+  podcast:     { label: "Podcast",      className: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300" },
+  clinical_trial: { label: "Clinical Trial", className: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300" },
+  industry:    { label: "Industry",     className: "bg-slate-100 text-slate-700 dark:bg-slate-900/30 dark:text-slate-300" },
 };
+
+function sourceStyle(source: string | null) {
+  if (!source) return { label: "Source", className: "bg-muted text-muted-foreground" };
+  return SOURCE_STYLE[source] ?? { label: source, className: "bg-muted text-muted-foreground" };
+}
 
 const RELATIONSHIP_LABEL: Record<string, string> = {
   complement: "Pairs with",
@@ -213,15 +222,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const { product, fuel, evidence, anatomy, concerns, relationships } = data;
   const reg = product.regulatory_status ? REGULATORY_BADGE[product.regulatory_status] : null;
 
-  // Featured evidence: prefer FDA first, then PubMed, then others — show top 3
-  const featuredEvidence = [
-    ...evidence.filter((e) => e.evidence_tier === "FDA"),
-    ...evidence.filter((e) => e.evidence_tier === "PubMed"),
-    ...evidence.filter((e) => e.evidence_tier !== "FDA" && e.evidence_tier !== "PubMed"),
-  ].slice(0, 3);
-  const remainingEvidence = evidence.slice(featuredEvidence.length);
+  // Featured evidence: prefer FDA label first, then pubmed, then others — show top 3
+  const sorted = [
+    ...evidence.filter((e) => e.source === "fda_label"),
+    ...evidence.filter((e) => e.source === "pubmed"),
+    ...evidence.filter((e) => e.source !== "fda_label" && e.source !== "pubmed"),
+  ];
+  const featuredEvidence = sorted.slice(0, 3);
+  const remainingEvidence = sorted.slice(3);
 
-  // Pairings — exclude "compare" / "alternative" for the main pairings section
+  // Pairings
   const pairings = relationships.filter(
     (r) => !["compare", "alternative", "contraindicated_with"].includes(r.relationship_type)
   );
@@ -379,14 +389,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
+                      <div className="flex items-center gap-2 mb-1">
                         <p className="text-sm font-semibold text-foreground">{r.related?.name ?? "—"}</p>
                         <span className="text-[0.6rem] font-medium uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-1.5 py-0.5 rounded">
                           {RELATIONSHIP_LABEL[r.relationship_type] ?? r.relationship_type}
                         </span>
+                        {r.pairing_tier && (
+                          <span className="text-[0.6rem] text-muted-foreground/60 uppercase tracking-wide">{r.pairing_tier}</span>
+                        )}
                       </div>
-                      {r.notes && (
-                        <p className="text-xs text-muted-foreground leading-relaxed">{r.notes}</p>
+                      {r.clinical_rationale && (
+                        <p className="text-xs text-muted-foreground leading-relaxed">{r.clinical_rationale}</p>
+                      )}
+                      {r.timing_guidance && (
+                        <p className="text-xs text-muted-foreground/60 mt-1 italic">{r.timing_guidance}</p>
                       )}
                     </div>
                   </div>
@@ -416,11 +432,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <SectionHeader>Evidence Foundation</SectionHeader>
               <div className="space-y-2.5">
                 {featuredEvidence.map((e) => {
-                  const tierStyle = e.evidence_tier ? EVIDENCE_TIER_STYLE[e.evidence_tier] ?? "bg-muted text-muted-foreground" : "bg-muted text-muted-foreground";
+                  const style = sourceStyle(e.source);
                   return (
                     <a
                       key={e.id}
-                      href={e.url}
+                      href={e.url ?? "#"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-3.5 hover:border-primary/30 hover:bg-muted/20 transition-all group"
@@ -430,20 +446,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          {e.evidence_tier && (
-                            <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${tierStyle}`}>
-                              {e.evidence_tier}
-                            </span>
-                          )}
+                          <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${style.className}`}>
+                            {style.label}
+                          </span>
                         </div>
                         <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
-                          {e.label}
+                          {e.source_reference ?? "Source"}
                         </p>
-                        {e.notes && (
-                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{e.notes}</p>
+                        {e.snippet && (
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed line-clamp-2">{e.snippet}</p>
                         )}
                       </div>
-                      <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors mt-0.5" />
+                      {e.url && <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors mt-0.5" />}
                     </a>
                   );
                 })}
@@ -460,24 +474,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     {showAllEvidence && (
                       <div className="space-y-2">
                         {remainingEvidence.map((e) => {
-                          const tierStyle = e.evidence_tier ? EVIDENCE_TIER_STYLE[e.evidence_tier] ?? "bg-muted text-muted-foreground" : "bg-muted text-muted-foreground";
+                          const style = sourceStyle(e.source);
                           return (
                             <a
                               key={e.id}
-                              href={e.url}
+                              href={e.url ?? "#"}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex items-center gap-3 rounded-lg border border-border/60 bg-card/60 px-4 py-2.5 hover:border-primary/30 hover:bg-muted/20 transition-all group"
                             >
-                              {e.evidence_tier && (
-                                <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded shrink-0 ${tierStyle}`}>
-                                  {e.evidence_tier}
-                                </span>
-                              )}
+                              <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded shrink-0 ${style.className}`}>
+                                {style.label}
+                              </span>
                               <p className="text-xs text-foreground/80 group-hover:text-primary transition-colors flex-1 min-w-0 truncate">
-                                {e.label}
+                                {e.source_reference ?? "Source"}
                               </p>
-                              <ExternalLink className="h-3 w-3 text-muted-foreground/40 shrink-0" />
+                              {e.url && <ExternalLink className="h-3 w-3 text-muted-foreground/40 shrink-0" />}
                             </a>
                           );
                         })}
