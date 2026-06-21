@@ -22,6 +22,7 @@ import {
   BookOpen,
   BookOpenCheck,
   Blocks,
+  Library,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -34,6 +35,7 @@ const menuItems = [
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   // ── Intelligence tools ───────────────────────────────────────────────────
+  { name: "Global Library", href: "/dashboard/global-library", icon: Library },
   { name: "Research", href: "/dashboard/research", icon: Telescope },
   { name: "Ask", href: "/dashboard/ask", icon: BookOpenCheck },
   { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },
