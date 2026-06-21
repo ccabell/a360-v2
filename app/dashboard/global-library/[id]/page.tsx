@@ -8,12 +8,16 @@ import {
   ArrowLeft,
   Zap,
   FlaskConical,
-  Stethoscope,
-  Link2,
   ExternalLink,
-  ChevronRight,
   AlertCircle,
-  BookOpen,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  Timer,
+  CalendarClock,
+  Shield,
+  Link2,
+  Layers,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -33,13 +37,13 @@ interface Product {
   onset_time: string | null;
   duration_of_effect: string | null;
   social_downtime: string | null;
+  logo_path: string | null;
   manufacturer: { id: string; name: string } | null;
 }
 
 interface FuelDoc {
   status: string;
   updated_at: string;
-  schema_version: string | null;
   content: string | null;
 }
 
@@ -60,46 +64,58 @@ interface ProductDetail {
   evidence: EvidenceLink[];
   anatomy: NamedItem[];
   concerns: NamedItem[];
-  relationships: Array<{ relationship_type: string; notes: string | null; related: { id: string; name: string } | null }>;
+  relationships: Array<{
+    relationship_type: string;
+    notes: string | null;
+    related: { id: string; name: string } | null;
+  }>;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Constants ─────────────────────────────────────────────────────────────────
 
-const EVIDENCE_TIER_COLOR: Record<string, string> = {
+const REGULATORY_BADGE: Record<string, { label: string; className: string }> = {
+  prescription: { label: "Rx Prescription", className: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300" },
+  medical_device: { label: "FDA Medical Device", className: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300" },
+  otc: { label: "OTC", className: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" },
+};
+
+const EVIDENCE_TIER_STYLE: Record<string, string> = {
   FDA: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300",
   PubMed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300",
   manufacturer: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300",
-  industry: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
   clinical_trial: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-300",
+  industry: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300",
 };
 
-const TABS = [
-  { id: "intelligence", label: "Agent Intelligence", icon: Zap },
-  { id: "overview", label: "Product Overview", icon: BookOpen },
-  { id: "evidence", label: "Evidence", icon: FlaskConical },
-  { id: "coverage", label: "Coverage Map", icon: Stethoscope },
-];
+const RELATIONSHIP_LABEL: Record<string, string> = {
+  complement: "Pairs with",
+  stacks_with: "Stacks with",
+  compare: "Compare to",
+  alternative: "Alternative to",
+  contraindicated_with: "Avoid combining",
+  synergistic: "Synergistic with",
+};
 
 // ── Markdown components ───────────────────────────────────────────────────────
 
 const mdComponents = {
   h1: ({ children }: { children?: React.ReactNode }) => (
-    <h1 className="text-xl font-bold text-foreground mt-8 mb-3 pb-2 border-b border-border first:mt-0">{children}</h1>
+    <h1 className="text-lg font-bold text-foreground mt-6 mb-2 pb-2 border-b border-border first:mt-0">{children}</h1>
   ),
   h2: ({ children }: { children?: React.ReactNode }) => (
-    <h2 className="text-base font-semibold text-foreground mt-6 mb-2 pl-3 border-l-2 border-primary">{children}</h2>
+    <h2 className="text-sm font-semibold text-foreground mt-5 mb-1.5 pl-3 border-l-2 border-primary">{children}</h2>
   ),
   h3: ({ children }: { children?: React.ReactNode }) => (
-    <h3 className="text-sm font-semibold text-foreground/90 mt-4 mb-1.5">{children}</h3>
+    <h3 className="text-sm font-semibold text-foreground/90 mt-4 mb-1">{children}</h3>
   ),
   p: ({ children }: { children?: React.ReactNode }) => (
-    <p className="text-sm text-foreground/80 leading-relaxed mb-3">{children}</p>
+    <p className="text-sm text-foreground/75 leading-relaxed mb-2.5">{children}</p>
   ),
   ul: ({ children }: { children?: React.ReactNode }) => (
-    <ul className="list-disc list-inside space-y-1 mb-3 text-sm text-foreground/80">{children}</ul>
+    <ul className="list-disc list-inside space-y-1 mb-2.5 text-sm text-foreground/75">{children}</ul>
   ),
   ol: ({ children }: { children?: React.ReactNode }) => (
-    <ol className="list-decimal list-inside space-y-1 mb-3 text-sm text-foreground/80">{children}</ol>
+    <ol className="list-decimal list-inside space-y-1 mb-2.5 text-sm text-foreground/75">{children}</ol>
   ),
   li: ({ children }: { children?: React.ReactNode }) => (
     <li className="leading-relaxed">{children}</li>
@@ -108,8 +124,8 @@ const mdComponents = {
     <strong className="font-semibold text-foreground">{children}</strong>
   ),
   table: ({ children }: { children?: React.ReactNode }) => (
-    <div className="overflow-x-auto mb-4">
-      <table className="w-full text-sm border-collapse rounded-lg overflow-hidden">{children}</table>
+    <div className="overflow-x-auto mb-3">
+      <table className="w-full text-sm border-collapse">{children}</table>
     </div>
   ),
   thead: ({ children }: { children?: React.ReactNode }) => (
@@ -119,10 +135,10 @@ const mdComponents = {
     <th className="px-3 py-2 text-left font-semibold text-foreground/80 text-xs uppercase tracking-wide border-b border-border">{children}</th>
   ),
   td: ({ children }: { children?: React.ReactNode }) => (
-    <td className="px-3 py-2 text-foreground/75 border-b border-border/50">{children}</td>
+    <td className="px-3 py-2 text-foreground/70 border-b border-border/40 text-sm">{children}</td>
   ),
   blockquote: ({ children }: { children?: React.ReactNode }) => (
-    <blockquote className="border-l-4 border-primary/30 pl-4 italic text-muted-foreground text-sm mb-3">{children}</blockquote>
+    <blockquote className="border-l-4 border-primary/30 pl-4 italic text-muted-foreground text-sm mb-2.5">{children}</blockquote>
   ),
   code: ({ inline, children }: { inline?: boolean; children?: React.ReactNode }) =>
     inline ? (
@@ -130,8 +146,34 @@ const mdComponents = {
     ) : (
       <pre className="bg-muted rounded-lg p-4 overflow-x-auto mb-3 text-xs font-mono"><code>{children}</code></pre>
     ),
-  hr: () => <hr className="border-border my-6" />,
+  hr: () => <hr className="border-border my-4" />,
 };
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function StatCard({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string }) {
+  return (
+    <div className="rounded-xl border border-border bg-card px-4 py-3.5 flex items-start gap-3">
+      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+        <Icon className="h-3.5 w-3.5 text-primary" />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground leading-none mb-1">{label}</p>
+        <p className="text-sm font-semibold text-foreground leading-snug">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
+      <span className="h-px flex-1 bg-border" />
+      {children}
+      <span className="h-px flex-1 bg-border" />
+    </h2>
+  );
+}
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
@@ -140,22 +182,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const router = useRouter();
   const [data, setData] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("intelligence");
+  const [agentIntelOpen, setAgentIntelOpen] = useState(false);
+  const [showAllEvidence, setShowAllEvidence] = useState(false);
 
   useEffect(() => {
     fetch(`/api/global-library/products/${id}`)
       .then((r) => r.json())
-      .then((d) => {
-        setData(d as ProductDetail);
-        setLoading(false);
-      })
+      .then((d) => { setData(d as ProductDetail); setLoading(false); })
       .catch(() => setLoading(false));
   }, [id]);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="animate-pulse text-muted-foreground text-sm">Loading product…</div>
+        <div className="animate-pulse text-muted-foreground text-sm">Loading…</div>
       </div>
     );
   }
@@ -171,13 +211,35 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const { product, fuel, evidence, anatomy, concerns, relationships } = data;
+  const reg = product.regulatory_status ? REGULATORY_BADGE[product.regulatory_status] : null;
+
+  // Featured evidence: prefer FDA first, then PubMed, then others — show top 3
+  const featuredEvidence = [
+    ...evidence.filter((e) => e.evidence_tier === "FDA"),
+    ...evidence.filter((e) => e.evidence_tier === "PubMed"),
+    ...evidence.filter((e) => e.evidence_tier !== "FDA" && e.evidence_tier !== "PubMed"),
+  ].slice(0, 3);
+  const remainingEvidence = evidence.slice(featuredEvidence.length);
+
+  // Pairings — exclude "compare" / "alternative" for the main pairings section
+  const pairings = relationships.filter(
+    (r) => !["compare", "alternative", "contraindicated_with"].includes(r.relationship_type)
+  );
+  const comparisons = relationships.filter(
+    (r) => ["compare", "alternative"].includes(r.relationship_type)
+  );
+
+  const stats: Array<{ icon: React.ElementType; label: string; value: string | null }> = [
+    { icon: Clock, label: "Onset", value: product.onset_time },
+    { icon: Timer, label: "Duration", value: product.duration_of_effect },
+    { icon: CalendarClock, label: "Downtime", value: product.social_downtime },
+  ].filter((s) => s.value);
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      {/* Header */}
+      {/* Sticky header */}
       <div className="shrink-0 border-b border-border bg-background/95 backdrop-blur px-6 py-4">
-        <div className="max-w-4xl mx-auto">
-          {/* Back */}
+        <div className="max-w-3xl mx-auto">
           <button
             onClick={() => router.push("/dashboard/global-library")}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mb-3 transition-colors"
@@ -186,304 +248,309 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             Global Library
           </button>
 
-          {/* Product identity */}
-          <div className="flex items-start justify-between gap-4">
-            <div>
+          <div className="flex items-center gap-4">
+            {/* Logo placeholder — ready for when logos are added */}
+            <div className="h-12 w-12 shrink-0 rounded-xl border border-border bg-muted/50 flex items-center justify-center overflow-hidden">
+              {product.logo_path ? (
+                <img src={product.logo_path} alt={product.brand_name ?? product.name} className="h-full w-full object-contain p-1" />
+              ) : (
+                <span className="text-lg font-bold text-muted-foreground/40">
+                  {(product.brand_name ?? product.name).charAt(0)}
+                </span>
+              )}
+            </div>
+
+            <div className="flex-1 min-w-0">
               <h1 className="text-lg font-bold text-foreground leading-tight">
                 {product.brand_name ?? product.name}
               </h1>
-              {product.brand_name && product.brand_name !== product.name && (
-                <p className="text-sm text-muted-foreground mt-0.5">{product.name}</p>
-              )}
-              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
                 {product.manufacturer?.name && (
                   <span className="text-xs text-muted-foreground">{product.manufacturer.name}</span>
                 )}
-                {product.regulatory_status && (
-                  <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded-full capitalize">
-                    {product.regulatory_status.replace("_", " ")}
+                {reg && (
+                  <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${reg.className}`}>
+                    {reg.label}
                   </span>
                 )}
                 {fuel?.status === "active" && (
-                  <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
-                    <Zap className="h-3 w-3" />
+                  <span className="flex items-center gap-1 text-[0.6rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+                    <Zap className="h-2.5 w-2.5" />
                     Agent Intelligence Active
                   </span>
                 )}
               </div>
             </div>
 
-            {/* Quick stats */}
-            <div className="flex gap-3 shrink-0">
-              <div className="text-center">
-                <p className="text-xl font-bold text-foreground">{evidence.length}</p>
-                <p className="text-[0.6rem] text-muted-foreground uppercase tracking-wide">Evidence</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xl font-bold text-foreground">{anatomy.length}</p>
-                <p className="text-[0.6rem] text-muted-foreground uppercase tracking-wide">Areas</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xl font-bold text-foreground">{concerns.length}</p>
-                <p className="text-[0.6rem] text-muted-foreground uppercase tracking-wide">Concerns</p>
-              </div>
+            {/* Quick counts */}
+            <div className="flex gap-4 shrink-0 text-center">
+              {[
+                { n: evidence.length, label: "Sources" },
+                { n: concerns.length, label: "Concerns" },
+                { n: anatomy.length, label: "Areas" },
+              ].map(({ n, label }) => (
+                <div key={label}>
+                  <p className="text-xl font-bold text-foreground leading-none">{n}</p>
+                  <p className="text-[0.6rem] text-muted-foreground uppercase tracking-wide mt-0.5">{label}</p>
+                </div>
+              ))}
             </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex gap-1 mt-4 border-b border-border -mb-4">
-            {TABS.map((tab) => {
-              const Icon = tab.icon;
-              const active = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium border-b-2 transition-colors ${
-                    active
-                      ? "border-primary text-primary"
-                      : "border-transparent text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                  {tab.label}
-                </button>
-              );
-            })}
           </div>
         </div>
       </div>
 
-      {/* Tab content */}
+      {/* Scrollable body */}
       <div className="flex-1 overflow-y-auto min-h-0 px-6 py-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-3xl mx-auto space-y-8">
 
-          {/* ── Intelligence Tab ── */}
-          {activeTab === "intelligence" && (
+          {/* ── Description ── */}
+          {(product.description || product.indications) && (
             <div>
-              {fuel?.content ? (
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <span className="flex items-center gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2.5 py-1 rounded-full">
-                        <Zap className="h-3 w-3" />
-                        Active — Agent-ready
-                      </span>
-                      {fuel.updated_at && (
-                        <span className="text-xs text-muted-foreground">
-                          Updated {new Date(fuel.updated_at).toLocaleDateString()}
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {Math.round(fuel.content.length / 1000)}K chars · {Math.round(fuel.content.length / 4)} est. tokens
-                    </span>
-                  </div>
-                  <div className="rounded-xl border border-border bg-card p-6">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                      {fuel.content}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
-                  <Zap className="h-8 w-8 opacity-30" />
-                  <p className="text-sm">No agent intelligence document for this product yet.</p>
-                </div>
-              )}
+              <p className="text-sm text-foreground/80 leading-relaxed">
+                {product.description ?? product.indications}
+              </p>
             </div>
           )}
 
-          {/* ── Overview Tab ── */}
-          {activeTab === "overview" && (
-            <div className="space-y-5">
-              {product.description && (
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Description</h3>
-                  <p className="text-sm text-foreground/80 leading-relaxed">{product.description}</p>
-                </div>
-              )}
-              {product.indications && (
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Indications</h3>
-                  <p className="text-sm text-foreground/80 leading-relaxed">{product.indications}</p>
-                </div>
-              )}
-              {product.fda_approved_areas && (
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">FDA-Approved Areas</h3>
-                  <p className="text-sm text-foreground/80 leading-relaxed">{product.fda_approved_areas}</p>
-                </div>
-              )}
-
-              <div className="grid grid-cols-3 gap-4">
-                {product.onset_time && (
-                  <div className="rounded-xl border border-border bg-card p-4">
-                    <p className="text-xs text-muted-foreground mb-1">Onset</p>
-                    <p className="text-sm font-medium text-foreground">{product.onset_time}</p>
-                  </div>
-                )}
-                {product.duration_of_effect && (
-                  <div className="rounded-xl border border-border bg-card p-4">
-                    <p className="text-xs text-muted-foreground mb-1">Duration</p>
-                    <p className="text-sm font-medium text-foreground">{product.duration_of_effect}</p>
-                  </div>
-                )}
-                {product.social_downtime && (
-                  <div className="rounded-xl border border-border bg-card p-4">
-                    <p className="text-xs text-muted-foreground mb-1">Downtime</p>
-                    <p className="text-sm font-medium text-foreground">{product.social_downtime}</p>
-                  </div>
-                )}
-              </div>
-
-              {product.contraindications && (
-                <div className="rounded-xl border border-amber-200 dark:border-amber-800/40 bg-amber-50 dark:bg-amber-900/10 p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-400 mb-2">Contraindications</h3>
-                  <p className="text-sm text-amber-800 dark:text-amber-300/80 leading-relaxed">{product.contraindications}</p>
-                </div>
-              )}
-              {product.warnings && (
-                <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/10 p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-red-700 dark:text-red-400 mb-2">Warnings</h3>
-                  <p className="text-sm text-red-800 dark:text-red-300/80 leading-relaxed">{product.warnings}</p>
-                </div>
-              )}
-
-              {relationships.length > 0 && (
-                <div className="rounded-xl border border-border bg-card p-5">
-                  <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Related Products</h3>
-                  <div className="space-y-2">
-                    {relationships.map((r, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <span className="text-xs bg-muted text-muted-foreground px-2 py-0.5 rounded capitalize shrink-0">
-                          {r.relationship_type?.replace(/_/g, " ")}
-                        </span>
-                        <span className="text-sm text-foreground/80">{r.related?.name ?? "—"}</span>
-                        {r.notes && (
-                          <span className="text-xs text-muted-foreground truncate">· {r.notes}</span>
-                        )}
+          {/* ── At a glance stats ── */}
+          {(stats.length > 0 || product.fda_approved_areas) && (
+            <div>
+              <SectionHeader>At a Glance</SectionHeader>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {stats.map(({ icon, label, value }) => (
+                  <StatCard key={label} icon={icon} label={label} value={value!} />
+                ))}
+                {product.fda_approved_areas && (
+                  <div className="rounded-xl border border-border bg-card px-4 py-3.5 sm:col-span-3">
+                    <div className="flex items-start gap-3">
+                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-500/10">
+                        <Shield className="h-3.5 w-3.5 text-blue-500" />
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ── Evidence Tab ── */}
-          {activeTab === "evidence" && (
-            <div>
-              {evidence.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-16 text-muted-foreground gap-3">
-                  <FlaskConical className="h-8 w-8 opacity-30" />
-                  <p className="text-sm">No evidence links for this product yet.</p>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  <p className="text-xs text-muted-foreground mb-2">{evidence.length} source{evidence.length !== 1 ? "s" : ""}</p>
-                  {evidence.map((e) => {
-                    const tierColor = e.evidence_tier
-                      ? EVIDENCE_TIER_COLOR[e.evidence_tier] ?? "bg-muted text-muted-foreground"
-                      : "bg-muted text-muted-foreground";
-                    return (
-                      <a
-                        key={e.id}
-                        href={e.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 hover:border-primary/30 hover:bg-muted/30 transition-all group"
-                      >
-                        <Link2 className="h-4 w-4 text-muted-foreground/50 shrink-0 mt-0.5" />
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1 flex-wrap">
-                            {e.evidence_tier && (
-                              <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${tierColor}`}>
-                                {e.evidence_tier}
-                              </span>
-                            )}
-                            {e.source_type && (
-                              <span className="text-[0.6rem] text-muted-foreground uppercase tracking-wide">
-                                {e.source_type}
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
-                            {e.label}
-                          </p>
-                          {e.notes && (
-                            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{e.notes}</p>
-                          )}
-                          <p className="text-xs text-muted-foreground/50 mt-1 truncate">{e.url}</p>
-                        </div>
-                        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors" />
-                      </a>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* ── Coverage Map Tab ── */}
-          {activeTab === "coverage" && (
-            <div className="space-y-5">
-              <div className="rounded-xl border border-border bg-card p-5">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-1.5">
-                  <Stethoscope className="h-3.5 w-3.5" />
-                  Anatomy Areas ({anatomy.length})
-                </h3>
-                {anatomy.length === 0 ? (
-                  <p className="text-sm text-muted-foreground/60">No anatomy areas mapped.</p>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {anatomy.map((a) => (
-                      <span key={a.id} className="text-xs bg-violet-100 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 px-2.5 py-1 rounded-full">
-                        {a.name}
-                      </span>
-                    ))}
+                      <div>
+                        <p className="text-[0.65rem] font-medium uppercase tracking-wide text-muted-foreground leading-none mb-1.5">FDA-Approved Areas</p>
+                        <p className="text-sm text-foreground/80 leading-snug">{product.fda_approved_areas}</p>
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
+            </div>
+          )}
 
-              <div className="rounded-xl border border-border bg-card p-5">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3 flex items-center gap-1.5">
-                  <ChevronRight className="h-3.5 w-3.5" />
-                  Patient Concerns ({concerns.length})
-                </h3>
-                {concerns.length === 0 ? (
-                  <p className="text-sm text-muted-foreground/60">No concerns mapped.</p>
-                ) : (
+          {/* ── What it treats ── */}
+          {(concerns.length > 0 || anatomy.length > 0) && (
+            <div>
+              <SectionHeader>What It Treats</SectionHeader>
+              {concerns.length > 0 && (
+                <div className="mb-3">
+                  <p className="text-xs text-muted-foreground mb-2">Patient concerns addressed</p>
                   <div className="flex flex-wrap gap-2">
                     {concerns.map((c) => (
-                      <span key={c.id} className="text-xs bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-2.5 py-1 rounded-full">
+                      <span key={c.id} className="text-xs bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/40 px-2.5 py-1 rounded-full">
                         {c.name}
                       </span>
                     ))}
                   </div>
+                </div>
+              )}
+              {anatomy.length > 0 && (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-2">Treatment areas</p>
+                  <div className="flex flex-wrap gap-2">
+                    {anatomy.map((a) => (
+                      <span key={a.id} className="text-xs bg-violet-50 dark:bg-violet-900/20 text-violet-700 dark:text-violet-300 border border-violet-200 dark:border-violet-800/40 px-2.5 py-1 rounded-full">
+                        {a.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Pairings ── */}
+          {pairings.length > 0 && (
+            <div>
+              <SectionHeader>Pairs Well With</SectionHeader>
+              <div className="space-y-2.5">
+                {pairings.map((r, i) => (
+                  <div key={i} className="rounded-xl border border-border bg-card px-4 py-3.5 flex items-start gap-3">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 mt-0.5">
+                      <Layers className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5">
+                        <p className="text-sm font-semibold text-foreground">{r.related?.name ?? "—"}</p>
+                        <span className="text-[0.6rem] font-medium uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-1.5 py-0.5 rounded">
+                          {RELATIONSHIP_LABEL[r.relationship_type] ?? r.relationship_type}
+                        </span>
+                      </div>
+                      {r.notes && (
+                        <p className="text-xs text-muted-foreground leading-relaxed">{r.notes}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Compare / Alternatives ── */}
+          {comparisons.length > 0 && (
+            <div>
+              <SectionHeader>Compare & Alternatives</SectionHeader>
+              <div className="flex flex-wrap gap-2">
+                {comparisons.map((r, i) => (
+                  <div key={i} className="rounded-lg border border-border bg-card px-3 py-2 flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground capitalize">{RELATIONSHIP_LABEL[r.relationship_type] ?? r.relationship_type}:</span>
+                    <span className="text-xs font-medium text-foreground">{r.related?.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── Evidence ── */}
+          {evidence.length > 0 && (
+            <div>
+              <SectionHeader>Evidence Foundation</SectionHeader>
+              <div className="space-y-2.5">
+                {featuredEvidence.map((e) => {
+                  const tierStyle = e.evidence_tier ? EVIDENCE_TIER_STYLE[e.evidence_tier] ?? "bg-muted text-muted-foreground" : "bg-muted text-muted-foreground";
+                  return (
+                    <a
+                      key={e.id}
+                      href={e.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-3.5 hover:border-primary/30 hover:bg-muted/20 transition-all group"
+                    >
+                      <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-muted">
+                        <Link2 className="h-3.5 w-3.5 text-muted-foreground/60" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          {e.evidence_tier && (
+                            <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${tierStyle}`}>
+                              {e.evidence_tier}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors leading-snug">
+                          {e.label}
+                        </p>
+                        {e.notes && (
+                          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{e.notes}</p>
+                        )}
+                      </div>
+                      <ExternalLink className="h-3.5 w-3.5 text-muted-foreground/40 shrink-0 group-hover:text-primary transition-colors mt-0.5" />
+                    </a>
+                  );
+                })}
+
+                {remainingEvidence.length > 0 && (
+                  <div>
+                    <button
+                      onClick={() => setShowAllEvidence((v) => !v)}
+                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors mt-1 mb-2"
+                    >
+                      {showAllEvidence ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                      {showAllEvidence ? "Show fewer" : `View ${remainingEvidence.length} more source${remainingEvidence.length !== 1 ? "s" : ""}`}
+                    </button>
+                    {showAllEvidence && (
+                      <div className="space-y-2">
+                        {remainingEvidence.map((e) => {
+                          const tierStyle = e.evidence_tier ? EVIDENCE_TIER_STYLE[e.evidence_tier] ?? "bg-muted text-muted-foreground" : "bg-muted text-muted-foreground";
+                          return (
+                            <a
+                              key={e.id}
+                              href={e.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 rounded-lg border border-border/60 bg-card/60 px-4 py-2.5 hover:border-primary/30 hover:bg-muted/20 transition-all group"
+                            >
+                              {e.evidence_tier && (
+                                <span className={`text-[0.6rem] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded shrink-0 ${tierStyle}`}>
+                                  {e.evidence_tier}
+                                </span>
+                              )}
+                              <p className="text-xs text-foreground/80 group-hover:text-primary transition-colors flex-1 min-w-0 truncate">
+                                {e.label}
+                              </p>
+                              <ExternalLink className="h-3 w-3 text-muted-foreground/40 shrink-0" />
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
+            </div>
+          )}
 
-              {/* Coverage summary */}
-              <div className="rounded-xl border border-border bg-muted/30 p-5">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">Intelligence Summary</h3>
-                <div className="space-y-2">
-                  {[
-                    { label: "Agent Intelligence Doc", value: fuel?.status === "active" ? "Active ✓" : "Missing", ok: fuel?.status === "active" },
-                    { label: "Evidence Links", value: `${evidence.length} sources`, ok: evidence.length > 0 },
-                    { label: "Anatomy Coverage", value: `${anatomy.length} areas`, ok: anatomy.length > 0 },
-                    { label: "Concern Mapping", value: `${concerns.length} concerns`, ok: concerns.length > 0 },
-                    { label: "Product Relationships", value: `${relationships.length} linked`, ok: relationships.length > 0 },
-                  ].map(({ label, value, ok }) => (
-                    <div key={label} className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{label}</span>
-                      <span className={`text-sm font-medium ${ok ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground/50"}`}>
-                        {value}
-                      </span>
-                    </div>
-                  ))}
+          {/* ── Safety callouts ── */}
+          {(product.contraindications || product.warnings) && (
+            <div className="space-y-3">
+              {product.contraindications && (
+                <div className="rounded-xl border border-amber-200 dark:border-amber-800/40 bg-amber-50 dark:bg-amber-900/10 px-4 py-3.5">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-amber-700 dark:text-amber-400 mb-1">Contraindications</p>
+                  <p className="text-sm text-amber-800 dark:text-amber-300/80 leading-relaxed">{product.contraindications}</p>
                 </div>
-              </div>
+              )}
+              {product.warnings && (
+                <div className="rounded-xl border border-red-200 dark:border-red-800/40 bg-red-50 dark:bg-red-900/10 px-4 py-3.5">
+                  <p className="text-[0.65rem] font-semibold uppercase tracking-wide text-red-700 dark:text-red-400 mb-1">Warnings</p>
+                  <p className="text-sm text-red-800 dark:text-red-300/80 leading-relaxed">{product.warnings}</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── Agent Intelligence (collapsed) ── */}
+          {fuel?.content && (
+            <div>
+              <button
+                onClick={() => setAgentIntelOpen((v) => !v)}
+                className="w-full flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3.5 hover:bg-muted/30 transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
+                    <Zap className="h-3.5 w-3.5 text-primary" />
+                  </div>
+                  <div className="text-left">
+                    <p className="text-sm font-semibold text-foreground">Agent Intelligence Document</p>
+                    <p className="text-xs text-muted-foreground">
+                      What our AI agents know about this product · {Math.round(fuel.content.length / 1000)}K chars
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[0.6rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
+                    Active
+                  </span>
+                  {agentIntelOpen
+                    ? <ChevronUp className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                    : <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                  }
+                </div>
+              </button>
+
+              {agentIntelOpen && (
+                <div className="mt-2 rounded-xl border border-border bg-card px-6 py-6">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+                    {fuel.content}
+                  </ReactMarkdown>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── No evidence placeholder ── */}
+          {evidence.length === 0 && (
+            <div className="rounded-xl border border-dashed border-border/60 px-4 py-6 text-center">
+              <FlaskConical className="h-6 w-6 text-muted-foreground/30 mx-auto mb-2" />
+              <p className="text-xs text-muted-foreground">No evidence links added yet for this product.</p>
             </div>
           )}
 
