@@ -78,8 +78,14 @@ export async function GET(
         }
       : null,
     evidence: evidenceRes.data ?? [],
-    anatomy: (anatomyRes.data ?? []).map((r: { body_area: { id: string; name: string } | null }) => r.body_area).filter(Boolean),
-    concerns: (concernsRes.data ?? []).map((r: { concern: { id: string; name: string } | null }) => r.concern).filter(Boolean),
+    anatomy: (anatomyRes.data ?? []).map((r) => {
+      const ba = r.body_area;
+      return Array.isArray(ba) ? ba[0] ?? null : ba;
+    }).filter(Boolean),
+    concerns: (concernsRes.data ?? []).map((r) => {
+      const c = r.concern;
+      return Array.isArray(c) ? c[0] ?? null : c;
+    }).filter(Boolean),
     relationships: relRes.data ?? [],
   });
 }

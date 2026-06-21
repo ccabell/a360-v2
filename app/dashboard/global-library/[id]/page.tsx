@@ -83,48 +83,48 @@ const TABS = [
 // ── Markdown components ───────────────────────────────────────────────────────
 
 const mdComponents = {
-  h1: ({ children }: { children: React.ReactNode }) => (
+  h1: ({ children }: { children?: React.ReactNode }) => (
     <h1 className="text-xl font-bold text-foreground mt-8 mb-3 pb-2 border-b border-border first:mt-0">{children}</h1>
   ),
-  h2: ({ children }: { children: React.ReactNode }) => (
+  h2: ({ children }: { children?: React.ReactNode }) => (
     <h2 className="text-base font-semibold text-foreground mt-6 mb-2 pl-3 border-l-2 border-primary">{children}</h2>
   ),
-  h3: ({ children }: { children: React.ReactNode }) => (
+  h3: ({ children }: { children?: React.ReactNode }) => (
     <h3 className="text-sm font-semibold text-foreground/90 mt-4 mb-1.5">{children}</h3>
   ),
-  p: ({ children }: { children: React.ReactNode }) => (
+  p: ({ children }: { children?: React.ReactNode }) => (
     <p className="text-sm text-foreground/80 leading-relaxed mb-3">{children}</p>
   ),
-  ul: ({ children }: { children: React.ReactNode }) => (
+  ul: ({ children }: { children?: React.ReactNode }) => (
     <ul className="list-disc list-inside space-y-1 mb-3 text-sm text-foreground/80">{children}</ul>
   ),
-  ol: ({ children }: { children: React.ReactNode }) => (
+  ol: ({ children }: { children?: React.ReactNode }) => (
     <ol className="list-decimal list-inside space-y-1 mb-3 text-sm text-foreground/80">{children}</ol>
   ),
-  li: ({ children }: { children: React.ReactNode }) => (
+  li: ({ children }: { children?: React.ReactNode }) => (
     <li className="leading-relaxed">{children}</li>
   ),
-  strong: ({ children }: { children: React.ReactNode }) => (
+  strong: ({ children }: { children?: React.ReactNode }) => (
     <strong className="font-semibold text-foreground">{children}</strong>
   ),
-  table: ({ children }: { children: React.ReactNode }) => (
+  table: ({ children }: { children?: React.ReactNode }) => (
     <div className="overflow-x-auto mb-4">
       <table className="w-full text-sm border-collapse rounded-lg overflow-hidden">{children}</table>
     </div>
   ),
-  thead: ({ children }: { children: React.ReactNode }) => (
+  thead: ({ children }: { children?: React.ReactNode }) => (
     <thead className="bg-muted/60">{children}</thead>
   ),
-  th: ({ children }: { children: React.ReactNode }) => (
+  th: ({ children }: { children?: React.ReactNode }) => (
     <th className="px-3 py-2 text-left font-semibold text-foreground/80 text-xs uppercase tracking-wide border-b border-border">{children}</th>
   ),
-  td: ({ children }: { children: React.ReactNode }) => (
+  td: ({ children }: { children?: React.ReactNode }) => (
     <td className="px-3 py-2 text-foreground/75 border-b border-border/50">{children}</td>
   ),
-  blockquote: ({ children }: { children: React.ReactNode }) => (
+  blockquote: ({ children }: { children?: React.ReactNode }) => (
     <blockquote className="border-l-4 border-primary/30 pl-4 italic text-muted-foreground text-sm mb-3">{children}</blockquote>
   ),
-  code: ({ inline, children }: { inline?: boolean; children: React.ReactNode }) =>
+  code: ({ inline, children }: { inline?: boolean; children?: React.ReactNode }) =>
     inline ? (
       <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono text-foreground/90">{children}</code>
     ) : (
