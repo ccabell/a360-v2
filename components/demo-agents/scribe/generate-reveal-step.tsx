@@ -301,7 +301,7 @@ export function GenerateRevealStep({ ctx, goBack }: DemoStepProps) {
             </div>
             {view === "intelligence" ? (
               <span className="flex items-center gap-1 text-[10px] font-semibold px-1.5 py-0.5 rounded text-violet-600 bg-violet-50 dark:bg-violet-950/40">
-                <BrainCircuit className="h-3 w-3" /> PODCAST-GROUNDED
+                <BrainCircuit className="h-3 w-3" /> A360 INTELLIGENCE
               </span>
             ) : (
               <SourceBadge source={view === "entities" ? extraction?.source : resp?.source} />
@@ -573,7 +573,7 @@ function ConfidenceDot({ c }: { c: number }) {
   );
 }
 
-// --- Clinical intelligence panel (podcast-grounded) --------------------------
+// --- Clinical intelligence panel ---------------------------------------------
 
 function IntelPanel({ items }: { items: SelectedIntel[] }) {
   const groups = useMemo(() => {
@@ -602,8 +602,8 @@ function IntelPanel({ items }: { items: SelectedIntel[] }) {
         <BrainCircuit className="h-4 w-4 mt-0.5 shrink-0 text-violet-600" />
         <p className="text-xs text-foreground/80">
           Guidance matched to this visit from the{" "}
-          <span className="font-medium text-foreground">A360 podcast network</span> (31 shows,
-          ~8,700 episodes). Paraphrased patterns with a consensus signal — not verbatim advice.
+          <span className="font-medium text-foreground">A360 clinical knowledge base</span>.
+          Paraphrased patterns with a consensus signal — not verbatim advice.
         </p>
       </div>
 

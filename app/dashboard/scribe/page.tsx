@@ -1,12 +1,7 @@
 "use client";
 
-import { DemoAgentShell } from "@/components/demo-agents/demo-agent-shell";
-import { scribeConfig } from "@/components/demo-agents/scribe/scribe-config";
+import { ScribeWorkspace } from "@/components/scribe/scribe-workspace";
 
 export default function ScribePage() {
-  return (
-    <div className="p-8">
-      <DemoAgentShell config={scribeConfig} />
-    </div>
-  );
+  return <ScribeWorkspace />;
 }
