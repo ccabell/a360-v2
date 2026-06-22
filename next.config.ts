@@ -3,6 +3,13 @@ import type { NextConfig } from "next";
 const embedOrigins = process.env.EMBED_ALLOWED_ORIGINS ?? "http://localhost:3000";
 
 const nextConfig: NextConfig = {
+  // The Pearce (academy) + A360 Tube pages read baked JSON via fs at runtime;
+  // include those files in the serverless function bundles so they exist in prod.
+  outputFileTracingIncludes: {
+    "/dashboard/academy/**": ["./lib/academy/data/**"],
+    "/dashboard/tube/**": ["./lib/tube/data/**"],
+    "/api/academy/**": ["./lib/academy/data/**"],
+  },
   async headers() {
     return [
       {

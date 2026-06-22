@@ -23,28 +23,32 @@ import {
   BookOpenCheck,
   Blocks,
   Library,
+  GraduationCap,
+  Tv,
 } from "lucide-react";
 
-// scope "internal" items are hidden in the acquirer-facing demo build.
+// The demo build shows only the suite below; everything else is scope:"internal"
+// and hidden unless APP_MODE === "internal".
 const menuItems = [
-  // ── Core product ─────────────────────────────────────────────────────────
+  // ── The demo suite ────────────────────────────────────────────────────────
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Scribe", href: "/dashboard/scribe", icon: FileText },
-  { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
-  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
-  // ── Intelligence tools ───────────────────────────────────────────────────
-  { name: "Global Library", href: "/dashboard/global-library", icon: Library },
-  { name: "Research", href: "/dashboard/research", icon: Telescope },
-  { name: "Ask", href: "/dashboard/ask", icon: BookOpenCheck },
-  { name: "LPOA", href: "/dashboard/lpoa", icon: FileText },
-  { name: "Age Progression", href: "/dashboard/age-progression", icon: UserRound },
-  // ── Agent runtime (builder / tester) ────────────────────────────────────
-  { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap },
-  { name: "Studio", href: "/dashboard/studio", icon: Blocks },
-  // ── Internal only ────────────────────────────────────────────────────────
+  { name: "Intelligence", href: "/dashboard/ask", icon: Sparkles },
+  { name: "Library", href: "/dashboard/library", icon: Library },
+  { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
+  { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
+  // ── Internal only (hidden in the demo build) ─────────────────────────────
+  { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
+  { name: "Consultation", href: "/dashboard/consultation", icon: Layers, scope: "internal" },
+  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare, scope: "internal" },
+  { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
+  { name: "Research", href: "/dashboard/research", icon: Telescope, scope: "internal" },
+  { name: "LPOA", href: "/dashboard/lpoa", icon: BookOpen, scope: "internal" },
+  { name: "Age Progression", href: "/dashboard/age-progression", icon: UserRound, scope: "internal" },
+  { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap, scope: "internal" },
+  { name: "Studio", href: "/dashboard/studio", icon: Blocks, scope: "internal" },
   { name: "History", href: "/dashboard/history", icon: History, scope: "internal" },
   { name: "RAG", href: "/dashboard/rag", icon: SearchIcon, scope: "internal" },
   { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
@@ -53,6 +57,8 @@ const menuItems = [
   { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
 ] as const;
 
+// Dev shows ALL tabs (nothing hidden). The clean demo nav is opt-in:
+// set NEXT_PUBLIC_APP_MODE=demo (e.g. on the demo deployment only).
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
 const isDemo = APP_MODE === "demo";
 
