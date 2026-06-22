@@ -25,14 +25,13 @@ The one-line pitch to open with:
 - Click **Generate N records →**.
 
 ### 3. Generate & review — the moment
-- Watch the ribbon: **Ingesting transcript → Structuring records → Drafting sections → Complete**. Records build section by section. *Let it play — it's scripted and deterministic.*
-- **Split-pane:** transcript on the left, the finished records on the right.
-- **Source linking (the trust beat):** hover any line in the note — the exact transcript line that produced it **highlights and scrolls into view** on the left. *Say:* "Every statement traces back to what was actually said. No invented findings."
-- **Fan-out tabs:** click across **SOAP → Procedure Note → After-Visit Summary → Coding & Opportunities**. Same conversation, every record type.
-  - On **Coding & Opportunities**, point out the suggested codes *and* the extracted **revenue opportunities** with horizons (today / next visit / future) and dollar values — "this is the A360 difference: the note pays for itself."
-- **One-click reformat:** flip **Paragraph ↔ Bulleted** — instant.
-- **Magic edit:** type *"Make it more concise"* (or tap a chip) and watch the record rewrite. *Say:* "Refine in plain language — it stays grounded in the transcript."
-- **Copy** drops the record straight onto the clipboard for the EHR.
+- Watch the ribbon: **Ingesting transcript → Extracting entities → Structuring records → Drafting sections → Complete**. *Let it play — it's scripted and deterministic.*
+- **Split-pane:** transcript on the left; on the right, three views — **Extracted entities · Records · Clinical intelligence**.
+- **The extraction beat (lead with this):** during *Extracting entities*, watch core fields populate by category — concerns, treatments, products, dosing, anatomy, follow-up, opportunities — each with a **confidence %** and a **source link**. *Say:* "Before it writes a word, it reads the visit — real extraction, not a template." (This is genuine extraction; for non-cached patients it runs live and is saved to the `extractions` table.)
+- **Source linking (the trust beat):** on the **Records** view, hover any note line — the exact transcript line that produced it **highlights and scrolls into view**. Hover a transcript line to light up the entities/lines it fed. *Say:* "Every statement traces back to what was actually said. No invented findings."
+- **Fan-out tabs:** click across **SOAP → Procedure Note → After-Visit Summary → Coding & Opportunities**. Same conversation, every record type. On **Coding & Opportunities**, point out the suggested codes *and* the extracted **revenue opportunities** with horizons and dollar values — "the note pays for itself."
+- **Clinical intelligence (the AI-IQ beat):** open the third view. Guidance **mined from the A360 podcast network** (31 shows, ~8,700 episodes), matched to *this* patient's entities — pearls ("'Botox didn't work' = underdosing"), pairing/sequencing, aftercare cadence, screening, opportunity. *Say:* "It's not just transcribing — it knows aesthetics."
+- **Polished output + AI rewrite:** flip **Structured ↔ Document** (clean letterhead view), **Paragraph ↔ Bulleted**, hit a section's **improve** for an AI rewrite of just that section, or use the **magic-edit** bar ("make it more concise"). **Copy** drops it onto the clipboard for the EHR.
 
 ### Optional — show it's real
 - Back out and pick a patient **without** the STAGE-READY badge. Scribe generates live from that patient's real transcript (no source links on live runs). Use only if the room wants to see it unscripted — the cached patients are the safe stage path.
