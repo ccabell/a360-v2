@@ -255,8 +255,10 @@ function buildRecord(
   const frames: FrameRecord[] = jpgs.map((file, i) => {
     const t = times[i] ?? 0;
     const segIdx = segmentForTime(segments, t);
-    const start =
-      segIdx !== null && segments[segIdx] ? segments[segIdx].start : Math.floor(t);
+    // Deep-link to the exact second the frame appears (the YouTube embed seeks
+    // to any ?t=). segmentIndex is retained for transcript context. This is
+    // more precise than snapping to the (up to 60s-long) segment start.
+    const start = Math.floor(t);
     return {
       file: `/academy/illustrations/${id}/${file}`,
       t: Math.round(t * 10) / 10,

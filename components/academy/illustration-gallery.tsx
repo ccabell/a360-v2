@@ -193,14 +193,14 @@ export function IllustrationGallery({
           )}
 
           <div
-            className="flex max-h-[90vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-card ring-1 ring-white/10"
+            className="flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl bg-card ring-1 ring-white/10"
             onClick={(e) => e.stopPropagation()}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={lb.file}
               alt={`${lb.title} at ${fmt(lb.start)}`}
-              className="max-h-[70vh] w-full bg-black object-contain"
+              className="min-h-0 w-full flex-1 bg-black object-contain"
             />
             <div className="flex items-center justify-between gap-4 border-t border-border p-4">
               <div className="min-w-0">

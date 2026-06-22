@@ -22,6 +22,7 @@ const DATA_DIR = path.join(process.cwd(), "lib", "academy", "data");
 
 let _index: AcademyIndex | null = null;
 let _topics: TopicEntry[] | null = null;
+// Cached for the process lifetime (baked data never changes at runtime).
 let _illustrations: VideoIllustrations[] | null = null;
 const _videoCache = new Map<string, VideoDetail | null>();
 
