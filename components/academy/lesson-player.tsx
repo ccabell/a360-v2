@@ -24,6 +24,8 @@ interface LessonPlayerProps {
   chapters: Chapter[];
   keyPoints: KeyPoint[];
   duration: number;
+  /** Optional starting second (from a deep-link, e.g. ?t=124). */
+  initialStart?: number;
 }
 
 function fmt(sec: number): string {
@@ -52,8 +54,9 @@ export function LessonPlayer({
   chapters,
   keyPoints,
   duration,
+  initialStart = 0,
 }: LessonPlayerProps) {
-  const [current, setCurrent] = useState(0); // seconds
+  const [current, setCurrent] = useState(initialStart); // seconds
   const [playing, setPlaying] = useState(false);
   const [embed, setEmbed] = useState(false);
   const [tab, setTab] = useState<"chapters" | "keypoints">("chapters");

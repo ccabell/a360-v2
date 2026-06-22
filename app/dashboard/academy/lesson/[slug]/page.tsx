@@ -45,10 +45,14 @@ function fmtDur(sec: number): string {
 
 export default async function LessonPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ t?: string }>;
 }) {
   const { slug } = await params;
+  const { t } = await searchParams;
+  const initialStart = t ? Math.max(0, parseInt(t, 10) || 0) : 0;
   const video = getVideo(slug);
   if (!video) notFound();
 
@@ -161,6 +165,7 @@ export default async function LessonPage({
           chapters={video.chapters}
           keyPoints={video.keyPoints}
           duration={video.duration}
+          initialStart={initialStart}
         />
       </div>
 
