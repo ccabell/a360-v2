@@ -109,8 +109,10 @@ export async function executeAgentRun(
       ? `Patient ID: ${params.patientId}\n\n${params.userMessage}`
       : params.userMessage;
     const maxToolRounds = version.model_params?.max_tool_rounds ?? 5;
-    const MAX_OUTPUT_CHARS = 50_000;  // Hard cap on total output chars (~15K tokens)
-    const MAX_WALL_TIME_MS = 55_000;  // Hard cap: 55s (under Vercel's 60s limit)
+    // Graceful stop just under the Vercel function timeout (maxDuration) so the
+    // run ends with a clean error event instead of an opaque 504. No output-size
+    // cap — full responses stream through.
+    const MAX_WALL_TIME_MS = 290_000;
     const abortController = new AbortController();
 
     // If the caller passes a signal (e.g. client disconnect), abort the LLM call
@@ -124,7 +126,7 @@ export async function executeAgentRun(
       prompt: userPrompt,
       stopWhen: stepCountIs(maxToolRounds),
       temperature: version.model_params?.temperature ?? 0.3,
-      maxOutputTokens: version.model_params?.max_tokens ?? 4096,
+      maxOutputTokens: version.model_params?.max_tokens ?? 16384,
       tools,
       abortSignal: abortController.signal,
     });
@@ -137,16 +139,10 @@ export async function executeAgentRun(
     const completedTools: string[] = [];
 
     for await (const part of result.fullStream) {
-      // Safety: abort if total output exceeds hard cap
-      if (totalChars > MAX_OUTPUT_CHARS) {
-        abortController.abort();
-        emit({ type: "error", message: `Output cap reached (${MAX_OUTPUT_CHARS} chars). Run stopped to prevent runaway token usage.` });
-        break;
-      }
-      // Safety: abort if wall time exceeded (stay under Vercel timeout)
+      // Graceful stop just under the function timeout (no output-size cap).
       if (Date.now() - startMs > MAX_WALL_TIME_MS) {
         abortController.abort();
-        emit({ type: "error", message: "Run time limit reached (55s). Run stopped." });
+        emit({ type: "error", message: "Run reached the maximum duration and was stopped." });
         break;
       }
 
