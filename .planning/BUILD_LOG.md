@@ -14,17 +14,52 @@ This log is the morning review artifact. Honest status: done / partial / decisio
 | 2. App shell + Academy nav | ✅ DONE (committed) |
 | 3. Lesson/video page (transcript + jump-to-timestamp) | ✅ DONE (committed) |
 | 4. Reference Guide | ✅ DONE (committed) |
-| 5. Search | 🟡 DATA done (search-segments.json, 7,314 rows); UI route NOT built |
-| 6. Polish + handoff | ⬜ |
+| 5. Search | ✅ DONE — route + API + UI, deep-links to exact second |
+| 6. Polish + handoff | ✅ DONE — README, route verification, console clean |
 | + Real YouTube IDs | ✅ DONE — 407/408 wired; player embeds + deep-links at ?start=<sec> |
-| + AI Chat tutor (new ask) | ⬜ NOT started |
-| + Illustration Reference tool (new ask) | ⬜ pipeline proven (POC frames committed), tool NOT built |
+| + AI Chat tutor (new ask) | ✅ DONE — RAG over corpus, Claude Opus 4.8, cited deep-links |
+| + Illustration Reference tool (new ask) | ✅ DONE — 721 frames / 16 videos, gallery + lightbox + lesson cross-link |
 
-> NOTE: the background build agent **died when its parent process exited** (work
-> survived because it committed often). Phases 2–4 landed; it was mid-Phase-5 (search)
-> when killed. A follow-up session (manual) then resolved + wired all 408 real YouTube
-> IDs and verified routes render (landing/reference/lesson all HTTP 200, "Watch video"
-> embed present). Remaining: search UI, AI chat tutor, illustration tool, polish.
+> NOTE: the original background build agent died when its parent process exited
+> (work survived because it committed often). Phases 1–4 + real YouTube IDs landed
+> in earlier sessions. THIS session completed the remaining scope: Search UI, the
+> AI Chat tutor, the Illustration Reference tool, and polish/handoff. All verified
+> rendering in-browser (Chrome MCP screenshots) with a clean console.
+
+### What this session added (all committed + pushed)
+- **Search** — `lib/academy/search.ts` (deterministic keyword scoring over the
+  7,314-row `search-segments.json` + topic/video index), `/api/academy/search`,
+  `/dashboard/academy/search` (debounced live UI, URL-synced, highlighted
+  snippets). Results deep-link to `/lesson/<slug>?t=<sec>`.
+- **AI Tutor** — `/dashboard/academy/tutor` + `/api/academy/chat` (SSE).
+  Retrieval (`lib/academy/chat-retrieval.ts`) pulls top transcript segments +
+  podcast corroboration; answer is streamed from **Claude Opus 4.8 via the
+  Anthropic Messages API** (`lib/academy/anthropic-stream.ts`), grounded ONLY in
+  retrieved sources, citing `[S#]/[P#]` markers that render as deep-link pills.
+  Honest "I don't have that in his material" when unsupported.
+- **Illustration Reference** — `scripts/academy/extract-illustrations.ts`
+  (yt-dlp firefox cookies + ffmpeg scene-cut, frame→second deep-link mapping),
+  **721 frames across 16 curated anatomy/danger-zone videos**, manifest at
+  `lib/academy/data/illustrations.json`. Gallery `/dashboard/academy/illustrations`
+  (topic facets + keyboard lightbox) and an in-lesson strip.
+
+### Key decisions / gotchas this session
+- **AI_GATEWAY_API_KEY is unauthenticated** in this env (the existing
+  `/api/ask` + `/api/research/chat` routes silently fall back because of it).
+  The tutor therefore calls Anthropic **directly** with `ANTHROPIC_API_KEY`,
+  per spec. `claude-opus-4-8` **rejects the `temperature` param** — it must be
+  omitted for that model (handled in `anthropic-stream.ts`).
+- **6 of the curated illustration videos are SABR-gated** by YouTube — yt-dlp
+  downloads a tiny undecodable placeholder. Logged + skipped; the script is
+  re-runnable and 16 videos (incl. the highest-value: Most Dangerous Zones 96,
+  Advanced Botox Anatomy 88, Necrosis 73/72, Deep Fat Pads 64, Vascular
+  Occlusion 58) succeeded — comfortably within the "15–25 videos" target.
+- ffmpeg's filter parser breaks on Windows drive-letter colons in
+  `metadata=print:file=`; the script runs ffmpeg from the output dir with a
+  bare `frames.txt` filename.
+- Talking-head frames are present in the gallery (a minority). Claude-vision
+  classification was left out (optional per spec; cost/latency vs marginal
+  gain). The pipeline + manifest make it easy to add later.
 
 ---
 

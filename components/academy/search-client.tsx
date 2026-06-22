@@ -102,9 +102,13 @@ export function SearchClient() {
     }
   }, []);
 
-  // Run on mount if a query was in the URL.
+  // Run on mount if a query was in the URL. Deferred to a microtask so the
+  // first state update happens after the initial render commits (avoids the
+  // synchronous-setState-in-effect cascade).
   useEffect(() => {
-    if (initial) runSearch(initial);
+    if (!initial) return;
+    const id = setTimeout(() => runSearch(initial), 0);
+    return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
