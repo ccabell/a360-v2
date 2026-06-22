@@ -11,11 +11,20 @@ This log is the morning review artifact. Honest status: done / partial / decisio
 | Phase | Status |
 |-------|--------|
 | 1. Data pipeline (extract + clean + taxonomy + bake JSON) | ✅ DONE |
-| 2. App shell + Academy nav | ⏳ in progress |
-| 3. Lesson/video page (transcript + jump-to-timestamp) | ⬜ next |
-| 4. Reference Guide | ⬜ |
-| 5. Search | ⬜ |
+| 2. App shell + Academy nav | ✅ DONE (committed) |
+| 3. Lesson/video page (transcript + jump-to-timestamp) | ✅ DONE (committed) |
+| 4. Reference Guide | ✅ DONE (committed) |
+| 5. Search | 🟡 DATA done (search-segments.json, 7,314 rows); UI route NOT built |
 | 6. Polish + handoff | ⬜ |
+| + Real YouTube IDs | ✅ DONE — 407/408 wired; player embeds + deep-links at ?start=<sec> |
+| + AI Chat tutor (new ask) | ⬜ NOT started |
+| + Illustration Reference tool (new ask) | ⬜ pipeline proven (POC frames committed), tool NOT built |
+
+> NOTE: the background build agent **died when its parent process exited** (work
+> survived because it committed often). Phases 2–4 landed; it was mid-Phase-5 (search)
+> when killed. A follow-up session (manual) then resolved + wired all 408 real YouTube
+> IDs and verified routes render (landing/reference/lesson all HTTP 200, "Watch video"
+> embed present). Remaining: search UI, AI chat tutor, illustration tool, polish.
 
 ---
 
