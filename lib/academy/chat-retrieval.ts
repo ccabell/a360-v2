@@ -22,6 +22,8 @@ export interface ChatSource {
   /** Deep-link target for video sources. */
   slug?: string;
   start?: number;
+  /** Resolved YouTube id of the source video (for thumbnails). */
+  youtubeId?: string | null;
   /** Secondary label (show name for podcasts, formatted time for videos). */
   meta?: string;
   /** External listen url for podcast sources, if any. */
@@ -44,7 +46,7 @@ export function retrieveForChat(
   question: string,
   opts: { maxVideo?: number; maxPodcast?: number } = {}
 ): ChatSource[] {
-  const maxVideo = opts.maxVideo ?? 8;
+  const maxVideo = opts.maxVideo ?? 14;
   const maxPodcast = opts.maxPodcast ?? 3;
   const terms = tokenize(question);
   if (terms.length === 0) return [];
@@ -52,8 +54,21 @@ export function retrieveForChat(
   const sources: ChatSource[] = [];
 
   // 1. Video transcript segments — the citable spine.
-  const { segments } = searchCorpus(question, maxVideo);
-  segments.forEach((seg, i) => {
+  // Pull a wide candidate pool, then DIVERSIFY across videos (cap per video) so
+  // one dominant video can't crowd out the rest. Without this, a question like
+  // "what should I do if I suspect a vascular occlusion" fills up with
+  // differentiation segments and misses the management videos entirely.
+  const { segments: pool } = searchCorpus(question, Math.max(maxVideo * 4, 48));
+  const perVideo = new Map<string, number>();
+  const picked: typeof pool = [];
+  for (const seg of pool) {
+    const n = perVideo.get(seg.slug) ?? 0;
+    if (n >= 3) continue; // at most 3 moments from any single video
+    perVideo.set(seg.slug, n + 1);
+    picked.push(seg);
+    if (picked.length >= maxVideo) break;
+  }
+  picked.forEach((seg, i) => {
     const mins = Math.floor(seg.start / 60);
     const secs = String(seg.start % 60).padStart(2, "0");
     const topic = seg.topics.map(topicTitle).filter(Boolean)[0];
@@ -64,6 +79,7 @@ export function retrieveForChat(
       text: seg.text,
       slug: seg.slug,
       start: seg.start,
+      youtubeId: seg.youtubeId,
       meta: `${mins}:${secs}${topic ? ` · ${topic}` : ""}`,
     });
   });

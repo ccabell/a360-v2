@@ -16,6 +16,7 @@ import {
 } from "@/lib/academy/server";
 import { CATEGORY_STYLES } from "@/components/academy/icons";
 import { TOPIC_BY_ID, MODULE_BY_ID } from "@/lib/academy/taxonomy";
+import { youtubeThumb } from "@/lib/academy/youtube";
 import type { TopicCitation } from "@/lib/academy/types";
 
 export function generateStaticParams() {
@@ -73,7 +74,7 @@ export default async function TopicPage({
       {/* Breadcrumb */}
       <nav className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
         <Link href="/dashboard/academy" className="hover:text-foreground">
-          Academy
+          Pearce Channel
         </Link>
         <ChevronRight className="h-3 w-3" />
         <Link
@@ -155,9 +156,24 @@ export default async function TopicPage({
                   >
                     <Link
                       href={`/dashboard/academy/lesson/${slug}`}
-                      className="flex items-center justify-between gap-2 border-b border-border px-4 py-3 transition-colors hover:bg-muted/40"
+                      className="flex items-center gap-3 border-b border-border px-3 py-3 transition-colors hover:bg-muted/40"
                     >
-                      <h3 className="line-clamp-1 font-heading text-sm font-semibold text-foreground">
+                      <span className="relative aspect-video w-24 shrink-0 overflow-hidden rounded-md bg-muted">
+                        {youtubeThumb(v?.youtubeId, "mq") ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={youtubeThumb(v?.youtubeId, "mq")!}
+                            alt=""
+                            aria-hidden
+                            loading="lazy"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : null}
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <Play className="h-5 w-5 fill-white/90 text-white/90 drop-shadow" />
+                        </span>
+                      </span>
+                      <h3 className="line-clamp-2 flex-1 font-heading text-sm font-semibold text-foreground">
                         {cites[0].videoTitle}
                       </h3>
                       <span className="shrink-0 text-xs text-primary">
@@ -271,20 +287,35 @@ export default async function TopicPage({
               Top lessons
             </h3>
             <div className="mt-3 flex flex-col gap-2">
-              {videos.slice(0, 6).map((v) => (
-                <Link
-                  key={v.slug}
-                  href={`/dashboard/academy/lesson/${v.slug}`}
-                  className="group rounded-lg bg-card p-3 ring-1 ring-foreground/10 transition-colors hover:ring-primary/40"
-                >
-                  <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground group-hover:text-primary">
-                    {v.title}
-                  </p>
-                  <span className="mt-1 block text-[11px] text-muted-foreground">
-                    {Math.round(v.duration / 60)} min · {v.segmentCount} segments
-                  </span>
-                </Link>
-              ))}
+              {videos.slice(0, 6).map((v) => {
+                const thumb = youtubeThumb(v.youtubeId, "mq");
+                return (
+                  <Link
+                    key={v.slug}
+                    href={`/dashboard/academy/lesson/${v.slug}`}
+                    className="group overflow-hidden rounded-lg bg-card ring-1 ring-foreground/10 transition-colors hover:ring-primary/40"
+                  >
+                    <span className="relative block aspect-video w-full overflow-hidden bg-muted">
+                      {thumb ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={thumb}
+                          alt=""
+                          aria-hidden
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      ) : null}
+                      <span className="absolute bottom-1 right-1 rounded bg-black/75 px-1 py-0.5 text-[10px] font-medium text-white">
+                        {Math.round(v.duration / 60)} min
+                      </span>
+                    </span>
+                    <p className="line-clamp-2 p-2.5 text-xs font-medium leading-snug text-foreground group-hover:text-primary">
+                      {v.title}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </aside>
