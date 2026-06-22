@@ -177,4 +177,78 @@ export const amaraOkafor: ScribeFixture = {
       ],
     },
   },
+  styleNotes: {
+    aesthetic_consult: {
+      type: "aesthetic_consult",
+      title: "Aesthetic Consult Note",
+      subtitle: "New patient · phased plan",
+      sections: [
+        {
+          id: "concern",
+          heading: "Chief Concern",
+          required: true,
+          lines: [{ text: "New patient seeking softening of facial lines, natural lip enhancement, and improvement of periorbital darkness.", sources: ["t1", "t4"], strong: true }],
+        },
+        {
+          id: "goals",
+          heading: "Aesthetic Goals",
+          required: true,
+          lines: [{ text: "Softer forehead and frown lines, natural lip fullness, brighter under-eye area.", sources: ["t4"] }],
+        },
+        {
+          id: "history",
+          heading: "Relevant Medical History",
+          notDocumented: true,
+        },
+        {
+          id: "prior",
+          heading: "Prior Aesthetic Treatments",
+          lines: [{ text: "Prior neuromodulator with perceived non-response; prior lip filler elsewhere with migration above the vermilion border.", sources: ["t2"], strong: true }],
+        },
+        {
+          id: "assessment",
+          heading: "Facial / Skin Assessment",
+          required: true,
+          lines: [
+            { text: "Dynamic forehead and glabellar rhytides; lips with prior product superior to the border; periorbital hollowing with pigmentation.", sources: ["t4", "t5", "t8"] },
+          ],
+        },
+        {
+          id: "risk",
+          heading: "Contraindications / Risk Screening",
+          required: true,
+          lines: [
+            { text: "Discussed migration risk and a conservative, staged approach; heightened psychosocial sensitivity noted (recent bereavement).", sources: ["t7", "t12", "t13"], strong: true },
+          ],
+        },
+        {
+          id: "plan",
+          heading: "Recommended Treatment Plan",
+          required: true,
+          lines: [
+            { text: "Phase 1: Dysport to forehead/glabella, dosed to muscle strength (booked).", sources: ["t5", "t14"], strong: true },
+            { text: "Phase 2: Restylane Kysse 0.5 syringe, conservative lip body placement (planned).", sources: ["t7"] },
+            { text: "Phase 3–4: reassess tear-trough filler after lip response; Halo resurfacing in fall.", sources: ["t9", "t11"] },
+            { text: "Baseline standardized photography recommended before Phase 1 — AI suggestion, verify.", inferred: true },
+          ],
+        },
+        {
+          id: "alternatives",
+          heading: "Alternatives Discussed",
+          lines: [{ text: "Conservative staging vs. concurrent treatment; tear trough deferred until lip response assessed.", sources: ["t9", "t15"] }],
+        },
+        {
+          id: "consent",
+          heading: "Consent / Education",
+          required: true,
+          lines: [{ text: "Education provided on products, sequencing, and expectations; procedural consent pending at time of each booked treatment (no procedure performed today).", sources: ["t13", "t15"], strong: true }],
+        },
+        {
+          id: "followup",
+          heading: "Follow-Up Plan",
+          lines: [{ text: "Patient-led pace; Dysport booked, remaining phases revisited at follow-up.", sources: ["t13", "t15"] }],
+        },
+      ],
+    },
+  },
 };

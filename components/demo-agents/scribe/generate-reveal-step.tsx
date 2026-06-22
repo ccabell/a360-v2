@@ -31,6 +31,15 @@ import {
   GitMerge,
   ShieldAlert,
   BrainCircuit,
+  Crosshair,
+  Ban,
+  History,
+  ClipboardCheck,
+  AlertCircle,
+  Activity,
+  FileWarning,
+  ListChecks,
+  Lock,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -57,20 +66,39 @@ import {
 } from "@/lib/scribe/intelligence";
 
 const ACCENT = "#F5A623";
-const TYPE_ICONS: Record<RecordType, LucideIcon> = {
+const TYPE_ICONS: Record<string, LucideIcon> = {
   soap: Stethoscope,
   procedure: Syringe,
+  injectable: Syringe,
+  device: Activity,
+  aesthetic_consult: Stethoscope,
+  follow_up: CalendarClock,
+  touch_up: Syringe,
+  complication: AlertCircle,
+  treatment_plan: ListChecks,
   patient_summary: HeartPulse,
+  patient_friendly: HeartPulse,
+  internal_opportunity: TrendingUp,
   referral: Mail,
   coding: Receipt,
 };
+function recordIcon(type: string): LucideIcon {
+  return TYPE_ICONS[type] ?? FileText;
+}
 const CAT_ICONS: Record<EntityCategory, LucideIcon> = {
   concern: Target,
+  goal: Crosshair,
   treatment: Syringe,
   product: Package,
   dose: Gauge,
   anatomy: MapPin,
   medication: Pill,
+  allergy: ShieldAlert,
+  contraindication: Ban,
+  prior_treatment: History,
+  consent: ClipboardCheck,
+  adverse_event: AlertCircle,
+  aftercare: Activity,
   followup: CalendarClock,
   opportunity: TrendingUp,
   context: Info,
@@ -96,7 +124,7 @@ export function GenerateRevealStep({ ctx, goBack }: DemoStepProps) {
   const [phase, setPhase] = useState<Phase>("ingesting");
   const [error, setError] = useState<string | null>(null);
   const [view, setView] = useState<View>("entities");
-  const [activeTab, setActiveTab] = useState<RecordType | null>(null);
+  const [activeTab, setActiveTab] = useState<string | null>(null);
   const [activeSources, setActiveSources] = useState<string[]>([]);
   const [hoverSeg, setHoverSeg] = useState<string | null>(null);
   const [format, setFormat] = useState(style.format);
@@ -643,8 +671,8 @@ function RecordsPane({
   onEdited,
 }: {
   resp: ScribeGenerateResponse | null;
-  activeTab: RecordType | null;
-  setActiveTab: (t: RecordType) => void;
+  activeTab: string | null;
+  setActiveTab: (t: string) => void;
   activeRecord: ClinicalRecord | null;
   phase: Phase;
   revealCount: number;
@@ -663,7 +691,7 @@ function RecordsPane({
     <>
       <div className="flex items-center gap-1 border-b border-border px-2 py-1.5 overflow-x-auto">
         {(resp?.records ?? []).map((rec) => {
-          const Icon = TYPE_ICONS[rec.type] ?? Stethoscope;
+          const Icon = recordIcon(rec.type);
           const on = activeTab === rec.type;
           return (
             <button
@@ -685,6 +713,14 @@ function RecordsPane({
       </div>
 
       <div className="max-h-[440px] overflow-auto p-4">
+        {!showSkeleton && activeRecord?.internalOnly && (
+          <div className="mb-3 flex items-center gap-1.5 rounded-lg border border-violet-200/60 bg-violet-50/60 dark:border-violet-900/40 dark:bg-violet-950/20 px-3 py-2 text-xs text-violet-700 dark:text-violet-300">
+            <Lock className="h-3.5 w-3.5" /> Internal only — not part of the medical record.
+          </div>
+        )}
+        {!showSkeleton && activeRecord && interactive && (
+          <MissingPanel record={activeRecord} />
+        )}
         {showSkeleton ? (
           <RecordSkeleton phase={phase} />
         ) : noteView === "document" ? (
@@ -714,6 +750,39 @@ function RecordsPane({
         />
       )}
     </>
+  );
+}
+
+// --- Missing but Important panel ---------------------------------------------
+
+function MissingPanel({ record }: { record: ClinicalRecord }) {
+  const missing = record.sections.filter((s) => s.required && s.notDocumented);
+  if (!missing.length) return null;
+  return (
+    <div
+      id="missing-panel"
+      className="mb-3 rounded-lg border border-amber-300 bg-amber-50/70 dark:border-amber-900/50 dark:bg-amber-950/20 px-3 py-2.5"
+    >
+      <div className="flex items-center gap-1.5">
+        <FileWarning className="h-4 w-4 text-amber-600" />
+        <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">
+          Missing but important — {missing.length} required field{missing.length === 1 ? "" : "s"} not documented
+        </span>
+      </div>
+      <div className="mt-1.5 flex flex-wrap gap-1.5">
+        {missing.map((s) => (
+          <span
+            key={s.id}
+            className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300"
+          >
+            {s.heading}
+          </span>
+        ))}
+      </div>
+      <p className="mt-1.5 text-[11px] text-amber-700/80 dark:text-amber-400/80">
+        Scribe never invents these. Confirm at the point of care before signing.
+      </p>
+    </div>
   );
 }
 
@@ -812,6 +881,16 @@ function SectionView({
     <div>
       <div className="flex items-center gap-2 mb-1.5">
         <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{section.heading}</span>
+        {section.required && (
+          <span
+            className={cn(
+              "text-[9px] font-semibold px-1 py-0.5 rounded uppercase",
+              section.notDocumented ? "text-amber-700 bg-amber-100 dark:bg-amber-950/40" : "text-muted-foreground bg-muted",
+            )}
+          >
+            required
+          </span>
+        )}
         {interactive && (section.lines?.length ?? 0) > 0 && (
           <button
             onClick={improve}
@@ -823,6 +902,20 @@ function SectionView({
           </button>
         )}
       </div>
+
+      {section.notDocumented && (
+        <div
+          className={cn(
+            "flex items-center gap-1.5 rounded-md border border-dashed px-2 py-1.5 text-xs",
+            section.required
+              ? "border-amber-300 bg-amber-50/60 dark:bg-amber-950/20 text-amber-700"
+              : "border-border text-muted-foreground",
+          )}
+        >
+          <FileWarning className="h-3.5 w-3.5" />
+          Not documented in transcript
+        </div>
+      )}
 
       {section.lines && (
         <div className={cn("group/sec", format === "bulleted" ? "space-y-1" : "space-y-1.5")}>
@@ -845,8 +938,15 @@ function SectionView({
                 )}
                 style={{ ["--a" as string]: ACCENT }}
               >
-                {format === "bulleted" && <span style={{ color: ACCENT }}>•</span>}
-                <span className="flex-1 leading-snug">{line.text}</span>
+                {format === "bulleted" && <span style={{ color: line.inferred ? "var(--muted-foreground)" : ACCENT }}>•</span>}
+                <span className="flex-1 leading-snug">
+                  {line.text}
+                  {line.inferred && (
+                    <span className="ml-1.5 inline-flex items-center gap-0.5 align-middle text-[9px] font-semibold px-1 py-0.5 rounded bg-violet-100 dark:bg-violet-950/40 text-violet-600 whitespace-nowrap">
+                      <Wand2 className="h-2.5 w-2.5" /> AI suggestion — verify
+                    </span>
+                  )}
+                </span>
                 {hasSrc && <Link2 className="h-3 w-3 mt-0.5 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity" style={{ color: ACCENT }} />}
               </div>
             );
@@ -924,10 +1024,16 @@ function DocumentView({ record, resp }: { record: ClinicalRecord; resp: ScribeGe
       <div className="space-y-4">
         {record.sections.map((s) => (
           <div key={s.id}>
-            <div className="text-[13px] font-semibold text-foreground border-b border-border/60 pb-0.5 mb-1.5">{s.heading}</div>
+            <div className="text-[13px] font-semibold text-foreground border-b border-border/60 pb-0.5 mb-1.5">
+              {s.heading}
+              {s.required && <span className="ml-1.5 text-[9px] uppercase text-muted-foreground">required</span>}
+            </div>
+            {s.notDocumented && (
+              <p className="text-[13px] italic text-amber-700/90">Not documented in transcript.</p>
+            )}
             {s.lines && (
               <p className="text-[13px] leading-relaxed text-foreground/85">
-                {s.lines.map((l) => l.text).join(" ")}
+                {s.lines.map((l) => l.text + (l.inferred ? " [AI suggestion — verify]" : "")).join(" ")}
               </p>
             )}
             {s.codes && (
@@ -977,7 +1083,16 @@ function RecordToolbar({
   const [copied, setCopied] = useState(false);
   const [note, setNote] = useState<string | null>(null);
 
-  const chips = ["Make it more concise", "Warmer, patient-friendly tone", "Add a follow-up reminder", "Expand the assessment"];
+  const quickActions: { label: string; instruction: string }[] = [
+    { label: "Make chart-ready", instruction: "Rewrite as a chart-ready clinical note: concise, professional, complete sentences in standard medical documentation style. Preserve every documented fact and any 'not documented' gaps. Do not invent details." },
+    { label: "Make concise", instruction: "Make this note more concise while preserving all clinical facts and required fields." },
+    { label: "Expand clinical rationale", instruction: "Expand the clinical rationale behind the assessment and plan, grounded ONLY in documented facts. Mark any inference as an AI suggestion to verify." },
+    { label: "Patient-friendly", instruction: "Rewrite this in plain, warm, patient-friendly language at about an 8th-grade reading level, keeping it accurate." },
+  ];
+
+  function flagMissing() {
+    document.getElementById("missing-panel")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 
   async function runEdit(text: string) {
     if (!text.trim() || busy) return;
@@ -1040,17 +1155,26 @@ function RecordToolbar({
           {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
         </button>
       </div>
-      <div className="flex flex-wrap gap-1.5">
-        {chips.map((c) => (
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground mr-0.5">Quick actions</span>
+        {quickActions.map((a) => (
           <button
-            key={c}
-            onClick={() => runEdit(c)}
+            key={a.label}
+            onClick={() => runEdit(a.instruction)}
             disabled={busy}
             className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground hover:border-foreground/20 disabled:opacity-40"
           >
-            {c}
+            {a.label}
           </button>
         ))}
+        {record.sections.some((s) => s.required && s.notDocumented) && (
+          <button
+            onClick={flagMissing}
+            className="flex items-center gap-1 rounded-full border border-amber-300 bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 text-[11px] font-medium text-amber-700 hover:bg-amber-100"
+          >
+            <FileWarning className="h-3 w-3" /> Flag missing compliance
+          </button>
+        )}
       </div>
     </div>
   );

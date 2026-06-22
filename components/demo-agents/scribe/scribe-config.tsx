@@ -16,11 +16,11 @@ export const scribeConfig: DemoAgentConfig = {
   steps: [
     {
       id: "note-style",
-      title: "Choose records & style",
-      hint: "Select which clinical records to generate and how they should read.",
+      title: "Choose note style",
+      hint: "Pick the clinical note — its schema sets the sections and required fields.",
       component: NoteStyleStep,
       hideFooter: true,
-      canAdvance: (ctx) => ((ctx.data.recordTypes as unknown[]) ?? []).length > 0,
+      canAdvance: (ctx) => Boolean(ctx.data.noteStyle),
     },
     {
       id: "generate",

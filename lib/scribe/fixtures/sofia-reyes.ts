@@ -195,4 +195,98 @@ export const sofiaReyes: ScribeFixture = {
       ],
     },
   },
+  styleNotes: {
+    injectable: {
+      type: "injectable",
+      title: "Injectable Note",
+      subtitle: "onabotulinumtoxinA · maintenance touch-up",
+      sections: [
+        {
+          id: "indication",
+          heading: "Indication / Patient Goal",
+          required: true,
+          lines: [
+            { text: "Maintenance of dynamic glabellar lines and asymmetric lateral canthal lines (right > left) ~10 weeks post full treatment.", sources: ["t2", "t5"], strong: true },
+          ],
+        },
+        {
+          id: "anatomy",
+          heading: "Anatomy Assessment",
+          required: true,
+          lines: [
+            { text: "Glabellar complex and frontalis with bilateral lateral canthi; right canthus stronger on animation.", sources: ["t2", "t11"] },
+          ],
+        },
+        {
+          id: "product",
+          heading: "Product Used",
+          required: true,
+          lines: [{ text: "onabotulinumtoxinA.", sources: ["t11"], strong: true }],
+        },
+        {
+          id: "lot",
+          heading: "Lot Number / Expiration",
+          required: true,
+          notDocumented: true,
+        },
+        {
+          id: "dilution",
+          heading: "Dilution / Reconstitution",
+          notDocumented: true,
+        },
+        {
+          id: "total",
+          heading: "Total Units or Volume",
+          required: true,
+          lines: [{ text: "12 units total.", sources: ["t11"], strong: true }],
+        },
+        {
+          id: "sites",
+          heading: "Injection Sites",
+          required: true,
+          lines: [
+            { text: "Glabella 5u; forehead (frontalis) 3u; right lateral canthus 2.5u; left lateral canthus 1.5u.", sources: ["t11"], strong: true },
+          ],
+        },
+        {
+          id: "technique",
+          heading: "Technique / Depth / Plane",
+          required: true,
+          lines: [
+            { text: "Intramuscular, right-weighted dosing to balance canthal asymmetry.", sources: ["t11"] },
+            { text: "Standard intramuscular plane for neuromodulator — AI suggestion, verify against chart preference.", inferred: true },
+          ],
+        },
+        { id: "device", heading: "Needle or Cannula", notDocumented: true },
+        { id: "pain", heading: "Pain Control", notDocumented: true },
+        {
+          id: "tolerance",
+          heading: "Tolerance",
+          lines: [{ text: "Tolerated well; patient reported the treatment was easier than expected.", sources: ["t16"] }],
+        },
+        {
+          id: "adverse",
+          heading: "Complications / Adverse Events",
+          required: true,
+          lines: [{ text: "No adverse event reported during the visit; patient tolerated treatment.", sources: ["t16"] }],
+        },
+        {
+          id: "aftercare",
+          heading: "Aftercare",
+          required: true,
+          lines: [
+            { text: "Bruise cream dispensed; hold actives and sun 48h; resume tretinoin in 2 nights; no exercise this evening.", sources: ["t13", "t17"] },
+          ],
+        },
+        {
+          id: "followup",
+          heading: "Follow-Up / Touch-Up Plan",
+          lines: [
+            { text: "Full neuromodulator treatment in ~4 weeks; microneedling session two ~6 weeks thereafter.", sources: ["t19"] },
+            { text: "If canthal asymmetry persists, a 2-week touch-up may be considered — AI suggestion, verify.", inferred: true },
+          ],
+        },
+      ],
+    },
+  },
 };

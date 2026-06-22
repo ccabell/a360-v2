@@ -33,6 +33,8 @@ export interface RecordLine {
   text: string;
   sources?: string[]; // transcript segment ids
   strong?: boolean;
+  /** Inferred recommendation, not a transcript fact — render "AI suggestion — verify". */
+  inferred?: boolean;
 }
 
 export interface CodeItem {
@@ -56,14 +58,21 @@ export interface RecordSection {
   lines?: RecordLine[];
   codes?: CodeItem[];
   opportunities?: OpportunityItem[];
+  /** Required by the note style's schema (drives compliance/missing checks). */
+  required?: boolean;
+  /** No supporting evidence in the transcript — render "Not documented in transcript". */
+  notDocumented?: boolean;
 }
 
 export interface ClinicalRecord {
-  type: RecordType;
+  /** RecordType for the companion fan-out, or a NoteStyle key for the primary note. */
+  type: string;
   title: string;
   /** Short descriptor shown under the tab title. */
   subtitle?: string;
   sections: RecordSection[];
+  /** True for the Internal Opportunity Summary — not part of the medical record. */
+  internalOnly?: boolean;
 }
 
 /** Fully-authored, deterministic demo data for one patient. */
@@ -76,11 +85,16 @@ export interface ScribeFixture {
   location: string;
   segments: TranscriptSegment[];
   records: Partial<Record<RecordType, ClinicalRecord>>;
+  /** Cached primary notes keyed by NoteStyle key (e.g. "injectable"). */
+  styleNotes?: Record<string, ClinicalRecord>;
 }
 
 export interface ScribeGenerateRequest {
   patientId: string;
   consultationId?: string;
+  /** Primary note style key (from NOTE_STYLES). Drives the note's sections. */
+  noteStyle?: string;
+  /** Companion fan-out outputs to also generate. */
   recordTypes: RecordType[];
   style: ScribeStyle;
 }
