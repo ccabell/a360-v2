@@ -8,7 +8,7 @@ SET name = 'Orange Twist',
     branding = jsonb_build_object(
       'logo', 'orange-twist',
       'tagline', 'BODY | FACE | SKIN',
-      'accent', '#F26A1B',
+      'accent', '#F5A623',
       'locations', jsonb_build_array(
         jsonb_build_object('id','ot-newport','name','Newport Beach','city','Newport Beach','state','CA','is_default',true),
         jsonb_build_object('id','ot-irvine','name','Irvine','city','Irvine','state','CA','is_default',false),

@@ -38,7 +38,7 @@ export function PracticeHeader() {
       .catch(() => {});
   }, []);
 
-  const accent = practice?.accent ?? "#F26A1B";
+  const accent = practice?.accent ?? "#F5A623";
   const curated = products.slice(0, 6);
 
   return (

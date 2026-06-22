@@ -53,7 +53,7 @@ export function PatientPickerStep({ ctx, setCtx, goNext }: DemoStepProps) {
                   ? "border-[color:var(--ot-accent)] ring-2 ring-[color:var(--ot-accent)]/30"
                   : "border-border hover:border-foreground/20",
               )}
-              style={{ ["--ot-accent" as string]: "#F26A1B" }}
+              style={{ ["--ot-accent" as string]: "#F5A623" }}
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-center gap-3">
@@ -78,7 +78,7 @@ export function PatientPickerStep({ ctx, setCtx, goNext }: DemoStepProps) {
                 <div className="mt-3 flex items-center gap-2">
                   <span
                     className="text-[11px] font-semibold px-2 py-0.5 rounded-full"
-                    style={{ background: "#F26A1B1a", color: "#F26A1B" }}
+                    style={{ background: "#F5A6231a", color: "#F5A623" }}
                   >
                     {VISIT_LABELS[p.visitType] ?? p.visitType}
                   </span>
@@ -106,7 +106,7 @@ export function PatientPickerStep({ ctx, setCtx, goNext }: DemoStepProps) {
           disabled={!selectedId}
           onClick={goNext}
           className="flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-opacity disabled:opacity-40"
-          style={{ background: "#F26A1B" }}
+          style={{ background: "#F5A623" }}
         >
           Continue <ArrowRight className="h-4 w-4" />
         </button>

@@ -21,7 +21,7 @@ import {
   type ScribeStyle,
 } from "@/lib/scribe/types";
 
-const ACCENT = "#F26A1B";
+const ACCENT = "#F5A623";
 const ICONS: Record<string, LucideIcon> = {
   Stethoscope,
   Syringe,
