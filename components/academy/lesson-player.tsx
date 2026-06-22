@@ -58,7 +58,11 @@ export function LessonPlayer({
 }: LessonPlayerProps) {
   const [current, setCurrent] = useState(initialStart); // seconds
   const [playing, setPlaying] = useState(false);
-  const [embed, setEmbed] = useState(false);
+  // Show the real video by default when we have a resolved id.
+  const [embed, setEmbed] = useState(Boolean(youtubeId));
+  // Only autoplay after a user gesture (seek/click) — browsers block unmuted
+  // autoplay on load, which made it look like "the video doesn't play".
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [tab, setTab] = useState<"chapters" | "keypoints">("chapters");
   const transcriptRef = useRef<HTMLDivElement>(null);
   const activeSegRef = useRef<HTMLButtonElement>(null);
@@ -77,16 +81,17 @@ export function LessonPlayer({
   }, [current, segments]);
 
   const seek = useCallback(
-    (sec: number, opts: { scroll?: boolean } = { scroll: true }) => {
+    (sec: number) => {
       setCurrent(sec);
-      if (youtubeId && embed) {
-        // iframe reloads via key change on current — handled in render.
-      }
-      if (opts.scroll) {
-        // Scroll handled by effect on activeIndex.
+      if (youtubeId) {
+        // Jump to the video and play at that second. The click is a user
+        // gesture, so autoplay (even unmuted) is allowed. iframe reloads via
+        // its key={current}. Transcript auto-scroll is handled by activeIndex.
+        setHasInteracted(true);
+        setEmbed(true);
       }
     },
-    [youtubeId, embed]
+    [youtubeId]
   );
 
   // Auto-scroll active segment into view within the transcript pane.
@@ -140,7 +145,7 @@ export function LessonPlayer({
                 className="absolute inset-0 h-full w-full"
                 src={`https://www.youtube-nocookie.com/embed/${youtubeId}?start=${Math.floor(
                   current
-                )}&autoplay=1&rel=0`}
+                )}&autoplay=${hasInteracted ? 1 : 0}&rel=0`}
                 title={title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -195,17 +200,19 @@ export function LessonPlayer({
                 >
                   <SkipBack className="h-4 w-4" />
                 </button>
-                <button
-                  onClick={() => setPlaying((p) => !p)}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
-                  aria-label={playing ? "Pause" : "Play"}
-                >
-                  {playing ? (
-                    <Pause className="h-4 w-4 fill-current" />
-                  ) : (
-                    <Play className="ml-0.5 h-4 w-4 fill-current" />
-                  )}
-                </button>
+                {!embed && (
+                  <button
+                    onClick={() => setPlaying((p) => !p)}
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-transform hover:scale-105"
+                    aria-label={playing ? "Pause" : "Play"}
+                  >
+                    {playing ? (
+                      <Pause className="h-4 w-4 fill-current" />
+                    ) : (
+                      <Play className="ml-0.5 h-4 w-4 fill-current" />
+                    )}
+                  </button>
+                )}
                 <button
                   onClick={() =>
                     seek(
@@ -219,18 +226,32 @@ export function LessonPlayer({
                   <SkipForward className="h-4 w-4" />
                 </button>
                 <span className="ml-2 hidden text-xs text-muted-foreground sm:inline">
-                  {playing ? "Reading along" : "Paused"} · {activeChapter}
+                  {embed
+                    ? "Playing video · click a line to jump"
+                    : `${playing ? "Reading along" : "Paused"} · ${activeChapter}`}
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 {youtubeId ? (
-                  <button
-                    onClick={() => setEmbed((e) => !e)}
-                    className="inline-flex items-center gap-1.5 rounded-md bg-red-600/10 px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-600/20"
-                  >
-                    <Film className="h-4 w-4" />
-                    {embed ? "Transcript view" : "Watch video"}
-                  </button>
+                  <>
+                    <button
+                      onClick={() => setEmbed((e) => !e)}
+                      className="inline-flex items-center gap-1.5 rounded-md bg-foreground/5 px-2.5 py-1.5 text-xs font-medium text-foreground hover:bg-foreground/10"
+                    >
+                      <Film className="h-4 w-4" />
+                      {embed ? "Read transcript" : "Watch video"}
+                    </button>
+                    <a
+                      href={`https://www.youtube.com/watch?v=${youtubeId}&t=${Math.floor(current)}s`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 rounded-md bg-red-600/10 px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-600/20"
+                      title="If the embedded player is blocked, open on YouTube"
+                    >
+                      Open on YouTube
+                      <ExternalLink className="h-3 w-3" />
+                    </a>
+                  </>
                 ) : (
                   <a
                     href={youtubeSearchUrl}

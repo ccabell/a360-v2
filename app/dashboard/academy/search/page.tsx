@@ -21,14 +21,14 @@ export default function AcademySearchPage() {
 
       <div className="mt-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary">
         <GraduationCap className="h-4 w-4" />
-        Search the corpus
+        Video search
       </div>
       <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold leading-tight text-foreground">
-        Find the exact moment it was taught.
+        Search every lesson by what was said.
       </h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Search every cleaned transcript across Dr Tim Pearce&rsquo;s 408 videos.
-        Each result links to the precise second the words were spoken.
+        Search across all {408} of Dr Tim Pearce&rsquo;s videos. Every match
+        jumps straight to the second it was said.
       </p>
 
       <div className="mt-6">

@@ -14,11 +14,13 @@ import {
 } from "lucide-react";
 import { TOPIC_BY_ID } from "@/lib/academy/taxonomy";
 import { CATEGORY_STYLES } from "@/components/academy/icons";
+import { youtubeThumb } from "@/lib/academy/youtube";
 import type { Topic, VideoSummary } from "@/lib/academy/types";
 
 interface SegmentHit {
   slug: string;
   videoTitle: string;
+  youtubeId: string | null;
   start: number;
   snippet: string;
   text: string;
@@ -249,18 +251,35 @@ export function SearchClient() {
                     <div className="rounded-xl bg-card p-4 ring-1 ring-foreground/10">
                       <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                         <Film className="h-3.5 w-3.5" />
-                        Matching lessons
+                        Full lessons on this
                       </p>
                       <div className="mt-2.5 flex flex-col gap-1.5">
-                        {results.videos.map((v) => (
-                          <Link
-                            key={v.slug}
-                            href={`/dashboard/academy/lesson/${v.slug}`}
-                            className="truncate text-sm text-foreground hover:text-primary hover:underline"
-                          >
-                            {v.title}
-                          </Link>
-                        ))}
+                        {results.videos.map((v) => {
+                          const thumb = youtubeThumb(v.youtubeId, "mq");
+                          return (
+                            <Link
+                              key={v.slug}
+                              href={`/dashboard/academy/lesson/${v.slug}`}
+                              className="group flex items-center gap-2.5 rounded-lg p-1 transition-colors hover:bg-foreground/[0.03]"
+                            >
+                              <span className="relative aspect-video w-16 shrink-0 overflow-hidden rounded bg-muted">
+                                {thumb ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img
+                                    src={thumb}
+                                    alt=""
+                                    aria-hidden
+                                    loading="lazy"
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : null}
+                              </span>
+                              <span className="line-clamp-2 text-sm text-foreground group-hover:text-primary">
+                                {v.title}
+                              </span>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -275,27 +294,41 @@ export function SearchClient() {
                       TOPIC_BY_ID.get(hit.topics[0] ?? "")?.category ??
                         "technique"
                     ];
+                  const thumb = youtubeThumb(hit.youtubeId, "mq");
                   return (
                     <Link
                       key={`${hit.slug}-${hit.start}-${i}`}
                       href={`/dashboard/academy/lesson/${hit.slug}?t=${hit.start}`}
-                      className="group block rounded-xl bg-card p-4 ring-1 ring-foreground/10 transition-all hover:ring-primary/40 hover:shadow-sm"
+                      className="group flex gap-4 rounded-xl bg-card p-3 ring-1 ring-foreground/10 transition-all hover:ring-primary/40 hover:shadow-sm"
                     >
-                      <div className="flex items-start gap-3">
-                        <span
-                          className={`mt-0.5 inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-1 font-mono text-xs font-semibold ${cat.bg} ${cat.text}`}
-                        >
-                          <Play className="h-3 w-3 fill-current" />
+                      {/* Thumbnail with timestamp */}
+                      <div className="relative aspect-video w-36 shrink-0 overflow-hidden rounded-lg bg-muted">
+                        {thumb ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={thumb}
+                            alt=""
+                            aria-hidden
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className={`flex h-full w-full items-center justify-center ${cat.bg}`}>
+                            <Play className={`h-6 w-6 ${cat.text}`} />
+                          </div>
+                        )}
+                        <span className="absolute bottom-1 right-1 inline-flex items-center gap-1 rounded bg-black/80 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-white">
+                          <Play className="h-2.5 w-2.5 fill-current" />
                           {fmt(hit.start)}
                         </span>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-medium text-foreground group-hover:text-primary">
-                            {hit.videoTitle}
-                          </p>
-                          <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                            <Snippet html={hit.snippet} />
-                          </p>
-                        </div>
+                      </div>
+                      <div className="min-w-0 flex-1 py-0.5">
+                        <p className="line-clamp-1 text-sm font-semibold text-foreground group-hover:text-primary">
+                          {hit.videoTitle}
+                        </p>
+                        <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+                          <Snippet html={hit.snippet} />
+                        </p>
                       </div>
                     </Link>
                   );

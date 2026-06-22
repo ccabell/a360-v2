@@ -32,6 +32,8 @@ function getRows(): SearchRow[] {
 export interface SegmentHit {
   slug: string;
   videoTitle: string;
+  /** Resolved YouTube id of the parent video (for thumbnails), or null. */
+  youtubeId: string | null;
   start: number;
   /** Cleaned text with the matched window highlighted (snippet). */
   snippet: string;
@@ -163,6 +165,7 @@ export function searchCorpus(query: string, limit = 40): SearchResults {
     hits.push({
       slug,
       videoTitle: title,
+      youtubeId: v?.youtubeId ?? null,
       start,
       snippet: makeSnippet(text, terms),
       text,
