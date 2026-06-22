@@ -12,11 +12,18 @@ import { getFixture } from "./fixtures";
 
 export type EntityCategory =
   | "concern"
+  | "goal"
   | "treatment"
   | "product"
-  | "anatomy"
   | "dose"
+  | "anatomy"
   | "medication"
+  | "allergy"
+  | "contraindication"
+  | "prior_treatment"
+  | "consent"
+  | "adverse_event"
+  | "aftercare"
   | "followup"
   | "opportunity"
   | "context";
@@ -39,17 +46,24 @@ export interface ExtractionResult {
 
 export const CATEGORY_META: Record<
   EntityCategory,
-  { label: string; icon: string; order: number }
+  { label: string; icon: string; order: number; compliance?: boolean }
 > = {
   concern: { label: "Concerns", icon: "Target", order: 1 },
-  treatment: { label: "Treatments", icon: "Syringe", order: 2 },
-  product: { label: "Products", icon: "Package", order: 3 },
-  dose: { label: "Dosing", icon: "Gauge", order: 4 },
-  anatomy: { label: "Anatomy", icon: "MapPin", order: 5 },
-  medication: { label: "Medications", icon: "Pill", order: 6 },
-  followup: { label: "Follow-up", icon: "CalendarClock", order: 7 },
-  opportunity: { label: "Opportunities", icon: "TrendingUp", order: 8 },
-  context: { label: "Context", icon: "Info", order: 9 },
+  goal: { label: "Patient goals", icon: "Crosshair", order: 2 },
+  treatment: { label: "Treatments", icon: "Syringe", order: 3 },
+  product: { label: "Products / devices", icon: "Package", order: 4 },
+  dose: { label: "Dose / volume / settings", icon: "Gauge", order: 5 },
+  anatomy: { label: "Anatomy / areas", icon: "MapPin", order: 6 },
+  medication: { label: "Medications", icon: "Pill", order: 7 },
+  allergy: { label: "Allergies", icon: "TriangleAlert", order: 8, compliance: true },
+  contraindication: { label: "Contraindications", icon: "Ban", order: 9, compliance: true },
+  prior_treatment: { label: "Prior treatments", icon: "History", order: 10 },
+  consent: { label: "Consent / education", icon: "ClipboardCheck", order: 11, compliance: true },
+  adverse_event: { label: "Adverse events", icon: "AlertCircle", order: 12, compliance: true },
+  aftercare: { label: "Aftercare", icon: "Bandage", order: 13 },
+  followup: { label: "Follow-up", icon: "CalendarClock", order: 14 },
+  opportunity: { label: "Commercial opportunities", icon: "TrendingUp", order: 15 },
+  context: { label: "Context", icon: "Info", order: 16 },
 };
 
 // --- Cached, source-linked extractions for hero patients ---------------------
@@ -78,6 +92,11 @@ const CACHED_EXTRACTIONS: Record<string, Omit<ExtractionResult, "source">> = {
       { id: "e16", category: "followup", label: "Microneedling session 2", value: "~6 weeks", confidence: 0.92, sources: ["t19"] },
       { id: "e17", category: "opportunity", label: "Microneedling series", value: "~$1,200", confidence: 0.84, sources: ["t15", "t19"] },
       { id: "e18", category: "opportunity", label: "Alle loyalty re-engagement", confidence: 0.8, sources: ["t19"] },
+      { id: "e19", category: "goal", label: "Improve midface texture & temporal pigment", confidence: 0.9, sources: ["t6"] },
+      { id: "e20", category: "consent", label: "Risks/benefits reviewed; consent on file", confidence: 0.88, sources: ["t13"] },
+      { id: "e21", category: "contraindication", label: "Screen negative — not pregnant, no new meds/antibiotics", confidence: 0.92, sources: ["t9", "t10"] },
+      { id: "e22", category: "aftercare", label: "Bruise cream; hold actives & sun 48h; resume tretinoin in 2 nights", confidence: 0.9, sources: ["t13", "t17"] },
+      { id: "e23", category: "prior_treatment", label: "Established neuromodulator maintenance (~10-wk cadence)", confidence: 0.86, sources: ["t1", "t2"] },
     ],
   },
   // Amara Okafor
@@ -100,6 +119,9 @@ const CACHED_EXTRACTIONS: Record<string, Omit<ExtractionResult, "source">> = {
       { id: "e13", category: "followup", label: "Phased plan, patient-led pace", confidence: 0.88, sources: ["t13", "t15"] },
       { id: "e14", category: "opportunity", label: "Lip filler conversion", value: "~$650", confidence: 0.85, sources: ["t7", "t15"] },
       { id: "e15", category: "opportunity", label: "Halo resurfacing", value: "~$1,500", confidence: 0.78, sources: ["t11"] },
+      { id: "e16", category: "goal", label: "Soften lines; natural lip fullness; periorbital improvement", confidence: 0.93, sources: ["t4"] },
+      { id: "e17", category: "prior_treatment", label: "Prior Botox (perceived non-response); filler migration elsewhere", confidence: 0.9, sources: ["t2"] },
+      { id: "e18", category: "consent", label: "Education discussed; procedural consent pending (no procedure today)", confidence: 0.82, sources: ["t13", "t15"] },
     ],
   },
 };
@@ -148,8 +170,8 @@ async function liveExtract(
       `Transcript:\n"""${text.slice(0, 12000)}"""`,
       ``,
       `Return JSON: {"chiefConcern":"...","entities":[{"category","label","value","confidence"}]}`,
-      `categories: concern, treatment, product, anatomy, dose, medication, followup, opportunity, context.`,
-      `confidence is 0..1. Keep to the most important ~12-16 entities.`,
+      `categories: concern, goal, treatment, product, dose, anatomy, medication, allergy, contraindication, prior_treatment, consent, adverse_event, aftercare, followup, opportunity, context.`,
+      `Only include consent/adverse_event/contraindication/allergy if explicitly stated. confidence is 0..1. Keep to ~14-18 entities.`,
     ].join("\n"),
     temperature: 0.2,
     maxOutputTokens: 1800,

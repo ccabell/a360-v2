@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
     const result = await resolveScribe({
       patientId: body.patientId,
       consultationId: body.consultationId,
+      noteStyle: body.noteStyle ?? body.recordTypes[0],
       recordTypes: body.recordTypes,
       style: body.style ?? { length: "standard", format: "paragraph" },
     });
