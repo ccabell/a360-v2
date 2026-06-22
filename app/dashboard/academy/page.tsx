@@ -8,6 +8,7 @@ import {
   Layers,
   ArrowRight,
   Sparkles,
+  ImageIcon,
 } from "lucide-react";
 import {
   getIndex,
@@ -100,6 +101,13 @@ export default function AcademyHome() {
             >
               <Sparkles className="h-4 w-4" />
               Ask the AI tutor
+            </Link>
+            <Link
+              href="/dashboard/academy/illustrations"
+              className="inline-flex items-center gap-2 rounded-lg bg-card px-5 py-2.5 text-sm font-semibold text-foreground ring-1 ring-foreground/10 transition-colors hover:ring-primary/40"
+            >
+              <ImageIcon className="h-4 w-4" />
+              Illustrations
             </Link>
           </div>
         </div>

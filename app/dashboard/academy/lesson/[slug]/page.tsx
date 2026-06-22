@@ -13,8 +13,10 @@ import {
   getVideos,
   getModule,
   getTopicEntry,
+  getVideoIllustrations,
 } from "@/lib/academy/server";
 import { LessonPlayer } from "@/components/academy/lesson-player";
+import { LessonIllustrations } from "@/components/academy/lesson-illustrations";
 import { LessonCard } from "@/components/academy/lesson-card";
 import { CATEGORY_STYLES, moduleIcon } from "@/components/academy/icons";
 import { TOPIC_BY_ID } from "@/lib/academy/taxonomy";
@@ -58,6 +60,7 @@ export default async function LessonPage({
 
   const module = getModule(video.primaryModule);
   const ModuleIcon = module ? moduleIcon(module.icon) : Tag;
+  const illustrations = getVideoIllustrations(slug);
   const primaryCat =
     CATEGORY_STYLES[
       TOPIC_BY_ID.get(video.topics[0] ?? "")?.category ?? "technique"
@@ -196,6 +199,11 @@ export default async function LessonPage({
             ))}
           </div>
         </section>
+      )}
+
+      {/* Teaching illustrations (extracted frames) */}
+      {illustrations && illustrations.frames.length > 0 && (
+        <LessonIllustrations slug={slug} frames={illustrations.frames} />
       )}
 
       {/* Podcast corroboration */}
