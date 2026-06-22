@@ -49,7 +49,7 @@ export function PracticeHeader() {
           {logoOk ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src="/practices/orange-twist-logo.png"
+              src="/practices/orange-twist-logo.svg"
               alt={practice?.name ?? "Practice"}
               className="h-11 w-11 rounded-lg object-contain"
               onError={() => setLogoOk(false)}
