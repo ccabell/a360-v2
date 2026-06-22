@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Play, Video } from "lucide-react";
 import type { TubeVideo } from "@/lib/tube/types";
 import { youtubeThumb } from "@/lib/academy/youtube";
@@ -34,10 +35,8 @@ export function TubeCard({ video }: { video: TubeVideo }) {
   const tags = [...video.anatomy.slice(0, 1), ...video.concerns.slice(0, 2)].slice(0, 3);
 
   return (
-    <a
-      href={video.url}
-      target="_blank"
-      rel="noreferrer"
+    <Link
+      href={`/dashboard/tube/${video.id}`}
       className="group flex h-full flex-col overflow-hidden rounded-xl bg-neutral-900 ring-1 ring-white/10 transition-all duration-200 hover:ring-white/25 hover:shadow-xl hover:shadow-black/40 hover:-translate-y-1"
     >
       {/* Thumbnail */}
@@ -94,6 +93,6 @@ export function TubeCard({ video }: { video: TubeVideo }) {
           </div>
         )}
       </div>
-    </a>
+    </Link>
   );
 }

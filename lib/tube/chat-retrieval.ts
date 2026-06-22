@@ -77,6 +77,20 @@ interface Row {
   manufacturer_name: string | null;
 }
 
+/** Title + channel for any corpus video by id (for the in-app watch page). */
+export async function getVideoMetaById(
+  id: string,
+): Promise<{ title: string; channel: string } | null> {
+  const { data } = await rag
+    .from("manufacturer_youtube_transcript")
+    .select("video_title,manufacturer_name")
+    .eq("video_id", id)
+    .limit(1);
+  const r = data?.[0] as { video_title: string | null; manufacturer_name: string | null } | undefined;
+  if (!r) return null;
+  return { title: (r.video_title ?? "Untitled").trim() || "Untitled", channel: channelLabel(r.manufacturer_name) };
+}
+
 /** Retrieve grounded, deep-linkable sources for a question (keyword + scoring). */
 export async function retrieveTubeSources(question: string, max = 12): Promise<TubeSource[]> {
   const terms = tokenize(question);
@@ -124,7 +138,8 @@ export async function retrieveTubeSources(question: string, max = 12): Promise<T
       text: r.chunk_text as string,
       videoId: vid,
       start,
-      url: `https://www.youtube.com/watch?v=${vid}&t=${start}s`,
+      // Stay in-app: link to the Navigator's own player at the cited second.
+      url: `/dashboard/tube/${vid}?t=${start}`,
       meta: `${ch} · ${fmt(start)}`,
     });
     if (out.length >= max) break;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Send, Sparkles, Play, Loader2, ShieldCheck, ArrowUpRight } from "lucide-react";
 
 interface TubeSource {
@@ -41,17 +42,15 @@ function renderWithCitations(text: string, sources: TubeSource[]) {
     const src = byId.get(m[1]);
     if (src) {
       parts.push(
-        <a
+        <Link
           key={`c${key++}`}
           href={src.url}
-          target="_blank"
-          rel="noreferrer"
           title={`${src.title} · ${src.meta}`}
           className="mx-0.5 inline-flex translate-y-px items-center gap-0.5 rounded bg-primary/15 px-1.5 py-0.5 align-baseline text-[11px] font-semibold text-primary hover:bg-primary/25"
         >
           <Play className="h-2.5 w-2.5 fill-current" />
           {src.id}
-        </a>,
+        </Link>,
       );
     } else {
       parts.push(m[0]);
@@ -232,11 +231,9 @@ function Bubble({ message }: { message: ChatMessage }) {
             </p>
             <div className="mt-2 space-y-1">
               {sources.map((s) => (
-                <a
+                <Link
                   key={s.id}
                   href={s.url}
-                  target="_blank"
-                  rel="noreferrer"
                   className="flex items-start gap-2.5 rounded-md p-1.5 transition-colors hover:bg-white/5"
                 >
                   <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-primary">
@@ -248,7 +245,7 @@ function Bubble({ message }: { message: ChatMessage }) {
                     <span className="block truncate text-[11px] text-neutral-500">{s.meta}</span>
                   </span>
                   <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-neutral-500" />
-                </a>
+                </Link>
               ))}
             </div>
           </div>
