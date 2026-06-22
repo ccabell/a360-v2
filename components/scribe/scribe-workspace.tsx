@@ -273,6 +273,8 @@ function NotePane({
 }) {
   const [busy, setBusy] = useState(false);
   const missing = record.sections.filter((s) => s.required && s.notDocumented);
+  const allMissing = record.sections.length > 0 && record.sections.every((s) => s.notDocumented);
+  const liveUnavailable = meta.source === "live" && allMissing;
 
   async function quickAction(value: string) {
     const map: Record<string, string> = {
@@ -331,18 +333,28 @@ function NotePane({
         </div>
       </div>
 
-      {/* missing panel */}
-      {missing.length > 0 && (
-        <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/8 border border-destructive/20 px-3 py-2">
-          <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-destructive" />
-          <div className="text-xs text-destructive">
-            {missing.length} required field{missing.length === 1 ? "" : "s"} not documented —{" "}
-            {missing.map((m) => m.heading).join(", ")}. Scribe won&apos;t invent it; confirm at the point of care.
-          </div>
+      {liveUnavailable ? (
+        <div className="rounded-lg border border-border bg-muted/30 px-4 py-6 text-center">
+          <p className="text-sm font-medium text-foreground">This note style isn&apos;t available for this patient in the demo build.</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Stage-ready: <span className="text-foreground">SOAP note</span> for any patient · the{" "}
+            <span className="text-foreground">Injectable note</span> for Sofia Reyes · the{" "}
+            <span className="text-foreground">Aesthetic consult note</span> for Amara Okafor.
+          </p>
         </div>
-      )}
+      ) : (
+        <>
+          {missing.length > 0 && (
+            <div className="mb-3 flex items-start gap-2 rounded-lg bg-destructive/8 border border-destructive/20 px-3 py-2">
+              <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-destructive" />
+              <div className="text-xs text-destructive">
+                {missing.length} required field{missing.length === 1 ? "" : "s"} not documented —{" "}
+                {missing.map((m) => m.heading).join(", ")}. Scribe won&apos;t invent it; confirm at the point of care.
+              </div>
+            </div>
+          )}
 
-      {noteView === "document" ? (
+          {noteView === "document" ? (
         <DocumentView record={record} meta={meta} />
       ) : (
         <table className="w-full text-sm" style={{ tableLayout: "fixed" }}>
@@ -364,6 +376,8 @@ function NotePane({
             ))}
           </tbody>
         </table>
+          )}
+        </>
       )}
     </div>
   );

@@ -124,6 +124,51 @@ const CACHED_EXTRACTIONS: Record<string, Omit<ExtractionResult, "source">> = {
       { id: "e18", category: "consent", label: "Education discussed; procedural consent pending (no procedure today)", confidence: 0.82, sources: ["t13", "t15"] },
     ],
   },
+  // Danielle Brooks
+  "a9094b49-1395-42a9-bb33-f3168d087d19": {
+    patientId: "a9094b49-1395-42a9-bb33-f3168d087d19",
+    chiefConcern: "Lower-face volume restoration consultation",
+    entities: [
+      { id: "e1", category: "goal", label: "Refreshed, natural lower face", confidence: 0.92, sources: ["t2"] },
+      { id: "e2", category: "concern", label: "Lower-face deflation / early jowling", confidence: 0.9, sources: ["t2", "t3"] },
+      { id: "e3", category: "treatment", label: "Versa dermal filler", value: "planned", confidence: 0.94, sources: ["t4", "t9"] },
+      { id: "e4", category: "anatomy", label: "Midface / lower face", confidence: 0.9, sources: ["t3"] },
+      { id: "e5", category: "consent", label: "Risks reviewed — bruising, swelling, vascular", confidence: 0.88, sources: ["t6"] },
+      { id: "e6", category: "opportunity", label: "Lip filler", value: "future", confidence: 0.8, sources: ["t7"] },
+      { id: "e7", category: "opportunity", label: "Threading", value: "future", confidence: 0.76, sources: ["t7"] },
+      { id: "e8", category: "followup", label: "Book Versa at next visit", confidence: 0.9, sources: ["t9"] },
+    ],
+  },
+  // Katherine Chen
+  "5dbf9db0-2931-4629-8a20-3b9243b89d90": {
+    patientId: "5dbf9db0-2931-4629-8a20-3b9243b89d90",
+    chiefConcern: "Full-face neuromodulator maintenance + lip flip",
+    entities: [
+      { id: "e1", category: "treatment", label: "Full-face neuromodulator", confidence: 0.97, sources: ["t3", "t4"] },
+      { id: "e2", category: "treatment", label: "Lip flip", confidence: 0.95, sources: ["t4"] },
+      { id: "e3", category: "product", label: "onabotulinumtoxinA", confidence: 0.97, sources: ["t4"] },
+      { id: "e4", category: "dose", label: "DAO 1 unit; lip flip 4 units", confidence: 0.92, sources: ["t4"] },
+      { id: "e5", category: "anatomy", label: "Forehead · glabella · crow's feet · brow · DAO · lips", confidence: 0.93, sources: ["t4"] },
+      { id: "e6", category: "product", label: "Bruise gel; lip balm", value: "dispensed", confidence: 0.9, sources: ["t6"] },
+      { id: "e7", category: "aftercare", label: "No exercise tonight; upright 4h; no makeup until tomorrow", confidence: 0.9, sources: ["t6"] },
+      { id: "e8", category: "followup", label: "Rebook maintenance ~3–4 months", confidence: 0.93, sources: ["t7"] },
+      { id: "e9", category: "opportunity", label: "Lip filler upgrade", value: "future", confidence: 0.78, sources: ["t2"] },
+    ],
+  },
+  // Jessica Navarro
+  "cdcdcf89-5cca-4251-9355-66c84d8d6b24": {
+    patientId: "cdcdcf89-5cca-4251-9355-66c84d8d6b24",
+    chiefConcern: "Lip-flip follow-up; planning lip filler",
+    entities: [
+      { id: "e1", category: "goal", label: "More lip volume", confidence: 0.92, sources: ["t2"] },
+      { id: "e2", category: "prior_treatment", label: "Lip flip", confidence: 0.94, sources: ["t1", "t2"] },
+      { id: "e3", category: "treatment", label: "Lip filler — half syringe (Kysse / Revanesse)", value: "planned", confidence: 0.9, sources: ["t3"] },
+      { id: "e4", category: "anatomy", label: "Lips", confidence: 0.93, sources: ["t3"] },
+      { id: "e5", category: "context", label: "Forehead neuromodulator deferred per patient", confidence: 0.88, sources: ["t5"] },
+      { id: "e6", category: "opportunity", label: "Lip blushing", value: "future", confidence: 0.78, sources: ["t6", "t7"] },
+      { id: "e7", category: "followup", label: "Book lip filler online", confidence: 0.9, sources: ["t7"] },
+    ],
+  },
 };
 
 // --- Resolver ----------------------------------------------------------------
