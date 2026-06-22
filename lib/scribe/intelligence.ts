@@ -1,8 +1,8 @@
 import type { ExtractedEntity } from "./extraction";
 
 // =============================================================================
-// Clinical Intelligence — paraphrased, podcast-grounded guidance surfaced next
-// to the note. Mined from the A360 podcast network (31 shows, ~8,688 episodes).
+// Clinical Intelligence — paraphrased guidance from the A360 clinical knowledge
+// base, surfaced next to the note.
 // No verbatim quotes; reusable language patterns with a consensus signal.
 // Items are matched to the patient's extracted entities at render time.
 // =============================================================================
