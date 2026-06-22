@@ -409,35 +409,86 @@ async function main() {
 }
 
 /**
- * For each topic, pull a few podcast chunks that mention the topic's strongest
- * keyword. Best-effort: failures are logged and skipped, never fatal.
+ * For each topic, pull podcast chunks that mention the topic's strongest
+ * keywords, then resolve episode title / show name via the episodes + shows
+ * tables. Schema: podcast_chunks(episode_id) → podcast_episodes(id, title,
+ * show_id, enclosure_url) → podcast_shows(id, name, host).
+ * Best-effort: failures are logged and skipped, never fatal.
  */
 async function attachPodcastCorroboration(entries: TopicEntry[]) {
+  // Cache episode + show lookups across topics.
+  const epCache = new Map<
+    string,
+    { title: string; showId: string | null; url: string | null }
+  >();
+  const showCache = new Map<string, string | null>();
+
+  async function resolveEpisode(episodeId: string) {
+    if (epCache.has(episodeId)) return epCache.get(episodeId)!;
+    const { data } = await db
+      .from("podcast_episodes")
+      .select("title, show_id, enclosure_url")
+      .eq("id", episodeId)
+      .limit(1)
+      .maybeSingle();
+    const rec = {
+      title: (data?.title as string) ?? "Aesthetics podcast episode",
+      showId: (data?.show_id as string) ?? null,
+      url: (data?.enclosure_url as string) ?? null,
+    };
+    epCache.set(episodeId, rec);
+    return rec;
+  }
+  async function resolveShow(showId: string | null) {
+    if (!showId) return null;
+    if (showCache.has(showId)) return showCache.get(showId)!;
+    const { data } = await db
+      .from("podcast_shows")
+      .select("name")
+      .eq("id", showId)
+      .limit(1)
+      .maybeSingle();
+    const name = (data?.name as string) ?? null;
+    showCache.set(showId, name);
+    return name;
+  }
+
   for (const entry of entries) {
     try {
-      const kw = entry.topic.keywords[0];
-      const escaped = kw.replace(/[%_\\]/g, "\\$&");
-      const { data, error } = await db
-        .from("podcast_chunks")
-        .select("episode_title, show_name, start_time, chunk_text, url, metadata")
-        .ilike("chunk_text", `%${escaped}%`)
-        .limit(3);
-      if (error) {
-        // Column names may differ; try a minimal fallback once.
-        const fb = await db
+      const seen = new Set<string>();
+      const cites: PodcastCitation[] = [];
+      // Try the two strongest keywords for breadth.
+      for (const kw of entry.topic.keywords.slice(0, 2)) {
+        if (cites.length >= 3) break;
+        const escaped = kw.replace(/[%_\\]/g, "\\$&");
+        const { data, error } = await db
           .from("podcast_chunks")
-          .select("*")
+          .select("episode_id, chunk_text")
           .ilike("chunk_text", `%${escaped}%`)
-          .limit(3);
-        if (fb.error || !fb.data) {
-          continue;
+          .limit(6);
+        if (error || !data) continue;
+        for (const row of data) {
+          if (cites.length >= 3) break;
+          const epId = row.episode_id as string;
+          const key = epId + "|" + String(row.chunk_text).slice(0, 40);
+          if (seen.has(epId)) continue; // one chunk per episode for variety
+          seen.add(epId);
+          const ep = await resolveEpisode(epId);
+          const show = await resolveShow(ep.showId);
+          cites.push({
+            episodeTitle: cleanEpisodeTitle(ep.title),
+            showName: show,
+            start: null,
+            text: cleanSegmentText(String(row.chunk_text).slice(0, 320)),
+            url: ep.url,
+          });
+          void key;
         }
-        entry.podcast = fb.data.map(mapPodcastRow);
-        process.stdout.write(`\r  ${entry.topic.id}: ${entry.podcast.length} podcast refs    `);
-        continue;
       }
-      entry.podcast = (data ?? []).map(mapPodcastRow);
-      process.stdout.write(`\r  ${entry.topic.id}: ${entry.podcast.length} podcast refs    `);
+      entry.podcast = cites;
+      process.stdout.write(
+        `\r  ${entry.topic.id}: ${cites.length} podcast refs        `
+      );
     } catch {
       // non-blocking
     }
@@ -445,18 +496,9 @@ async function attachPodcastCorroboration(entries: TopicEntry[]) {
   process.stdout.write("\n");
 }
 
-function mapPodcastRow(row: Record<string, unknown>): PodcastCitation {
-  const text = String(row.chunk_text ?? "").slice(0, 320);
-  return {
-    episodeTitle:
-      (row.episode_title as string) ||
-      (row.title as string) ||
-      "Aesthetics podcast episode",
-    showName: (row.show_name as string) ?? null,
-    start: row.start_time != null ? Math.round(Number(row.start_time)) : null,
-    text: cleanSegmentText(text),
-    url: (row.url as string) ?? null,
-  };
+/** Strip leading sanitisation junk from podcast episode titles. */
+function cleanEpisodeTitle(t: string): string {
+  return t.replace(/^[._\s]+/, "").trim() || "Aesthetics podcast episode";
 }
 
 main().catch((err) => {
