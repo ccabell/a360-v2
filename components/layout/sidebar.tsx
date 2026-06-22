@@ -30,6 +30,7 @@ const menuItems = [
   // ── Core product ─────────────────────────────────────────────────────────
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
+  { name: "Scribe", href: "/dashboard/scribe", icon: FileText },
   { name: "Consultation", href: "/dashboard/consultation", icon: Layers },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
