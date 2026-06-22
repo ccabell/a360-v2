@@ -17,6 +17,7 @@ import {
   LogOut,
   History,
   GraduationCap,
+  Tv,
 } from "lucide-react";
 
 // scope "internal" items are hidden in the acquirer-facing demo build.
@@ -25,6 +26,7 @@ const menuItems = [
   { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Research", href: "/dashboard/research", icon: Telescope },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
+  { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
