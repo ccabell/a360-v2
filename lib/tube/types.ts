@@ -21,6 +21,8 @@ export interface TubeVideo {
   concerns: string[];
   summary: string;
   patientSafe: boolean;
+  /** True when enriched from the curated youtube_videos table (tags + summary). */
+  tagged: boolean;
   /** Whether a transcript exists (chunk_count > 0). */
   hasTranscript: boolean;
   chunkCount: number;
@@ -45,6 +47,7 @@ export interface TubeIndex {
   generatedAt: string;
   stats: {
     videos: number;
+    tagged: number;
     channels: number;
     withTranscript: number;
     anatomyAreas: number;
