@@ -382,6 +382,22 @@ async function main() {
     path.join(DATA_DIR, "topics.json"),
     JSON.stringify(topicEntries)
   );
+
+  // Compact segment-level search index (one row per segment) for global search.
+  // We keep a trimmed text field; the API ranks by query token hits.
+  const searchRows: Array<[string, string, number, string]> = [];
+  for (const d of details) {
+    for (const seg of d.segments) {
+      // Skip very short fragments to keep the index lean and useful.
+      if (seg.text.length < 40) continue;
+      searchRows.push([d.slug, d.title, seg.start, seg.text]);
+    }
+  }
+  fs.writeFileSync(
+    path.join(DATA_DIR, "search-segments.json"),
+    JSON.stringify(searchRows)
+  );
+  console.log(`  search-segments.json ${searchRows.length} segment rows`);
   for (const d of details) {
     fs.writeFileSync(
       path.join(VIDEO_DIR, `${d.slug}.json`),
