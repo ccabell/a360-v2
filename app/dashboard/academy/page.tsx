@@ -67,38 +67,37 @@ export default function AcademyHome() {
             Dr Tim Pearce · Channel Navigator
           </div>
           <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-            Navigate every video
-            <br className="hidden sm:block" />{" "}
-            <span className="text-primary">Dr Tim Pearce</span> has published.
+            Your AI co-pilot for everything{" "}
+            <span className="text-primary">Dr Tim Pearce</span> teaches.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-            Browse his whole YouTube channel by topic, search every transcript,
-            and jump straight to the exact moment a subject comes up — then watch
-            it on his channel.
+            Ask his whole channel, search every transcript, and explore 400+
+            videos by topic, facial area and patient concern — grounded answers,
+            cited to the exact second.
           </p>
 
           {/* CTAs */}
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="#curriculum"
+              href="/dashboard/academy/tutor"
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03]"
             >
-              <Play className="h-4 w-4 fill-current" />
-              Browse the channel
+              <Sparkles className="h-4 w-4" />
+              Ask the co-pilot
             </Link>
             <Link
-              href="/dashboard/academy/tutor"
+              href="/dashboard/academy/explore"
               className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition-colors hover:bg-white/15"
             >
-              <Sparkles className="h-4 w-4" />
-              Ask across his videos
+              <Play className="h-4 w-4 fill-current" />
+              Explore the videos
             </Link>
             <Link
               href="/dashboard/academy/search"
               className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition-colors hover:bg-white/15"
             >
               <Search className="h-4 w-4" />
-              Search the videos
+              Search transcripts
             </Link>
           </div>
 
