@@ -71,17 +71,17 @@ await step("lesson page loads", async () => {
 });
 
 // 3. Video playback — click "Watch video" if present, then check the iframe
-await step("video: embed appears + iframe src valid", async () => {
-  const watchBtn = page.getByRole("button", { name: /watch video/i });
-  if (await watchBtn.count()) {
-    await watchBtn.first().click();
-    await page.waitForTimeout(1500);
-  }
-  const iframe = page.locator('iframe[src*="youtube"]').first();
+await step("video: poster → click loads youtube.com iframe", async () => {
+  // Lite-embed: poster shows first; clicking the play button mounts the iframe.
+  const posterHasThumb = await page.locator('button[aria-label="Play video"] img').count();
+  const playBtn = page.getByRole("button", { name: /^play video$/i });
+  await playBtn.first().click({ timeout: 5000 });
+  const iframe = page.locator('iframe[src*="youtube.com/embed"]').first();
   await iframe.waitFor({ state: "visible", timeout: 8000 });
   const src = await iframe.getAttribute("src");
   await page.screenshot({ path: path.join(OUT, "03-lesson-video.png"), fullPage: false });
-  return `iframe src=${src}`;
+  if (!src.includes("youtube.com/embed")) throw new Error("not standard youtube embed");
+  return `poster-thumb=${posterHasThumb} · iframe=${src}`;
 });
 
 // 4. Click a transcript timestamp → does it seek?

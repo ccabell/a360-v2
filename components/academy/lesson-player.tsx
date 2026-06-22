@@ -16,6 +16,7 @@ import type {
   KeyPoint,
   TranscriptSegment,
 } from "@/lib/academy/types";
+import { youtubeThumb } from "@/lib/academy/youtube";
 
 interface LessonPlayerProps {
   title: string;
@@ -58,11 +59,12 @@ export function LessonPlayer({
 }: LessonPlayerProps) {
   const [current, setCurrent] = useState(initialStart); // seconds
   const [playing, setPlaying] = useState(false);
-  // Show the real video by default when we have a resolved id.
+  // "Video mode" (vs transcript reading mode). Default to video when we have id.
   const [embed, setEmbed] = useState(Boolean(youtubeId));
-  // Only autoplay after a user gesture (seek/click) — browsers block unmuted
-  // autoplay on load, which made it look like "the video doesn't play".
-  const [hasInteracted, setHasInteracted] = useState(false);
+  // Lite-embed: the iframe is only mounted after a user gesture (click/seek).
+  // Auto-loaded youtube-nocookie embeds trip YouTube's "confirm you're not a
+  // bot" / sign-in gate even for signed-in users; loading on click avoids it.
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [tab, setTab] = useState<"chapters" | "keypoints">("chapters");
   const transcriptRef = useRef<HTMLDivElement>(null);
   const activeSegRef = useRef<HTMLButtonElement>(null);
@@ -85,10 +87,10 @@ export function LessonPlayer({
       setCurrent(sec);
       if (youtubeId) {
         // Jump to the video and play at that second. The click is a user
-        // gesture, so autoplay (even unmuted) is allowed. iframe reloads via
+        // gesture, so the freshly-mounted iframe may autoplay. It reloads via
         // its key={current}. Transcript auto-scroll is handled by activeIndex.
-        setHasInteracted(true);
         setEmbed(true);
+        setVideoLoaded(true);
       }
     },
     [youtubeId]
@@ -139,18 +141,41 @@ export function LessonPlayer({
         {/* Player surface */}
         <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
           {youtubeId && embed ? (
-            <div className="relative aspect-video w-full bg-black">
-              <iframe
-                key={current}
-                className="absolute inset-0 h-full w-full"
-                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?start=${Math.floor(
-                  current
-                )}&autoplay=${hasInteracted ? 1 : 0}&rel=0`}
-                title={title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            videoLoaded ? (
+              <div className="relative aspect-video w-full bg-black">
+                <iframe
+                  key={current}
+                  className="absolute inset-0 h-full w-full"
+                  src={`https://www.youtube.com/embed/${youtubeId}?start=${Math.floor(
+                    current
+                  )}&autoplay=1&rel=0`}
+                  title={title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setVideoLoaded(true)}
+                className="group relative block aspect-video w-full overflow-hidden bg-black"
+                aria-label="Play video"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={
+                    youtubeThumb(youtubeId, "max") ?? youtubeThumb(youtubeId, "hq")!
+                  }
+                  alt={title}
+                  className="absolute inset-0 h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
+                />
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-red-600 shadow-xl transition-transform group-hover:scale-110">
+                    <Play className="ml-1 h-7 w-7 fill-white text-white" />
+                  </span>
+                </span>
+              </button>
+            )
           ) : (
             <TranscriptStage
               title={title}
@@ -227,7 +252,9 @@ export function LessonPlayer({
                 </button>
                 <span className="ml-2 hidden text-xs text-muted-foreground sm:inline">
                   {embed
-                    ? "Playing video · click a line to jump"
+                    ? videoLoaded
+                      ? "Playing · click any line to jump"
+                      : "Click play, or click any line to jump in"
                     : `${playing ? "Reading along" : "Paused"} · ${activeChapter}`}
                 </span>
               </div>
