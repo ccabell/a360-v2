@@ -1,6 +1,5 @@
 import { createHash } from "crypto";
 import { NextRequest } from "next/server";
-import { gateway } from "@ai-sdk/gateway";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
 import { agentSupabase } from "@/lib/supabase";
@@ -383,19 +382,17 @@ export async function POST(req: NextRequest) {
           return buf;
         }
 
-        if (process.env.AI_GATEWAY_API_KEY) {
-          try {
-            fullText = await generate(gateway("anthropic/claude-haiku-4.5"));
-          } catch {
-            fullText = "";
-          }
-        }
-
-        if (!fullText && process.env.ANTHROPIC_API_KEY) {
+        // Call Anthropic directly. The Vercel AI Gateway path was removed: the
+        // configured AI_GATEWAY_API_KEY is an Anthropic key (sk-ant-…), not a
+        // Vercel gateway key (vck_…), so gateway() always 401'd and silently
+        // fell through here anyway. Going direct removes a guaranteed-failing
+        // round-trip per request and surfaces real errors. Matches /api/research/chat.
+        if (process.env.ANTHROPIC_API_KEY) {
           try {
             const anthropic = createAnthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
             fullText = await generate(anthropic("claude-haiku-4-5-20251001"));
-          } catch {
+          } catch (err) {
+            console.error("[ask] Anthropic generation failed:", err);
             fullText = "";
           }
         }
