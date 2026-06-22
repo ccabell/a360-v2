@@ -29,18 +29,16 @@ export default function TubePage() {
             <span className="text-primary">intelligently navigated.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
-            The entire ingested YouTube aesthetics library in one place —{" "}
-            {stats.videos.toLocaleString()} videos across {stats.channels}{" "}
-            channels, all searchable. {stats.tagged.toLocaleString()} are fully
-            tagged by facial &amp; body area, concern, treatment and type — the
-            rest browse by channel and search (AI tagging for them is in
-            progress).
+            A curated library of {stats.videos.toLocaleString()} aesthetics
+            videos across {stats.channels} channels — every one tagged and
+            summarised, so you can filter by facial &amp; body area, patient
+            concern, treatment and type, then search the rest.
           </p>
 
           <div className="mt-7 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-5">
             <Stat icon={Film} value={stats.videos.toLocaleString()} label="videos" />
             <Stat icon={Video} value={stats.channels} label="channels" />
-            <Stat icon={Stethoscope} value={stats.tagged.toLocaleString()} label="tagged" />
+            <Stat icon={Stethoscope} value={stats.anatomyAreas} label="body areas" />
             <Stat icon={Layers} value={stats.concerns} label="concerns" />
             <Stat icon={Layers} value={stats.treatments} label="treatments" />
           </div>

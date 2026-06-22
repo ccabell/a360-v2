@@ -171,13 +171,13 @@
       "count": 6
     },
     {
-      "value": "waist",
-      "label": "Waist",
+      "value": "double_chin",
+      "label": "Double Chin",
       "count": 6
     },
     {
-      "value": "double_chin",
-      "label": "Double Chin",
+      "value": "waist",
+      "label": "Waist",
       "count": 6
     },
     {
@@ -346,13 +346,13 @@
       "count": 1
     },
     {
-      "value": "waistline",
-      "label": "Waistline",
+      "value": "smile_lines",
+      "label": "Smile Lines",
       "count": 1
     },
     {
-      "value": "smile_lines",
-      "label": "Smile Lines",
+      "value": "waistline",
+      "label": "Waistline",
       "count": 1
     },
     {
@@ -738,13 +738,13 @@
       "count": 3
     },
     {
-      "value": "blindness",
-      "label": "Blindness",
+      "value": "sensitivity",
+      "label": "Sensitivity",
       "count": 3
     },
     {
-      "value": "sensitivity",
-      "label": "Sensitivity",
+      "value": "blindness",
+      "label": "Blindness",
       "count": 3
     },
     {
@@ -768,6 +768,11 @@
       "count": 2
     },
     {
+      "value": "telangiectasia",
+      "label": "Telangiectasia",
+      "count": 2
+    },
+    {
       "value": "itching",
       "label": "Itching",
       "count": 2
@@ -775,11 +780,6 @@
     {
       "value": "body_dysmorphia",
       "label": "Body Dysmorphia",
-      "count": 2
-    },
-    {
-      "value": "telangiectasia",
-      "label": "Telangiectasia",
       "count": 2
     },
     {
@@ -818,13 +818,13 @@
       "count": 2
     },
     {
-      "value": "complications",
-      "label": "Complications",
+      "value": "natural_appearance",
+      "label": "Natural Appearance",
       "count": 2
     },
     {
-      "value": "natural_appearance",
-      "label": "Natural Appearance",
+      "value": "complications",
+      "label": "Complications",
       "count": 2
     },
     {
@@ -1053,11 +1053,6 @@
       "count": 1
     },
     {
-      "value": "internal_injuries",
-      "label": "Internal Injuries",
-      "count": 1
-    },
-    {
       "value": "overactive_bladder",
       "label": "Overactive Bladder",
       "count": 1
@@ -1070,6 +1065,11 @@
     {
       "value": "excess_skin",
       "label": "Excess Skin",
+      "count": 1
+    },
+    {
+      "value": "internal_injuries",
+      "label": "Internal Injuries",
       "count": 1
     },
     {
@@ -1173,16 +1173,6 @@
       "count": 1
     },
     {
-      "value": "nerve_damage",
-      "label": "Nerve Damage",
-      "count": 1
-    },
-    {
-      "value": "cold_sores",
-      "label": "Cold Sores",
-      "count": 1
-    },
-    {
       "value": "teeth_clenching",
       "label": "Teeth Clenching",
       "count": 1
@@ -1195,6 +1185,16 @@
     {
       "value": "self_confidence",
       "label": "Self Confidence",
+      "count": 1
+    },
+    {
+      "value": "cold_sores",
+      "label": "Cold Sores",
+      "count": 1
+    },
+    {
+      "value": "nerve_damage",
+      "label": "Nerve Damage",
       "count": 1
     },
     {
@@ -1737,49 +1737,14 @@
   ],
   "channels": [
     {
-      "value": "theplasticsurgerychannel",
-      "label": "Theplasticsurgerychannel",
-      "count": 1442
-    },
-    {
-      "value": "prsjournal",
-      "label": "Prsjournal",
-      "count": 867
-    },
-    {
-      "value": "cosmeticlaserdermatology",
-      "label": "Cosmeticlaserdermatology",
-      "count": 808
-    },
-    {
-      "value": "empiremedicaltraining",
-      "label": "Empiremedicaltraining",
-      "count": 527
-    },
-    {
-      "value": "drsambunting",
-      "label": "Drsambunting",
-      "count": 474
-    },
-    {
       "value": "drtimpearce",
       "label": "Dr Tim Pearce",
-      "count": 426
-    },
-    {
-      "value": "btlaestheticsint",
-      "label": "BTL Aesthetics",
-      "count": 390
+      "count": 374
     },
     {
       "value": "waveplasticsurgery",
       "label": "Wave Plastic Surgery",
-      "count": 375
-    },
-    {
-      "value": "dramirkaram",
-      "label": "Dramirkaram",
-      "count": 365
+      "count": 341
     },
     {
       "value": "aafe_tv",
@@ -1787,249 +1752,79 @@
       "count": 339
     },
     {
-      "value": "stevenweiner",
-      "label": "Stevenweiner",
-      "count": 307
-    },
-    {
-      "value": "aerolase",
-      "label": "Aerolase",
-      "count": 270
+      "value": "btlaestheticsint",
+      "label": "BTL Aesthetics",
+      "count": 333
     },
     {
       "value": "lumenisaesthetics",
       "label": "Lumenis",
-      "count": 266
-    },
-    {
-      "value": "drstefanikappel",
-      "label": "Drstefanikappel",
-      "count": 262
-    },
-    {
-      "value": "thebudgetdermatologist",
-      "label": "Thebudgetdermatologist",
-      "count": 252
+      "count": 226
     },
     {
       "value": "erchoniaemea",
       "label": "Erchonia",
-      "count": 203
-    },
-    {
-      "value": "venusaestheticintelligence",
-      "label": "Venusaestheticintelligence",
-      "count": 201
-    },
-    {
-      "value": "almalasers",
-      "label": "Almalasers",
-      "count": 200
-    },
-    {
-      "value": "aadskin",
-      "label": "Aadskin",
-      "count": 188
-    },
-    {
-      "value": "aestheticimmersion",
-      "label": "Aestheticimmersion",
-      "count": 182
-    },
-    {
-      "value": "drwhitneybowe",
-      "label": "Drwhitneybowe",
-      "count": 167
-    },
-    {
-      "value": "harleyacademy",
-      "label": "Harleyacademy",
-      "count": 137
-    },
-    {
-      "value": "cynosure",
-      "label": "Cynosure",
-      "count": 135
-    },
-    {
-      "value": "skinceuticals",
-      "label": "SkinCeuticals",
-      "count": 120
-    },
-    {
-      "value": "sofwavemedical",
-      "label": "Sofwavemedical",
-      "count": 118
+      "count": 197
     },
     {
       "value": "sciton",
       "label": "Sciton",
-      "count": 115
-    },
-    {
-      "value": "theaestheticsociety",
-      "label": "Theaestheticsociety",
-      "count": 114
-    },
-    {
-      "value": "iapam",
-      "label": "Iapam",
-      "count": 105
-    },
-    {
-      "value": "cosmeticsurgeryforum",
-      "label": "Cosmeticsurgeryforum",
-      "count": 97
-    },
-    {
-      "value": "merzaestheticsglobal",
-      "label": "Merzaestheticsglobal",
-      "count": 96
-    },
-    {
-      "value": "syneroncandela",
-      "label": "Syneroncandela",
-      "count": 96
-    },
-    {
-      "value": "cuterainc",
-      "label": "Cuterainc",
-      "count": 93
-    },
-    {
-      "value": "dekalasertv",
-      "label": "Dekalasertv",
-      "count": 91
-    },
-    {
-      "value": "lutronicaesthetic",
-      "label": "Lutronicaesthetic",
-      "count": 86
+      "count": 89
     },
     {
       "value": "botoxcosmetic",
       "label": "BOTOX Cosmetic",
-      "count": 86
+      "count": 79
     },
     {
       "value": "galdermaint",
       "label": "Galderma",
-      "count": 81
+      "count": 74
     },
     {
-      "value": "usdermatologypartners",
-      "label": "Usdermatologypartners",
-      "count": 80
-    },
-    {
-      "value": "defenage",
-      "label": "Defenage",
-      "count": 77
-    },
-    {
-      "value": "inmodesolutions",
-      "label": "InMode",
-      "count": 75
+      "value": "skinceuticals",
+      "label": "SkinCeuticals",
+      "count": 72
     },
     {
       "value": "revisionskincare",
       "label": "Revision Skincare",
-      "count": 73
+      "count": 66
     },
     {
-      "value": "dermalogica",
-      "label": "Dermalogica",
-      "count": 70
+      "value": "inmodesolutions",
+      "label": "InMode",
+      "count": 64
     },
     {
-      "value": "sunevamedical",
-      "label": "Sunevamedical",
-      "count": 65
+      "value": "cuterainc",
+      "label": "Cuterainc",
+      "count": 62
+    },
+    {
+      "value": "merzaestheticsglobal",
+      "label": "Merzaestheticsglobal",
+      "count": 58
     },
     {
       "value": "allerganaestheticsus",
       "label": "Allerganaestheticsus",
-      "count": 65
+      "count": 50
     },
     {
-      "value": "victorian_cosmetic",
-      "label": "Victorian Cosmetic",
-      "count": 59
-    },
-    {
-      "value": "drtimepearce",
-      "label": "Drtimepearce",
-      "count": 55
-    },
-    {
-      "value": "plasticsurgery",
-      "label": "Plasticsurgery",
-      "count": 51
+      "value": "venusaestheticintelligence",
+      "label": "Venusaestheticintelligence",
+      "count": 38
     },
     {
       "value": "alastinskincare",
       "label": "Alastinskincare",
-      "count": 45
+      "count": 34
     },
     {
-      "value": "pcaskin",
-      "label": "Pcaskin",
-      "count": 43
-    },
-    {
-      "value": "fotonalasers",
-      "label": "Fotonalasers",
-      "count": 41
-    },
-    {
-      "value": "obagimedical",
-      "label": "Obagimedical",
-      "count": 36
-    },
-    {
-      "value": "candela",
-      "label": "Candela",
-      "count": 36
-    },
-    {
-      "value": "almalasersnorthamerica",
-      "label": "Almalasersnorthamerica",
-      "count": 32
-    },
-    {
-      "value": "advital",
-      "label": "Advital",
+      "value": "candelamedical",
+      "label": "Candelamedical",
       "count": 29
-    },
-    {
-      "value": "teoxane",
-      "label": "Teoxane",
-      "count": 28
-    },
-    {
-      "value": "aafetv",
-      "label": "Aafetv",
-      "count": 27
-    },
-    {
-      "value": "cartessaaesthetics",
-      "label": "Cartessaaesthetics",
-      "count": 26
-    },
-    {
-      "value": "amspa",
-      "label": "Amspa",
-      "count": 26
-    },
-    {
-      "value": "inmode",
-      "label": "Inmode",
-      "count": 15
-    },
-    {
-      "value": "raacademybydrrajacquilla",
-      "label": "Raacademybydrrajacquilla",
-      "count": 14
     },
     {
       "value": "coolsculpting",
@@ -2037,109 +1832,14 @@
       "count": 14
     },
     {
-      "value": "janmarini",
-      "label": "Janmarini",
-      "count": 11
-    },
-    {
-      "value": "doctorly",
-      "label": "Doctorly",
-      "count": 11
-    },
-    {
-      "value": "lushfulaesthetics",
-      "label": "Lushfulaesthetics",
-      "count": 10
-    },
-    {
       "value": "eltamd",
       "label": "Eltamd",
-      "count": 9
-    },
-    {
-      "value": "pcaskinaz",
-      "label": "Pcaskinaz",
-      "count": 9
+      "count": 5
     },
     {
       "value": "zoskinhealth",
       "label": "Zoskinhealth",
-      "count": 8
-    },
-    {
-      "value": "drwhitneyowe",
-      "label": "Drwhitneyowe",
-      "count": 8
-    },
-    {
-      "value": "candelamedical",
-      "label": "Candelamedical",
-      "count": 7
-    },
-    {
-      "value": "galderma",
-      "label": "Galderma",
-      "count": 6
-    },
-    {
-      "value": "rajanimd",
-      "label": "Rajanimd",
-      "count": 5
-    },
-    {
-      "value": "evolus",
-      "label": "Evolus",
-      "count": 5
-    },
-    {
-      "value": "cartessaaesthetics171",
-      "label": "Cartessaaesthetics171",
       "count": 4
-    },
-    {
-      "value": "rohreraesthetics",
-      "label": "Rohreraesthetics",
-      "count": 4
-    },
-    {
-      "value": "obagimedical_whisper",
-      "label": "Obagimedical Whisper",
-      "count": 3
-    },
-    {
-      "value": "obagimedicalproducts",
-      "label": "Obagimedicalproducts",
-      "count": 3
-    },
-    {
-      "value": "inmodeusa",
-      "label": "Inmodeusa",
-      "count": 2
-    },
-    {
-      "value": "soltamedical",
-      "label": "Soltamedical",
-      "count": 2
-    },
-    {
-      "value": "raacademybydrrajacquilla1771",
-      "label": "Raacademybydrrajacquilla1771",
-      "count": 1
-    },
-    {
-      "value": "revanceaesthetics",
-      "label": "Revanceaesthetics",
-      "count": 1
-    },
-    {
-      "value": "test_ingest",
-      "label": "Test Ingest",
-      "count": 1
-    },
-    {
-      "value": "evolusaesthetic",
-      "label": "Evolusaesthetic",
-      "count": 1
     }
   ],
   "contentTypes": [
