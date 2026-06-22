@@ -3,7 +3,7 @@ import { Sparkles, ChevronRight } from "lucide-react";
 import { TutorClient } from "@/components/academy/tutor-client";
 
 export const metadata = {
-  title: "AI Tutor · Injector Academy",
+  title: "Ask · Dr Tim Pearce Channel Navigator",
 };
 
 export default function AcademyTutorPage() {
@@ -12,10 +12,10 @@ export default function AcademyTutorPage() {
       {/* Breadcrumb */}
       <nav className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
         <Link href="/dashboard/academy" className="hover:text-foreground">
-          Academy
+          Pearce Channel
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-foreground">AI Tutor</span>
+        <span className="text-foreground">Ask</span>
       </nav>
 
       <div className="mt-3 flex items-center gap-2.5">
@@ -24,11 +24,11 @@ export default function AcademyTutorPage() {
         </div>
         <div>
           <h1 className="font-heading text-xl font-bold leading-tight text-foreground">
-            Ask the corpus
+            Ask across his videos
           </h1>
           <p className="text-xs text-muted-foreground">
-            Grounded in Dr Tim Pearce&rsquo;s teaching · every claim links to the
-            source moment
+            Answers drawn from Dr Tim Pearce&rsquo;s videos · every point links to
+            the source moment
           </p>
         </div>
       </div>

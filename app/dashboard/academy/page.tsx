@@ -64,18 +64,17 @@ export default function AcademyHome() {
         <div className="relative mx-auto max-w-6xl px-8 py-16 sm:py-20">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             <GraduationCap className="h-4 w-4" />
-            Dr Tim Pearce · Injector Academy
+            Dr Tim Pearce · Channel Navigator
           </div>
           <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-            Master advanced injectables,
+            Navigate every video
             <br className="hidden sm:block" />{" "}
-            <span className="text-primary">grounded in every word</span> he has
-            taught.
+            <span className="text-primary">Dr Tim Pearce</span> has published.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
-            A cinematic course and searchable clinical reference, built from Dr
-            Tim Pearce&apos;s complete video corpus. Every key point links to the
-            exact second it was said — learn it, then verify it at the source.
+            Browse his whole YouTube channel by topic, search every transcript,
+            and jump straight to the exact moment a subject comes up — then watch
+            it on his channel.
           </p>
 
           {/* CTAs */}
@@ -85,21 +84,21 @@ export default function AcademyHome() {
               className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03]"
             >
               <Play className="h-4 w-4 fill-current" />
-              Start the course
+              Browse the channel
             </Link>
             <Link
               href="/dashboard/academy/tutor"
               className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition-colors hover:bg-white/15"
             >
               <Sparkles className="h-4 w-4" />
-              Ask the AI tutor
+              Ask across his videos
             </Link>
             <Link
               href="/dashboard/academy/search"
               className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-sm font-semibold text-white ring-1 ring-white/15 backdrop-blur transition-colors hover:bg-white/15"
             >
               <Search className="h-4 w-4" />
-              Search the corpus
+              Search the videos
             </Link>
           </div>
 
@@ -122,8 +121,8 @@ export default function AcademyHome() {
         {/* ── Curriculum ─────────────────────────────────────────────── */}
         <section id="curriculum" className="scroll-mt-8">
           <SectionHeading
-            title="The Curriculum"
-            subtitle="Ten modules, ordered from safety-critical fundamentals to practice growth."
+            title="Browse by topic"
+            subtitle="Every video on the channel, organised into topics — from safety-critical fundamentals to practice growth."
           />
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {modules.map((m) => {
@@ -178,7 +177,7 @@ export default function AcademyHome() {
                     </p>
                     <div className="mt-3 flex items-center justify-between text-xs text-neutral-400">
                       <span>
-                        {m.topics.length} topics · {count} lessons
+                        {m.topics.length} topics · {count} videos
                       </span>
                       <ArrowRight className="h-4 w-4 text-white/70 transition-transform group-hover:translate-x-1" />
                     </div>
@@ -192,8 +191,8 @@ export default function AcademyHome() {
         {/* ── Featured lessons ───────────────────────────────────────── */}
         <section className="mt-14">
           <SectionHeading
-            title="Start here"
-            subtitle="High-signal lessons across safety, anatomy and technique."
+            title="Popular videos"
+            subtitle="High-signal videos across safety, anatomy and technique."
             href="/dashboard/academy/module/safety"
             hrefLabel="Browse all"
           />
@@ -221,10 +220,18 @@ export default function AcademyHome() {
           <EntryCard
             href="/dashboard/academy/illustrations"
             icon={ImageIcon}
-            title="Illustration Reference"
-            desc="Anatomy diagrams, artery maps and markups pulled from the videos."
+            title="Illustration reference"
+            desc="Anatomy diagrams and artery maps drawn from the videos."
           />
         </section>
+
+        {/* Attribution */}
+        <p className="mt-14 border-t border-white/10 pt-6 text-xs leading-relaxed text-neutral-500">
+          An independent navigator for Dr Tim Pearce&apos;s public YouTube
+          videos, built for education and reference. Every video plays from and
+          links back to his channel. Not affiliated with or endorsed by Dr Tim
+          Pearce.
+        </p>
       </div>
     </div>
   );

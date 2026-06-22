@@ -24,7 +24,7 @@ export default function AcademySearchPage() {
         Video search
       </div>
       <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold leading-tight text-foreground">
-        Search every lesson by what was said.
+        Search every video by what was said.
       </h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
         Search across all {408} of Dr Tim Pearce&rsquo;s videos. Every match

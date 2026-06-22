@@ -24,7 +24,7 @@ const menuItems = [
   { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
   { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Research", href: "/dashboard/research", icon: Telescope },
-  { name: "Academy", href: "/dashboard/academy", icon: GraduationCap },
+  { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },

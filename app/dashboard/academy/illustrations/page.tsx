@@ -30,10 +30,10 @@ export default function IllustrationsPage() {
       {/* Breadcrumb */}
       <nav className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
         <Link href="/dashboard/academy" className="hover:text-foreground">
-          Academy
+          Pearce Channel
         </Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-foreground">Illustration Reference</span>
+        <span className="text-foreground">Illustrations</span>
       </nav>
 
       <div className="mt-4 flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-primary">
@@ -41,12 +41,12 @@ export default function IllustrationsPage() {
         Visual reference
       </div>
       <h1 className="mt-2 max-w-3xl font-heading text-3xl font-bold leading-tight text-foreground">
-        The teaching illustrations, frame by frame.
+        The anatomy illustrations, in one place.
       </h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Anatomy diagrams, artery maps, danger zones and injection markups pulled
-        from Dr Tim Pearce&rsquo;s anatomy &amp; safety videos. Every frame links
-        to the exact second it appears in the lesson.
+        Anatomy diagrams, artery maps and injection markups from Dr Tim
+        Pearce&rsquo;s videos. Each one links to the exact second it appears in
+        the video.
       </p>
 
       <div className="mt-4 flex flex-wrap gap-5 text-sm text-muted-foreground">

@@ -140,9 +140,22 @@ export function getIllustrations(): VideoIllustrations[] {
   if (_illustrations) return _illustrations;
   const file = path.join(DATA_DIR, "illustrations.json");
   try {
-    _illustrations = fs.existsSync(file)
-      ? (JSON.parse(fs.readFileSync(file, "utf8")) as VideoIllustrations[])
+    const raw = fs.existsSync(file)
+      ? (JSON.parse(fs.readFileSync(file, "utf8")) as (VideoIllustrations & {
+          frames: { kind?: string }[];
+        })[])
       : [];
+    // Keep only frames classified as real illustrations (anatomy diagrams, 3D
+    // models, annotated figures) — drop procedure/talking-head screenshots.
+    // Frames classified before the vision pass have no `kind`; treat as kept.
+    _illustrations = raw
+      .map((v) => {
+        const frames = v.frames.filter(
+          (f) => !("kind" in f) || f.kind === "illustration",
+        );
+        return { ...v, frames, frameCount: frames.length };
+      })
+      .filter((v) => v.frames.length > 0) as VideoIllustrations[];
   } catch {
     _illustrations = [];
   }
