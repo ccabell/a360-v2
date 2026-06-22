@@ -14,6 +14,7 @@ import type {
   Topic,
   TopicEntry,
   VideoDetail,
+  VideoIllustrations,
   VideoSummary,
 } from "./types";
 
@@ -21,6 +22,7 @@ const DATA_DIR = path.join(process.cwd(), "lib", "academy", "data");
 
 let _index: AcademyIndex | null = null;
 let _topics: TopicEntry[] | null = null;
+let _illustrations: VideoIllustrations[] | null = null;
 const _videoCache = new Map<string, VideoDetail | null>();
 
 function readJson<T>(file: string): T {
@@ -126,6 +128,45 @@ export function getFeaturedLessons(limit = 6): VideoSummary[] {
       return b.segmentCount - a.segmentCount;
     })
     .slice(0, limit);
+}
+
+/**
+ * Extracted teaching-illustration frames (anatomy diagrams, artery maps, danger
+ * zones, injection markups), tagged to video + timestamp. Empty array if the
+ * manifest has not been generated yet (the gallery degrades gracefully).
+ */
+export function getIllustrations(): VideoIllustrations[] {
+  if (_illustrations) return _illustrations;
+  const file = path.join(DATA_DIR, "illustrations.json");
+  try {
+    _illustrations = fs.existsSync(file)
+      ? (JSON.parse(fs.readFileSync(file, "utf8")) as VideoIllustrations[])
+      : [];
+  } catch {
+    _illustrations = [];
+  }
+  return _illustrations;
+}
+
+/** Illustration set for a single video by slug, if any. */
+export function getVideoIllustrations(
+  slug: string
+): VideoIllustrations | undefined {
+  return getIllustrations().find((v) => v.slug === slug);
+}
+
+/** Flat list of all illustration frames with their parent video context. */
+export function getAllIllustrationFrames() {
+  return getIllustrations().flatMap((v) =>
+    v.frames.map((f) => ({
+      ...f,
+      videoId: v.videoId,
+      slug: v.slug,
+      title: v.title,
+      topics: v.topics,
+      primaryModule: v.primaryModule,
+    }))
+  );
 }
 
 /** Format seconds as H:MM:SS or M:SS. */

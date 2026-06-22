@@ -145,6 +145,30 @@ export interface PodcastCitation {
   url: string | null;
 }
 
+/** A single extracted illustration frame, tagged to a video moment. */
+export interface IllustrationFrame {
+  /** Public path under /public, e.g. /academy/illustrations/<id>/scene_003.jpg */
+  file: string;
+  /** Frame timestamp in seconds (scene-cut pts_time). */
+  t: number;
+  /** Nearest cleaned transcript segment index, or null. */
+  segmentIndex: number | null;
+  /** Deep-link second (segment start, or floor(t)). */
+  start: number;
+}
+
+/** All illustration frames extracted from one video. */
+export interface VideoIllustrations {
+  videoId: string;
+  /** Academy slug, for cross-linking into the lesson player. */
+  slug: string | null;
+  title: string;
+  topics: string[];
+  primaryModule: string;
+  frameCount: number;
+  frames: IllustrationFrame[];
+}
+
 /** The top-level index loaded by most pages. */
 export interface AcademyIndex {
   generatedAt: string;
