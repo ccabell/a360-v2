@@ -92,8 +92,7 @@ export async function POST(req: NextRequest) {
             runId: `run_${Date.now()}`,
             usage: { inputTokens: 0, outputTokens: 0, durationMs: 0 },
           });
-          controller.close();
-          return;
+          return; // finally closes the controller — don't double-close
         }
 
         // 4. Generate
