@@ -51,6 +51,18 @@ const db = createClient(RAG_URL, RAG_KEY);
 const DATA_DIR = path.join(process.cwd(), "lib", "academy", "data");
 const VIDEO_DIR = path.join(DATA_DIR, "videos");
 
+// Real YouTube ids, resolved by matching the channel dump to DB titles
+// (scripts/resolve-tim-pearce-video-ids.py). Keyed by raw DB video_title.
+const VIDEO_ID_MAP: Record<string, { video_id: string }> = (() => {
+  try {
+    return JSON.parse(
+      fs.readFileSync(path.join(DATA_DIR, "video_id_map.json"), "utf-8"),
+    );
+  } catch {
+    return {};
+  }
+})();
+
 interface RawChunk {
   filename: string;
   video_title: string;
@@ -263,7 +275,7 @@ async function main() {
       modules,
       primaryModule,
       isLesson,
-      youtubeId: null, // resolved in a later pass if a YT API key exists
+      youtubeId: VIDEO_ID_MAP[rawTitle]?.video_id ?? null,
       excerpt,
     };
     summaries.push(summary);
