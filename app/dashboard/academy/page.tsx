@@ -67,8 +67,8 @@ export default function AcademyHome() {
             Dr Tim Pearce · Channel Navigator
           </div>
           <h1 className="mt-4 max-w-3xl font-heading text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-            Your AI co-pilot for everything{" "}
-            <span className="text-primary">Dr Tim Pearce</span> teaches.
+            Your AI co-pilot for{" "}
+            <span className="text-primary">Dr. Tim Pearce</span>.
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-neutral-300 sm:text-lg">
             Ask his whole channel, search every transcript, and explore 400+

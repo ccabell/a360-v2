@@ -26,7 +26,7 @@ const menuItems = [
   { name: "Patients", href: "/dashboard/patients", icon: Users },
   { name: "Research", href: "/dashboard/research", icon: Telescope },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
-  { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
+  { name: "Video Navigator", href: "/dashboard/tube", icon: Tv },
   { name: "History", href: "/dashboard/history", icon: History },
   { name: "Chat", href: "/dashboard/chat", icon: MessageSquare },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },

@@ -1,4 +1,5 @@
-import { Video, Film, Tv, Stethoscope, Layers } from "lucide-react";
+import Link from "next/link";
+import { Video, Film, Tv, Stethoscope, Layers, Sparkles } from "lucide-react";
 import {
   getTubeVideos,
   getTubeFacets,
@@ -7,7 +8,7 @@ import {
 import { TubeExplore } from "@/components/tube/tube-explore";
 
 export const metadata = {
-  title: "A360 Tube — YouTube aesthetics, intelligently navigated",
+  title: "A360 Video Navigator — Curated Video Intelligence for Aesthetic Medicine",
 };
 
 export default function TubePage() {
@@ -22,18 +23,32 @@ export default function TubePage() {
         <div className="mx-auto max-w-7xl">
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
             <Tv className="h-4 w-4" />
-            A360 Tube
+            A360 Video Navigator
           </div>
           <h1 className="mt-3 max-w-3xl font-heading text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
-            Every aesthetics video,{" "}
-            <span className="text-primary">intelligently navigated.</span>
+            Curated Video Intelligence
+            <br className="hidden sm:block" /> for{" "}
+            <span className="text-primary">Aesthetic Medicine</span>.
           </h1>
+          <p className="mt-3 text-lg font-medium text-neutral-300">
+            Every aesthetics video, intelligently navigated.
+          </p>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-neutral-300">
             A curated library of {stats.videos.toLocaleString()} aesthetics
             videos across {stats.channels} channels — every one tagged and
             summarised, so you can filter by facial &amp; body area, patient
             concern, treatment and type, then search the rest.
           </p>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/dashboard/tube/ask"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03]"
+            >
+              <Sparkles className="h-4 w-4" />
+              Ask the library
+            </Link>
+          </div>
 
           <div className="mt-7 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-5">
             <Stat icon={Film} value={stats.videos.toLocaleString()} label="videos" />
