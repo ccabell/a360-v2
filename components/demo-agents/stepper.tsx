@@ -11,7 +11,7 @@ export interface StepperItem {
 export function Stepper({
   steps,
   current,
-  accent = "#F26A1B",
+  accent = "#F5A623",
 }: {
   steps: StepperItem[];
   current: number;

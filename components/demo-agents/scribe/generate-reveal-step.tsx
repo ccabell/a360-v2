@@ -56,7 +56,7 @@ import {
   type SelectedIntel,
 } from "@/lib/scribe/intelligence";
 
-const ACCENT = "#F26A1B";
+const ACCENT = "#F5A623";
 const TYPE_ICONS: Record<RecordType, LucideIcon> = {
   soap: Stethoscope,
   procedure: Syringe,

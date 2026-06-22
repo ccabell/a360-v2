@@ -7,7 +7,7 @@ import { Stepper } from "./stepper";
 import { PatientPickerStep } from "./steps/patient-picker-step";
 import type { DemoAgentConfig, DemoAgentStep, DemoRunContext } from "./types";
 
-const ACCENT = "#F26A1B";
+const ACCENT = "#F5A623";
 
 /**
  * Template shell — practice header + stepper + active step. Owns step state,
