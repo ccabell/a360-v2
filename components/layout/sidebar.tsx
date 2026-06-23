@@ -31,10 +31,10 @@ const menuItems = [
   { name: "Scribe", href: "/dashboard/scribe", icon: FileText },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
-  { name: "Intelligence", href: "/dashboard/ask", icon: Sparkles },
+  { name: "Intelligence", href: "/dashboard/intelligence", icon: Sparkles },
   { name: "Library", href: "/dashboard/library", icon: Library },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
-  { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
+  { name: "Video Navigator", href: "/tube", icon: Tv },
   // ── Internal only (hidden in the demo build) ─────────────────────────────
   { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
   { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
