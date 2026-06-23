@@ -5,13 +5,9 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  MessageSquare,
-  Telescope,
   Share2,
-  SearchIcon,
   Zap,
   ClipboardList,
-  Layers,
   Settings,
   Sparkles,
   LogOut,
@@ -41,20 +37,15 @@ const menuItems = [
   { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
   // ── Internal only (hidden in the demo build) ─────────────────────────────
   { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
-  { name: "Consultation", href: "/dashboard/consultation", icon: Layers, scope: "internal" },
-  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare, scope: "internal" },
   { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
-  { name: "Research", href: "/dashboard/research", icon: Telescope, scope: "internal" },
   { name: "LPOA", href: "/dashboard/lpoa", icon: BookOpen, scope: "internal" },
   { name: "Age Progression", href: "/dashboard/age-progression", icon: UserRound, scope: "internal" },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap, scope: "internal" },
   { name: "Studio", href: "/dashboard/studio", icon: Blocks, scope: "internal" },
   { name: "History", href: "/dashboard/history", icon: History, scope: "internal" },
-  { name: "RAG", href: "/dashboard/rag", icon: SearchIcon, scope: "internal" },
   { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
   { name: "Fuel Library", href: "/dashboard/fuel-library", icon: BookOpen, scope: "internal" },
   { name: "Before After", href: "/dashboard/before-after", icon: Images, scope: "internal" },
-  { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
 ] as const;
 
 // Dev shows ALL tabs (nothing hidden). The clean demo nav is opt-in:
