@@ -10,9 +10,13 @@ import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
  * - Demo mode (NEXT_PUBLIC_APP_MODE=demo): the studio/builder surfaces are
  *   404'd so an acquirer can't reach them by typing the URL. (Full code removal
  *   happens in the monorepo split — see docs/ARCHITECTURE_SPLIT.md.)
+ * - Exchange-only (EXCHANGE_ONLY=true): the ONLY surface exposed is the Agent
+ *   Exchange. Every other page redirects to it and every other API 404s, so an
+ *   externally-shared link (e.g. to the CEO) can't reach internal tools by URL.
  */
 
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
+const EXCHANGE_ONLY = process.env.EXCHANGE_ONLY === "true";
 
 const STUDIO_PREFIXES = [
   "/dashboard/agents",
@@ -39,6 +43,29 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/ask")
   ) {
     return NextResponse.next();
+  }
+
+  // Exchange-only containment: nothing but the Exchange is reachable.
+  if (EXCHANGE_ONLY) {
+    const isExchange =
+      pathname === "/" ||
+      pathname === "/exchange" ||
+      pathname.startsWith("/exchange/") ||
+      // The Video Navigator is an Exchange agent — its standalone surface and
+      // chat API are embedded from /exchange, so they stay reachable here.
+      pathname === "/tube" ||
+      pathname.startsWith("/tube/") ||
+      pathname.startsWith("/api/tube/") ||
+      pathname.startsWith("/_next"); // framework assets/RSC
+    if (!isExchange) {
+      if (pathname.startsWith("/api")) {
+        return new NextResponse("Not found", { status: 404 });
+      }
+      const url = request.nextUrl.clone();
+      url.pathname = "/exchange";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
   }
 
   // Demo build: studio surfaces simply don't exist
