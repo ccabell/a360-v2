@@ -16,9 +16,23 @@ export async function POST(req: NextRequest) {
   const body = (await req.json().catch(() => ({}))) as {
     query?: string;
     agentId?: string;
+    history?: { role: "user" | "assistant"; content: string }[];
   };
   const q = (body.query ?? "").trim().replace(/<[^>]*>/g, "");
   const agent = getAgent(body.agentId ?? "research");
+
+  // Last few turns for follow-up context (sanitized + truncated).
+  const history = (Array.isArray(body.history) ? body.history : [])
+    .filter(
+      (m) =>
+        (m?.role === "user" || m?.role === "assistant") &&
+        typeof m.content === "string",
+    )
+    .slice(-6)
+    .map((m) => ({
+      role: m.role,
+      content: m.content.replace(/<[^>]*>/g, "").slice(0, 1200),
+    }));
 
   const encoder = new TextEncoder();
   if (!q) {
@@ -39,7 +53,14 @@ export async function POST(req: NextRequest) {
       const emit = (ev: unknown) =>
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(ev)}\n\n`));
       try {
-        const sources = await retrievePodcastSources(q);
+        // Short follow-ups ("what about pricing?") retrieve poorly on their
+        // own — augment with the previous user question for context.
+        let retrievalQuery = q;
+        if (history.length > 0 && q.split(/\s+/).length < 6) {
+          const prevUser = [...history].reverse().find((m) => m.role === "user");
+          if (prevUser) retrievalQuery = `${prevUser.content.slice(0, 200)} ${q}`;
+        }
+        const sources = await retrievePodcastSources(retrievalQuery);
         emit({ type: "sources", sources });
 
         if (sources.length === 0) {
@@ -55,10 +76,16 @@ export async function POST(req: NextRequest) {
         let fullText = "";
         if (process.env.ANTHROPIC_API_KEY) {
           try {
+            const convo =
+              history.length > 0
+                ? `Previous conversation:\n${history
+                    .map((m) => `${m.role === "user" ? "User" : "Assistant"}: ${m.content}`)
+                    .join("\n")}\n\n`
+                : "";
             const gen = streamAnthropic({
               model: "claude-sonnet-4-6",
               system: buildSystemPrompt(agent, sources),
-              prompt: `Question: ${q}\n\nAnswer using ONLY the sources above, citing [S#] for every claim:`,
+              prompt: `${convo}Question: ${q}\n\nAnswer using ONLY the sources above, citing [S#] for every claim:`,
               maxTokens: 800,
             });
             for await (const delta of gen) {
