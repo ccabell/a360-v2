@@ -34,6 +34,18 @@ function formatChunk(c: Record<string, unknown>) {
   };
 }
 
+/** Split a free-text query into distinct search tokens (3+ chars, deduped). */
+function queryTokens(query: string): string[] {
+  return Array.from(
+    new Set(
+      query
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .filter((t) => t.length >= 3),
+    ),
+  ).slice(0, 6);
+}
+
 async function callRagSearch(query: string, topK: number, corpus?: string) {
   const body: Record<string, unknown> = { query, top_k: topK };
   if (corpus) body.corpus = corpus;
@@ -123,55 +135,77 @@ export const searchFuelDocuments = {
     additionalProperties: false,
   }),
   execute: async ({ query }: { query: string }): Promise<Record<string, unknown>> => {
-    const { data, error } = await agentSupabase
-      .from("agent_fuel_documents")
-      .select("id, fuel_type, offering_id, content, products!inner(name)")
-      .ilike("products.name", `%${query}%`)
+    const formatDoc = (d: Record<string, unknown>, productName?: string | null) => ({
+      id: d.id,
+      fuel_type: d.fuel_type,
+      product_name: productName ?? null,
+      content_preview: JSON.stringify(d.content).slice(0, 3000),
+    });
+
+    // Path 1: match products by name → their approved fuel docs
+    // (agent_fuel_documents.offering_id = products.id via the offerings supertype)
+    const { data: prods } = await agentSupabase
+      .from("products")
+      .select("id, name")
+      .or(`name.ilike.%${query}%,brand_name.ilike.%${query}%,generic_name.ilike.%${query}%`)
       .limit(5);
 
-    if (!error && (!data || data.length === 0)) {
-      const { data: fallback, error: fbErr } = await agentSupabase
+    if (prods?.length) {
+      const nameById = new Map(prods.map((p) => [p.id as string, p.name as string]));
+      const { data: docs } = await agentSupabase
         .from("agent_fuel_documents")
         .select("id, fuel_type, offering_id, content")
-        .textSearch("content", query, { type: "plain" })
-        .limit(5);
-
-      if (fbErr || !fallback?.length) {
-        const { data: byType } = await agentSupabase
-          .from("agent_fuel_documents")
-          .select("id, fuel_type, offering_id, content")
-          .ilike("fuel_type", `%${query}%`)
-          .limit(5);
-
-        if (!byType?.length) return { results: [], message: `No fuel documents found for "${query}"` };
-        return {
-          results: byType.map((d) => ({
-            id: d.id,
-            fuel_type: d.fuel_type,
-            content_preview: JSON.stringify(d.content).slice(0, 3000),
-          })),
-        };
+        .in("offering_id", prods.map((p) => p.id))
+        .eq("status", "active")
+        .limit(8);
+      if (docs?.length) {
+        return { results: docs.map((d) => formatDoc(d, nameById.get(d.offering_id as string))) };
       }
-
-      return {
-        results: fallback.map((d) => ({
-          id: d.id,
-          fuel_type: d.fuel_type,
-          content_preview: JSON.stringify(d.content).slice(0, 3000),
-        })),
-      };
     }
 
-    if (error) return { error: error.message, results: [] };
+    // Path 2: match concerns / body areas by token → fuel docs targeting them
+    const tokens = queryTokens(query);
+    if (tokens.length > 0) {
+      const orExpr = tokens.map((t) => `name.ilike.%${t}%`).join(",");
+      const [{ data: concerns }, { data: areas }] = await Promise.all([
+        agentSupabase.from("concerns").select("id, name").or(orExpr).limit(5),
+        agentSupabase.from("body_areas").select("id, name").or(orExpr).limit(5),
+      ]);
 
-    return {
-      results: (data ?? []).map((d) => ({
-        id: d.id,
-        fuel_type: d.fuel_type,
-        product_name: (d as Record<string, unknown> & { products?: { name?: string } }).products?.name ?? null,
-        content_preview: JSON.stringify(d.content).slice(0, 3000),
-      })),
-    };
+      const filters: string[] = [];
+      if (concerns?.length) filters.push(`concern_id.in.(${concerns.map((c) => c.id).join(",")})`);
+      if (areas?.length) filters.push(`body_area_id.in.(${areas.map((a) => a.id).join(",")})`);
+
+      if (filters.length > 0) {
+        const { data: docs } = await agentSupabase
+          .from("agent_fuel_documents")
+          .select("id, fuel_type, offering_id, content")
+          .or(filters.join(","))
+          .eq("status", "active")
+          .limit(8);
+        if (docs?.length) return { results: docs.map((d) => formatDoc(d)) };
+      }
+    }
+
+    // Path 3: match fuel_type directly (e.g. "pairing", "concern").
+    // fuel_type is a Postgres enum — match known values client-side, no ilike.
+    const FUEL_TYPES = [
+      "product_fuel", "pairing_fuel", "concern_fuel", "anatomy_fuel",
+      "category_fuel", "coaching_fuel", "reach_fuel",
+    ];
+    const q = query.toLowerCase();
+    const matchedTypes = FUEL_TYPES.filter((t) => q.includes(t.replace("_fuel", "")));
+    if (matchedTypes.length > 0) {
+      const { data: byType } = await agentSupabase
+        .from("agent_fuel_documents")
+        .select("id, fuel_type, offering_id, content")
+        .in("fuel_type", matchedTypes)
+        .eq("status", "active")
+        .limit(5);
+      if (byType?.length) return { results: byType.map((d) => formatDoc(d)) };
+    }
+
+    return { results: [], message: `No fuel documents found for "${query}"` };
   },
 };
 
@@ -383,44 +417,79 @@ export const queryProductDatabase = {
     additionalProperties: false,
   }),
   execute: async ({ query, limit }: { query: string; limit?: number }): Promise<Record<string, unknown>> => {
+    const max = limit ?? 10;
+    const formatProduct = (p: Record<string, unknown>, extra?: Record<string, unknown>) => ({
+      id: p.id,
+      name: p.name,
+      brand_name: p.brand_name,
+      regulatory_status: p.regulatory_status,
+      fda_approved_areas: p.fda_approved_areas,
+      description: ((p.description as string) ?? "").slice(0, 300),
+      ...extra,
+    });
+    const PRODUCT_COLS =
+      "id, name, brand_name, generic_name, regulatory_status, fda_approved_areas, description";
+
+    // Path 1: token match on name / brand / generic / description
+    const tokens = queryTokens(query);
+    const fieldExpr = (tokens.length > 0 ? tokens : [query])
+      .flatMap((t) => [
+        `name.ilike.%${t}%`,
+        `brand_name.ilike.%${t}%`,
+        `generic_name.ilike.%${t}%`,
+        `description.ilike.%${t}%`,
+      ])
+      .join(",");
+
     const { data: products } = await agentSupabase
       .from("products")
-      .select("id, name, brand_name, generic_name, regulatory_status, fda_approved_areas, description")
-      .or(`name.ilike.%${query}%,brand_name.ilike.%${query}%,generic_name.ilike.%${query}%`)
-      .limit(limit ?? 10);
+      .select(PRODUCT_COLS)
+      .or(fieldExpr)
+      .limit(max);
 
-    if (!products?.length) {
-      // Fallback: search in indications / description fields
-      const { data: fallback } = await agentSupabase
-        .from("products")
-        .select("id, name, brand_name, generic_name, regulatory_status, fda_approved_areas, description")
-        .or(`indications.ilike.%${query}%,description.ilike.%${query}%`)
-        .limit(limit ?? 10);
-
-      return {
-        products: (fallback ?? []).map((p) => ({
-          id: p.id,
-          name: p.name,
-          brand_name: p.brand_name,
-          regulatory_status: p.regulatory_status,
-          fda_approved_areas: p.fda_approved_areas,
-          description: ((p.description as string) ?? "").slice(0, 300),
-        })),
-        count: fallback?.length ?? 0,
-      };
+    if (products?.length) {
+      return { products: products.map((p) => formatProduct(p)), count: products.length };
     }
 
-    return {
-      products: products.map((p) => ({
-        id: p.id,
-        name: p.name,
-        brand_name: p.brand_name,
-        regulatory_status: p.regulatory_status,
-        fda_approved_areas: p.fda_approved_areas,
-        description: ((p.description as string) ?? "").slice(0, 300),
-      })),
-      count: products.length,
-    };
+    // Path 2: match concerns by token → products that treat them (with treatment_role)
+    if (tokens.length > 0) {
+      const { data: concerns } = await agentSupabase
+        .from("concerns")
+        .select("id, name")
+        .or(tokens.map((t) => `name.ilike.%${t}%`).join(","))
+        .limit(5);
+
+      if (concerns?.length) {
+        const concernName = new Map(concerns.map((c) => [c.id as string, c.name as string]));
+        const { data: links } = await agentSupabase
+          .from("item_concerns")
+          .select("offering_id, concern_id, treatment_role, relevance")
+          .in("concern_id", concerns.map((c) => c.id))
+          .limit(max * 2);
+
+        if (links?.length) {
+          const byOffering = new Map(links.map((l) => [l.offering_id as string, l]));
+          const { data: byConcern } = await agentSupabase
+            .from("products")
+            .select(PRODUCT_COLS)
+            .in("id", Array.from(byOffering.keys()))
+            .limit(max);
+
+          return {
+            products: (byConcern ?? []).map((p) => {
+              const link = byOffering.get(p.id as string);
+              return formatProduct(p, {
+                matched_concern: concernName.get(link?.concern_id as string) ?? null,
+                treatment_role: link?.treatment_role ?? null,
+              });
+            }),
+            count: byConcern?.length ?? 0,
+          };
+        }
+      }
+    }
+
+    return { products: [], count: 0 };
   },
 };
 
