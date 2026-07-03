@@ -24,6 +24,7 @@ export function parseCitationSegments(
   resolve: (id: string) => ResolvedRef | null,
   byNumber: Map<number, ResearchCitation>,
   citations: ResearchCitation[],
+  complete = false,
 ): React.ReactNode[] {
   const parts = text.split(/(\[src_\d+\])/);
   const elements: React.ReactNode[] = [];
@@ -71,14 +72,16 @@ export function parseCitationSegments(
       }
     }
 
-    // Resolve group
+    // Resolve group. Once the answer is complete, an unresolved marker means
+    // the model cited a source outside the retrieval set — drop it silently
+    // instead of showing a perpetual pending spinner.
     const refs = group.map(resolve);
-    const anyPending = refs.some((r) => r === null);
+    const anyPending = !complete && refs.some((r) => r === null);
 
     if (anyPending) {
       elements.push(<PendingCitation key={`p-${i}`} />);
     } else {
-      const resolved = refs as ResolvedRef[];
+      const resolved = refs.filter((r): r is ResolvedRef => r !== null);
       // Group by corpus for authority badges
       const corpusGroups: {
         corpus: ResolvedRef["corpus"];

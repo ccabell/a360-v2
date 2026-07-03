@@ -11,6 +11,9 @@ export interface AgentOutput {
   practice_id: string | null;
   agent_key: string;
   agent_version: string | null;
+  agent_version_id: string | null;
+  model: string | null;
+  lineage: Record<string, unknown> | null;
   input_envelope: Record<string, unknown> | null;
   result: Record<string, unknown> | null;
   evidence_used: Record<string, unknown> | null;

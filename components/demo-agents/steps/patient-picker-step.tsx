@@ -13,7 +13,7 @@ const VISIT_LABELS: Record<string, string> = {
 };
 
 /** Shared Step 1 — select a patient. Limited to 5, each with summary + visit. */
-export function PatientPickerStep({ ctx, setCtx, goNext }: DemoStepProps) {
+export function PatientPickerStep({ ctx, setCtx, goNext, agentKey }: DemoStepProps) {
   const [patients, setPatients] = useState<DemoPatientCard[]>([]);
   const [loading, setLoading] = useState(true);
   const selectedId = ctx.patient?.id ?? null;
@@ -67,7 +67,7 @@ export function PatientPickerStep({ ctx, setCtx, goNext }: DemoStepProps) {
                     </div>
                   </div>
                 </div>
-                {p.hasCachedScribe && (
+                {p.stageReadyFor?.includes(agentKey) && (
                   <span className="flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded">
                     <ShieldCheck className="h-3 w-3" /> STAGE-READY
                   </span>

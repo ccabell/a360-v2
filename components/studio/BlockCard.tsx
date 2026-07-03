@@ -47,6 +47,7 @@ export interface BlockCardProps {
   prompt: string;
   disabled?: boolean;
   onComplete?: (output: string) => void;
+  onError?: (message: string) => void;
   defaultExpanded?: boolean;
   /** Tools to enable for this run (overrides agent's knowledge_config.tools) */
   toolsOverride?: string[];
@@ -55,6 +56,8 @@ export interface BlockCardProps {
 export interface BlockCardHandle {
   /** Trigger a run, optionally prepending context from prior blocks */
   run: (contextPrefix?: string) => void;
+  /** Abort an in-flight run (no-op if idle) */
+  stop: () => void;
 }
 
 type BlockStatus = "idle" | "running" | "done" | "error";
@@ -411,6 +414,7 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
     prompt,
     disabled = false,
     onComplete,
+    onError,
     defaultExpanded = false,
     toolsOverride,
   },
@@ -434,7 +438,19 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
 
   const run = useCallback(
     async (contextPrefix?: string) => {
-      if (!agentId || !patientId || status === "running") return;
+      if (status === "running") return;
+      if (!agentId || !patientId) {
+        // Surface the misconfiguration instead of silently doing nothing —
+        // a pipeline waiting on this block would otherwise hang forever.
+        const msg = !agentId
+          ? "No agent is configured for this block."
+          : "No patient selected.";
+        setErrorMsg(msg);
+        setStatus("error");
+        setOutputExpanded(true);
+        onError?.(msg);
+        return;
+      }
 
       setStatus("running");
       setOutput("");
@@ -480,6 +496,7 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
           } catch { /* ignore */ }
           setErrorMsg(msg);
           setStatus("error");
+          onError?.(msg);
           return;
         }
 
@@ -487,6 +504,7 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
         if (!reader) {
           setErrorMsg("No response stream");
           setStatus("error");
+          onError?.("No response stream");
           return;
         }
 
@@ -572,8 +590,10 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
               setToolsExpanded(false);
               onComplete?.(outputAccRef.current);
             } else if (type === "error") {
-              setErrorMsg((event.message as string) ?? "Agent error");
+              const msg = (event.message as string) ?? "Agent error";
+              setErrorMsg(msg);
               setStatus("error");
+              onError?.(msg);
             }
           }
         }
@@ -581,19 +601,21 @@ export const BlockCard = forwardRef<BlockCardHandle, BlockCardProps>(function Bl
         if ((err as { name?: string }).name === "AbortError") {
           setStatus("idle");
         } else {
-          setErrorMsg(err instanceof Error ? err.message : "Network error");
+          const msg = err instanceof Error ? err.message : "Network error";
+          setErrorMsg(msg);
           setStatus("error");
+          onError?.(msg);
         }
       }
     },
-    [agentId, patientId, prompt, status, onComplete, toolsOverride],
+    [agentId, patientId, prompt, status, onComplete, onError, toolsOverride],
   );
 
   const stop = useCallback(() => {
     abortRef.current?.abort();
   }, []);
 
-  useImperativeHandle(ref, () => ({ run }), [run]);
+  useImperativeHandle(ref, () => ({ run, stop }), [run, stop]);
 
   // ── Derived display values ─────────────────────────────────────────────────
 

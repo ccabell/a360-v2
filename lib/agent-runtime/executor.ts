@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { streamText, stepCountIs } from "ai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { getAgent, getVersion } from "@/lib/api/agents";
@@ -56,7 +57,23 @@ export async function executeAgentRun(
     // 2. Load version
     const version = await getVersion(agent.active_version_id);
 
-    // 3. Create agent_output record
+    // 3. Resolve model — strip provider prefix and map friendly names to API IDs
+    const MODEL_ALIASES: Record<string, string> = {
+      "claude-haiku-4.5": "claude-haiku-4-5-20251001",
+      "claude-sonnet-4.5": "claude-sonnet-4-5-20250929",
+      "claude-sonnet-4.6": "claude-sonnet-4-6",
+      "claude-opus-4.6": "claude-opus-4-6",
+    };
+    const rawModel = (version.model ?? agent.model ?? "claude-haiku-4-5-20251001")
+      .replace(/^anthropic\//, "");
+    const modelId = MODEL_ALIASES[rawModel] ?? rawModel;
+
+    // 4. Build tools — toolsOverride > knowledge_config.tools > all tools
+    const toolNames = params.toolsOverride ?? (version.knowledge_config?.tools as string[] | undefined);
+    const tools = buildTools(toolNames);
+    const resolvedToolNames = Object.keys(tools);
+
+    // 5. Create agent_output record with lineage snapshot
     // practice_id is NOT NULL — use a demo practice for tester runs
     const DEMO_PRACTICE_ID =
       process.env.DEMO_PRACTICE_ID ?? "a0000000-0000-0000-0000-000000000001";
@@ -65,6 +82,16 @@ export async function executeAgentRun(
       practice_id: DEMO_PRACTICE_ID,
       agent_key: agent.agent_key,
       agent_version: version.version,
+      agent_version_id: version.id,
+      model: modelId,
+      lineage: {
+        prompt_sha256: createHash("sha256")
+          .update(version.prompt_text ?? "")
+          .digest("hex"),
+        tools: resolvedToolNames,
+        tools_overridden: params.toolsOverride != null,
+        model_params: version.model_params ?? null,
+      },
       input_envelope: {
         user_message: params.userMessage,
         patient_id: params.patientId,
@@ -74,11 +101,7 @@ export async function executeAgentRun(
     outputId = output.id;
     emit({ type: "status", stage: "run_created", runId: output.id });
 
-    // 4. Build tools — toolsOverride > knowledge_config.tools > all tools
-    const toolNames = params.toolsOverride ?? (version.knowledge_config?.tools as string[] | undefined);
-    const tools = buildTools(toolNames);
-
-    // 5. Create Anthropic provider
+    // 6. Create Anthropic provider
     const apiKey =
       process.env.ANTHROPIC_API_KEY || process.env.AI_GATEWAY_API_KEY;
     if (!apiKey) {
@@ -92,17 +115,6 @@ export async function executeAgentRun(
       return;
     }
     const anthropic = createAnthropic({ apiKey });
-
-    // 6. Resolve model — strip provider prefix and map friendly names to API IDs
-    const MODEL_ALIASES: Record<string, string> = {
-      "claude-haiku-4.5": "claude-haiku-4-5-20251001",
-      "claude-sonnet-4.5": "claude-sonnet-4-5-20250929",
-      "claude-sonnet-4.6": "claude-sonnet-4-6",
-      "claude-opus-4.6": "claude-opus-4-6",
-    };
-    const rawModel = (version.model ?? agent.model ?? "claude-haiku-4-5-20251001")
-      .replace(/^anthropic\//, "");
-    const modelId = MODEL_ALIASES[rawModel] ?? rawModel;
 
     // 7. Call streamText — include patient_id in prompt if provided
     const userPrompt = params.patientId

@@ -438,6 +438,7 @@ export function AskExperience({
                           displayMap={m.displayMap}
                           citations={m.citations}
                           defaultRefsExpanded={variant !== "embed"}
+                          complete={m.done}
                         />
                       </>
                     )}

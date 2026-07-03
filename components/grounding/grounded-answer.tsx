@@ -27,6 +27,12 @@ interface GroundedAnswerProps {
   showReferences?: boolean;
   /** Default expanded state. Public = true, embed = false. */
   defaultRefsExpanded?: boolean;
+  /**
+   * True once citation resolution is final (stream done / one-shot output).
+   * Unresolved [src_N] markers are then dropped instead of shown as pending.
+   * Defaults to true for static use (sources passed); pass explicitly when streaming.
+   */
+  complete?: boolean;
 }
 
 export function GroundedAnswer({
@@ -36,6 +42,7 @@ export function GroundedAnswer({
   displayMap,
   showReferences = true,
   defaultRefsExpanded = true,
+  complete,
 }: GroundedAnswerProps) {
   const resolved = useMemo(() => {
     if (citations && displayMap) return { citations, displayMap };
@@ -51,6 +58,7 @@ export function GroundedAnswer({
         text={text}
         displayMap={resolved.displayMap}
         citations={resolved.citations}
+        complete={complete ?? sources != null}
       />
 
       {showReferences && resolved.citations.length > 0 && (

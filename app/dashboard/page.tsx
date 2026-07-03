@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { ProgressGoal } from "@/components/dashboard/progress-goal";
-import { MiniBarChart } from "@/components/dashboard/mini-bar-chart";
 import {
   Users,
   TrendingUp,
@@ -18,45 +17,91 @@ import {
   Target,
   ArrowUpRight,
   Plus,
-  Syringe,
-  Sparkles,
-  Droplet,
+  Bot,
+  FileCheck,
+  Activity,
 } from "lucide-react";
+import { opsSupabase } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 /* ---------------------------------------------------------------------------
-   Demo data. Replace with live metrics from consultation_intelligence /
-   opportunities. De-identified per PHI policy (IDs only, no patient names).
+   Quarterly targets — manually set per practice. Eventually these come from
+   a practice-settings table, but for now they're set here.
 --------------------------------------------------------------------------- */
-const consultVolume = [
-  { label: "Dec", value: 182 },
-  { label: "Jan", value: 240 },
-  { label: "Feb", value: 215 },
-  { label: "Mar", value: 298 },
-  { label: "Apr", value: 264 },
-  { label: "May", value: 331 },
-];
-
 const goals = [
   { label: "Revenue Target", value: "$420,000", percent: 65, sublabel: "$273,000" },
   { label: "New Patients", value: "850", percent: 32, sublabel: "272" },
   { label: "Plan Adoption", value: "60%", percent: 78, sublabel: "47% live" },
 ];
 
-const recentConsults = [
-  { id: "#1042", treatment: "Botox · Forehead & Glabella", value: "$640", time: "12m ago", icon: Syringe },
-  { id: "#1041", treatment: "Dermal Filler · Cheeks", value: "$1,250", time: "38m ago", icon: Droplet },
-  { id: "#1039", treatment: "Skin Resurfacing · Full Face", value: "$2,400", time: "1h ago", icon: Sparkles },
-  { id: "#1036", treatment: "Botox · Crow's Feet", value: "$420", time: "2h ago", icon: Syringe },
-  { id: "#1033", treatment: "Lip Filler · 1ml", value: "$680", time: "3h ago", icon: Droplet },
-];
+const CONSULT_TYPE_LABEL: Record<string, string> = {
+  initial_consultation: "Initial Consultation",
+  consultation_only: "Consultation",
+  treatment_visit: "Treatment Visit",
+  follow_up: "Follow-up",
+};
 
-const opportunities = [
-  { label: "Filler follow-up", count: 23, value: "$28,750" },
-  { label: "Skin program upsell", count: 14, value: "$33,600" },
-  { label: "Membership conversion", count: 31, value: "$18,600" },
-];
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
 
-export default function OverviewPage() {
+async function getStats() {
+  try {
+    const [patientsRes, consultsRes, extractionsRes, agentOutputsRes, agentsRes, recentRes] =
+      await Promise.all([
+        opsSupabase
+          .from("patients")
+          .select("id", { count: "exact", head: true })
+          .eq("is_active", true),
+        opsSupabase
+          .from("consultations")
+          .select("id", { count: "exact", head: true }),
+        opsSupabase
+          .from("extractions")
+          .select("id", { count: "exact", head: true })
+          .eq("is_verified", true),
+        opsSupabase
+          .from("agent_outputs")
+          .select("id", { count: "exact", head: true }),
+        opsSupabase
+          .from("agents")
+          .select("id", { count: "exact", head: true })
+          .eq("status", "active"),
+        opsSupabase
+          .from("consultations")
+          .select("id, consultation_type, status, started_at")
+          .order("started_at", { ascending: false })
+          .limit(5),
+      ]);
+
+    return {
+      patients: patientsRes.count ?? 0,
+      consultations: consultsRes.count ?? 0,
+      extractions: extractionsRes.count ?? 0,
+      agentRuns: agentOutputsRes.count ?? 0,
+      activeAgents: agentsRes.count ?? 0,
+      recentConsultations: (recentRes.data ?? []) as Array<{
+        id: string;
+        consultation_type: string | null;
+        status: string | null;
+        started_at: string | null;
+      }>,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export default async function OverviewPage() {
+  const stats = await getStats();
+
   return (
     <div className="p-8 space-y-8">
       {/* Page header */}
@@ -68,7 +113,11 @@ export default function OverviewPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="secondary">Last 30 days</Badge>
+          {stats ? (
+            <Badge variant="secondary">Live data</Badge>
+          ) : (
+            <Badge variant="outline">Demo data</Badge>
+          )}
           <Button>
             <Plus className="h-4 w-4" />
             New consultation
@@ -79,92 +128,91 @@ export default function OverviewPage() {
       {/* KPI row */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Consultations"
-          value="331"
-          delta="+25.4% vs last month"
+          label="Patients"
+          value={stats ? String(stats.patients) : "20"}
+          delta={stats ? "Active in Ops DB" : "Demo"}
           trend="up"
           icon={Users}
         />
         <StatCard
-          label="Conversion Rate"
-          value="42.8%"
-          delta="+3.1 pts"
+          label="Consultations"
+          value={stats ? String(stats.consultations) : "94"}
+          delta={stats ? "Total recorded" : "Demo"}
           trend="up"
-          icon={TrendingUp}
+          icon={Activity}
         />
         <StatCard
-          label="Revenue Opportunities"
-          value="$80,950"
-          delta="+12.6%"
+          label="Verified Extractions"
+          value={stats ? String(stats.extractions) : "0"}
+          delta={stats ? "Human-verified" : "Demo"}
           trend="up"
-          icon={DollarSign}
+          icon={FileCheck}
         />
         <StatCard
-          label="Avg. Treatment Value"
-          value="$1,068"
-          delta="-2.4%"
-          trend="down"
-          icon={Target}
+          label="Active Agents"
+          value={stats ? String(stats.activeAgents) : "5"}
+          delta={stats ? `${stats.agentRuns} total runs` : "Demo"}
+          trend="up"
+          icon={Bot}
         />
       </div>
 
       {/* Main grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Left: chart + recent consultations (spans 2) */}
+        {/* Left: recent consultations (spans 2) */}
         <div className="space-y-6 lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Consultation Volume</CardTitle>
-              <CardDescription>Last 6 months of activity</CardDescription>
-              <CardAction>
-                <Button variant="outline" size="sm">
-                  View report
-                </Button>
-              </CardAction>
-            </CardHeader>
-            <CardContent>
-              <MiniBarChart data={consultVolume} />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
               <CardTitle>Recent Consultations</CardTitle>
-              <CardDescription>De-identified · most recent activity</CardDescription>
+              <CardDescription>
+                De-identified · most recent activity
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-1">
-              {recentConsults.map((c) => {
-                const Icon = c.icon;
-                return (
+              {stats && stats.recentConsultations.length > 0 ? (
+                stats.recentConsultations.map((c) => (
                   <div
                     key={c.id}
                     className="flex items-center gap-4 rounded-lg px-2 py-2.5 transition-colors hover:bg-muted"
                   >
                     <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground">
-                      <Icon className="h-4 w-4" />
+                      <Activity className="h-4 w-4" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-foreground">
-                        Consultation {c.id}
+                        Consultation {c.id.slice(0, 8)}
                       </p>
                       <p className="truncate text-xs text-muted-foreground">
-                        {c.treatment}
+                        {CONSULT_TYPE_LABEL[c.consultation_type ?? ""] ??
+                          c.consultation_type ??
+                          "Consultation"}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-semibold tabular-nums text-foreground">
-                        {c.value}
-                      </p>
-                      <p className="text-xs text-muted-foreground">{c.time}</p>
+                      <Badge
+                        variant={c.status === "completed" ? "secondary" : "outline"}
+                        className="text-xs"
+                      >
+                        {c.status ?? "unknown"}
+                      </Badge>
+                      {c.started_at && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {timeAgo(c.started_at)}
+                        </p>
+                      )}
                     </div>
                   </div>
-                );
-              })}
+                ))
+              ) : (
+                <p className="text-sm text-muted-foreground py-4 text-center">
+                  {stats ? "No consultations yet" : "Connect Ops Supabase to see live data"}
+                </p>
+              )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Right: goals + opportunities */}
+        {/* Right: goals + agent activity */}
         <div className="space-y-6">
           <Card>
             <CardHeader>
@@ -186,24 +234,30 @@ export default function OverviewPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Top Opportunities</CardTitle>
-              <CardDescription>Extracted revenue, ranked by value</CardDescription>
+              <CardTitle>Platform Status</CardTitle>
+              <CardDescription>System health</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-1">
-              {opportunities.map((o) => (
+            <CardContent className="space-y-3">
+              {[
+                { label: "Ops Database", status: stats ? "Connected" : "Not connected" },
+                { label: "Agent Runtime", status: stats && stats.activeAgents > 0 ? `${stats.activeAgents} active` : "Unknown" },
+                { label: "RAG Corpus", status: "550K chunks" },
+                { label: "Sentry", status: "Monitoring" },
+              ].map((s) => (
                 <div
-                  key={o.label}
-                  className="flex items-center justify-between rounded-lg px-2 py-2.5 transition-colors hover:bg-muted"
+                  key={s.label}
+                  className="flex items-center justify-between text-sm"
                 >
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{o.label}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {o.count} patients
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1 text-sm font-semibold tabular-nums text-primary">
-                    {o.value}
-                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  <span className="text-muted-foreground">{s.label}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span
+                      className={`size-1.5 rounded-full ${
+                        s.status.includes("Not") || s.status === "Unknown"
+                          ? "bg-amber-500"
+                          : "bg-emerald-500"
+                      }`}
+                    />
+                    <span className="font-medium text-foreground">{s.status}</span>
                   </div>
                 </div>
               ))}

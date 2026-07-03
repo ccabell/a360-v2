@@ -5,17 +5,14 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  MessageSquare,
-  Telescope,
   Share2,
-  SearchIcon,
   Zap,
   ClipboardList,
-  Layers,
   Settings,
   Sparkles,
   LogOut,
   History,
+  PlayCircle,
   FileText,
   UserRound,
   Images,
@@ -25,6 +22,7 @@ import {
   Library,
   GraduationCap,
   Tv,
+  Headphones,
 } from "lucide-react";
 
 // The demo build shows only the suite below; everything else is scope:"internal"
@@ -35,26 +33,23 @@ const menuItems = [
   { name: "Scribe", href: "/dashboard/scribe", icon: FileText },
   { name: "TCP", href: "/dashboard/tcp", icon: ClipboardList },
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
-  { name: "Intelligence", href: "/dashboard/ask", icon: Sparkles },
+  { name: "Intelligence", href: "/dashboard/intelligence", icon: Sparkles },
   { name: "Library", href: "/dashboard/library", icon: Library },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
-  { name: "A360 Tube", href: "/dashboard/tube", icon: Tv },
+  { name: "Video Navigator", href: "/tube", icon: Tv },
+  { name: "Podcast Navigator", href: "/podcast", icon: Headphones },
   // ── Internal only (hidden in the demo build) ─────────────────────────────
   { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
-  { name: "Consultation", href: "/dashboard/consultation", icon: Layers, scope: "internal" },
-  { name: "Chat", href: "/dashboard/chat", icon: MessageSquare, scope: "internal" },
   { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
-  { name: "Research", href: "/dashboard/research", icon: Telescope, scope: "internal" },
   { name: "LPOA", href: "/dashboard/lpoa", icon: BookOpen, scope: "internal" },
   { name: "Age Progression", href: "/dashboard/age-progression", icon: UserRound, scope: "internal" },
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap, scope: "internal" },
   { name: "Studio", href: "/dashboard/studio", icon: Blocks, scope: "internal" },
   { name: "History", href: "/dashboard/history", icon: History, scope: "internal" },
-  { name: "RAG", href: "/dashboard/rag", icon: SearchIcon, scope: "internal" },
+  { name: "Agent Runs", href: "/dashboard/agent-runs", icon: PlayCircle, scope: "internal" },
   { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
   { name: "Fuel Library", href: "/dashboard/fuel-library", icon: BookOpen, scope: "internal" },
   { name: "Before After", href: "/dashboard/before-after", icon: Images, scope: "internal" },
-  { name: "Components", href: "/dashboard/components", icon: Settings, scope: "internal" },
 ] as const;
 
 // Dev shows ALL tabs (nothing hidden). The clean demo nav is opt-in:

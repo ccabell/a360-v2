@@ -43,7 +43,7 @@ function buildSystemPrompt(sources: RetrievedSource[], knowledge: string): strin
               : s.corpus === "youtube"
                 ? `YouTube video — ${locatorTitle(s.locator)}`
                 : s.corpus === "podcast"
-                  ? `Podcast — ${locatorTitle(s.locator)}`
+                  ? `Intelligence — ${locatorTitle(s.locator)}`
                   : s.corpus === "manufacturer"
                     ? `Manufacturer — ${locatorTitle(s.locator)}`
                     : locatorTitle(s.locator);
