@@ -319,7 +319,7 @@ export const searchYoutube = {
 
 export const getProductInfo = {
   description:
-    "Look up structured product information from the Global Library: manufacturer, category, FDA status, relationships with other products.",
+    "Look up structured product information from the Global Library: manufacturer, category, FDA status, relationships with other products, concerns treated (with treatment role), and body areas (with anatomy specificity).",
   inputSchema: jsonSchema<{ product_name: string }>({
     type: "object",
     properties: {
@@ -347,14 +347,21 @@ export const getProductInfo = {
 
     const { data: concerns } = await agentSupabase
       .from("item_concerns")
-      .select("id, concern_id, relevance, treatment_role, is_fda_indicated")
+      .select("id, concern_id, relevance, treatment_role, is_fda_indicated, concerns(name)")
       .eq("offering_id", product.id)
       .limit(10);
+
+    const { data: bodyAreas } = await agentSupabase
+      .from("item_body_areas")
+      .select("id, body_area_id, side, anatomy_specificity, notes, body_areas(name)")
+      .eq("offering_id", product.id)
+      .limit(15);
 
     return {
       product,
       relationships: relationships ?? [],
       concerns: concerns ?? [],
+      body_areas: bodyAreas ?? [],
     };
   },
 };
