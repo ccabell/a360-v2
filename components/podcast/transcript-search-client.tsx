@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, Loader2, Mic, Calendar, Clock } from "lucide-react";
 import type { TranscriptSearchResult } from "@/lib/podcast/search";
+import { ListenLaterIconButton } from "@/components/podcast/listen-later-button";
 
 /** Render ts_headline output, turning <mark>…</mark> into highlighted spans. */
 export function HighlightedSnippet({ text }: { text: string }) {
@@ -173,6 +174,16 @@ export default function TranscriptSearchClient() {
                 ))}
               </div>
             </div>
+            <ListenLaterIconButton
+              episode={{
+                episodeId: r.episodeId,
+                title: r.title,
+                showId: r.showId,
+                showName: r.showName,
+                showArtworkUrl: r.showArtworkUrl,
+                durationSeconds: r.durationSeconds,
+              }}
+            />
           </Link>
         ))}
       </div>

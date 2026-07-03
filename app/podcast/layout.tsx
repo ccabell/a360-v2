@@ -29,6 +29,7 @@ export default function PodcastLayout({
           <nav className="ml-6 hidden items-center gap-1 sm:flex">
             <NavLink href="/podcast/ask">Ask</NavLink>
             <NavLink href="/podcast/explore">Browse</NavLink>
+            <NavLink href="/podcast/listen-later">Listen Later</NavLink>
           </nav>
 
           <Link
