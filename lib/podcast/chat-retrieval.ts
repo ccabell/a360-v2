@@ -1,8 +1,10 @@
 /**
  * Retrieval for the A360 Podcast Navigator AI chat.
  *
- * Hybrid search: episode-level FTS + chunk keyword matching.
- * Deduplicates to ONE source per episode (best chunk).
+ * Hybrid search: semantic vector search (match_podcast_chunks RPC) +
+ * episode-level FTS + chunk keyword matching.
+ * Deduplicates to ONE source per episode (best chunk), then collapses
+ * duplicate-ingested episodes by normalized title.
  */
 import { createClient } from "@supabase/supabase-js";
 import type { PodcastSource } from "./types";
@@ -12,9 +14,62 @@ const rag = createClient(
   process.env.RAG_SUPABASE_KEY ?? "placeholder",
 );
 
+/**
+ * Strip ingestion-hash suffixes from titles, e.g. "_4881d08f91c7d8418c" or
+ * "_actic371e8d3ceb95a0" (a title fragment + hex hash). Real titles don't end
+ * in an underscore-joined 10+ char alphanumeric token.
+ */
+export function cleanTitle(title: string): string {
+  return title.replace(/_[a-z0-9]{10,}$/i, "").trim();
+}
+
+/** Embed the query with OpenAI (matches the corpus's 1536-dim embeddings). */
+async function embedQuery(q: string): Promise<number[] | null> {
+  if (!process.env.OPENAI_API_KEY) return null;
+  try {
+    const res = await fetch("https://api.openai.com/v1/embeddings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ model: "text-embedding-3-small", input: q }),
+    });
+    if (!res.ok) return null;
+    const json = (await res.json()) as { data?: { embedding: number[] }[] };
+    return json.data?.[0]?.embedding ?? null;
+  } catch {
+    return null;
+  }
+}
+
+interface SemanticHit {
+  chunk_id: string;
+  episode_id: string;
+  show_name: string | null;
+  episode_title: string;
+  chunk_text: string;
+  chunk_index: number;
+  similarity: number;
+}
+
+/** Vector search over podcast_chunks. Returns [] on any failure. */
+async function semanticSearch(question: string): Promise<SemanticHit[]> {
+  const embedding = await embedQuery(question);
+  if (!embedding) return [];
+  const { data, error } = await rag.rpc("match_podcast_chunks", {
+    query_embedding: embedding,
+    match_count: 24,
+    match_threshold: 0.25,
+  });
+  if (error) return [];
+  return (data as SemanticHit[]) ?? [];
+}
+
 const STOP = new Set([
   "the", "a", "an", "and", "or", "of", "to", "in", "on", "for", "is", "are",
-  "be", "with", "how", "what", "when", "why", "do", "does", "can", "i", "you",
+  "be", "with", "how", "what", "when", "why", "who", "whos", "where", "which",
+  "do", "does", "can", "i", "you",
   "it", "this", "that", "at", "as", "by", "from", "about", "should", "my",
   "your", "if", "we", "they", "their", "our", "has", "have", "had", "was",
   "were", "been", "being", "would", "could", "will", "just", "also", "like",
@@ -35,6 +90,24 @@ function tokenize(q: string): string[] {
   ).sort((a, b) => b.length - a.length);
 }
 
+/** Word-level fuzzy match: equal, or 1 edit apart (Teri ↔ Terri). */
+function fuzzyWordMatch(a: string, b: string): boolean {
+  if (a === b) return true;
+  if (Math.abs(a.length - b.length) > 1) return false;
+  let diffs = 0;
+  let i = 0, j = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] !== b[j]) {
+      diffs++;
+      if (diffs > 1) return false;
+      if (a.length > b.length) i++;
+      else if (b.length > a.length) j++;
+      else { i++; j++; }
+    } else { i++; j++; }
+  }
+  return diffs + (a.length - i) + (b.length - j) <= 1;
+}
+
 /**
  * Retrieve grounded, deep-linkable podcast sources for a question.
  *
@@ -49,7 +122,18 @@ export async function retrievePodcastSources(
   max = 12,
 ): Promise<PodcastSource[]> {
   const terms = tokenize(question);
-  if (terms.length === 0) return [];
+
+  // Typo corrections learned from fuzzy title matches (e.g. "teri" → "terri").
+  const corrected = new Map<string, string>();
+  // True when episode titles fuzzy-match EVERY query word (name lookup).
+  let nameMatchMode = false;
+
+  // Kick off semantic search in parallel with the keyword pipeline.
+  const semanticPromise = semanticSearch(question);
+
+  if (terms.length === 0) {
+    return buildOutput(new Map(), await semanticPromise, max);
+  }
 
   // --- Step 1: Episode-level search ---
   // Try FTS first, then fall back to ilike on title for typo tolerance
@@ -104,30 +188,63 @@ export async function retrievePodcastSources(
       return diffs + (a.length - i) + (b.length - j) <= 1;
     }
 
-    matchedEpisodes = [...allHits.values()]
-      .map((h) => {
-        const titleWords = h.ep.title.toLowerCase().split(/[\s\-_:,()#]+/).filter((w) => w.length >= 2);
+    const scoredHits = [...allHits.values()].map((h) => {
+      const titleWords = h.ep.title.toLowerCase().split(/[\s\-_:,()#]+/).filter((w) => w.length >= 2);
 
-        let score = h.hits;
-        let fuzzyHits = 0;
+      let score = h.hits;
+      let fuzzyHits = 0;
 
-        for (const qw of queryWords) {
-          if (titleWords.some((tw) => fuzzyMatch(qw, tw))) {
-            score += 3;
-            fuzzyHits++;
-          }
+      for (const qw of queryWords) {
+        const tw = titleWords.find((w) => fuzzyMatch(qw, w));
+        if (tw) {
+          score += 3;
+          fuzzyHits++;
+          // Remember the corpus spelling so chunk search can use it too.
+          if (tw !== qw) corrected.set(qw, tw);
         }
+      }
 
-        // Big boost if ALL query words fuzzy-match in the title
-        if (fuzzyHits === queryWords.length && queryWords.length > 1) {
-          score += 15;
-        }
+      // Big boost if ALL query words fuzzy-match in the title
+      if (fuzzyHits === queryWords.length && queryWords.length > 1) {
+        score += 15;
+      }
 
-        return { ...h, score };
-      })
+      return { ...h, score, fuzzyHits };
+    });
+
+    // If some episodes match EVERY query word (e.g. "Terri Ross" for
+    // "teri ross"), keep only those — partial hits like "Kate Ross" are
+    // noise once a full-name match exists.
+    const fullCoverage = scoredHits.filter(
+      (h) => queryWords.length > 1 && h.fuzzyHits === queryWords.length,
+    );
+    nameMatchMode = fullCoverage.length > 0;
+
+    matchedEpisodes = (fullCoverage.length > 0 ? fullCoverage : scoredHits)
       .sort((a, b) => b.score - a.score)
       .map((h) => h.ep)
       .slice(0, 20);
+  }
+
+  // --- Name-lookup detection (both FTS and fuzzy paths) ---
+  // If some matched episodes' titles fuzzy-cover EVERY query word
+  // ("Terri Ross…" for "teri ross"), this is a name/entity lookup: keep only
+  // those episodes and harvest spelling corrections, so partial-surname hits
+  // (Kate Ross, Ross Walker) drop out.
+  const nameQueryWords = question.toLowerCase().split(/\s+/).filter((w) => w.length >= 3 && !STOP.has(w));
+  if (nameQueryWords.length > 1 && matchedEpisodes.length > 0) {
+    const covered = matchedEpisodes.filter((ep: { title: string }) => {
+      const titleWords = ep.title.toLowerCase().split(/[\s\-_:,()#]+/).filter((w: string) => w.length >= 2);
+      return nameQueryWords.every((qw) => {
+        const tw = titleWords.find((w: string) => fuzzyWordMatch(qw, w));
+        if (tw && tw !== qw) corrected.set(qw, tw);
+        return !!tw;
+      });
+    });
+    if (covered.length > 0) {
+      matchedEpisodes = covered;
+      nameMatchMode = true;
+    }
   }
 
   // Collect episode IDs from matched episodes
@@ -136,12 +253,31 @@ export async function retrievePodcastSources(
   );
 
   // --- Step 2: Chunk-level keyword search ---
-  const orFilter = terms.map((t) => `chunk_text.ilike.%${t}%`).join(",");
-  const { data: chunks } = await rag
+  // FTS first (word-boundary, ALL terms required, GIN-indexed) so "teri ross"
+  // can't match chunks that merely contain "across" or "Kate Ross". Each term
+  // is OR-expanded with its typo correction: (teri | terri) & ross.
+  const tsquery = terms
+    .map((t) => {
+      const fix = corrected.get(t);
+      return fix ? `(${t} | ${fix})` : t;
+    })
+    .join(" & ");
+  let { data: chunks } = await rag
     .from("podcast_chunks")
     .select("id, episode_id, chunk_index, chunk_text")
-    .or(orFilter)
-    .limit(300);
+    .textSearch("chunk_text", tsquery, { config: "english" })
+    .limit(150);
+
+  // Recall fallback: substring OR match (old behavior) when strict FTS
+  // finds nothing.
+  if (!chunks || chunks.length === 0) {
+    const orFilter = terms.map((t) => `chunk_text.ilike.%${t}%`).join(",");
+    ({ data: chunks } = await rag
+      .from("podcast_chunks")
+      .select("id, episode_id, chunk_index, chunk_text")
+      .or(orFilter)
+      .limit(300));
+  }
 
   type ChunkRow = {
     id: string;
@@ -168,7 +304,9 @@ export async function retrievePodcastSources(
   }
   const allChunks = [...allChunkMap.values()];
 
-  if (allChunks.length === 0 && ftsEpIds.size === 0) return [];
+  if (allChunks.length === 0 && ftsEpIds.size === 0) {
+    return buildOutput(new Map(), await semanticPromise, max);
+  }
 
   // --- Step 3: Get episode + show info ---
   const allEpIds = [
@@ -183,8 +321,15 @@ export async function retrievePodcastSources(
     .select("id, title, show_id, summary")
     .in("id", allEpIds.slice(0, 200));
 
+  // NOTE: some episodes have a null show_id; a null inside .in() makes
+  // PostgREST reject the whole query ("invalid input syntax for type uuid"),
+  // which used to break show attribution for ALL sources.
   const showIds = [
-    ...new Set((episodes ?? []).map((e: { show_id: string }) => e.show_id)),
+    ...new Set(
+      (episodes ?? [])
+        .map((e: { show_id: string | null }) => e.show_id)
+        .filter((id): id is string => !!id),
+    ),
   ];
   const { data: shows } = await rag
     .from("podcast_shows")
@@ -211,19 +356,26 @@ export async function retrievePodcastSources(
   // --- Step 4: Score chunks, pick best per episode ---
   const minMatch = terms.length >= 3 ? 2 : 1;
 
+  // Word-boundary matchers (substring matching made "ross" hit "across").
+  // Each term also matches its typo-corrected corpus spelling.
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const termRes = terms.map((t) => {
+    const fix = corrected.get(t);
+    return new RegExp(`\\b(${esc(t)}${fix ? `|${esc(fix)}` : ""})\\b`, "i");
+  });
+
   // Score each chunk
   const scored = allChunks
     .map((c) => {
-      const lower = c.chunk_text.toLowerCase();
       const ep = epMap.get(c.episode_id);
-      const title = (ep?.title ?? "").toLowerCase();
-      const matched = terms.filter((t) => lower.includes(t)).length;
+      const title = ep?.title ?? "";
+      const matched = termRes.filter((re) => re.test(c.chunk_text)).length;
 
       let score = matched;
       // Bonus for all terms co-occurring
       if (matched === terms.length && terms.length > 1) score += 3;
       // Bonus for title match
-      score += terms.filter((t) => title.includes(t)).length * 3;
+      score += termRes.filter((re) => re.test(title)).length * 3;
       // Bonus for FTS-matched episode
       if (ep?.isFtsHit) score += 2;
 
@@ -290,15 +442,103 @@ export async function retrievePodcastSources(
     }
   }
 
-  // Sort by score, build output
-  const sorted = [...bestByEpisode.values()].sort((a, b) => b.score - a.score);
+  return buildOutput(
+    bestByEpisode,
+    await semanticPromise,
+    max,
+    nameMatchMode ? termRes : [],
+  );
+}
+
+interface ChunkRow {
+  id: string;
+  episode_id: string;
+  chunk_index: number;
+  chunk_text: string;
+}
+
+/**
+ * Merge keyword candidates with semantic hits, dedupe duplicate-ingested
+ * episodes by normalized title, and build the final source list.
+ */
+function buildOutput(
+  keywordBest: Map<
+    string,
+    { chunk: ChunkRow; ep?: { title: string; showName: string } | undefined; score: number }
+  >,
+  semanticHits: SemanticHit[],
+  max: number,
+  /**
+   * When set (confident name/entity match), semantic hits must word-boundary
+   * match every pattern — stops "who is teri ross" pulling in Kate Ross /
+   * Ross Walker chunks that are merely embedding-adjacent.
+   */
+  mustMatch: RegExp[] = [],
+): PodcastSource[] {
+  const merged = new Map<
+    string,
+    { chunk: ChunkRow; title: string; showName: string; score: number }
+  >();
+
+  for (const [epId, { chunk, ep, score }] of keywordBest) {
+    merged.set(epId, {
+      chunk,
+      title: ep?.title ?? "Untitled Episode",
+      showName: ep?.showName ?? "Unknown Show",
+      score,
+    });
+  }
+
+  for (const hit of semanticHits) {
+    if (mustMatch.length > 0 && !mustMatch.every((re) => re.test(hit.chunk_text))) {
+      continue;
+    }
+    // Map cosine similarity (~0.25–0.65 for this corpus) onto the keyword
+    // score scale (~1–25).
+    const semScore = Math.max(0, hit.similarity - 0.2) * 20;
+    const chunk: ChunkRow = {
+      id: hit.chunk_id,
+      episode_id: hit.episode_id,
+      chunk_index: hit.chunk_index,
+      chunk_text: hit.chunk_text,
+    };
+    const existing = merged.get(hit.episode_id);
+    if (existing) {
+      // Episode found by BOTH strategies — strong signal.
+      if (semScore > existing.score) existing.chunk = chunk;
+      existing.score = Math.max(existing.score, semScore) + 3;
+      if (existing.showName === "Unknown Show" && hit.show_name)
+        existing.showName = hit.show_name;
+    } else {
+      merged.set(hit.episode_id, {
+        chunk,
+        title: hit.episode_title,
+        showName: hit.show_name ?? "Unknown Show",
+        score: semScore,
+      });
+    }
+  }
+
+  // Collapse duplicate ingestions of the same episode (same title, different
+  // row) — keep the highest-scoring copy.
+  const byTitle = new Map<string, { chunk: ChunkRow; title: string; showName: string; score: number }>();
+  for (const cand of merged.values()) {
+    // Punctuation-insensitive: duplicate ingestions differ by colons etc.
+    const key = cleanTitle(cand.title)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+    const existing = byTitle.get(key);
+    if (!existing || cand.score > existing.score) byTitle.set(key, cand);
+  }
+
+  const sorted = [...byTitle.values()].sort((a, b) => b.score - a.score);
 
   const out: PodcastSource[] = [];
-  for (const { chunk, ep } of sorted) {
-    const showName = ep?.showName ?? "Unknown Show";
+  for (const { chunk, title, showName } of sorted) {
     out.push({
       id: `S${out.length + 1}`,
-      title: ep?.title ?? "Untitled Episode",
+      title: cleanTitle(title),
       showName,
       text: chunk.chunk_text,
       episodeId: chunk.episode_id,

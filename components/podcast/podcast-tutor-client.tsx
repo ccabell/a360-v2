@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Send,
   Sparkles,
@@ -72,37 +74,52 @@ const STARTERS = [
   "Compare membership models discussed across different podcasts",
 ];
 
-/* ── Citation renderer ───────────────────────────────────────────────────── */
+/* ── Markdown + citation renderer ────────────────────────────────────────── */
 
-function renderWithCitations(text: string, sources: PodcastSource[]) {
-  const byId = new Map(sources.map((s) => [s.id, s]));
-  const parts: React.ReactNode[] = [];
-  const re = /\[(S\d+)\]/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  let key = 0;
-  while ((m = re.exec(text)) !== null) {
-    if (m.index > last) parts.push(text.slice(last, m.index));
-    const src = byId.get(m[1]);
-    if (src) {
-      parts.push(
-        <Link
-          key={`c${key++}`}
-          href={src.url}
-          title={`${src.title} · ${src.meta}`}
-          className="mx-0.5 inline-flex translate-y-px items-center gap-0.5 rounded bg-primary/15 px-1.5 py-0.5 align-baseline text-[11px] font-semibold text-primary hover:bg-primary/25"
-        >
-          <Headphones className="h-2.5 w-2.5" />
-          {src.id}
-        </Link>,
-      );
-    } else {
-      parts.push(m[0]);
-    }
-    last = re.lastIndex;
-  }
-  if (last < text.length) parts.push(text.slice(last));
-  return parts;
+function MarkdownWithCitations({
+  text,
+  sources,
+}: {
+  text: string;
+  sources?: PodcastSource[];
+}) {
+  const byId = new Map((sources ?? []).map((s) => [s.id, s]));
+  // Turn [S1] / [S1][S3] markers into markdown links so they survive
+  // markdown parsing, then render them as citation chips via the `a` override.
+  const prepared = text.replace(/\[(S\d+)\](?!\()/g, "[$1](#cite-$1)");
+  return (
+    <div className="text-sm leading-relaxed text-neutral-100 [&_h1]:mt-4 [&_h1]:text-base [&_h1]:font-semibold [&_h1]:text-white [&_h2]:mt-4 [&_h2]:text-base [&_h2]:font-semibold [&_h2]:text-white [&_h3]:mt-3 [&_h3]:text-sm [&_h3]:font-semibold [&_h3]:text-white [&_p]:mt-3 [&_p:first-child]:mt-0 [&_h1:first-child]:mt-0 [&_h2:first-child]:mt-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5 [&_ol]:mt-2 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_strong]:font-semibold [&_strong]:text-white [&_blockquote]:mt-3 [&_blockquote]:border-l-2 [&_blockquote]:border-primary/40 [&_blockquote]:pl-3 [&_blockquote]:text-neutral-300">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          a: ({ href, children }) => {
+            const cite = href?.startsWith("#cite-") ? href.slice(6) : null;
+            const src = cite ? byId.get(cite) : undefined;
+            if (src) {
+              return (
+                <Link
+                  href={src.url}
+                  title={`${src.title} · ${src.meta}`}
+                  className="mx-0.5 inline-flex translate-y-px items-center gap-0.5 rounded bg-primary/15 px-1.5 py-0.5 align-baseline text-[11px] font-semibold text-primary no-underline hover:bg-primary/25"
+                >
+                  <Headphones className="h-2.5 w-2.5" />
+                  {src.id}
+                </Link>
+              );
+            }
+            if (cite) return <span>[{cite}]</span>;
+            return (
+              <a href={href} className="text-primary underline" target="_blank" rel="noreferrer">
+                {children}
+              </a>
+            );
+          },
+        }}
+      >
+        {prepared}
+      </ReactMarkdown>
+    </div>
+  );
 }
 
 /* ── Main component ──────────────────────────────────────────────────────── */
@@ -128,6 +145,11 @@ export function PodcastTutorClient() {
   async function ask(question: string) {
     const q = question.trim();
     if (!q || busy) return;
+    // Prior turns (before this question) so the API can handle follow-ups.
+    const history = messages
+      .filter((m) => m.content && !m.error)
+      .slice(-6)
+      .map((m) => ({ role: m.role, content: m.content }));
     const asstId = `a${Date.now()}`;
     setMessages((prev) => [
       ...prev,
@@ -144,7 +166,7 @@ export function PodcastTutorClient() {
       const res = await fetch("/api/podcast/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: q, agentId }),
+        body: JSON.stringify({ query: q, agentId, history }),
       });
       if (!res.body) throw new Error("no stream");
       const reader = res.body.getReader();
@@ -340,19 +362,10 @@ function Bubble({ message }: { message: ChatMessage }) {
         <Sparkles className="h-4 w-4" />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="text-sm leading-relaxed text-neutral-100">
-          {content
-            .split(/\n\n+/)
-            .filter(Boolean)
-            .map((para, i) => (
-              <p key={i} className={i > 0 ? "mt-3" : ""}>
-                {sources ? renderWithCitations(para, sources) : para}
-              </p>
-            ))}
-          {streaming && (
-            <span className="ml-0.5 inline-block h-3.5 w-1.5 animate-pulse rounded-sm bg-primary align-middle" />
-          )}
-        </div>
+        <MarkdownWithCitations text={content} sources={sources} />
+        {streaming && (
+          <span className="ml-0.5 inline-block h-3.5 w-1.5 animate-pulse rounded-sm bg-primary align-middle" />
+        )}
         {error && (
           <p className="mt-2 text-xs text-red-400">
             Couldn&rsquo;t generate an answer ({error}).
