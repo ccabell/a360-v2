@@ -10,6 +10,7 @@ import {
   Mic,
 } from "lucide-react";
 import { getPodcastEpisode, getEpisodeChunks, getEpisodeTags } from "@/lib/podcast/server";
+import TranscriptViewer from "@/components/podcast/transcript-viewer";
 
 export const revalidate = 300;
 
@@ -193,29 +194,17 @@ export default async function EpisodeDetailPage({
           Transcript
         </h2>
 
-        {chunks.length > 0 ? (
-          <div className="mt-4 space-y-4">
-            {(chunks as { id: string; chunk_index: number; chunk_text: string }[]).map((chunk) => (
-              <div
-                key={chunk.id}
-                id={`chunk-${chunk.chunk_index}`}
-                className="rounded-lg border border-white/5 bg-white/[0.02] p-4"
-              >
-                <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Chunk {chunk.chunk_index}
-                </p>
-                <p className="text-sm leading-relaxed text-neutral-200 whitespace-pre-wrap">
-                  {chunk.chunk_text}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : episode.transcript_text ? (
-          <div className="mt-4 rounded-lg border border-white/5 bg-white/[0.02] p-4">
-            <p className="text-sm leading-relaxed text-neutral-200 whitespace-pre-wrap">
-              {episode.transcript_text}
-            </p>
-          </div>
+        {episode.transcript_text || chunks.length > 0 ? (
+          <TranscriptViewer
+            text={
+              episode.transcript_text ??
+              // Chunks are contiguous splits of the transcript (they cut
+              // mid-word), so plain concatenation reconstructs it.
+              (chunks as { chunk_text: string }[])
+                .map((c) => c.chunk_text)
+                .join("")
+            }
+          />
         ) : (
           <p className="mt-4 text-sm text-neutral-500">
             No transcript available for this episode yet.

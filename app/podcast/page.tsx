@@ -2,6 +2,7 @@ import Link from "next/link";
 import {
   Sparkles,
   Compass,
+  FileSearch,
   ArrowRight,
   Headphones,
   Mic,
@@ -27,6 +28,15 @@ const OPTIONS = [
     description:
       "Ask anything about treatments, business, sales, or patient language. Choose an AI agent lens and get answers grounded in real podcast episodes with citations.",
     cta: "Start a conversation",
+  },
+  {
+    href: "/podcast/search",
+    icon: FileSearch,
+    eyebrow: "Search",
+    title: "Search every transcript",
+    description:
+      "Find every mention of a word or phrase across 10,000+ transcribed episodes. Exact matches with highlighted excerpts, linked straight into the transcript.",
+    cta: "Search transcripts",
   },
   {
     href: "/podcast/explore",
@@ -63,8 +73,8 @@ export default async function PodcastLandingPage() {
         </p>
       </div>
 
-      {/* Two options */}
-      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
+      {/* Options */}
+      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
         {OPTIONS.map((o) => {
           const Icon = o.icon;
           return (
