@@ -34,15 +34,28 @@ function isStudioPath(pathname: string): boolean {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always-public: login page, auth endpoints, and public ask surface
+  // Always-public: login page, auth endpoints, public surfaces, health check
   if (
     pathname.startsWith("/login") ||
     pathname.startsWith("/api/auth") ||
+    pathname.startsWith("/api/health") ||
     pathname.startsWith("/ask") ||
     pathname.startsWith("/embed") ||
-    pathname.startsWith("/api/ask")
+    pathname.startsWith("/api/ask") ||
+    pathname.startsWith("/podcast") ||
+    pathname.startsWith("/api/podcast")
   ) {
     return NextResponse.next();
+  }
+
+  // Standalone apps under /apps/* — public unless listed in GATED_APPS
+  if (pathname.startsWith("/apps/")) {
+    const GATED_APPS = ["/apps/studio"];
+    const isGated = GATED_APPS.some(
+      (p) => pathname === p || pathname.startsWith(p + "/"),
+    );
+    if (!isGated) return NextResponse.next();
+    // Gated apps fall through to the password gate below
   }
 
   // Exchange-only containment: nothing but the Exchange is reachable.
@@ -51,11 +64,14 @@ export async function proxy(request: NextRequest) {
       pathname === "/" ||
       pathname === "/exchange" ||
       pathname.startsWith("/exchange/") ||
-      // The Video Navigator is an Exchange agent — its standalone surface and
-      // chat API are embedded from /exchange, so they stay reachable here.
+      // The Video Navigator and Podcast Navigator are Exchange agents — their
+      // standalone surfaces and chat APIs stay reachable here.
       pathname === "/tube" ||
       pathname.startsWith("/tube/") ||
       pathname.startsWith("/api/tube/") ||
+      pathname === "/podcast" ||
+      pathname.startsWith("/podcast/") ||
+      pathname.startsWith("/api/podcast/") ||
       pathname.startsWith("/_next"); // framework assets/RSC
     if (!isExchange) {
       if (pathname.startsWith("/api")) {

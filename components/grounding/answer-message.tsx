@@ -6,6 +6,8 @@ interface AnswerMessageProps {
   text: string;
   displayMap?: Record<string, number>; // retrievalId -> display number
   citations?: ResearchCitation[];
+  /** True once citation resolution is final — unresolved markers are dropped instead of shown as pending. */
+  complete?: boolean;
 }
 
 /**
@@ -14,7 +16,7 @@ interface AnswerMessageProps {
  * pending spinner. Section headings (lines starting with **…**) render as h3
  * with a left border accent.
  */
-export function AnswerMessage({ text, displayMap, citations }: AnswerMessageProps) {
+export function AnswerMessage({ text, displayMap, citations, complete }: AnswerMessageProps) {
   const byNumber = new Map((citations ?? []).map((c) => [c.number, c]));
   const paragraphs = text.split(/\n\n+/);
 
@@ -62,13 +64,14 @@ export function AnswerMessage({ text, displayMap, citations }: AnswerMessageProp
               resolve={resolve}
               byNumber={byNumber}
               citations={citations ?? []}
+              complete={complete}
             />
           );
         }
 
         return (
           <p key={pi}>
-            {parseCitationSegments(para, resolve, byNumber, citations ?? [])}
+            {parseCitationSegments(para, resolve, byNumber, citations ?? [], complete)}
           </p>
         );
       })}

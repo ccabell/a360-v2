@@ -81,6 +81,7 @@ export function DemoAgentShell({ config }: { config: DemoAgentConfig }) {
           goBack={goBack}
           isFirst={isFirst}
           isLast={isLast}
+          agentKey={config.key}
         />
 
         {!step.hideFooter && (

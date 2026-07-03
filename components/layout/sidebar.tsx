@@ -12,6 +12,7 @@ import {
   Sparkles,
   LogOut,
   History,
+  PlayCircle,
   FileText,
   UserRound,
   Images,
@@ -21,6 +22,7 @@ import {
   Library,
   GraduationCap,
   Tv,
+  Headphones,
 } from "lucide-react";
 
 // The demo build shows only the suite below; everything else is scope:"internal"
@@ -35,6 +37,7 @@ const menuItems = [
   { name: "Library", href: "/dashboard/library", icon: Library },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
   { name: "Video Navigator", href: "/tube", icon: Tv },
+  { name: "Podcast Navigator", href: "/podcast", icon: Headphones },
   // ── Internal only (hidden in the demo build) ─────────────────────────────
   { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
   { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
@@ -43,6 +46,7 @@ const menuItems = [
   { name: "Agent Tester", href: "/dashboard/agent-tester", icon: Zap, scope: "internal" },
   { name: "Studio", href: "/dashboard/studio", icon: Blocks, scope: "internal" },
   { name: "History", href: "/dashboard/history", icon: History, scope: "internal" },
+  { name: "Agent Runs", href: "/dashboard/agent-runs", icon: PlayCircle, scope: "internal" },
   { name: "Agent Manager", href: "/dashboard/agents", icon: Sparkles, scope: "internal" },
   { name: "Fuel Library", href: "/dashboard/fuel-library", icon: BookOpen, scope: "internal" },
   { name: "Before After", href: "/dashboard/before-after", icon: Images, scope: "internal" },

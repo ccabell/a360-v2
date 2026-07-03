@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import type { Components } from "react-markdown";
 import { Button } from "@/components/ui/button";
@@ -26,7 +27,13 @@ import {
   Send,
   Hash,
   Sparkles,
+  Wrench,
+  Star,
 } from "lucide-react";
+import {
+  TOOL_METADATA,
+  ALL_TOOL_NAMES,
+} from "@/lib/agent-runtime/tool-metadata";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -44,6 +51,13 @@ interface AgentOption {
 interface PatientOption {
   id: string;
   name: string;
+}
+
+interface ActiveVersionInfo {
+  id: string;
+  version: string;
+  model: string | null;
+  knowledge_config: { tools?: string[] } | null;
 }
 
 interface ToolEvent {
@@ -325,6 +339,11 @@ export default function AgentTesterPage() {
   const [runMeta, setRunMeta] = useState<RunMeta | null>(null);
   const [expandedEvents, setExpandedEvents] = useState<Set<number>>(new Set());
   const [runStartTime, setRunStartTime] = useState<number>(0);
+  const [activeVersion, setActiveVersion] = useState<ActiveVersionInfo | null>(null);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const [selectedTools, setSelectedTools] = useState<Set<string>>(new Set(ALL_TOOL_NAMES));
+  const [savingBaseline, setSavingBaseline] = useState(false);
+  const [baselineSaved, setBaselineSaved] = useState(false);
 
   const outputScrollRef = useRef<HTMLDivElement>(null);
   const timelineScrollRef = useRef<HTMLDivElement>(null);
@@ -371,6 +390,46 @@ export default function AgentTesterPage() {
   const runnableAgents = agents.filter((a) => a.active_version_id !== null);
   const selectedAgent = agents.find((a) => a.id === selectedAgentId);
 
+  // ---- Active version details (semver, model, configured tools) ----
+  useEffect(() => {
+    setActiveVersion(null);
+    if (!selectedAgent?.active_version_id) {
+      setSelectedTools(new Set(ALL_TOOL_NAMES));
+      return;
+    }
+    let cancelled = false;
+    fetch(`/api/agents/${selectedAgent.id}/versions`)
+      .then((r) => r.json())
+      .then((versions: ActiveVersionInfo[]) => {
+        if (cancelled || !Array.isArray(versions)) return;
+        const active = versions.find(
+          (v) => v.id === selectedAgent.active_version_id,
+        );
+        setActiveVersion(active ?? null);
+        const configured = active?.knowledge_config?.tools;
+        setSelectedTools(
+          new Set(configured && configured.length > 0 ? configured : ALL_TOOL_NAMES),
+        );
+      })
+      .catch(() => {
+        if (!cancelled) setSelectedTools(new Set(ALL_TOOL_NAMES));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedAgent?.id, selectedAgent?.active_version_id]);
+
+  // Default tool set for the active version — override is only sent when changed
+  const defaultTools = useMemo(() => {
+    const configured = activeVersion?.knowledge_config?.tools;
+    return new Set(
+      configured && configured.length > 0 ? configured : ALL_TOOL_NAMES,
+    );
+  }, [activeVersion]);
+  const toolsModified =
+    selectedTools.size !== defaultTools.size ||
+    [...selectedTools].some((t) => !defaultTools.has(t));
+
   // ---- Run handler ----
   const handleRun = useCallback(async (override?: string) => {
     const message = (override ?? userMessage).trim();
@@ -383,6 +442,7 @@ export default function AgentTesterPage() {
     setRunMeta(null);
     setExpandedEvents(new Set());
     setRunStartTime(start);
+    setBaselineSaved(false);
 
     try {
       const controller = new AbortController();
@@ -395,6 +455,7 @@ export default function AgentTesterPage() {
           agent_id: selectedAgentId,
           user_message: message,
           patient_id: selectedPatientId || undefined,
+          tools_override: toolsModified ? [...selectedTools] : undefined,
         }),
       });
 
@@ -466,7 +527,7 @@ export default function AgentTesterPage() {
     } finally {
       setRunning(false);
     }
-  }, [selectedAgentId, selectedPatientId, userMessage, running]);
+  }, [selectedAgentId, selectedPatientId, userMessage, running, toolsModified, selectedTools]);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -593,10 +654,78 @@ export default function AgentTesterPage() {
           )}
         </div>
 
-        {selectedAgent?.description && (
-          <p className="mt-2.5 text-xs leading-relaxed text-muted-foreground">
-            {selectedAgent.description}
-          </p>
+        {selectedAgent && (
+          <div className="mt-2.5 flex items-center gap-2 text-xs text-muted-foreground">
+            {activeVersion && (
+              <>
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">
+                  v{activeVersion.version}
+                </Badge>
+                <Badge variant="outline" className="text-[10px] font-mono px-1.5 py-0">
+                  {activeVersion.model ?? selectedAgent.model ?? "default model"}
+                </Badge>
+              </>
+            )}
+            <button
+              type="button"
+              onClick={() => setToolsOpen((o) => !o)}
+              className="flex items-center gap-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] transition-colors hover:text-foreground"
+            >
+              <Wrench className="h-2.5 w-2.5" />
+              Tools: {selectedTools.size}/{ALL_TOOL_NAMES.length}
+              {toolsModified && (
+                <span className="text-amber-600 dark:text-amber-400">
+                  (overridden)
+                </span>
+              )}
+              {toolsOpen ? (
+                <ChevronDown className="h-2.5 w-2.5" />
+              ) : (
+                <ChevronRight className="h-2.5 w-2.5" />
+              )}
+            </button>
+            {selectedAgent.description && (
+              <span className="truncate leading-relaxed">
+                {selectedAgent.description}
+              </span>
+            )}
+          </div>
+        )}
+
+        {selectedAgent && toolsOpen && (
+          <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 rounded-lg border border-border bg-muted/30 p-3 sm:grid-cols-4">
+            {ALL_TOOL_NAMES.map((name) => (
+              <label
+                key={name}
+                className="flex cursor-pointer items-center gap-2 text-xs text-foreground/85"
+                title={TOOL_METADATA[name].description}
+              >
+                <input
+                  type="checkbox"
+                  className="h-3.5 w-3.5 accent-primary"
+                  checked={selectedTools.has(name)}
+                  onChange={(e) =>
+                    setSelectedTools((prev) => {
+                      const next = new Set(prev);
+                      if (e.target.checked) next.add(name);
+                      else next.delete(name);
+                      return next;
+                    })
+                  }
+                />
+                {TOOL_METADATA[name].label}
+              </label>
+            ))}
+            {toolsModified && (
+              <button
+                type="button"
+                onClick={() => setSelectedTools(new Set(defaultTools))}
+                className="col-span-full mt-1 w-fit text-[11px] text-primary hover:underline"
+              >
+                Reset to version defaults
+              </button>
+            )}
+          </div>
         )}
       </div>
 
@@ -775,12 +904,51 @@ export default function AgentTesterPage() {
             </span>
           )}
           {!runMeta.error && runMeta.runId && (
-            <Badge
-              variant="secondary"
-              className="text-[10px] px-1.5 py-0 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-            >
-              completed
-            </Badge>
+            <>
+              <Badge
+                variant="secondary"
+                className="text-[10px] px-1.5 py-0 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+              >
+                completed
+              </Badge>
+              <Link
+                href={`/dashboard/agent-runs/${runMeta.runId}`}
+                className="text-[11px] text-primary hover:underline"
+              >
+                View run →
+              </Link>
+              <button
+                type="button"
+                disabled={savingBaseline || baselineSaved}
+                onClick={async () => {
+                  if (!runMeta.runId) return;
+                  setSavingBaseline(true);
+                  try {
+                    const res = await fetch(
+                      `/api/agent-outputs/${runMeta.runId}`,
+                      {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ is_demo_canonical: true }),
+                      },
+                    );
+                    if (res.ok) setBaselineSaved(true);
+                  } finally {
+                    setSavingBaseline(false);
+                  }
+                }}
+                className="flex items-center gap-1 text-[11px] text-primary hover:underline disabled:cursor-default disabled:no-underline disabled:opacity-70"
+              >
+                <Star
+                  className={`h-3 w-3 ${baselineSaved ? "fill-amber-400 text-amber-400" : ""}`}
+                />
+                {baselineSaved
+                  ? "Saved as baseline"
+                  : savingBaseline
+                    ? "Saving…"
+                    : "Save as baseline"}
+              </button>
+            </>
           )}
         </div>
       )}

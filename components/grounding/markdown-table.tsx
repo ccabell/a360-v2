@@ -8,6 +8,7 @@ interface MarkdownTableProps {
   resolve: (id: string) => ResolvedRef | null;
   byNumber: Map<number, ResearchCitation>;
   citations: ResearchCitation[];
+  complete?: boolean;
 }
 
 /** Strips leading/trailing pipes, splits on `|`, trims each cell. */
@@ -25,7 +26,7 @@ function parseRow(line: string): string[] {
  * table scrolls horizontally on narrow viewports (ANS-04) without breaking
  * page layout.
  */
-export function MarkdownTable({ raw, resolve, byNumber, citations }: MarkdownTableProps) {
+export function MarkdownTable({ raw, resolve, byNumber, citations, complete }: MarkdownTableProps) {
   const lines = raw.split("\n").filter((l) => l.trim().length > 0);
 
   if (lines.length < 3) {
@@ -47,7 +48,7 @@ export function MarkdownTable({ raw, resolve, byNumber, citations }: MarkdownTab
                 key={ci}
                 className="px-3 py-2 text-left font-semibold text-foreground"
               >
-                {parseCitationSegments(cell, resolve, byNumber, citations)}
+                {parseCitationSegments(cell, resolve, byNumber, citations, complete)}
               </th>
             ))}
           </tr>
@@ -63,7 +64,7 @@ export function MarkdownTable({ raw, resolve, byNumber, citations }: MarkdownTab
                   key={ci}
                   className="px-3 py-2 align-top text-foreground/90"
                 >
-                  {parseCitationSegments(cell, resolve, byNumber, citations)}
+                  {parseCitationSegments(cell, resolve, byNumber, citations, complete)}
                 </td>
               ))}
             </tr>

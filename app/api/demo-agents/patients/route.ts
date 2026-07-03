@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { opsSupabase } from "@/lib/supabase";
 import { CACHED_PATIENT_IDS } from "@/lib/scribe/fixtures";
+import { CACHED_TCP_PATIENT_IDS } from "@/lib/tcp/fixtures";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,8 @@ export interface DemoPatientCard {
   visitType: string | null;
   visitDescription: string | null;
   durationMinutes: number | null;
-  hasCachedScribe: boolean;
+  /** Agent keys that have a stage-safe cached fixture for this patient. */
+  stageReadyFor: string[];
 }
 
 /**
@@ -66,7 +68,10 @@ export async function GET() {
       visitType: c?.consult_type ?? null,
       visitDescription: c?.details ?? null,
       durationMinutes: c?.duration_minutes ?? null,
-      hasCachedScribe: CACHED_PATIENT_IDS.includes(p.id),
+      stageReadyFor: [
+        ...(CACHED_PATIENT_IDS.includes(p.id) ? ["scribe"] : []),
+        ...(CACHED_TCP_PATIENT_IDS.includes(p.id) ? ["tcp"] : []),
+      ],
     };
   });
 

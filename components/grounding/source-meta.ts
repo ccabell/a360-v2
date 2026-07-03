@@ -46,9 +46,9 @@ export const CORPUS_META: Record<Corpus, CorpusMeta> = {
     chip: "bg-tier-general-bg text-tier-general-fg",
   },
   podcast: {
-    label: "Podcast",
-    longName: "Podcast",
-    typeTag: "Podcast",
+    label: "Intelligence",
+    longName: "Expert Intelligence",
+    typeTag: "Intelligence",
     Icon: Mic,
     chip: "bg-tier-general-bg text-tier-general-fg",
   },

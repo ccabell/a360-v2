@@ -41,6 +41,8 @@ export function ScribeWorkspace() {
   const [locationId, setLocationId] = useState<string>("");
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [extractWarning, setExtractWarning] = useState<string | null>(null);
   const [result, setResult] = useState<ScribeGenerateResponse | null>(null);
   const [extraction, setExtraction] = useState<ExtractionResult | null>(null);
   const [tab, setTab] = useState<Tab>("note");
@@ -73,24 +75,40 @@ export function ScribeWorkspace() {
     setLoading(true);
     setResult(null);
     setExtraction(null);
+    setError(null);
+    setExtractWarning(null);
     setTranscriptOpen(false);
     setTab("note");
     try {
       const payload = { patientId: patient.id, consultationId: patient.consultationId };
-      const [ext, gen] = await Promise.all([
-        fetch("/api/scribe/extract", {
+      const post = async (url: string, body: unknown) => {
+        const r = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }).then((r) => r.json()),
-        fetch("/api/scribe/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ...payload, noteStyle, recordTypes: [noteStyle], style: { length: "standard", format: "paragraph" } }),
-        }).then((r) => r.json()),
+          body: JSON.stringify(body),
+        });
+        const j = (await r.json().catch(() => ({}))) as { error?: string };
+        if (!r.ok || j.error) throw new Error(j.error ?? `Request failed (${r.status})`);
+        return j;
+      };
+      // Settle both so one failure doesn't discard the other's result.
+      const [extRes, genRes] = await Promise.allSettled([
+        post("/api/scribe/extract", payload),
+        post("/api/scribe/generate", { ...payload, noteStyle, recordTypes: [noteStyle], style: { length: "standard", format: "paragraph" } }),
       ]);
-      if (!gen.error) setResult(gen);
-      if (!ext.error) setExtraction(ext);
+      if (genRes.status === "fulfilled") {
+        setResult(genRes.value as ScribeGenerateResponse);
+      } else {
+        setError(genRes.reason instanceof Error ? genRes.reason.message : "Couldn't generate the note.");
+      }
+      if (extRes.status === "fulfilled") {
+        setExtraction(extRes.value as ExtractionResult);
+      } else if (genRes.status === "fulfilled") {
+        // Note succeeded — surface the extraction failure without blocking it.
+        setExtractWarning("Fact extraction failed for this run — the Extracted facts and Clinical intelligence tabs are empty.");
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Something went wrong generating the note.");
     } finally {
       setLoading(false);
     }
@@ -192,8 +210,30 @@ export function ScribeWorkspace() {
         </div>
       )}
 
+      {/* Errors */}
+      {error && !loading && (
+        <div className="mt-4 flex items-start justify-between gap-3 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
+          <div className="flex items-start gap-2 text-sm text-destructive">
+            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>{error}</span>
+          </div>
+          <button
+            onClick={generate}
+            className="h-8 shrink-0 rounded-lg border border-border px-3 text-xs font-medium text-foreground hover:bg-muted/50"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+      {extractWarning && !loading && (
+        <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-300/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-xs text-amber-800 dark:text-amber-300">
+          <AlertTriangle className="h-4 w-4 shrink-0" />
+          <span>{extractWarning}</span>
+        </div>
+      )}
+
       {/* Empty / loading */}
-      {!result && (
+      {!result && !error && (
         <div className="mt-6 rounded-xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
           {loading ? (
             <span className="inline-flex items-center gap-2">

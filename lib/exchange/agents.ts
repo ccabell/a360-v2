@@ -435,6 +435,235 @@ export const AGENTS: ExchangeAgent[] = [
     kind: "embed",
     href: "/tube",
   },
+
+  // ---------------------------------------------------------------------------
+  // Placeholders — A360 core agents. Copy is on-brand but provisional; add real
+  // logos/screenshots to public/exchange and wire kind:"live" when ready.
+  // ---------------------------------------------------------------------------
+  {
+    slug: "scribe",
+    name: "Scribe",
+    publisher: "Aesthetics360",
+    developer: "Aesthetics360",
+    category: "Documentation",
+    tagline: "Real-time consultation transcription — capture, document, and share seamlessly.",
+    description:
+      "Scribe integrates into your EMR workflow as a real-time transcription layer. It captures consultation audio, diarizes speaker roles, and produces clean, searchable transcripts that sync directly into your patient records — so providers can stay fully engaged with patients while building an accurate consultation record that feeds downstream documentation, planning, and follow-up work.",
+    price: "Premium",
+    rating: 4.7,
+    reviews: 52,
+    screenshots: [
+      "/exchange/shots/scribe/1.jpg",
+      "/exchange/shots/scribe/2.jpg",
+      "/exchange/shots/scribe/3.jpg",
+      "/exchange/shots/scribe/4.jpg",
+    ],
+    features: [
+      "Real-time ambient transcription (EMR-integrated)",
+      "Automatic speaker diarization (provider / patient)",
+      "Aesthetics-clinical vocabulary tuning",
+      "HIPAA-compliant consult room audio handling",
+      "Searchable transcripts in your EMR",
+      "Zero charting friction during consultation",
+    ],
+    useCases: [
+      {
+        label: "Stay present during consults",
+        description: "Capture full consultation details and decisions hands-free, keeping focus and eye contact with the patient.",
+      },
+      {
+        label: "Feed EMR documentation workflows",
+        description: "Transcripts automatically integrate with Notes, TCP, and KPI modules without manual re-entry.",
+      },
+      {
+        label: "Build compliance records",
+        description: "Every consultation is captured, timestamped, and stored as an audit trail in your EMR.",
+      },
+    ],
+    tagGroups: [
+      { category: "EMR Layer", items: ["Real-time Capture", "Workflow Automation", "Audit Trail"] },
+      { category: "Clinical Benefit", items: ["Patient Engagement", "Documentation Speed", "Accuracy Record"] },
+    ],
+    updates: [
+      {
+        title: "EMR integration",
+        date: "2026-06-23",
+        description: "Add as a consultation capture module to your existing EMR workflow.",
+      },
+    ],
+    size: "EMR module",
+    lastUpdate: "2026-06-23",
+    kind: "static",
+  },
+  {
+    slug: "notes",
+    name: "Notes",
+    publisher: "Aesthetics360",
+    developer: "Aesthetics360",
+    category: "Documentation",
+    tagline: "Transcripts become clinical documentation — automatically drafted and ready to sign.",
+    description:
+      "Notes is the documentation layer of your EMR that transforms consultation transcripts into structured clinical notes. It auto-generates SOAP notes, summaries, and procedure recommendations matched to your practice template — all ready for provider review and sign-off in minutes instead of hours, so charting never slows down a busy clinic.",
+    price: "Premium",
+    rating: 4.6,
+    reviews: 48,
+    screenshots: [
+      "/exchange/shots/notes/1.jpg",
+      "/exchange/shots/notes/2.jpg",
+      "/exchange/shots/notes/3.jpg",
+      "/exchange/shots/notes/4.jpg",
+    ],
+    features: [
+      "Transcript-to-clinical-note generation (EMR-native)",
+      "Practice-specific SOAP and template matching",
+      "Auto-extracted procedures, findings, and recommendations",
+      "Draft-review-sign workflow in EMR",
+      "Consistent note structure across all providers",
+      "One-click signature and archival",
+    ],
+    useCases: [
+      {
+        label: "Speed up charting",
+        description: "Generate a complete first-draft note immediately after the consult — ready for review, edit, and sign.",
+      },
+      {
+        label: "Standardize documentation",
+        description: "Every note follows your practice template and clinical standards, regardless of which provider.",
+      },
+      {
+        label: "Reduce charting backlog",
+        description: "Cut note-writing time by 70%+ and eliminate end-of-day documentation stress.",
+      },
+    ],
+    tagGroups: [
+      { category: "EMR Layer", items: ["Auto-generation", "Template Matching", "Workflow Speed"] },
+      { category: "Clinical Benefit", items: ["Charting Efficiency", "Consistency", "Compliance Ready"] },
+    ],
+    updates: [
+      {
+        title: "EMR documentation module",
+        date: "2026-06-23",
+        description: "Add as a post-consult documentation layer to your EMR.",
+      },
+    ],
+    size: "EMR module",
+    lastUpdate: "2026-06-23",
+    kind: "static",
+  },
+  {
+    slug: "tcp",
+    name: "TCP — Treatment & Care Plans",
+    publisher: "Aesthetics360",
+    developer: "Aesthetics360",
+    category: "Planning",
+    tagline: "Real-time treatment plans in the consultation room — mapped to patient concerns.",
+    description:
+      "TCP integrates into your EMR consultation workflow to generate multi-tiered treatment and care plan options on the fly. It maps patient-stated concerns to recommended procedures, anatomy-specific considerations, and realistic outcomes — so providers can confidently present tiered options (good / better / best) while the patient is still in the room, drive case acceptance, and automatically log plans into the EMR.",
+    price: "Premium",
+    rating: 4.5,
+    reviews: 37,
+    screenshots: [
+      "/exchange/shots/tcp/1.jpg",
+      "/exchange/shots/tcp/2.jpg",
+      "/exchange/shots/tcp/3.jpg",
+      "/exchange/shots/tcp/4.jpg",
+      "/exchange/shots/tcp/5.jpg",
+      "/exchange/shots/tcp/6.jpg",
+      "/exchange/shots/tcp/7.jpg",
+      "/exchange/shots/tcp/8.jpg",
+    ],
+    features: [
+      "Real-time tiered plan generation (good / better / best)",
+      "Patient concern → treatment mapping",
+      "Anatomy-specific procedure recommendations",
+      "Patient-ready presentation summaries",
+      "Pricing integration with practice fee schedules",
+      "One-click EMR plan documentation",
+    ],
+    useCases: [
+      {
+        label: "Present options in-consult",
+        description: "Generate tiered treatment plans while the patient is in the room to increase case acceptance and perceived value.",
+      },
+      {
+        label: "Tie recommendations to concerns",
+        description: "Show exactly why each procedure addresses the patient's specific aesthetic goals.",
+      },
+      {
+        label: "Log plans automatically",
+        description: "Treatment plans sync directly into the EMR patient record for follow-up and compliance.",
+      },
+    ],
+    tagGroups: [
+      { category: "EMR Layer", items: ["Real-time", "Tiered Options", "Anatomy-aware"] },
+      { category: "Clinical & Revenue", items: ["Case Acceptance", "Patient Clarity", "Opportunity Capture"] },
+    ],
+    updates: [
+      {
+        title: "EMR planning module",
+        date: "2026-06-23",
+        description: "Add as an in-consult treatment planning layer to your EMR.",
+      },
+    ],
+    size: "EMR module",
+    lastUpdate: "2026-06-23",
+    kind: "static",
+  },
+  {
+    slug: "reach",
+    name: "Reach",
+    publisher: "Aesthetics360",
+    developer: "Aesthetics360",
+    category: "Marketing",
+    tagline: "Extract opportunities and automate post-treatment engagement — directly from your EMR.",
+    description:
+      "Reach is the post-treatment engagement layer that integrates with your EMR to automatically extract revenue opportunities and coordinate timely, compliance-gated follow-up. It identifies primary, secondary, and future opportunities from each treatment, then orchestrates reminders, check-ins, and targeted offers — so opportunities don't slip through the cracks and patients stay engaged without manual work.",
+    price: "Premium",
+    rating: 4.4,
+    reviews: 41,
+    screenshots: [
+      "/exchange/shots/reach/1.jpg",
+      "/exchange/shots/reach/2.jpg",
+      "/exchange/shots/reach/3.jpg",
+      "/exchange/shots/reach/4.jpg",
+    ],
+    features: [
+      "Auto-extract primary, secondary, and future opportunities from EMR records",
+      "Compliance-gated outbound messaging (SMS, email, phone)",
+      "Automated post-treatment follow-up scheduling",
+      "Timed reminders and recall campaigns",
+      "CRM sync and opportunity tracking",
+      "Practice-level consent and compliance verification",
+    ],
+    useCases: [
+      {
+        label: "Capture revenue in the record",
+        description: "Extract identified opportunities directly from consultation notes and treatment plans in your EMR.",
+      },
+      {
+        label: "Automate patient engagement",
+        description: "Schedule timely, personalized follow-up (check-ins, reminders, next-step offers) automatically after each treatment.",
+      },
+      {
+        label: "Increase lifetime value",
+        description: "Keep patients engaged with preventive care reminders and complementary treatment recommendations, driving higher LTV.",
+      },
+    ],
+    tagGroups: [
+      { category: "EMR Layer", items: ["Opportunity Extraction", "Workflow Automation", "Compliance-gated"] },
+      { category: "Business Impact", items: ["Patient Retention", "Lifetime Value", "Opportunity Capture"] },
+    ],
+    updates: [
+      {
+        title: "EMR engagement module",
+        date: "2026-06-23",
+        description: "Add as a post-treatment follow-up and opportunity layer to your EMR.",
+      },
+    ],
+    size: "EMR module",
+    lastUpdate: "2026-06-23",
+    kind: "static",
+  },
 ];
 
 export function getAgent(slug: string): ExchangeAgent | undefined {

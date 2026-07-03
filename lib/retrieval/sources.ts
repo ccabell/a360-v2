@@ -754,7 +754,8 @@ async function retrieveAgentFuel(match: MatchResult): Promise<RetrievedSource[]>
         filename: `fuel-${f.id}.md`,
         title,
         storagePath: `agent-fuel/${f.id}`,
-        url: "",
+        // Deep-link into the Library viewer, which browses agent_fuel_documents.
+        url: `/dashboard/library?doc=${f.id}`,
         sourceAuthority: "internal",
       };
 

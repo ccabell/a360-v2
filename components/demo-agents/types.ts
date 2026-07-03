@@ -23,6 +23,8 @@ export interface DemoStepProps {
   goBack: () => void;
   isFirst: boolean;
   isLast: boolean;
+  /** The active agent's config key (e.g. "scribe", "tcp") — for per-agent UI. */
+  agentKey: string;
 }
 
 export interface DemoAgentStep {

@@ -206,11 +206,39 @@ export default function ReachPage() {
   );
   const [completedCount, setCompletedCount] = useState(0);
   const [runAllActive, setRunAllActive] = useState(false);
+  const [agentsError, setAgentsError] = useState<string | null>(null);
 
   const blockRefs = useRef<Array<React.RefObject<BlockCardHandle | null>>>(
     BLOCKS.map(() => React.createRef<BlockCardHandle | null>()),
   );
   const outputsRef = useRef<string[]>(new Array(BLOCKS.length).fill(""));
+
+  const loadAgents = useCallback(() => {
+    setAgentsError(null);
+    fetch("/api/agents?status=active")
+      .then((r) => {
+        if (!r.ok) throw new Error(`Agent registry request failed (${r.status})`);
+        return r.json();
+      })
+      .then((data: AgentRecord[]) => {
+        const map: Record<string, string | null> = {};
+        for (const a of data) {
+          if (a.active_version_id) map[a.agent_key] = a.id;
+        }
+        const missing = BLOCKS.filter((b) => !resolveAgent(b.keys, map));
+        if (missing.length === BLOCKS.length) {
+          setAgentsError("No active agents found for this pipeline.");
+        } else if (missing.length > 0) {
+          setAgentsError(
+            `No active agent for: ${missing.map((b) => b.title).join(", ")}.`,
+          );
+        }
+        setAgents(map);
+      })
+      .catch((e: Error) => {
+        setAgentsError(e.message || "Couldn't load the agent registry.");
+      });
+  }, []);
 
   useEffect(() => {
     fetch("/api/patients")
@@ -224,17 +252,8 @@ export default function ReachPage() {
       })
       .catch(() => {});
 
-    fetch("/api/agents?status=active")
-      .then((r) => r.json())
-      .then((data: AgentRecord[]) => {
-        const map: Record<string, string | null> = {};
-        for (const a of data) {
-          if (a.active_version_id) map[a.agent_key] = a.id;
-        }
-        setAgents(map);
-      })
-      .catch(() => {});
-  }, []);
+    loadAgents();
+  }, [loadAgents]);
 
   const handleComplete = useCallback(
     (blockIndex: number) => (output: string) => {
@@ -259,6 +278,19 @@ export default function ReachPage() {
     [],
   );
 
+  const handleBlockError = useCallback(
+    (blockIndex: number) => () => {
+      setBlockStatuses((prev) => {
+        const next = [...prev] as BlockStatus[];
+        next[blockIndex] = "error";
+        return next;
+      });
+      // Stop the pipeline — the error is shown on the failed block card.
+      setRunAllActive(false);
+    },
+    [],
+  );
+
   const handleRunAll = useCallback(() => {
     if (!selectedPatientId) return;
     setRunAllActive(true);
@@ -269,6 +301,11 @@ export default function ReachPage() {
       blockRefs.current[0]?.current?.run();
     }, 0);
   }, [selectedPatientId]);
+
+  const handleCancelAll = useCallback(() => {
+    for (const ref of blockRefs.current) ref.current?.stop();
+    setRunAllActive(false);
+  }, []);
 
   const connectorDone = (i: number) => blockStatuses[i] === "done";
   const connectorActive = (i: number) => blockStatuses[i + 1] === "running";
@@ -315,14 +352,37 @@ export default function ReachPage() {
 
             <Button
               className="h-9 gap-1.5"
-              disabled={!selectedPatientId || runAllActive}
+              disabled={!selectedPatientId || runAllActive || agentsError != null}
               onClick={handleRunAll}
             >
               {runAllActive
                 ? `${completedCount} / ${BLOCKS.length} complete…`
                 : "Run Campaign"}
             </Button>
+            {runAllActive && (
+              <Button
+                variant="outline"
+                className="h-9 gap-1.5"
+                onClick={handleCancelAll}
+              >
+                Cancel
+              </Button>
+            )}
           </div>
+
+          {agentsError && (
+            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-red-200 bg-red-50 dark:border-red-800/60 dark:bg-red-950/30 px-3 py-2 text-xs text-red-800 dark:text-red-300">
+              <span>{agentsError}</span>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-7 shrink-0 text-xs"
+                onClick={loadAgents}
+              >
+                Retry
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -342,6 +402,7 @@ export default function ReachPage() {
                 toolsOverride={block.tools}
                 disabled={!selectedPatientId}
                 onComplete={handleComplete(i)}
+                onError={handleBlockError(i)}
                 defaultExpanded={false}
               />
               {i < BLOCKS.length - 1 && (

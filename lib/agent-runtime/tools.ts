@@ -433,49 +433,8 @@ export const agentTools: Record<string, any> = {
   query_product_database: queryProductDatabase,
 };
 
-/** Human-readable tool metadata for UI display */
-export const TOOL_METADATA: Record<string, { label: string; description: string; icon: string }> = {
-  get_patient_context: {
-    label: "Patient Context",
-    description: "Loads patient demographics, consultation transcript, and extraction outputs",
-    icon: "user",
-  },
-  search_fuel_documents: {
-    label: "GL Fuel Docs",
-    description: "Searches curated GL product intelligence, pairing guides, and treatment protocols",
-    icon: "book",
-  },
-  get_evidence_links: {
-    label: "Evidence Links",
-    description: "Fetches FDA labels, PubMed citations, and manufacturer documentation",
-    icon: "link",
-  },
-  search_clinical_literature: {
-    label: "Clinical Literature",
-    description: "Searches PubMed, YouTube, podcasts, and industry articles (all sources)",
-    icon: "microscope",
-  },
-  search_podcast: {
-    label: "Podcast Search",
-    description: "Searches expert podcast discussions — patient language, clinical pearls, objection handling",
-    icon: "mic",
-  },
-  search_youtube: {
-    label: "YouTube Search",
-    description: "Searches manufacturer training videos — technique protocols, injection demos",
-    icon: "video",
-  },
-  get_product_info: {
-    label: "Product Info",
-    description: "Retrieves detailed product data, FDA status, and treatment relationships",
-    icon: "package",
-  },
-  query_product_database: {
-    label: "Product Database",
-    description: "Broad search across all 425+ GL products by name, brand, or treatment area",
-    icon: "database",
-  },
-};
+/** Human-readable tool metadata for UI display — client-safe module */
+export { TOOL_METADATA, ALL_TOOL_NAMES } from "./tool-metadata";
 
 /** Build a filtered tool map for the executor — returns all tools if no names specified. */
 export function buildTools(toolNames?: string[]) {
