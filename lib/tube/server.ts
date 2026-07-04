@@ -6,6 +6,14 @@ import fs from "fs";
 import path from "path";
 import type { TubeVideo, TubeFacets, TubeIndex } from "./types";
 
+/** Truncates at a word boundary within `max` chars, appending "…" when cut. */
+export function truncateSummary(summary: string, max = 240): string {
+  if (summary.length <= max) return summary;
+  const cut = summary.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
 const DATA = path.join(process.cwd(), "lib", "tube", "data");
 
 let _videos: TubeVideo[] | null = null;

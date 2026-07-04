@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, X, SlidersHorizontal, Tv, ShieldCheck } from "lucide-react";
 import type { TubeCardVideo, TubeFacets, FacetValue } from "@/lib/tube/types";
+import { Skeleton } from "@/components/ui/skeleton";
 import { TubeCard } from "./tube-card";
 
 interface Props {
-  videos: TubeCardVideo[];
   facets: TubeFacets;
 }
 
@@ -73,9 +73,39 @@ function selFromParams(sp: URLSearchParams): Record<GroupKey, Set<string>> {
   return sel;
 }
 
-export function TubeExplore({ videos, facets }: Props) {
+export function TubeExplore({ facets }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const [videos, setVideos] = useState<TubeCardVideo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/tube/data", { signal: controller.signal, cache: "force-cache" })
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json() as Promise<TubeCardVideo[]>;
+      })
+      .then((data) => {
+        setVideos(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        setError(true);
+        setLoading(false);
+      });
+    return () => controller.abort();
+  }, [retryCount]);
+
+  const retry = useCallback(() => {
+    setLoading(true);
+    setError(false);
+    setRetryCount((n) => n + 1);
+  }, []);
 
   const [sel, setSel] = useState<Record<GroupKey, Set<string>>>(() => selFromParams(searchParams));
   const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
@@ -265,14 +295,37 @@ export function TubeExplore({ videos, facets }: Props) {
                 ))}
               </select>
             </label>
-            <span className="text-sm text-neutral-400">
-              {filtered.length.toLocaleString()} video{filtered.length === 1 ? "" : "s"}
-            </span>
+            {!loading && !error && (
+              <span className="text-sm text-neutral-400">
+                {filtered.length.toLocaleString()} video{filtered.length === 1 ? "" : "s"}
+              </span>
+            )}
           </span>
         </div>
 
         {/* Grid */}
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 9 }).map((_, i) => (
+              <div key={i} className="flex flex-col gap-3 rounded-xl bg-neutral-900 p-4 ring-1 ring-white/10">
+                <Skeleton className="aspect-video w-full rounded-lg" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-full" />
+                <Skeleton className="h-3 w-2/3" />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="mt-12 flex flex-col items-center gap-3 rounded-xl border border-dashed border-white/10 py-12 text-center text-sm text-neutral-400">
+            <p>Couldn&apos;t load videos. Check your connection and try again.</p>
+            <button
+              onClick={retry}
+              className="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white ring-1 ring-white/15 hover:bg-white/15"
+            >
+              Retry
+            </button>
+          </div>
+        ) : filtered.length === 0 ? (
           <p className="mt-12 rounded-xl border border-dashed border-white/10 py-12 text-center text-sm text-neutral-400">
             No videos match these filters. Try removing one.
           </p>
