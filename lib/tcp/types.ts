@@ -149,4 +149,4 @@ export const FIT_META: Record<FitSignal, { label: string; tone: string }> = {
   consider: { label: "Worth considering", tone: "amber" },
 };
 
-export const TIER_ACCENT = "#F26A1B";
+export const TIER_ACCENT = "#F5A623";

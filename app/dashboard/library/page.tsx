@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Search, Loader2, ChevronDown, ListTree } from "lucide-react";
+import { Search, ChevronDown, ListTree } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 const ACCENT = "#F5A623";
@@ -84,7 +85,11 @@ export default function LibraryPage() {
   }, [items, search]);
 
   const toc = useMemo(() => {
-    return [...markdown.matchAll(/^##\s+(.+)$/gm)].map((m) => m[1].trim()).filter(Boolean).slice(0, 60);
+    // Strip inline markdown (links, emphasis, code) so slugs match the rendered
+    // h2 ids, which are derived from rendered text via childText().
+    const stripMd = (s: string) =>
+      s.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/[*_`]/g, "").trim();
+    return [...markdown.matchAll(/^##\s+(.+)$/gm)].map((m) => stripMd(m[1])).filter(Boolean).slice(0, 60);
   }, [markdown]);
 
   return (
@@ -103,7 +108,18 @@ export default function LibraryPage() {
               className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground" />
           </div>
           {loadingList ? (
-            <div className="flex items-center gap-2 py-8 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Loading…</div>
+            <div className="space-y-4 pr-1">
+              {[4, 3, 5].map((rows, g) => (
+                <div key={g}>
+                  <Skeleton className="mb-2 ml-1 h-3 w-20" />
+                  <div className="space-y-1.5">
+                    {Array.from({ length: rows }).map((_, i) => (
+                      <Skeleton key={i} className="h-7 w-full rounded-lg" />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="max-h-[74vh] overflow-y-auto pr-1 space-y-4">
               {grouped.map((g) => (
@@ -126,15 +142,30 @@ export default function LibraryPage() {
                   </div>
                 </div>
               ))}
-              {grouped.length === 0 && <p className="px-1 text-sm text-muted-foreground">No matches.</p>}
+              {grouped.length === 0 && (
+                <p className="px-1 text-sm text-muted-foreground">
+                  {items.length === 0 ? "No documents available — the Library couldn't be loaded." : "No matches."}
+                </p>
+              )}
             </div>
           )}
         </div>
 
         {/* Document */}
         <div className="min-w-0">
-          {loadingDoc && !markdown ? (
-            <div className="flex items-center justify-center py-24 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin mr-2" /> Opening document…</div>
+          {(loadingDoc && !markdown) || (loadingList && !selected) ? (
+            <div className="rounded-2xl border border-border bg-card p-6 lg:p-8">
+              <Skeleton className="mb-3 h-5 w-24 rounded-md" />
+              <Skeleton className="mb-6 h-8 w-2/3" />
+              <div className="space-y-3">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="mt-6 h-4 w-1/3" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-4/5" />
+              </div>
+            </div>
           ) : selected ? (
             <div className="rounded-2xl border border-border bg-card p-6 lg:p-8">
               <div className="flex items-center gap-2 mb-1">

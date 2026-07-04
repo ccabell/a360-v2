@@ -8,6 +8,27 @@ function clamp01(n: number): number {
 }
 
 /**
+ * Truncate evidence text without cutting mid-sentence/mid-word.
+ *
+ * Prefers the last sentence boundary within `max` chars (if it keeps at least
+ * 60% of the budget), otherwise falls back to the last word boundary, and
+ * appends an ellipsis when anything was trimmed.
+ */
+function excerpt(text: string, max = 200): string {
+  const t = text.trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const sentenceEnd = Math.max(
+    cut.lastIndexOf(". "),
+    cut.lastIndexOf("! "),
+    cut.lastIndexOf("? "),
+  );
+  if (sentenceEnd >= max * 0.6) return cut.slice(0, sentenceEnd + 1);
+  const wordEnd = cut.lastIndexOf(" ");
+  return `${(wordEnd > 0 ? cut.slice(0, wordEnd) : cut).trimEnd()}…`;
+}
+
+/**
  * Citation post-processor (§8). Pure + deterministic.
  *
  * 1. Parse [src_N] markers in order of first appearance.
@@ -43,7 +64,7 @@ export function resolveCitations(
         chunkRef: s.chunkRef,
         corpus: s.corpus,
         title: locatorTitle(s.locator),
-        evidence: s.text.slice(0, 200),
+        evidence: excerpt(s.text),
         url: locatorUrl(s.locator),
         relevance: clamp01(s.scores.reranked ?? s.scores.fused),
         locator: s.locator,
