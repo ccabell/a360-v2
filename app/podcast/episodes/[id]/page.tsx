@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { getPodcastEpisode, getEpisodeChunks, getEpisodeTags } from "@/lib/podcast/server";
 import TranscriptViewer from "@/components/podcast/transcript-viewer";
+import { ListenLaterButton } from "@/components/podcast/listen-later-button";
 
 export const revalidate = 300;
 
@@ -117,19 +118,31 @@ export default async function EpisodeDetailPage({
             )}
           </div>
 
-          {/* Listen externally */}
-          {episode.enclosure_url && (
-            <a
-              href={episode.enclosure_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-neutral-200 transition-colors hover:bg-white/10"
-            >
-              <Headphones className="h-3.5 w-3.5" />
-              Listen to original
-              <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
+          {/* Listen externally + save */}
+          <div className="flex flex-wrap items-center gap-2">
+            {episode.enclosure_url && (
+              <a
+                href={episode.enclosure_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-neutral-200 transition-colors hover:bg-white/10"
+              >
+                <Headphones className="h-3.5 w-3.5" />
+                Listen to original
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            )}
+            <ListenLaterButton
+              episode={{
+                episodeId: episode.id,
+                title: episode.title,
+                showId: episode.show_id ?? null,
+                showName: episode.show_name ?? null,
+                showArtworkUrl: episode.show_artwork_url ?? null,
+                durationSeconds: episode.duration_seconds ?? null,
+              }}
+            />
+          </div>
 
           {episode.speakers && episode.speakers.length > 0 && (
             <p className="mt-3 text-xs text-neutral-500">

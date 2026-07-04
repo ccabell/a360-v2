@@ -3,6 +3,7 @@ import {
   Sparkles,
   Compass,
   FileSearch,
+  Bookmark,
   ArrowRight,
   Headphones,
   Mic,
@@ -47,6 +48,15 @@ const OPTIONS = [
       "Explore the full library of medical aesthetics podcasts. Filter by category, search by name, and dive into any show's complete episode list.",
     cta: "Browse the library",
   },
+  {
+    href: "/podcast/listen-later",
+    icon: Bookmark,
+    eyebrow: "Saved",
+    title: "Listen later",
+    description:
+      "Bookmark episodes as you search and browse, then come back to your saved queue whenever you're ready to listen.",
+    cta: "View saved episodes",
+  },
 ] as const;
 
 export default async function PodcastLandingPage() {
@@ -74,7 +84,7 @@ export default async function PodcastLandingPage() {
       </div>
 
       {/* Options */}
-      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+      <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
         {OPTIONS.map((o) => {
           const Icon = o.icon;
           return (
