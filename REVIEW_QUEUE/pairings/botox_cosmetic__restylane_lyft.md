@@ -1,6 +1,6 @@
 # Botox Cosmetic + Restylane Lyft
 
-**Tier:** canonical
+**Tier:** common
 **Type:** complementary
 **Strength:** strong
 **Same Session OK:** true
@@ -12,11 +12,11 @@
 | 1. Concern Overlap | PASS | Both address facial aging. Botox targets dynamic wrinkles; Lyft targets midface/hand volume loss. |
 | 2. Mechanism Complementarity | PASS | Neuromodulation vs HA gel scaffold. Different mechanisms at different tissue layers. |
 | 3. Limitation Coverage | PASS | Botox does_not_solve: "Cannot restore lost volume." Lyft directly addresses midface/hand volume. Lyft does_not_solve: "Cannot address dynamic wrinkles." Botox directly addresses this. |
-| 4. Timing Compatibility | PASS | Same-session compatible (neurotoxin first, then filler). France exception noted. |
+| 4. Timing Compatibility | PASS | Same-session compatible (neurotoxin first, then filler). Published evidence supports concurrent BoNT-A + filler administration (DOI 10.1097/DSS.0000000000000754). |
 | 5. Safety | PASS | No known contraindications. Cross-brand combination (Allergan + Galderma) with same safety profile as same-brand combinations. |
 | 6. Commercial Viability | PASS | Cross-manufacturer combination demonstrates brand-agnostic complementarity. Common in practices carrying multiple product lines. |
 | 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Brand-agnostic explanation works for patients. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Cross-brand complementarity well-documented. Evidence strength 5/5. |
+| 8. Source Support | PARTIAL | Category-level neurotoxin+filler evidence only. No product-specific studies for Botox+Restylane Lyft. Evidence strength 3/5 (extrapolated from category). |
 
 ## Content Fields
 
@@ -34,10 +34,14 @@ Tell the patient: "Botox helps relax the muscles that cause expression lines -- 
 
 ## Evidence
 
-- **90-woman dose-ranging study:** Category-level evidence confirms neurotoxin + filler combination superiority
-- **Dr. Teri Fisher:** Botox + filler creates structural support and volume restoration through complementary mechanisms
-- **Cross-brand practice:** Practices commonly use Allergan neurotoxin with Galderma fillers -- complementarity is mechanism-based
-- **France legal flag:** Same-session prohibition in France (Dr. Martschin, Ep 169)
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this cross-brand pair)
+
+**Note: No product-specific evidence exists for Botox + Restylane Lyft. The evidence below is category-level (neurotoxin + HA filler) and extrapolated to this cross-brand combination. The rubric requires 2+ independent product-specific sources for canonical tier; this pair does not meet that bar.**
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence that reasonably extends to all BoNT-A + HA filler pairs.
+- **FDA label -- Botox Cosmetic:** Indicated for glabellar lines, lateral canthal lines, and forehead lines.
+- **FDA label -- Restylane Lyft:** Indicated for midface volume deficit and dorsal hand volume loss in adults over 21. Dual indication (face + hands) is unique among HA fillers.
+- **Accepted clinical practice:** Cross-brand neurotoxin + filler combinations are commonly used in practice. The complementarity is mechanism-based (neuromodulation vs HA gel scaffold), not brand-specific.
 
 ## Review Checklist (per D-08)
 

@@ -14,29 +14,34 @@
 | 3. Limitation Coverage | PASS | Daxxify does_not_solve: "Cannot restore lost volume." Restylane Lyft addresses volume. Restylane Lyft does_not_solve: "Cannot address dynamic wrinkles." Daxxify addresses this. |
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
 | 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
-| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 6. Commercial Viability | PASS | Cross-ecosystem pairing (Revance + Galderma). Daxxify's longer duration reduces visit frequency. |
+| 7. Patient Clarity | PASS | Clear distinction: Daxxify relaxes movement lines with extended duration; Restylane Lyft restores volume in midface and/or hands. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Longer duration peptide formulation (~6 months vs 3-4 months). Maintenance: Daxxify every 5-6 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Restylane Lyft addresses midface/hand volume -- two different aspects of aging treated through two different mechanisms.
+Daxxify's peptide exchange technology provides approximately 6-month duration with no human or animal byproducts, while Restylane Lyft's NASHA-technology HA has a unique dual FDA indication for both midface volume and hands. Daxxify reduces annual neurotoxin visits from 3-4 to approximately 2, creating a more convenient maintenance schedule alongside Restylane Lyft's 12-18 month duration. The hand volume indication for Restylane Lyft is unique among HA fillers -- it addresses a concern that no neurotoxin can treat. This is a cross-ecosystem pairing (Revance + Galderma).
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Longer duration peptide formulation (~6 months vs 3-4 months). Maintenance: Daxxify every 5-6 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Daxxify 2 weeks before Restylane Lyft to assess muscle response. If treating hands with Restylane Lyft, timing is independent of facial neurotoxin effects -- can be same session without interaction concern. Daxxify retreatment approximately every 6 months; Restylane Lyft touch-ups at 12-18 months depending on treatment area.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Daxxify is a longer-lasting wrinkle relaxer that uses a unique peptide technology -- it works for about six months for many patients, so you may need fewer visits for that portion of your treatment. Restylane Lyft is a filler with a unique distinction: it's one of the few fillers approved for both midface volume and hands. If you're noticing expression lines along with cheek hollowing or aging hands, these two treatments address completely different concerns. Daxxify handles the movement-based lines, while Restylane Lyft restores volume where it's been lost -- whether that's in the cheeks, midface, or hands."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"Two things to highlight with this combination. First, Daxxify's duration: 'Daxxify uses a peptide technology that helps it last about six months, so you'd come in about twice a year for the wrinkle relaxer instead of three or four times.' Second, Restylane Lyft's versatility: 'Lyft is one of the few fillers approved for both the midface and hands. If a patient is concerned about aging hands -- thinning skin, visible veins and tendons -- this is specifically indicated for that, which most fillers aren't.' On the hand indication: this is a genuine differentiator, not an add-on suggestion. Some patients seek hand treatment specifically. Note: Daxxify is Revance and Lyft is Galderma -- different loyalty programs. Lead with clinical fit."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Daxxify:** Indicated for moderate to severe glabellar lines in adults. Peptide exchange technology for extended duration (~6 months). No human or animal byproducts.
+- **FDA label -- Restylane Lyft:** Indicated for midface volume deficit and dorsal hand volume loss in adults over 21. NASHA technology. Dual indication (face + hands) is unique among HA fillers.
+- **Daxxify differentiator:** Peptide exchange technology, ~6-month duration, no human/animal byproducts (per FDA-approved labeling).
+- **Restylane Lyft specificity:** NASHA technology, dual FDA indication (midface + hands) -- unique among HA fillers (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 

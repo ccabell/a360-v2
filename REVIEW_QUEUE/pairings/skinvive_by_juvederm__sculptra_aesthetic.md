@@ -1,42 +1,43 @@
 # SKINVIVE by Juvederm + Sculptra Aesthetic
 
-**Tier:** common
+**Tier:** conditional
 **Type:** sequential
 **Strength:** strong
-**Same Session OK:** true
+**Same Session OK:** conditional (Same visit may be appropriate when performed in different areas/planes by an experienced injector. FDA labeling notes safety/effectiveness not evaluated in combination with other products. Stage Sculptra first and reassess before HA refinement when possible.)
 
 ## Gate Results
 
 | Gate | Result | Notes |
 |------|--------|-------|
-| 1. Concern Overlap | PASS | Both address volume loss. Sculptra stimulates collagen for gradual restoration; SKINVIVE by Juvederm provides skin quality improvement via microdroplet HA. |
-| 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (gradual, durable, biologic) vs HA gel scaffold (immediate, temporary, structural). Different timelines and mechanisms. |
-| 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot provide immediate volume correction." SKINVIVE by Juvederm provides immediate results. SKINVIVE by Juvederm does_not_solve: "Cannot stimulate long-term collagen production." Sculptra does this. |
-| 4. Timing Compatibility | PASS | Same-session per Dr. Tom van Eijk: Sculptra subdermal + filler at targeted depths. Different tissue planes. |
-| 5. Safety | PASS | No contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). |
-| 6. Commercial Viability | PASS | Premium treatment plan. Galderma "Sculpt & Lift" campaign validates commercial model. |
-| 7. Patient Clarity | PASS | "Sculptra is the foundation -- it rebuilds structure over months. Filler is the finishing touches -- immediate contour and definition." |
-| 8. Source Support | PASS | 15+ chunks across 5+ shows. "Sculpt & Lift" protocol. Dr. Tom van Eijk same-session protocol. Evidence strength 5/5. |
+| 1. Concern Overlap | PASS | Both address skin aging, but at different layers. Sculptra stimulates deep collagen for structural restoration; SKINVIVE improves skin quality and hydration via microdroplet HA in the dermis. |
+| 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (deep, gradual, structural) vs microdroplet HA (superficial, immediate, skin-quality focused). Different depths, different purposes. |
+| 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot improve skin surface hydration or texture." SKINVIVE does this. SKINVIVE does_not_solve: "Cannot stimulate deep collagen production or restore structural volume." Sculptra does this. |
+| 4. Timing Compatibility | PASS | Different injection depths (Sculptra subdermal, SKINVIVE intradermal). Sequential staging preferred. Same-session possible but not evaluated in controlled trials. |
+| 5. Safety | PASS | No known contraindications. Different injection depths and mechanisms. FDA labeling notes combination use has not been systematically evaluated. |
+| 6. Commercial Viability | PASS | Comprehensive inside-out approach. Allergan product paired with Galderma biostimulator -- different layers, different manufacturers. |
+| 7. Patient Clarity | PASS | "Sculptra supports deep structure. SKINVIVE adds surface hydration and skin quality. Different depths, different purposes." |
+| 8. Source Support | PARTIAL | Expert consensus supports layered approaches to skin aging in clinical practice. SKINVIVE as skin-quality (not volume) product well-documented. No published controlled trial data for the specific combination. Evidence strength: LOW (expert consensus only). |
 
 ## Content Fields
 
 ### Clinical Rationale
-Sculptra foundation + SKINVIVE by Juvederm for skin quality improvement via microdroplet HA. Sculptra stimulates collagen production over months, rebuilding the underlying structural support that aging depletes. SKINVIVE by Juvederm provides immediate, precise volume correction at targeted depths. The "Sculpt & Lift" protocol -- foundation first, then refinement -- means patients typically need less filler and results look more natural and last longer because the underlying structure is restored.
+Sculptra stimulates deep collagen production; SKINVIVE improves skin surface quality through microdroplet HA hydration. These are fundamentally different products working at different depths for different purposes. SKINVIVE is NOT a volume filler -- it is a skin quality treatment that improves hydration, smoothness, and overall skin quality in the dermal layer. Sculptra works subdermally to stimulate collagen production for structural support. Together they represent an inside-out approach: Sculptra builds the foundation from the deep layer, SKINVIVE adds the finishing surface quality on top. Note: No published controlled trial data exists for this specific combination. The FDA Sculptra label states that safety and effectiveness in combination with other products have not been evaluated in controlled clinical trials.
 
 ### Timing Guidance
-Sculptra first for foundation, then HA filler for contour. Can be same session (different tissue planes) or sequential (Sculptra series first, then refine with filler). Sculptra: 2-3 sessions, 4-6 weeks apart. HA filler: as needed for refinement after Sculptra foundation is established.
+Sequential staging preferred: complete the Sculptra series first (2-3 sessions, 4-6 weeks apart), then add SKINVIVE once the collagen stimulation is established. SKINVIVE is a surface-level treatment, so it serves as the last step -- adding hydration and skin quality on top of the rebuilt structure. Same-session treatment at different depths is performed by some experienced injectors but has not been evaluated in controlled trials. The logical sequence is foundation first, finishing step second.
 
 ### Patient Education Text
-Tell the patient: "Sculptra works gradually over several months to rebuild the collagen your skin has lost with age -- think of it as strengthening the foundation. Once that foundation is in place, filler can be used to add precise contour and definition. By starting with the foundation, you typically need less filler and the results look more natural and last longer."
+Tell the patient: "Sculptra and SKINVIVE work at completely different levels of your skin for different reasons. Sculptra goes deep -- it gradually supports collagen production that gives your face its underlying structure. That takes a few months to fully develop. SKINVIVE is a surface treatment -- it's not a filler for volume. Instead, it uses tiny microdroplets of hyaluronic acid in the upper layers of your skin to improve hydration, smoothness, and overall skin quality. Your provider may suggest doing a Sculptra series first to build the structure, then adding SKINVIVE as a finishing step for skin quality on the surface. This combination is used in clinical practice, but it has not been evaluated in controlled clinical trials. Your provider can discuss whether this approach makes sense for your individual situation."
 
 ### Staff Talking Points
-"When a patient has both volume loss and skin quality concerns, explain that addressing one without the other may leave them wanting more. 'Sculptra rebuilds the underlying structure over time, while filler provides the immediate contour you're looking for. Some patients choose to start with Sculptra to build a strong foundation, then add filler to refine. Others want some immediate results and choose to do both.' Let the patient's goals guide the conversation -- some prefer gradual improvement, others want immediate results."
+"SKINVIVE is NOT a volume filler -- this is important to communicate clearly. It's a skin quality treatment. 'Sculptra and SKINVIVE do completely different things at different depths. Sculptra supports collagen production deep in your skin -- the foundation. SKINVIVE improves the surface -- hydration, smoothness, skin quality. One is structural, the other is finishing.' This combination is used in clinical practice but has not been evaluated in controlled trials. The approach is usually Sculptra first to build the foundation, then SKINVIVE as the final step. Don't describe SKINVIVE as volume correction or contouring -- it's microdroplet HA for skin quality. Allergan (SKINVIVE) and Galderma (Sculptra) are different manufacturers -- this is a clinical pairing based on depth and purpose. Present it as an option the provider may recommend based on individual needs."
 
 ## Evidence
 
-- **"Sculpt & Lift" protocol:** Galderma-documented approach combining Sculptra foundation with HA filler contouring
-- **Dr. Tom van Eijk:** "In the same session, flood the subdermal tissue with Sculptra... fern pattern will take care of the things, the details they actually see in the mirror" -- Business of Injecting, Ep 254
-- **Expert consensus:** "If it's like an overall volume deficit... I would go with Sculptra first... For more immediate result, contour, more definition... the HA filler." -- Injector Podcast
+- **FDA Sculptra Aesthetic labeling:** Indicated for correction of shallow to deep nasolabial fold contour deficiencies and other facial wrinkles. "The safety and effectiveness of SCULPTRA Aesthetic used in combination with other products and procedures have not been evaluated in controlled clinical trials."
+- **SKINVIVE positioning:** Microdroplet HA for skin quality and hydration, not volume correction.
+- **Expert consensus:** Expert consensus supports layered approaches to skin aging in clinical practice based on the rationale that deep collagen stimulation and superficial hydration address different tissue depths and mechanisms.
+- **Evidence Type: LOW (expert consensus only; no published combination data; FDA label notes combination use not systematically evaluated)**
 
 ## Review Checklist (per D-08)
 

@@ -1,0 +1,144 @@
+{
+  "timestamp": "2026-06-13T01:20:00.000000",
+  "source": "a360-v2-build",
+  "components": {
+    "AskExperience": {
+      "module_id": "app/ask/experience.tsx",
+      "classnames": [
+        "flex flex-col gap-4",
+        "rounded-xl border",
+        "px-4 py-3"
+      ],
+      "event_handlers": [
+        "onChange",
+        "onSubmit"
+      ],
+      "api_calls": [
+        "/api/ask"
+      ],
+      "state_hooks": [
+        "useState",
+        "useRef",
+        "useCallback",
+        "useEffect"
+      ]
+    },
+    "InlineCitationBadge": {
+      "module_id": "components/citations/inline-citation-badge.tsx",
+      "classnames": [
+        "rounded-md px-2 py-1",
+        "text-xs font-medium"
+      ],
+      "event_handlers": [
+        "onClick"
+      ],
+      "api_calls": [],
+      "state_hooks": []
+    },
+    "GroundedAnswer": {
+      "module_id": "components/grounding/grounded-answer.tsx",
+      "classnames": [
+        "flex gap-6"
+      ],
+      "event_handlers": [],
+      "api_calls": [],
+      "state_hooks": []
+    },
+    "ReferencesSection": {
+      "module_id": "components/citations/references-section.tsx",
+      "classnames": [
+        "mt-6 pt-6 border-t"
+      ],
+      "event_handlers": [],
+      "api_calls": [],
+      "state_hooks": []
+    }
+  },
+  "design_tokens": {
+    "colors": [
+      "bg-background",
+      "bg-card",
+      "text-foreground",
+      "text-muted-foreground",
+      "border-border",
+      "bg-accent",
+      "text-destructive"
+    ],
+    "spacing": [
+      "gap-4",
+      "px-4",
+      "py-3",
+      "mt-6",
+      "pt-6",
+      "gap-6",
+      "gap-2"
+    ],
+    "typography": [
+      "text-sm",
+      "text-xs",
+      "font-medium",
+      "text-lg"
+    ],
+    "shadows": [
+      "shadow-sm"
+    ],
+    "borders": [
+      "border-t",
+      "rounded-md",
+      "rounded-xl"
+    ]
+  },
+  "tailwind_classes": {
+    "gap-4": 5,
+    "px-4": 4,
+    "py-3": 3,
+    "rounded-xl": 2,
+    "border": 6,
+    "text-xs": 2
+  },
+  "css_variables": [
+    "--foreground",
+    "--background",
+    "--ring"
+  ],
+  "api_endpoints": [
+    "/api/ask"
+  ],
+  "analytics_events": [
+    "evidence_ask_sent"
+  ],
+  "data_flow": {
+    "request_body_keys": [
+      "question",
+      "surface"
+    ],
+    "response_event_types": [
+      "status",
+      "sources",
+      "token",
+      "citations",
+      "done"
+    ],
+    "streaming_indicators": [
+      "ReadableStream",
+      "getReader()"
+    ],
+    "_indicators": {
+      "has_sse": true,
+      "has_fetch_stream": true,
+      "likely_streaming": true
+    }
+  },
+  "user_flows": [
+    {
+      "name": "Ask Question",
+      "steps": [
+        "Input auto-focuses",
+        "User types question",
+        "Enter or click submit",
+        "SSE streams answer"
+      ],
+      "involves_streaming": true
+    }
+  ]
+}

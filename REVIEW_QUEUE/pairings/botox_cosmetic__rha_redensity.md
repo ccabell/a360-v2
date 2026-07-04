@@ -1,6 +1,6 @@
 # Botox Cosmetic + RHA Redensity
 
-**Tier:** canonical
+**Tier:** common
 **Type:** complementary
 **Strength:** strong
 **Same Session OK:** true
@@ -12,11 +12,11 @@
 | 1. Concern Overlap | PASS | Both address facial aging. Botox targets dynamic wrinkles (upper face); RHA Redensity targets perioral fine lines (lower face). |
 | 2. Mechanism Complementarity | PASS | Neuromodulation vs flexible HA gel for superficial lines. Different mechanisms at different anatomical zones. |
 | 3. Limitation Coverage | PASS | Botox does_not_solve: "Cannot restore lost volume" / "Cannot treat static perioral lines." RHA Redensity addresses perioral detail. RHA does_not_solve: "Cannot address dynamic wrinkles." Botox addresses this. |
-| 4. Timing Compatibility | PASS | Same-session compatible (neurotoxin first, then filler). Complementary anatomical zones. France exception noted. |
+| 4. Timing Compatibility | PASS | Same-session compatible (neurotoxin first, then filler). Complementary anatomical zones. Published evidence supports concurrent BoNT-A + filler use (DOI 10.1097/DSS.0000000000000754). |
 | 5. Safety | PASS | No known contraindications. Different treatment zones (upper face vs perioral). |
 | 6. Commercial Viability | PASS | Comprehensive facial rejuvenation addressing both upper and lower face concerns. |
 | 7. Patient Clarity | PASS | Clear zone-based explanation: upper face muscle lines vs lower face fine lines around the mouth. |
-| 8. Source Support | PASS | Category-level neurotoxin+filler evidence from 20+ chunks. Perioral specificity adds unique clinical value. Evidence strength 5/5. |
+| 8. Source Support | PARTIAL | Category-level neurotoxin+filler evidence only. No product-specific studies for Botox+RHA Redensity. Perioral specificity is clinically sound but unvalidated for this specific pair. Evidence strength 3/5 (extrapolated from category). |
 
 ## Content Fields
 
@@ -27,17 +27,21 @@ Neurotoxin relaxes dynamic muscles (upper face); RHA Redensity addresses periora
 Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Maintenance: neurotoxin every 3-4 months, filler every 6-12 months (perioral area may need more frequent touch-ups).
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't address the fine lines around your lips, which are caused by a combination of repeated movement and lost support in the skin. RHA Redensity is a flexible filler designed specifically for that area around the mouth -- it moves with your expressions rather than fighting them. Many patients find that treating both the upper face lines and the perioral area creates a more complete, natural-looking result."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"When a patient comes in concerned about fine lines both around the eyes and around the mouth, you might explain: 'Botox can help with the crow's feet and forehead lines -- those are caused by muscle movement. But the lines around your lips are different -- they need a filler that can move with your expressions. RHA Redensity is designed for that dynamic area. Some patients choose to address both in the same visit, while others prefer to start with one area and see how they feel.' The key is helping patients understand these are two different problems in two different zones -- not an upsell."
 
 ## Evidence
 
-- **90-woman dose-ranging study:** Category-level evidence confirms neurotoxin + filler combination superiority
-- **Zone complementarity:** Expert discussions of addressing both dynamic wrinkles (Botox) and fine static lines (RHA) in comprehensive facial treatment
-- **Perioral specificity:** RHA Redensity designed for dynamic perioral area -- complements upper-face neurotoxin treatment
-- **France legal flag:** Same-session prohibition in France (Dr. Martschin, Ep 169)
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+**Note: No product-specific evidence exists for Botox + RHA Redensity. The evidence below is category-level (neurotoxin + HA filler) and extrapolated to this combination. The rubric requires 2+ independent product-specific sources for canonical tier; this pair does not meet that bar.**
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Botox Cosmetic:** Indicated for glabellar lines, lateral canthal lines, and forehead lines.
+- **FDA label -- RHA Redensity:** Indicated for injection into the perioral area (superficial to mid dermis) for the correction of dynamic perioral rhytids in adults over 22.
+- **Accepted clinical practice:** Zone-based complementarity (upper-face neurotoxin + perioral filler) is standard in comprehensive facial rejuvenation protocols. RHA technology is designed for dynamic facial areas.
 
 ## Review Checklist (per D-08)
 

@@ -13,30 +13,35 @@
 | 2. Mechanism Complementarity | PASS | Neuromodulation (muscle relaxation) vs HA gel scaffold (volume restoration). Different mechanisms at different tissue layers. |
 | 3. Limitation Coverage | PASS | Xeomin does_not_solve: "Cannot restore lost volume." Juvederm Voluma XC addresses volume. Juvederm Voluma XC does_not_solve: "Cannot address dynamic wrinkles." Xeomin addresses this. |
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
-| 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
-| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 5. Safety | PASS | No known contraindications. Xeomin's lack of complexing proteins is a consideration for providers evaluating long-term immunogenicity, as it does not contain accessory proteins. |
+| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Cross-ecosystem pairing (Merz + Allergan). |
+| 7. Patient Clarity | PASS | Clear distinction: Xeomin relaxes movement lines as a pure neurotoxin; Voluma restores structural cheek volume. Two different problems requiring two different solutions. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Juvederm Voluma XC addresses deep cheek volume -- two different aspects of aging treated through two different mechanisms.
+Xeomin's "naked molecule" formulation (no complexing proteins, 0.55ng vs 4.5ng for Botox) is a consideration for providers evaluating long-term immunogenicity, as it does not contain accessory proteins -- relevant for patients planning ongoing neurotoxin + filler maintenance over years. Voluma provides deep structural volume restoration in the cheeks using VYCROSS technology with up to 2-year duration. Voluma is a structural filler typically placed first in multi-filler protocols as the foundational scaffold. The combination treats dynamic expression lines (Xeomin) alongside structural cheek volume loss (Voluma) -- both important for patients with long-term aesthetic maintenance plans. Patients who are highly active may metabolize Voluma faster. Xeomin maintenance: every 3-4 months. Voluma maintenance: every 18-24 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Xeomin 2 weeks before Voluma to assess muscle response. In multi-filler treatment plans, Voluma (structural cheek volume) is placed first to provide a scaffold for fillers lower in the face. Some providers consider Xeomin's lack of accessory proteins relevant for sustained treatment plans. Xeomin retreatment at 3-4 months; Voluma touch-ups at 18-24 months.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Xeomin is a wrinkle relaxer known as a 'pure' neurotoxin -- it contains only the active ingredient without the extra proteins found in some other options. Some providers consider Xeomin when long-term immunogenicity is a concern, as it does not contain accessory proteins. Voluma is a structural filler placed deep in the cheeks to restore the volume that naturally decreases with age -- it's one of the longest-lasting fillers available, often holding for up to two years. If you're noticing both expression lines and cheek volume loss, Xeomin addresses the movement-based wrinkles while Voluma rebuilds the cheek structure. They work at completely different levels."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"For patients interested in a long-term treatment plan, Xeomin's purity is a meaningful talking point: 'Xeomin is called the naked molecule because it's just the active neurotoxin without additional proteins. Some providers consider this when long-term immunogenicity is a concern, as it does not contain the accessory proteins found in some other neurotoxins.' On Voluma: 'Voluma is a deep structural filler for the cheeks -- it acts as a foundation. When cheek volume is restored, it can improve the appearance of the entire lower face by providing support from above. It's one of the longer-lasting options at up to two years.' For highly active patients: set realistic Voluma duration expectations since it may metabolize faster. Xeomin is a Merz product and Voluma is Allergan -- different loyalty programs. Xeomin also has the practical advantage of room-temperature stability."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Xeomin:** Indicated for moderate to severe glabellar lines in adults. IncobotulinumtoxinA -- contains no accessory proteins; room-temperature stable.
+- **FDA label -- Juvederm Voluma XC:** Indicated for age-related volume deficit in the cheek area in adults over 21. VYCROSS crosslinking, up to 2-year duration.
+- **Xeomin differentiator:** No accessory/complexing proteins (incobotulinumtoxinA), room-temperature stable, Merz ecosystem (per FDA-approved labeling).
+- **Voluma specificity:** VYCROSS crosslinking, FDA-approved for cheek augmentation, up to 2-year duration (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 
