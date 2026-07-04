@@ -33,6 +33,27 @@ const GROUPS: {
 const PAGE = 48;
 const Q_DEBOUNCE_MS = 300;
 
+type SortKey = "content" | "newest" | "oldest";
+
+const SORTS: { key: SortKey; label: string }[] = [
+  { key: "content", label: "Most content" },
+  { key: "newest", label: "Newest" },
+  { key: "oldest", label: "Oldest" },
+];
+
+/** Videos without a publish date sort last under either date order. */
+function compareBy(sort: SortKey) {
+  return (a: TubeCardVideo, b: TubeCardVideo): number => {
+    if (sort === "content") return b.chunkCount - a.chunkCount;
+    if (!a.publishedAt && !b.publishedAt) return b.chunkCount - a.chunkCount;
+    if (!a.publishedAt) return 1;
+    if (!b.publishedAt) return -1;
+    return sort === "newest"
+      ? b.publishedAt.localeCompare(a.publishedAt)
+      : a.publishedAt.localeCompare(b.publishedAt);
+  };
+}
+
 function emptySel(): Record<GroupKey, Set<string>> {
   return {
     anatomy: new Set(),
@@ -59,6 +80,10 @@ export function TubeExplore({ videos, facets }: Props) {
   const [sel, setSel] = useState<Record<GroupKey, Set<string>>>(() => selFromParams(searchParams));
   const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
   const [safeOnly, setSafeOnly] = useState(() => searchParams.get("safe") === "1");
+  const [sort, setSort] = useState<SortKey>(() => {
+    const raw = searchParams.get("sort");
+    return SORTS.some((s) => s.key === raw) ? (raw as SortKey) : "content";
+  });
   const [limit, setLimit] = useState(PAGE);
 
   const qDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -71,10 +96,12 @@ export function TubeExplore({ videos, facets }: Props) {
     sel?: Record<GroupKey, Set<string>>;
     query?: string;
     safeOnly?: boolean;
+    sort?: SortKey;
   }) => {
     const s = next.sel ?? sel;
     const q = next.query ?? query;
     const safe = next.safeOnly ?? safeOnly;
+    const so = next.sort ?? sort;
     const params = new URLSearchParams();
     if (q.trim()) params.set("q", q.trim());
     for (const g of GROUPS) {
@@ -82,6 +109,7 @@ export function TubeExplore({ videos, facets }: Props) {
       if (values.length) params.set(g.param, values.join(","));
     }
     if (safe) params.set("safe", "1");
+    if (so !== "content") params.set("sort", so);
     const qs = params.toString();
     router.replace(qs ? `?${qs}` : "?", { scroll: false });
   };
@@ -114,12 +142,19 @@ export function TubeExplore({ videos, facets }: Props) {
     qDebounce.current = setTimeout(() => writeUrl({ query: value }), Q_DEBOUNCE_MS);
   };
 
+  const onSortChange = (value: SortKey) => {
+    setSort(value);
+    setLimit(PAGE);
+    writeUrl({ sort: value });
+  };
+
   const clearAll = () => {
     if (qDebounce.current) clearTimeout(qDebounce.current);
     setSel(emptySel());
     setQuery("");
     setSafeOnly(false);
-    router.replace("?", { scroll: false });
+    // Sort is a view preference, not a filter — survives "Clear all".
+    router.replace(sort !== "content" ? `?sort=${sort}` : "?", { scroll: false });
   };
 
   const activeCount = GROUPS.reduce((n, g) => n + sel[g.key].size, 0) + (safeOnly ? 1 : 0);
@@ -144,8 +179,8 @@ export function TubeExplore({ videos, facets }: Props) {
         if (q && !(`${v.title} ${v.summary}`.toLowerCase().includes(q))) return false;
         return true;
       })
-      .sort((a, b) => b.chunkCount - a.chunkCount);
-  }, [videos, sel, query, safeOnly]);
+      .sort(compareBy(sort));
+  }, [videos, sel, query, safeOnly, sort]);
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
@@ -214,8 +249,25 @@ export function TubeExplore({ videos, facets }: Props) {
               </button>
             )),
           )}
-          <span className="ml-auto text-sm text-neutral-400">
-            {filtered.length.toLocaleString()} video{filtered.length === 1 ? "" : "s"}
+          <span className="ml-auto flex items-center gap-3">
+            <label className="flex items-center gap-1.5 text-xs text-neutral-400">
+              Sort
+              <select
+                value={sort}
+                onChange={(e) => onSortChange(e.target.value as SortKey)}
+                aria-label="Sort videos"
+                className="rounded-md border border-white/10 bg-neutral-900 px-2 py-1 text-xs text-white focus:outline-none focus:ring-1 focus:ring-primary/40"
+              >
+                {SORTS.map((s) => (
+                  <option key={s.key} value={s.key}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <span className="text-sm text-neutral-400">
+              {filtered.length.toLocaleString()} video{filtered.length === 1 ? "" : "s"}
+            </span>
           </span>
         </div>
 
