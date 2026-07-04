@@ -95,19 +95,25 @@ export async function POST(req: NextRequest) {
   // Retrieval: tokenize the latest question; if that yields too few terms,
   // merge in tokens from earlier user turns (most recent first) so a
   // pronoun-only follow-up ("what dose for that?") still retrieves on-topic.
+  // The earlier turns the merge consumed are also prepended to the natural-
+  // language text used for semantic embedding, so "what about aftercare for
+  // that?" embeds with its antecedent context.
   const termSet = new Set(tokenize(q));
+  const contextTurns: string[] = [];
   for (let i = lastUserIdx - 1; i >= 0 && termSet.size < 3; i--) {
     if (conversation[i].role !== "user") continue;
     for (const t of tokenize(conversation[i].content)) termSet.add(t);
+    contextTurns.unshift(conversation[i].content);
   }
   const retrievalQuery = termSet.size > 0 ? Array.from(termSet).join(" ") : q;
+  const semanticText = contextTurns.length > 0 ? `${contextTurns.join(" ")} ${q}` : q;
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const emit = (ev: unknown) =>
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(ev)}\n\n`));
       try {
-        const sources = await retrieveTubeSources(retrievalQuery, 12, videoId);
+        const sources = await retrieveTubeSources(retrievalQuery, 12, videoId, semanticText);
         emit({ type: "sources", sources });
 
         if (sources.length === 0) {
