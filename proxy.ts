@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
+import { audienceRoutePrefixes, getAudience } from "@/lib/portfolio/registry";
+import {
+  AUDIENCE_COOKIE,
+  shareSecret,
+  verifyShareToken,
+} from "@/lib/portfolio/share";
 
 /**
  * Beta gate + demo-mode boundary (Next 16 `proxy`, formerly middleware).
@@ -13,6 +19,13 @@ import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
  * - Exchange-only (EXCHANGE_ONLY=true): the ONLY surface exposed is the Agent
  *   Exchange. Every other page redirects to it and every other API 404s, so an
  *   externally-shared link (e.g. to the CEO) can't reach internal tools by URL.
+ * - Audience share links (/share/<token>): a valid signed `portfolio_audience`
+ *   cookie grants the exchange landing plus ONLY that audience's native
+ *   prototype routes (lib/portfolio/registry.ts), bypassing the beta password
+ *   — and the exchange-only containment — for those routes only. Everything
+ *   else stays gated exactly as before; expired/invalid tokens fall through to
+ *   the normal gate. A beta session keeps full access. The demo-mode studio
+ *   404 still applies to audience visitors.
  */
 
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
@@ -34,7 +47,8 @@ function isStudioPath(pathname: string): boolean {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Always-public: login page, auth endpoints, public surfaces, health check
+  // Always-public: login page, auth endpoints, public surfaces, health check,
+  // and the share-link entry point (it verifies its own signed token).
   if (
     pathname.startsWith("/login") ||
     pathname.startsWith("/api/auth") ||
@@ -43,7 +57,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/embed") ||
     pathname.startsWith("/api/ask") ||
     pathname.startsWith("/podcast") ||
-    pathname.startsWith("/api/podcast")
+    pathname.startsWith("/api/podcast") ||
+    pathname.startsWith("/share/")
   ) {
     return NextResponse.next();
   }
@@ -56,6 +71,21 @@ export async function proxy(request: NextRequest) {
     );
     if (!isGated) return NextResponse.next();
     // Gated apps fall through to the password gate below
+  }
+
+  // Audience share-link grant: a valid signed audience cookie opens the
+  // exchange landing + that audience's native prototype routes, nothing else.
+  // The token is re-verified on every request; the cookie is never trusted raw.
+  let audienceAllowed = false;
+  const audienceToken = request.cookies.get(AUDIENCE_COOKIE)?.value;
+  const secret = shareSecret();
+  if (audienceToken && secret) {
+    const payload = await verifyShareToken(audienceToken, secret);
+    if (payload && getAudience(payload.aud)) {
+      audienceAllowed = audienceRoutePrefixes(payload.aud).some(
+        (p) => pathname === p || pathname.startsWith(p + "/"),
+      );
+    }
   }
 
   // Exchange-only containment: nothing but the Exchange is reachable.
@@ -73,7 +103,7 @@ export async function proxy(request: NextRequest) {
       pathname.startsWith("/podcast/") ||
       pathname.startsWith("/api/podcast/") ||
       pathname.startsWith("/_next"); // framework assets/RSC
-    if (!isExchange) {
+    if (!isExchange && !audienceAllowed) {
       if (pathname.startsWith("/api")) {
         return new NextResponse("Not found", { status: 404 });
       }
@@ -96,6 +126,10 @@ export async function proxy(request: NextRequest) {
   const cookie = request.cookies.get(SESSION_COOKIE)?.value;
   const expected = await sessionToken(password);
   if (cookie && cookie === expected) return NextResponse.next();
+
+  // Audience share-link visitors bypass the password for their routes only.
+  // (Checked after the demo-mode studio 404 above, so that still wins.)
+  if (audienceAllowed) return NextResponse.next();
 
   if (pathname.startsWith("/api")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
