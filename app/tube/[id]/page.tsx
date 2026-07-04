@@ -7,6 +7,7 @@ import { TubePlayer } from "@/components/tube/tube-player";
 import { TubeCard } from "@/components/tube/tube-card";
 import { TubeTutorClient } from "@/components/tube/tube-tutor-client";
 import { channelLabel } from "@/lib/tube/channels";
+import { publishedLabel } from "@/lib/tube/format";
 
 const ASK_STARTERS = [
   "Summarize the key technique shown",
@@ -67,6 +68,11 @@ export default async function TubeWatchPage({
           <div className="flex items-center gap-1.5 text-sm font-medium text-primary">
             <Video className="h-4 w-4" />
             {meta.channel}
+            {publishedLabel(baked?.publishedAt) && (
+              <span className="font-normal text-neutral-500">
+                · {publishedLabel(baked?.publishedAt)}
+              </span>
+            )}
           </div>
           <h1 className="mt-1 font-heading text-2xl font-bold leading-tight text-white">
             {meta.title}

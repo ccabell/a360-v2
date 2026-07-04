@@ -3,6 +3,7 @@ import { Play, Video } from "lucide-react";
 import type { TubeCardVideo } from "@/lib/tube/types";
 import { youtubeThumb } from "@/lib/academy/youtube";
 import { channelLabel } from "@/lib/tube/channels";
+import { publishedLabel } from "@/lib/tube/format";
 
 function tagLabel(t: string): string {
   return t.replace(/_/g, " ");
@@ -52,6 +53,11 @@ export function TubeCard({ video }: { video: TubeCardVideo }) {
         <div className="flex items-center gap-1.5 text-[11px] font-medium text-primary">
           <Video className="h-3.5 w-3.5" />
           {channelLabel(video.channel)}
+          {publishedLabel(video.publishedAt) && (
+            <span className="ml-auto font-normal text-neutral-500">
+              {publishedLabel(video.publishedAt)}
+            </span>
+          )}
         </div>
         <h3 className="line-clamp-2 font-heading text-sm font-semibold leading-snug text-white">
           {video.title}
