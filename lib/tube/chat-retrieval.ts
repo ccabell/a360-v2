@@ -1,13 +1,15 @@
 /**
  * Retrieval for the A360 Video Navigator AI chat.
  *
- * Keyword search over the full YouTube aesthetics transcript corpus
+ * Search over the full YouTube aesthetics transcript corpus
  * (`manufacturer_youtube_transcript`). Returns deep-linkable sources (real video
  * + exact second) the model must ground on — mirroring the Pearce tutor.
  *
- * (Semantic search via the ada-002 `match_youtube_transcripts` RPC is available
- * but requires a working OpenAI key to embed the query; keyword search needs no
- * embedding and yields the same timestamped citations.)
+ * Retrieval ladder: semantic (ada-002 embeddings via `match_youtube_transcripts_v2`,
+ * requires a working OpenAI key to embed the query) → full-text search
+ * (`search_youtube_transcripts_fts`) → per-term ILIKE. Each rung degrades
+ * silently to the next, so the chat works with no OpenAI key and even with no
+ * FTS migration.
  */
 import { createClient } from "@supabase/supabase-js";
 import { channelLabel } from "./channels";
@@ -74,6 +76,55 @@ export async function getVideoMetaById(
   return { title: (r.video_title ?? "Untitled").trim() || "Untitled", channel: channelLabel(r.manufacturer_name) };
 }
 
+/**
+ * Embed a query with OpenAI ada-002 (the model the corpus vectors were built
+ * with — other models are a different vector space and would not match).
+ *
+ * Returns null on ANY failure — missing key, non-200 (e.g. 429 quota), network
+ * error, or the 2.5s timeout — so callers can degrade to keyword retrieval
+ * without chat latency ever hanging on OpenAI.
+ */
+// After a failed embed attempt (e.g. quota-blocked key), skip further attempts
+// for 5 minutes so only one request per instance per window pays the failure
+// latency; semantic self-activates within ≤5 min of the key starting to work.
+let embedFailedUntil = 0;
+
+async function embedQuery(text: string): Promise<number[] | null> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) return null;
+  if (Date.now() < embedFailedUntil) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 2500);
+  try {
+    const res = await fetch("https://api.openai.com/v1/embeddings", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ model: "text-embedding-ada-002", input: text }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      embedFailedUntil = Date.now() + 5 * 60_000;
+      return null;
+    }
+    const json = (await res.json()) as { data?: { embedding?: number[] }[] };
+    const emb = json.data?.[0]?.embedding;
+    if (!Array.isArray(emb) || emb.length === 0) {
+      embedFailedUntil = Date.now() + 5 * 60_000;
+      return null;
+    }
+    embedFailedUntil = 0;
+    return emb;
+  } catch {
+    embedFailedUntil = Date.now() + 5 * 60_000;
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 /** Merge + dedupe rows by video_id + start_time (corpus has duplicate rows). */
 function dedupeRows(rows: Row[]): Row[] {
   const seen = new Set<string>();
@@ -116,21 +167,93 @@ async function retrieveByIlike(terms: string[], videoId?: string): Promise<Row[]
 }
 
 /**
- * Retrieve grounded, deep-linkable sources for a question (keyword + scoring).
+ * Build the final TubeSource list from relevance-ordered rows: per-video
+ * diversification (max 3 moments per video, skipped when `videoId`-scoped
+ * since every row already shares one video) and the `max` cap. Rows missing
+ * video_id or chunk_text are skipped.
+ */
+function assembleSources(rows: Row[], max: number, videoId?: string): TubeSource[] {
+  const perVideo = new Map<string, number>();
+  const out: TubeSource[] = [];
+  for (const r of rows) {
+    if (!r.video_id || !r.chunk_text) continue;
+    const vid = r.video_id;
+    if (!videoId) {
+      const n = perVideo.get(vid) ?? 0;
+      if (n >= 3) continue;
+      perVideo.set(vid, n + 1);
+    }
+    const start = Math.max(0, Math.floor(Number(r.start_time) || 0));
+    const ch = channelLabel(r.manufacturer_name);
+    out.push({
+      id: `S${out.length + 1}`,
+      title: (r.video_title ?? "Untitled").trim() || "Untitled",
+      channel: ch,
+      text: r.chunk_text,
+      videoId: vid,
+      start,
+      // Stay in-app: link to the Navigator's own player at the cited second.
+      url: `/tube/${vid}?t=${start}`,
+      meta: `${ch} · ${fmt(start)}`,
+    });
+    if (out.length >= max) break;
+  }
+  return out;
+}
+
+/**
+ * Retrieve grounded, deep-linkable sources for a question.
+ *
+ * Semantic-first: if the query can be embedded (working OpenAI key), rows come
+ * from the pgvector RPC in similarity order and skip the literal term-overlap
+ * scoring below — a paraphrased question legitimately shares few literal
+ * terms, and minMatch would kill exactly the matches semantic search buys.
+ * Otherwise falls through to FTS (then ILIKE) with scoring unchanged.
  *
  * When `videoId` is given, results are scoped to that video (for the
  * watch-page "Ask about this video" chat) and the per-video diversification
- * cap below is skipped since every result already shares one video.
+ * cap is skipped since every result already shares one video.
+ *
+ * `semanticText`, when provided, is the natural-language text to embed for
+ * the semantic path (the user's actual question, plus follow-up context) —
+ * embeddings work best on real sentences, not a stopword-stripped term bag.
+ * The keyword paths always tokenize `question` regardless.
  */
 export async function retrieveTubeSources(
   question: string,
   max = 12,
   videoId?: string,
+  semanticText?: string,
 ): Promise<TubeSource[]> {
   const terms = tokenize(question);
   if (terms.length === 0) return [];
 
-  // Primary path: Postgres full-text search (stemmed, DB-side pre-ranked).
+  // Semantic path: embed the query and match against the corpus ada-002
+  // vectors. Degrades silently (embedQuery → null, RPC error, or zero rows)
+  // to the keyword paths below.
+  const vector = await embedQuery(semanticText ?? question);
+  if (vector) {
+    const { data: semRows, error: semError } = await rag.rpc("match_youtube_transcripts_v2", {
+      query_embedding: vector,
+      match_count: 200,
+      video_filter: videoId ?? null,
+    });
+    if (!semError && Array.isArray(semRows) && semRows.length > 0) {
+      const rows = dedupeRows(
+        (semRows as (Row & { similarity: number })[]).map((r) => ({
+          video_id: r.video_id,
+          video_title: r.video_title,
+          start_time: r.start_time,
+          chunk_text: r.chunk_text,
+          manufacturer_name: r.manufacturer_name,
+        })),
+      );
+      const sources = assembleSources(rows, max, videoId); // keep similarity order
+      if (sources.length > 0) return sources;
+    }
+  }
+
+  // FTS path: Postgres full-text search (stemmed, DB-side pre-ranked).
   // The RPC unions a ts_rank-ordered co-occurrence pool with LIMITed per-term
   // pools, deduped server-side. Falls back to the per-term ILIKE path on RPC
   // error or zero rows.
@@ -177,33 +300,7 @@ export async function retrieveTubeSources(
     .filter((x) => x.r.video_id && x.r.chunk_text && x.matched >= minMatch)
     .sort((a, b) => b.score - a.score);
 
-  // Diversify across videos (max 3 moments per video) — skipped when scoped
-  // to a single video, since the cap would otherwise throttle results to 3.
-  const perVideo = new Map<string, number>();
-  const out: TubeSource[] = [];
-  for (const { r } of scored) {
-    const vid = r.video_id as string;
-    if (!videoId) {
-      const n = perVideo.get(vid) ?? 0;
-      if (n >= 3) continue;
-      perVideo.set(vid, n + 1);
-    }
-    const start = Math.max(0, Math.floor(Number(r.start_time) || 0));
-    const ch = channelLabel(r.manufacturer_name);
-    out.push({
-      id: `S${out.length + 1}`,
-      title: (r.video_title ?? "Untitled").trim() || "Untitled",
-      channel: ch,
-      text: r.chunk_text as string,
-      videoId: vid,
-      start,
-      // Stay in-app: link to the Navigator's own player at the cited second.
-      url: `/tube/${vid}?t=${start}`,
-      meta: `${ch} · ${fmt(start)}`,
-    });
-    if (out.length >= max) break;
-  }
-  return out;
+  return assembleSources(scored.map((x) => x.r), max, videoId);
 }
 
 /**
