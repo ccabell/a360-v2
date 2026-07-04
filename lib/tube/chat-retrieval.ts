@@ -74,6 +74,47 @@ export async function getVideoMetaById(
   return { title: (r.video_title ?? "Untitled").trim() || "Untitled", channel: channelLabel(r.manufacturer_name) };
 }
 
+/** Merge + dedupe rows by video_id + start_time (corpus has duplicate rows). */
+function dedupeRows(rows: Row[]): Row[] {
+  const seen = new Set<string>();
+  const out: Row[] = [];
+  for (const r of rows) {
+    const key = `${r.video_id}:${r.start_time}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(r);
+  }
+  return out;
+}
+
+/**
+ * Per-term ILIKE candidate retrieval (original path, kept as fallback for
+ * environments where the FTS RPC/migration isn't available, or when the RPC
+ * yields nothing).
+ */
+async function retrieveByIlike(terms: string[], videoId?: string): Promise<Row[]> {
+  // Query per term (most-specific/longest first, capped at 6) so a common word
+  // can't flood the pool before scoring — each term gets its own slice.
+  const queryTerms = terms.slice(0, 6);
+  const results = await Promise.all(
+    queryTerms.map((t) => {
+      let q = rag
+        .from("manufacturer_youtube_transcript")
+        .select("video_id,video_title,start_time,chunk_text,manufacturer_name")
+        .ilike("chunk_text", `%${t}%`);
+      if (videoId) q = q.eq("video_id", videoId);
+      return q.limit(120);
+    }),
+  );
+
+  const rows: Row[] = [];
+  for (const { data, error } of results) {
+    if (error || !Array.isArray(data)) continue;
+    rows.push(...(data as Row[]));
+  }
+  return dedupeRows(rows);
+}
+
 /**
  * Retrieve grounded, deep-linkable sources for a question (keyword + scoring).
  *
@@ -89,31 +130,32 @@ export async function retrieveTubeSources(
   const terms = tokenize(question);
   if (terms.length === 0) return [];
 
-  // Query per term (most-specific/longest first, capped at 6) so a common word
-  // can't flood the pool before scoring — each term gets its own slice.
-  const queryTerms = terms.slice(0, 6);
-  const results = await Promise.all(
-    queryTerms.map((t) => {
-      let q = rag
-        .from("manufacturer_youtube_transcript")
-        .select("video_id,video_title,start_time,chunk_text,manufacturer_name")
-        .ilike("chunk_text", `%${t}%`);
-      if (videoId) q = q.eq("video_id", videoId);
-      return q.limit(120);
-    }),
-  );
-
-  // Merge + dedupe by video_id + start_time.
-  const seen = new Set<string>();
-  const data: Row[] = [];
-  for (const { data: rows, error } of results) {
-    if (error || !Array.isArray(rows)) continue;
-    for (const r of rows as Row[]) {
-      const key = `${r.video_id}:${r.start_time}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      data.push(r);
-    }
+  // Primary path: Postgres full-text search (stemmed, DB-side pre-ranked).
+  // The RPC unions a ts_rank-ordered co-occurrence pool with LIMITed per-term
+  // pools, deduped server-side. Falls back to the per-term ILIKE path on RPC
+  // error or zero rows.
+  let data: Row[] = [];
+  const { data: ftsRows, error: ftsError } = await rag.rpc("search_youtube_transcripts_fts", {
+    terms: terms.slice(0, 6),
+    video_filter: videoId ?? null,
+    per_term: 120,
+    max_rows: 500,
+  });
+  if (!ftsError && Array.isArray(ftsRows)) {
+    data = dedupeRows(
+      (ftsRows as { video_id: string | null; video_title: string | null; start_time: number | null; chunk_text: string | null; manufacturer_name: string | null }[]).map(
+        (r) => ({
+          video_id: r.video_id,
+          video_title: r.video_title,
+          start_time: r.start_time,
+          chunk_text: r.chunk_text,
+          manufacturer_name: r.manufacturer_name,
+        }),
+      ),
+    );
+  }
+  if (data.length === 0) {
+    data = await retrieveByIlike(terms, videoId);
   }
   if (data.length === 0) return [];
 
