@@ -1,0 +1,2830 @@
+{
+  "generated": "2026-06-12",
+  "blocked": [
+    [
+      "Journal of Clinical and Cosmetic Dermatology",
+      "https://sciforschenonline.org/journals/clinical-cosmetic-dermatology/",
+      "HTTP 403"
+    ],
+    [
+      "Journal of Aesthetic Nursing",
+      "https://www.magonlinelibrary.com/journal/joan",
+      "HTTP 403"
+    ]
+  ],
+  "crawl_log": [
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/current-issue",
+      "bytes": 27013
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/archives",
+      "bytes": 27274
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/11/1",
+      "bytes": 26853
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/10/2",
+      "bytes": 23634
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/10/1",
+      "bytes": 28919
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/9/2",
+      "bytes": 25824
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/9/1",
+      "bytes": 30200
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/8/2",
+      "bytes": 25101
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/8/1",
+      "bytes": 29632
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/7/3",
+      "bytes": 32201
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/7/2",
+      "bytes": 30367
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/7/1",
+      "bytes": 32160
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/6/2",
+      "bytes": 29396
+    },
+    {
+      "source": "Journal of Clinical Dermatology & Therapy",
+      "url": "https://www.heraldopenaccess.us/journals/journal-of-clinical-dermatology-therapy/issues/6/1",
+      "bytes": 28286
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/current",
+      "bytes": 108571
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/archive",
+      "bytes": 42789
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/60",
+      "bytes": 108571
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/59",
+      "bytes": 160723
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/58",
+      "bytes": 80101
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/57",
+      "bytes": 316502
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/56",
+      "bytes": 78564
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/55",
+      "bytes": 101771
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/54",
+      "bytes": 77144
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/53",
+      "bytes": 162754
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/52",
+      "bytes": 99836
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/51",
+      "bytes": 245850
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/50",
+      "bytes": 77719
+    },
+    {
+      "source": "SKIN: The Journal of Cutaneous Medicine",
+      "url": "https://skin.dermsquared.com/skin/issue/view/49",
+      "bytes": 102288
+    },
+    {
+      "source": "Aesthetic Medicine",
+      "url": "https://aestheticmed.co.uk/injectables",
+      "bytes": 114075
+    },
+    {
+      "source": "Aesthetic Medicine",
+      "url": "https://aestheticmed.co.uk/skincare",
+      "bytes": 117561
+    },
+    {
+      "source": "Aesthetic Medicine",
+      "url": "https://aestheticmed.co.uk/features",
+      "bytes": 105943
+    },
+    {
+      "source": "Aesthetic Medicine",
+      "url": "https://aestheticmed.co.uk/health-and-wellness",
+      "bytes": 119910
+    }
+  ],
+  "article_links": {
+    "Journal of Clinical Dermatology & Therapy": [
+      "https://www.heraldopenaccess.us/openaccess/exosomes-in-dermatological-aesthetics-cosmetic-skin-care",
+      "https://www.heraldopenaccess.us/openaccess/the-relationship-between-melasma-and-serum-zinc-levels",
+      "https://www.heraldopenaccess.us/openaccess/tissue-integration-an-cellular-response-to-collagen-biostimulators-in-orofacial-harmonization-an-integrative-review",
+      "https://www.heraldopenaccess.us/openaccess/microneedling-for-medical-and-aesthetic-purposes-current-indications-and-new-advances",
+      "https://www.heraldopenaccess.us/openaccess/platelet-rich-plasma-in-the-treatment-of-frontal-fibrosing-alopecia",
+      "https://www.heraldopenaccess.us/openaccess/microneedle-radiofrequency-combined-with-human-fibroblast-conditioned-media-for-acne-scars-and-skin-rejuvenation",
+      "https://www.heraldopenaccess.us/openaccess/glutamic-acid-grafted-hyaluronic-acid-inhibits-inflammatory-factors-via-fibroblast-and-skin-model-tests",
+      "https://www.heraldopenaccess.us/openaccess/injection-of-enriched-hyaluronic-acid-for-vaginal-dryness-in-a-tamoxifen-user"
+    ],
+    "SKIN: The Journal of Cutaneous Medicine": [
+      "https://skin.dermsquared.com/skin/article/view/3596",
+      "https://skin.dermsquared.com/skin/article/view/3594",
+      "https://skin.dermsquared.com/skin/article/view/3253",
+      "https://skin.dermsquared.com/skin/article/view/2342",
+      "https://skin.dermsquared.com/skin/article/view/3255",
+      "https://skin.dermsquared.com/skin/article/view/3356",
+      "https://skin.dermsquared.com/skin/article/view/3256",
+      "https://skin.dermsquared.com/skin/article/view/3621",
+      "https://skin.dermsquared.com/skin/article/view/4226",
+      "https://skin.dermsquared.com/skin/article/view/4231",
+      "https://skin.dermsquared.com/skin/article/view/4228",
+      "https://skin.dermsquared.com/skin/article/view/2505",
+      "https://skin.dermsquared.com/skin/article/view/3315",
+      "https://skin.dermsquared.com/skin/article/view/3319",
+      "https://skin.dermsquared.com/skin/article/view/3031",
+      "https://skin.dermsquared.com/skin/article/view/2750",
+      "https://skin.dermsquared.com/skin/article/view/3636",
+      "https://skin.dermsquared.com/skin/article/view/3178",
+      "https://skin.dermsquared.com/skin/article/view/4186"
+    ],
+    "Aesthetic Medicine": [
+      "https://aestheticmed.co.uk/new-british-college-of-cosmetic-surgery-launches",
+      "https://aestheticmed.co.uk/aesthetics",
+      "https://aestheticmed.co.uk/regenerative-medicine1",
+      "https://aestheticmed.co.uk/asa-glp1-weight-loss-drugs-uk-awareness-advertising-crackdown",
+      "https://aestheticmed.co.uk/hydrafacial-appoint-reena-sandhu-as-international-product-and-brand-marketing-manager",
+      "https://aestheticmed.co.uk/the-glp-1-era-and-facial-aesthetics-at-am-london-20261",
+      "https://aestheticmed.co.uk/clinical-area-aesthetic-medicine-london-2026",
+      "https://aestheticmed.co.uk/pharmacist-suspended-botulinum-toxin-uk",
+      "https://aestheticmed.co.uk/family-outraged-as-lip-king-sells-illegal-weight-loss-injections-after-fatal-non-surgical-bbl",
+      "https://aestheticmed.co.uk/peptides-aesthetic-medicine-evidence-safety-regulation",
+      "https://aestheticmed.co.uk/plumping-the-lips-without-filler",
+      "https://aestheticmed.co.uk/5-black-aesthetic-experts-to-follow",
+      "https://aestheticmed.co.uk/may-aesthetic-products-roundup",
+      "https://aestheticmed.co.uk/illicit-weight-loss-injection-factory-dismantled-by-uk-regulator",
+      "https://aestheticmed.co.uk/autoimmune-disease-and-skin-sensitivity",
+      "https://aestheticmed.co.uk/the-dangers-of-an-unregulated-cosmetic-injectables-industry",
+      "https://aestheticmed.co.uk/optimising-combination-treatments-in-aesthetic-medicine",
+      "https://aestheticmed.co.uk/bcam-warning-over-illegal-and-unregulated-peptide-injections",
+      "https://aestheticmed.co.uk/asa-cracks-down-on-weight-loss-medication-ads",
+      "https://aestheticmed.co.uk/understanding-lipoedema-how-to-help-patients-non-surgically",
+      "https://aestheticmed.co.uk/skin-boosters-ha-vs-polynucleotides-biorevitalisers",
+      "https://aestheticmed.co.uk/dr-lisa-dinley-aesthetic-medicine-patient-safety-evidence-based-practice",
+      "https://aestheticmed.co.uk/investigation-reveals-patients-are-using-ai-and-editing-tools-to-obtain-weight-loss-drugs-from-online-pharmacies",
+      "https://aestheticmed.co.uk/how-to-choose-the-right-led-device-for-cosmetic-treatments",
+      "https://aestheticmed.co.uk/how-to-treat-melasma-in-clinic",
+      "https://aestheticmed.co.uk/all-about-platelet-rich-plasma-prp",
+      "https://aestheticmed.co.uk/cosmetic-surgery",
+      "https://aestheticmed.co.uk/what-is-nanoneedling",
+      "https://aestheticmed.co.uk/higher-dosage-weight-loss-injection-wegovy-gains-approval-in-the-uk",
+      "https://aestheticmed.co.uk/ukhsa-issues-warning-over-botulism",
+      "https://aestheticmed.co.uk/collagen-supplements-improve-skin-elasticity-and-hydration-but-are-not-a-cure-all-new-review-finds",
+      "https://aestheticmed.co.uk/the-wellness-and-aesthetic-trends-shaping-patient-expectations-and-demands",
+      "https://aestheticmed.co.uk/how-to-devise-your-own-signature-treatment",
+      "https://aestheticmed.co.uk/collagen-banking-benefits-how-to-boost-collagen",
+      "https://aestheticmed.co.uk/the-best-aesthetic-treatments-for-prejuvenation-and-skin-longevity",
+      "https://aestheticmed.co.uk/gender-affirming-inclusive-aesthetic-care-joelle-rotsaert"
+    ]
+  },
+  "records": [
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Exosomes in Dermatological Aesthetics & Cosmetic Skin Care",
+      "abstract": "The skin, as the largest organ of the human body, is continuously exposed to external influences and aging processes.",
+      "doi": "10.24966/cdt-8771/100147",
+      "url": "https://www.heraldopenaccess.us/openaccess/exosomes-in-dermatological-aesthetics-cosmetic-skin-care",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Glutamic-Acid Grafted Hyaluronic Acid Inhibits Inflammatory Factors via Fibroblast and Skin Model Tests",
+      "abstract": "The study describes how excessive inflammation can compromise the skin barrier and lead to issues like aging and various skin diseases",
+      "doi": "10.24966/cdt-8771/100143",
+      "url": "https://www.heraldopenaccess.us/openaccess/glutamic-acid-grafted-hyaluronic-acid-inhibits-inflammatory-factors-via-fibroblast-and-skin-model-tests",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers",
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Injection of Enriched Hyaluronic Acid for Vaginal Dryness in a Tamoxifen User",
+      "abstract": "The injectable use of cross-linked Hyaluronic Acid (HA) gel in the vaginal walls has demonstrated encouraging results in improving the symptoms of vaginal dryness but it was associated with non-thrombotic pulmonar embolism.",
+      "doi": "10.24966/cdt-8771/100115",
+      "url": "https://www.heraldopenaccess.us/openaccess/injection-of-enriched-hyaluronic-acid-for-vaginal-dryness-in-a-tamoxifen-user",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "injectables_neurotoxins",
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Microneedle Radiofrequency Combined with Human Fibroblast Conditioned Media for Acne Scars and Skin Rejuvenation",
+      "abstract": "Acne vulgaris is one of the most common dermatology problems in the world. Acne scar can cause stress for sufferers. Microneedle Radiofrequency (MR) clinically has an effectiveness treating acne, acne scars and skin aging. MR acting as electrodes and directly deliver radiofrequency energy deep into the skin to induce new collagen production, dermal thickening and re epitelization.",
+      "doi": "10.24966/cdt-8771/100056",
+      "url": "https://www.heraldopenaccess.us/openaccess/microneedle-radiofrequency-combined-with-human-fibroblast-conditioned-media-for-acne-scars-and-skin-rejuvenation",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers",
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "combination_observation",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Microneedling for Medical and Aesthetic Purposes: Current Indications and New Advances",
+      "abstract": "This process triggers the release of growth factors and the recruitment of platelets and neutrophils to induce the natural wound-healing cascade leading to non-fibrotic skin remodeling",
+      "doi": "10.24966/cdt-8771/100123",
+      "url": "https://www.heraldopenaccess.us/openaccess/microneedling-for-medical-and-aesthetic-purposes-current-indications-and-new-advances",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "rf_microneedling_ultrasound",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Platelet Rich Plasma in the Treatment of Frontal Fibrosing Alopecia",
+      "abstract": "Frontal Fibrosing Alopecia (FFA) represents a form of scaring alopecia more frequent in postmenopausal women that presents with frontal hairline recession. It is typically classified as a variant of lichen planopilaris. Treatment of FFA can be challenging with poor long-term outcomes.",
+      "doi": "10.24966/cdt-8771/100091",
+      "url": "https://www.heraldopenaccess.us/openaccess/platelet-rich-plasma-in-the-treatment-of-frontal-fibrosing-alopecia",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "The Relationship Between Melasma and Serum Zinc Levels",
+      "abstract": "Melasma is a common pigmentary disorder, particularly prevalent in the Asian population. Often referred to as the",
+      "doi": "10.24966/cdt-8771/100150",
+      "url": "https://www.heraldopenaccess.us/openaccess/the-relationship-between-melasma-and-serum-zinc-levels",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Tissue Integration an Cellular Response to Collagen Biostimulators in Orofacial Harmonization: An Integrative Review",
+      "abstract": "What is the impact of collagen biostimulators on tissue integration, healing, and foreign body response in humans and animals within the context of facial harmonization and experimental studies?",
+      "doi": "10.24966/cdt-8771/100149",
+      "url": "https://www.heraldopenaccess.us/openaccess/tissue-integration-an-cellular-response-to-collagen-biostimulators-in-orofacial-harmonization-an-integrative-review",
+      "pdf_url": "https://pdfs.semanticscholar.org/1cd9/70cd11ab43f347d87b5f4565c5e67f8108d2.pdf",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Cutaneous Collagenous Vasculopathy in a Young Adult: A Case Report",
+      "abstract": "Cutaneous collagenous vasculopathy (CCV) is a microangiopathy characterized by diffuse cutaneous telangiectasias presenting initially in the extremities. It was first described in 2000 with nearly 60 cases reported primarily in middle-aged adults. It shares clinical features with generalized essential telangiectasia but is distinct in its histopathology. The pathophysiology remains unknown. We present a case of pediatric onset of CCV in a young woman.",
+      "doi": "10.25251/skin.8.5.17",
+      "url": "https://skin.dermsquared.com/skin/article/view/2342",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2342/2184",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "The Effect of Platelet Rich Plasma (PRP) Plus Microneedling Versus Tranexamic Acid Plus Microneedling in the Biometric Characteristics of Melasma: A Before-After, Assessor Analysis, Blinded, Clinical Trial",
+      "abstract": "Background: Melasma is a chronic, acquired, focal pigment disorder showing symmetrical hyperpigmentation or hypermelanosis of photo-exposed areas on the face. Tranexamic acid (TXA) is a treatment for melasma. The regression of melasma after platelet-rich plasma (PRP) treatment is an interesting finding. Objectives:&nbsp;To evaluate the effect of PRP plus microneedling vs. tranexamic acid plus microneedling on the quality of melasma. Methods:&nbsp;This is a left-right split-face comparison study with 18 patients with melasma. The patients underwent four sessions of PRP plus microneedling and tranexamic acid (5%) plus microneedling on right and left sides of the face, respectively, at monthly intervals. Evaluations were performed before the start of treatment and one month after the last treatment session. Results: Totally, 20 female patients with melasma were included with a mean age of 41 years (range: 34-49 years). Five participants had Fitzpatrick phototype II, eleven had phototype III, and others had phototype IV skin. Both TXA + microneedling and PRP + micro-needling caused a significant reduction in the Tewameter measurement (mean difference PRP =-3.33, P=0.003, and mean difference TXA =-2.15, P=0.003). In addition, the median delta E in the patients who received both treatments was significantly decreased after the treatment (mean difference =6.66, P&lt;0.001 in TXA + microneedling group; mean difference =1.90, P&lt;0.001 in PRP + microneedling group). The patients who received TXA + microneedling showed a significant reduction in melanin mexameter measurement. The patients were satisfied with both treatments. Conclusion:&nbsp;This study showed that PRP and tranexamic acid with microneedling have a significant effect in reducing the MASI score and are considered an effective treatment. Although none of these two methods was superior over the other one, they can be a good combination or alternative for the treatment of melasma because they have good efficacy, safety, tolerability, and satisfaction among patients.",
+      "doi": "10.25251/skin.8.4.3",
+      "url": "https://skin.dermsquared.com/skin/article/view/2505",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2505/2131",
+      "year": "2024",
+      "topics": [
+        "rf_microneedling_ultrasound",
+        "skin_quality_peels",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Allergens Causing Allergic Contact Dermatitis in Cosmetic Products: A Systematic Review",
+      "abstract": "Background: The increasing use of cosmetics worldwide has led to a rise in allergic reactions, particularly due to inadequate risk assessment. Identifying common allergens in cosmetic products causing dermatitis is crucial for effective prevention and management strategies. Objectives: This systematic review aims to determine the list of allergens that most commonly cause allergic contact dermatitis in cosmetic products and to find the patch test positivity rate for cosmetic products. Methods: This systematic review, following the PRISMA guidelines, investigated patch test results on cosmetic-induced contact dermatitis from January 2013 to September 2023 on PubMed, Cochrane, and Medline databases. Inclusion criteria comprised retrospective cohort and clinical trial studies reporting patch test positivity rates and positive allergens in cosmetics, with eligibility determined through independent screening, full-text evaluation, and data extraction. Exclusion criteria comprised abstract-only publications, non-English or Indonesian languages, review articles, and studies with incomplete text. Result: 13 studies were included out of 2,162 initially screened articles, involving 111,097 participants. The selected studies encompassed ten retrospective studies and three clinical trials conducted in various locations, including India, Brazil, North America, Korea, Sweden, and the Czech Republic. The patch test positivity rate ranged from 13% to 100%. The predominant allergens identified in cosmetics were nickel sulfate, fragrance mix I, cobalt chloride, para-phenylenediamine base, potassium dichromate, and balsam of Peru. Conclusion: This systematic review highlights the diversity in patch test positivity rates and identifies key allergens responsible for allergic contact dermatitis in cosmetic products, emphasizing the need for comprehensive evaluation and awareness of cosmetic safety.",
+      "doi": "10.25251/skin.8.6.1",
+      "url": "https://skin.dermsquared.com/skin/article/view/2750",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2750/2228",
+      "year": "2024",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor"
+      ],
+      "quality_score": 11,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Targeted 308-nm Excimer Laser A Safe and Effective Solution for Inflammatory Skin Disorders",
+      "abstract": "Background: The 308-nanometer excimer laser is a targeted ultraviolet B (UVB) light therapy that delivers high-intensity UVB rays directly to affected skin. It has shown considerable efficacy in managing various inflammatory skin conditions, including Psoriasis, Vitiligo, Atopic dermatitis (Eczema), Leukoderma, Alopecia Areata, Chronic recalcitrant dermatitis, Lichen planus, Cutaneous T-cell Lymphoma (e.g. Mycosis fungoides/ Sezary Syndrome), Parapsoriasis, Pityriasis lichenoides chronica, Pruritus, Urticaria pigmentosa, Superficial mycoses (e.g., dermatophytosis [ringworm]. The patient demographic of some of these conditions (e.g. Vitiligo) tends to skew towards patients with darker skin tones. Results: The excimer laser is particularly effective for treating resistant areas, such as the scalp, palmoplantar psoriasis, and hand and foot dermatitis, which often do not respond well to conventional therapies. It has also demonstrated notable success in promoting repigmentation in facial vitiligo, especially in patients with Fitzpatrick skin types IV–VI. Treatment results are typically observed quickly after 5-10 sessions, with sustained improvement and psoriasis clearance evident even at 1-year follow-up. Over the years, access to the Excimer laser procedures has expanded with the availability of these procedures in many private clinics as well as academic facilities. That has increased the availability of the treatment modality and patient choice of therapy. Conclusions: The excimer laser provides a safe, non-invasive treatment option with a strong record of efficacy for multiple inflammatory skin conditions. It is a viable alternative to systemic therapies and can be used either alone or in conjunction with other treatments for optimal patient outcomes.",
+      "doi": "10.25251/skin.8.supp.502",
+      "url": "https://skin.dermsquared.com/skin/article/view/3031",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3031/2275",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "The Rise of TikTok Facial Filler Influencers: Implications for Demand and Practice",
+      "abstract": "Background: This study seeks to analyze online engagement with established TikTok accounts sharing public information about facial fillers and compare these trends with reported industry demand for fillers in 2023. Methods: Relevant TikTok accounts with a focus on facial fillers and aesthetics were identified, with account followers, video likes, and uploads in 2023 measured. Accounts included in our study had to be currently active and English-speaking, with particular attention to high follower accounts (e.g. greater than 20,000 followers). Results: The TikTok accounts analyzed collectively had 1,659,300 online followers with a 11% increase in followers in 2023. Additionally, the total number of likes increased by 6,408,800 and total video content uploads increased by 1,362. Conclusion: According to industry data, there was an 8% increase in filler procedures performed in 2023 suggesting that increased demand may coincide with heightened social media exposure. Due to growing concern over misinformation and a lack of accredited content, the sharing and support of qualified educational material should be emphasized.",
+      "doi": "10.25251/skin.9.1.10",
+      "url": "https://skin.dermsquared.com/skin/article/view/3178",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3178/2381",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Extensive Foreign Body Granulomas Induced by Calcium Hydroxyapatite Filler",
+      "abstract": "Background: Calcium hydroxylapatite (CaHA) is a biocompatible dermal filler used for soft tissue augmentation and collagen stimulation. While generally well-tolerated, rare cases of delayed onset inflammatory nodules, including foreign body granulomas, have been reported. The mechanism for these reactions remains unclear, with potential contributing factors including large particle size, injection technique, and pathogenic contamination leading to biofilm formation.&nbsp; Case presentation: A 69-year-old female presented with multiple firm, erythematous nodules on the face and neck six months after receiving CaHA filler injections at her esthetician’s house. Histopathologic analysis revealed granulomatous inflammation with foreign body giant cells surrounding birefringent material, consistent with a foreign body reaction to CaHA. Although no biofilm was identified, concerns were raised regarding potential contamination due to the non-sterile injection environment. The patient was treated with oral corticosteroids and weekly intralesional triamcinolone injections, leading to gradual improvement over ten months, though residual nodules remained. Conclusion: This case underscores the potential for granulomatous reactions following CaHA filler injections, especially in non-sterile environments. Given the increasing popularity of soft-tissue fillers, dermatologists should maintain a high index of suspicion for inflammatory reactions and emphasize the importance of sterile injection practices.",
+      "doi": "10.25251/skin.9.3.14",
+      "url": "https://skin.dermsquared.com/skin/article/view/3253",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3253/2486",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers",
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "timing_maintenance",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Emotional Anatomy: Botulinum Toxin and the Regulation of Mood",
+      "abstract": "Purpose: Emotions are expressed via coordinated contraction of the small muscles of the face to convey psychological expression. Manipulation of this coordinated movement can affect the emotions that patients experience and results in an influence of limbic system activity. Botulinum toxin is the most popular cosmetic procedure for correction of contraction-associated fine lines and wrinkles, and acts via temporary muscle relaxation. This review explores the effects that botulinum toxin has on specific muscle groups and thereby on emotional expression and feeling. Methods: A literature review regarding understanding of facial anatomy and expressions as well as botulinum toxin’s effect on emotions and communication was conducted via PubMed using search terms such as “botulinum toxin” AND “emotion”. Results were screened for relevance and to include English-only articles. Further articles were included through citation tracking. Authors’ clinical experience was also included. Results: A total of 50 articles were included based on relevance and search terms. Two additional book chapters were added from author knowledge. Biological feedback from the facial feedback, facial mimicry, and emotional contagion are the basis of botulinum toxin-induced emotional influence. The paralysis of muscles associated with frowning (glabellar complex) and smiling (zygomaticus and orbicularis oculi) as a treatment for wrinkles and fine lines can result in patients experiencing more or less positive or negative emotions, depending on which muscles are targeted. Patients treated in the glabellar region only with botulinum toxin reported significant increases in their mood, which was attributed to their acquired inability to produce a frown. This included clinically depressed patients who experienced a significant improvement in depression scores or resolution of depression altogether. Treatment of the “crow’s feet” region canceled the glabella effect when treated alone, resulting in a more negative mood. Conclusions: Facial expressions can influence mood states and perception of emotions. Although known traditionally as a cosmetic treatment, botulinum toxin can also be used to influence patient mood via facial muscle paralysis, and importantly, offers an alternative treatment modality for depression.",
+      "doi": "10.25251/skin.10.supp.570",
+      "url": "https://skin.dermsquared.com/skin/article/view/3255",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3255/2455",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Evaluating the Quality of Social Media Content on Platelet-Rich Plasma for Androgenetic Alopecia and Facial Aesthetics: A Cross-Sectional Study",
+      "abstract": "Purpose: Platelet-rich plasma (PRP) has gained popularity on social media recently for different forms of alopecia and facial aesthetics. Patients increasingly turn to social media for medical advice to help inform their treatment choice. This study assessed the quality of content, creator type, and engagement of content on PRP. Methods: TikTok was searched using keywords related to PRP, identifying the top 180 most-liked videos, of which 140 videos met inclusion and exclusion criteria and were analyzed for duration, views, likes, creator type, and content type. Creators were categorized as dermatologists, other physicians, non-physician health care providers (NPHCPs), or laypeople. Three reviewers assessed each video using the modified DISCERN tool. Intra-class correlation (ICC) was used to determine inter-assessor reliability. An analysis of variance (ANOVA) test was used to compare mean scores across creator categories. Results: Most videos were created by laypeople (61%) and NPHCPs (15%), with dermatologists and other physicians contributing less (11% and 12%, respectively). Most dermatologist and other physician videos were educational, while laypeople’s content was predominantly advertisements or experience-based. Overall, video quality was very poor, with median modified-DISCERN of 1. The grading scale revealed significant differences in the quality of content. Dermatologists and other physicians scored significantly higher than laypeople (p&lt;0.004 and &lt;0.002, respectively) and NPHCPs (p&lt;0.04 and &lt;0.04, respectively) on the modified-DISCERN for androgenetic alopecia. Dermatologists and other physicians scored significantly higher than laypeople (p&lt;0.001 and &lt;0.001, respectively) and NPHCPs (p&lt;0.001 and &lt;0.001, respectively) on the modified-DISCERN for facial aesthetics. Conclusions: This analysis reveals a significant need for improved regulation and quality of medical information shared on social media platforms and increased content production of physician created videos to ensure patient safety and informed decision making.",
+      "doi": "10.25251/skin.10.supp.559",
+      "url": "https://skin.dermsquared.com/skin/article/view/3256",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3256/2443",
+      "year": "2024",
+      "topics": [
+        "regenerative_prp",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Clinical Efficacy of the Human Tyrosinase Inhibitor Thiamidol (isobutylamido thiazolyl resorcinol) in Melasma",
+      "abstract": "Clinical Efficacy of the Human Tyrosinase Inhibitor Thiamidol (isobutylamido thiazolyl resorcinol) in Melasma Dennis Roggenkamp1, Adel Sammain1, Manuela Fürstenau2, Martina Kausch2, Thierry Passeron3,4, Ludger Kolbe2 1International Medical Management, Beiersdorf AG, Hamburg, Germany, 2Research &amp; Development, Beiersdorf AG, Hamburg, Germany, 3Centre Méditerranéen de Médecine Moléculaire – C3M, University Côte d’Azur, INSERM U1065, Nice, France, 4Department of Dermatology, University Côte d’Azur, CHU Nice, Nice, France Thiamidol (isobutylamido thiazolyl resorcinol) was the most potent inhibitor of human tyrosinase identified out of 50,000 screened substances. In vivo, it was well tolerated and improved melasma significantly. This was the first 24-week, randomized, double-blind, vehicle-controlled, cosmetic clinical study to assess the efficacy and tolerability of Thiamidol in moderate-to-severe melasma in phototype III-V subjects with subsequent regression phase. Females allocated to the Thiamidol treatment group (n=23), applied daily Thiamidol-based Serum followed either by a Thiamidol cream with SPF 30 in the morning or by Thiamidol cream without SPF in the evening. The vehicle group (25 females) followed the same skin care routine using the corresponding vehicle formulations. Subjects returned for a follow-up visit 13-20 weeks after treatment (regression phase). Assessments included clinical photography, Melasma Area and Severity Index (MASI), skin lightness, quality of life, and tolerability. Baseline demographics and hyperpigmentation were well balanced across all treatment groups. Clinical photography and MASI improved significantly with Thiamidol versus baseline (p &lt; 0.001) and vehicle (p &lt; 0.001- 0.043) at all time points up to treatment end. At follow-up, MASI was still significantly lower than at baseline but similar for treatment and vehicle groups. Skin lightness and quality of life improved significantly versus baseline without significant differences between treatment and vehicle groups. This study demonstrated that Thiamidol is well tolerated and superior in improving melasma compared to baseline and vehicle over a treatment period of 24 weeks.",
+      "doi": "10.25251/skin.10.supp.544",
+      "url": "https://skin.dermsquared.com/skin/article/view/3315",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3315/2433",
+      "year": "2024",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Combined Thiamidol and Low-fluence Q-switched Nd:YAG Laser for the Treatment of Facial Hyperpigmentation",
+      "abstract": "Background: Thiamidol (isobutylamido thiazolyl resorcinol) is a novel human tyrosinase inhibitor recently shown to be effective in the treatment of hyperpigmentation. Low-fluence Q-switched Nd:YAG 1064-nm laser (LFQS) has proven to be effective for various hyperpigmentary conditions. However, there have been no studies to date on the efficacy and safety of combined Thiamidol and LFQS treatment. Objectives: To compare the efficacy and safety of combined Thiamidol-based serum and LFQS with LFQS monotherapy for facial hyperpigmentation. Materials and Methods: Patients with symmetrical facial hyperpigmentation were treated with five sessions of once weekly LFQS on the whole face. One side was randomly treated with a Thiamidol-based serum formulation and the other side received a placebo cream for 12 weeks. Patients were followed for 8 weeks after the last laser treatment. Relative lightness index (RL*I), Facial Hyperpigmentation Severity Score on the Malar Area (FHSSm), patient satisfaction, recurrence, and adverse events were recorded. Results: Twenty-four (N=24) patients completed the study. Both sides demonstrated significant reductions of mean RL*I and mean FHSSm from baseline (P &lt; .01). At the 4th week, the Thiamidol-based serum treated side showed more improvement in mean RL*I than the placebo-treated side (62.5% vs 47.3% improvement, P &lt; .05). The mean FHSSm on the Thiamidol-based serum treated was reduced at a significantly higher percentage than the placebo- treated side (54.4% vs 40.2% reduction, P &lt; .05). Partial recurrence was observed on both sides. No serious side effects were noted. Conclusion: Combined Thiamidol-based serum and LFQS therapy was more superior than LFQS monotherapy in the treatment of facial hyperpigmentation. Thiamidol-based formulations may serve as adjuvant treatment for patients with hyperpigmentation with standard therapy.",
+      "doi": "10.25251/skin.10.supp.547",
+      "url": "https://skin.dermsquared.com/skin/article/view/3319",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3319/2436",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Treatment of Erythematotelangiectatic Rosacea with Laser and Topical Beta Blocker: A Split-Face Case Study",
+      "abstract": "Introduction: Erythematotelangiectatic rosacea (ER) is the most common rosacea subtype, yet it is the most difficult to control with most standard topical and oral therapies. Case Report: We present a case of a 63-year-old male with persistent facial burning, flushing, erythema, and telangiectasias, consistent with severe ER, unresponsive to a 10-year course of oral doxycycline. Following the twice-daily topical application of timolol maleate and two pulsed-dye laser (PDL) treatments over an 8-week period, both subjective and objective improvements in the patient's ER were observed. Discussion and Conclusions: This case report illustrates timolol maleate as a potential adjuvant to PDL therapy for the management of severe ER. To our knowledge, this represents the first case of ER successfully treated with both timolol maleate and PDL, offering an additional treatment option for patients with this challenging disease.",
+      "doi": "10.25251/e9yxtj18",
+      "url": "https://skin.dermsquared.com/skin/article/view/3356",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3356/2563",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Toxic Shock Syndrome After Fractionated Ablative CO2 Laser",
+      "abstract": "Patient History: A 62-year-old female with history of hyperlipidemia, alcohol use disorder and transient ischemic attack presented to the emergency department with disorientation and a diffuse exanthematous eruption. Five days prior, she underwent a cosmetic CO2 fractionated laser procedure at a medical spa by a non-board-certified physician. Two days post-treatment she developed fever, headache, nausea, vomiting, visual changes and profuse watery diarrhea. Her condition worsened, marked by persistent fever and continuous diarrhea. She was brought to the ED five days post-procedure after developing a rash and altered mental status. Vitals revealed tachycardia, hypotension, with subsequent vitals showing tachycardia and fever. Physical examination displayed a well-demarcated, mask-like honey-colored crusted facial rash with notable sparing around the eyes and lips, with a diffuse morbilliform rash and pronounced intertriginous erythema. Ultimately, she developed chronic petaloid facial scarring, decompensated mixed septic-cardiogenic shock and retinal injury before recovering from targeted antibiosis. Biopsies &amp; Laboratory data: Heavy growth methicillin-sensitive staph aureus on bacterial culture. Herpes Simplex and Zoster PCR negative. Severe thrombocytopenia. No histologic analysis was required for diagnosis. Diagnosis: Staphylococcal toxic shock syndrome Treatment: ICU resuscitation. Clindamycin, cefazolin, mupirocin, and prophylactic acyclovir in addition to cephalexin at discharge. Discussion: This case highlights the severe complications that can arise post-cosmetic laser treatments, emphasizing the importance of a thorough patient history, post-operative care and communication, and proper training of personnel performing laser procedures.",
+      "doi": "10.25251/686zdx68",
+      "url": "https://skin.dermsquared.com/skin/article/view/3594",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3594/2872",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor",
+        "sales_education_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Counterfeit Botulinum Toxin and Cosmetic Iatrogenic Botulism: Emerging Threats that Require Regulatory Reform",
+      "abstract": "Background: There has been a concerning increase in reported cases of cosmetic iatrogenic botulism (CIB) linked to botulinum neurotoxin type A (BoNTA) injections performed by unlicensed or untrained individuals or involving counterfeit BoNTA products administered in non-healthcare settings. Methods: A search was conducted across PubMed, Google Scholar, and Cochrane databases from their inception to identify reports in English regarding CIB linked to procedures carried out by unlicensed or untrained individuals or involving counterfeit BoNTA products. Reviews, letters, and commentaries were excluded. Additionally, online searches were performed to locate reports from Federal and State Boards and Medical Societies. Results: Ten reports of such occurrences were identified, six in the United States and four globally, involving a total of 303 participants. Four of these reports included health advisories issued by the Centers for Disease Control and Prevention (CDC) and State Boards. All but two reports specified the patient’s gender, with a predominance of female patients. Symptoms of botulism typically began within three days of procedure–the most common initial symptoms were blurred vision and ptosis. Approximately half of the patients required hospitalization. When administered, botulism antitoxin proved immediately effective, leading to shorter hospital stays and no fatalities. Discussion: The regulatory gaps that may contribute to unsafe practices in this area are highlighted. There is an urgent need for unified national regulations in the United States, along with global standards, to clearly define who is authorized to perform these procedures and under what conditions they can do so. Furthermore, it is essential to enhance enforcement measures and increase public awareness to protect patients and uphold the highest safety standards.",
+      "doi": "10.25251/kkby0454",
+      "url": "https://skin.dermsquared.com/skin/article/view/3596",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3596/2572",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "A Comparative Analysis of Intralesional Injection Triamcinolone Acetonide, Injection Bleomycin, and Radiofrequency Ablation in the treatment of keloids",
+      "abstract": "Introduction Keloids are benign overgrowths of fibrous tissue that arise from abnormal wound healing. In addition to symptoms like itching, pain, and texture changes, keloids can cause cosmetic disfigurement and psychological distress, particularly when located on exposed body parts. Numerous treatment modalities exist, but comparative data regarding efficacy and side effect profiles remain limited. Aims &amp; Objectives This study aimed to compare the efficacy and side effect profile of intralesional triamcinolone acetonide (TAC), intralesional bleomycin, and intralesional radiofrequency ablation (RFA) in the management of keloids. Methods A total of 117 patients with keloids were enrolled and randomized into three treatment groups: Group A (TAC), Group B (bleomycin), and Group C (RFA). Nine patients were lost to follow-up. Treatment efficacy was assessed using the Patient and Observer Scar Assessment Scale (POSAS), and side effects were monitored throughout the study period. Results All three groups showed significant reductions in POSAS scores compared to baseline. Therapeutic effectiveness was highest in Group A (100%), followed by Group B (80.6%) and Group C (72.2%) (p = 0.004). Side effects were reported in 72% of patients in Groups A and B, and 83.3% in Group C. No recurrence was observed during the 8-week follow-up after treatment completion. Conclusion All three modalities demonstrated effectiveness in keloid treatment. Triamcinolone showed the greatest efficacy with a relatively favorable side effect profile. Bleomycin was moderately effective, while RFA, though effective, was associated with the highest rate of side effects. Limitations Unblinded design, small sample size, short follow-up duration, and potential observer/patient bias.",
+      "doi": "10.25251/bdds8p16",
+      "url": "https://skin.dermsquared.com/skin/article/view/3621",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3621/2701",
+      "year": "2024",
+      "topics": [
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Clinical Approach to Botulinum Toxin in Cosmetic Dermatology and Neurological Conditions",
+      "abstract": "Introduction: Botulinum toxin is a mainstay of treatment in cosmetic dermatology and neurology. Initially approved for ocular disorders, it is now widely used for cosmetic procedures and neurological conditions, such as chronic migraine and spasticity. This review explores the clinical approach to botulinum toxin in patients with overlapping aesthetic and therapeutic needs, highlighting current evidence, safety considerations, and interdisciplinary coordination. Methods: A review of literature on botulinum toxin in cosmetic dermatology and neurology was performed. Original and review articles published before July 4th, 2025 were evaluated for relevance. Discussion: Botulinum toxin inhibits acetylcholine release at the neuromuscular junction by cleaving SNAP-25, leading to reversible muscle paralysis. It reduces dynamic facial wrinkles by relaxing overactive muscles and has additional uses like treating hyperhidrosis and possibly enhancing dermal remodeling. In neurology, botulinum toxin inhibits pain neurotransmitters in chronic migraine and reduces spasticity in conditions like stroke or multiple sclerosis by blocking excessive motor neuron activity. It also relieves dystonia by targeting abnormal muscle contractions. Botulinum toxin is a safe treatment, with common side effects limited to mild local reactions; serious risks are rare but include unwanted diffusion and antibody formation. Careful dosing, anatomical precision, and patient selection minimize complications and improves outcomes. Conclusion: A coordinated, interdisciplinary approach is essential for patients needing both therapeutic and cosmetic treatment. Synchronizing injection timing, dosing, and communication between providers ensures optimal outcomes and minimizes risk.",
+      "doi": "10.25251/6e6n5t29",
+      "url": "https://skin.dermsquared.com/skin/article/view/3636",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3636/2569",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Optimizing Laser and Light-Emitting Technologies: Clinical Considerations and Procedural Insights",
+      "abstract": "Introduction Laser and light-based energy devices play an increasingly prominent role in clinical and aesthetic dermatology, driven by continual advances aimed at enhancing safety, minimizing recovery time, and broadening applicability across diverse skin phototypes. As technologies evolve, clinicians are increasingly tasked with selecting and integrating multiple modalities in a manner that optimizes efficacy while accounting for tolerability and individual patient characteristics. This work synthesizes key clinical considerations and procedural insights from current literature and expert consensus to guide nuanced, patient-centered application of laser and light-based treatments in clinical and aesthetic dermatology. Methods Clinical studies, consensus statements, and expert recommendations were reviewed to synthesize practical guidance on patient selection, device selection, parameter optimization, treatment sequencing, and strategies for minimizing complications. The scope of indications included skin rejuvenation, photodamage, rhytid reduction, vascular and pigmented lesions, scarring, hair removal, and other clinical indications with emphasis on real-world procedural decision making. Clinical applications discussed also included the use of laser and light-based devices for vascular malformations such as port-wine stains, scarring, and inflammatory and pigmentary disorders including psoriasis and vitiligo. Results/Discussion Key considerations include selecting wavelength and pulse duration appropriate for the clinical or aesthetic applications, the depth and absorption characteristics of the target chromophore, initiating treatment with conservative fluence and density settings, and adjusting parameters gradually. Longer wavelengths are generally preferred in higher Fitzpatrick phototypes to reduce pigmentary risk. Fractional delivery systems facilitate effective resurfacing with shorter recovery periods, while nonablative platforms offer reliable improvement for select indications. Recognition of appropriate clinical endpoints helps reduce the risk of overtreatment and adverse events. Sequential or same‑day multimodal approaches, such as vascular laser treatment followed by fractional resurfacing, or combining intense pulsed light with nonablative fractional laser for clinical applications such as scars, can be associated with improved outcomes compared with monotherapy. Adjunctive modalities, including radiofrequency, microneedling, ultrasound, injectables, and platelet‑rich plasma may further enhance results when integrated thoughtfully. Preventive measures such as pretreatment skin conditioning, strict photoprotection, epidermal cooling, and antiviral prophylaxis in appropriate patients are associated with reduced complication rates. Conclusion Laser and light-based clinical and aesthetic treatments benefit from an individualized, indication-driven approach that integrates patient characteristics, thoughtful device selection, parameter optimization, and strategic sequencing. Integrating these considerations can support clinicians in safely and effectively incorporating laser and light-based modalities into comprehensive treatment plans.",
+      "doi": "10.25251/kwvy1y97",
+      "url": "https://skin.dermsquared.com/skin/article/view/4186",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4186/2867",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "lasers_energy_devices",
+        "rf_microneedling_ultrasound",
+        "skin_quality_peels",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Safety and Efficacy of an Oral Nutraceutical Supplement Gummy and Peptide Serum in Promoting Hair Growth: Initial Results of A Randomized Placebo Controlled Trial with an Open Label Extension",
+      "abstract": "Background Female pattern hair loss (FPHL) has a significant psychosocial impact, yet limited FDA approved treatments, leading many to seek nutraceutical alternatives, which lack clinical evidence. This study evaluates a combined oral and topical regimen to promote hair growth and density. Methods Eighty-five females aged 28-65 with self-perceived hair thinning and FPHL will receive active or placebo proprietary nutraceutical supplement gummy and peptide serum for three months, followed by a six month open label phase. Outcomes include phototrichogram analysis, participant assessments, SOCAi™ analysis, and investigator assessments. Safety is assessed via adverse events (AEs) and laboratory assessments. Results Interim data for forty-eight enrolled females with Ludwig I or II FPHL was analyzed (Table 1): Higher mean change in hair count in the active vs. placebo group after three months. In the active group, 82.6% of patients showed improvement in WAASQ scores, with mean improvement of 26.7% at three months and continued improvement at six months. IAAGA was significantly higher in the active group compared to placebo after three months (Figure 1). The treatment group showed a 312% relative improvement compared to placebo and 26.4% improvement compared to the crossover group per SOCAi™ analysis (Figures 2 &amp; 3). Meaningful change is trackable in just 90 days with SOCAi™ (Figure 4). PGIS scores improved in 62.5% of active participants at three months (Figure 5). No clinically significant laboratory changes. Seven AEs were reported, majority were mild to moderately severe and deemed unrelated to treatment. Conclusion Initial data suggests that this proprietary nutraceutical supplement gummy and peptide serum appears to be safe and effective in the treatment of FPHL, a condition where treatment options remain limited despite high prevalence and significant patient burden.",
+      "doi": "10.25251/0razgx60",
+      "url": "https://skin.dermsquared.com/skin/article/view/4226",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4226/2851",
+      "year": "2024",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Curcumin (Curcuma longa): Applications in Clinical, Regenerative and Aesthetic Dermatology",
+      "abstract": "Background Curcumin (CUR), the principal polyphenol in Curcuma longa, has gained increasing interest in dermatology because of its antioxidant, anti-inflammatory, antimicrobial, photoprotective, and regenerative properties. Despite versatile biological activity, its clinical use has been limited by poor bioavailability and significant product variability across formulations. Methods A targeted PubMed search was conducted using a combination of the following keywords: ‘curcumin,’ ‘turmeric,’ and ‘dermatology.’ Only articles in English and relevant to this review were included. Additional articles were included through citation tracking and authors’ clinical expertise. Results The search yielded 375 results, and 94 articles and two webpages were included based on inclusion and exclusion criteria. Discussion CUR modulates multiple intracellular pathways resulting in reduced pro-inflammatory cytokine expression, improved oxidative balance, and enhanced tissue repair. Despite an extremely favorable safety profile, CUR’s clinical use remains limited by poor bioavailability; however, newer formulations, including FDA-recognized medical foods, have substantially improved absorption and product consistency. Clinically, CUR has shown immunomodulatory and anti-inflammatory effects applicable to cutaneous conditions including psoriasis, atopic dermatitis, and photodamage, and has exhibited antimicrobial activity in acne. Aesthetically, CUR reduces melanogenesis and provides firming effects by limiting oxidative stress and matrix metalloproteinase activity. Regeneratively, it modulates key longevity-associated pathways involved in cellular senescence, wound healing and anti-aging. Conclusion CUR represents a safe and multifaceted agent with clinical, aesthetic, and regenerative dermatologic benefits. Prescriptive “medical foods” may be an answer to the clinical and aesthetic limitations of the use of CUR by increasing bioavailability and reducing variability, though more robust clinical trials are needed to define optimal dosing and long-term efficacy.",
+      "doi": "10.25251/526zed25",
+      "url": "https://skin.dermsquared.com/skin/article/view/4228",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4228/2849",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Neuromodulators for Facial Aesthetics: Mechanistic Postulates and Clinical Implications",
+      "abstract": "Background Neuromodulators, primarily botulinum toxin type A (BoNT-A), are a widely used nonsurgical intervention for facial aesthetics. Their applications have expanded from the upper face to the midface, lower face, and neck, driven by advances in anatomical understanding, injection techniques, and patient-tailored approaches. The growing number of available BoNT-A formulations and advanced injection techniques necessitates a detailed understanding to optimize outcomes and minimize complications. Methods A targeted PubMed search was conducted using a combination of the following keywords: ‘botulinum toxin’ and ‘neuromodulators.’ Articles were screened for relevance. Additional articles were included through citation tracking and authors’ clinical expertise. Results Although all BoNT-A products share a common mechanism of action, variability in molecular potency, receptor interactions, patient factors, and injection technique contribute to heterogeneous clinical outcomes. This review synthesizes current mechanistic, biochemical, and clinical evidence to propose a series of postulates that explain how toxin–receptor binding, synaptic vesicle protein 2 (SV2) receptor availability, light chain activity, and toxin distribution collectively determine clinical effect. Recent innovations include formation of hybrid toxins, the use of neuromodulators for facial lifting and shaping, microdroplet (microbotox) techniques for skin quality improvement, and ultrasound-guided injections for anatomical precision. Conclusions Neuromodulators are central to modern facial aesthetics, with expanding formulations and innovations. We propose a series of postulates that may assist clinicians in optimizing toxin selection, injection strategy, and patient outcomes while minimizing adverse effects.",
+      "doi": "10.25251/m8jf0r96",
+      "url": "https://skin.dermsquared.com/skin/article/view/4231",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4231/2848",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "5 Black aesthetic experts to follow",
+      "abstract": "Looking for inspiring professionals? Check out these five Black aesthetic experts who are redefining the industry.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/5-black-aesthetic-experts-to-follow",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Aesthetics",
+      "abstract": "",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/aesthetics",
+      "pdf_url": "",
+      "year": "2000",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 3,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "All about platelet rich plasma (PRP)",
+      "abstract": "Regenerative expert Claudia McGloin answers all of your burning questions about the aesthetic regenerative medicine treatment.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/all-about-platelet-rich-plasma-prp",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "ASA bans weight-loss ads exploiting body insecurities",
+      "abstract": "As part of a wider crackdown on unethical weight loss medication advertisements, the Advertising Standards Agency (ASA) have banned three advertisements for irresponsibly exploiting insecurities around body image to promote weight loss medications.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/asa-cracks-down-on-weight-loss-medication-ads",
+      "pdf_url": "",
+      "year": "2013",
+      "topics": [
+        "glp1_aesthetics"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "71% of UK adults aware of GLP-1 weight loss drugs, ASA survey finds",
+      "abstract": "ASA research finds 71% of UK adults have high awareness of GLP-1 weight loss drugs, as regulators flag widespread breaches in prescription-only medicine advertising.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/asa-glp1-weight-loss-drugs-uk-awareness-advertising-crackdown",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "glp1_aesthetics"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Understanding autoimmune disease and skin sensitivity",
+      "abstract": "Dr Ginni Mansberg explains how autoimmune disease contributes to skin sensitivity in aesthetic practice and why understanding skin barrier dysfunction is essential for safe and effective treatment outcomes.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/autoimmune-disease-and-skin-sensitivity",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "BCAM warns public over illegal and unregulated peptide injections",
+      "abstract": "The British College of Aesthetic Medicine (BCAM) warns against unregulated online peptide injections, highlighting major safety and legal risks for patients.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/bcam-warning-over-illegal-and-unregulated-peptide-injections",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Clinical trends at Aesthetic Medicine London 2026",
+      "abstract": "Keep up-to-date with the latest in clinical education and brands at AM London on 8-9 May at Olympia London.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/clinical-area-aesthetic-medicine-london-2026",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Collagen banking: benefits & how to boost skin collagen",
+      "abstract": "Discover what collagen banking is, how it works, and the best skincare ingredients and treatments to preserve collagen for firmer, youthful-looking skin.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/collagen-banking-benefits-how-to-boost-collagen",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "dermal_fillers",
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Review finds collagen improves skin elasticity and hydration",
+      "abstract": "New umbrella review in Aesthetic Surgery Journal Open Forum analysing 113 trials finds collagen supplements improve skin elasticity, hydration and osteoarthritis symptoms, but are not a quick fix for wrinkles, with experts calling for further dermatology research.",
+      "doi": "10.1093/asjof/ojag018/8446510",
+      "url": "https://aestheticmed.co.uk/collagen-supplements-improve-skin-elasticity-and-hydration-but-are-not-a-cure-all-new-review-finds",
+      "pdf_url": "",
+      "year": "1942",
+      "topics": [
+        "dermal_fillers",
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 6,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Cosmetic surgery",
+      "abstract": "",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/cosmetic-surgery",
+      "pdf_url": "",
+      "year": "2000",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 3,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Why evidence, patient safety and ethics outweighs trends",
+      "abstract": "Dr Lisa Dinley discusses aesthetic medicine, patient safety, ethics and why evidence-based practice must outweigh social media trends, hype and influencer culture.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/dr-lisa-dinley-aesthetic-medicine-patient-safety-evidence-based-practice",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "‘Lip King’ sells illegal weight loss injections after fatal non-surgical BBL",
+      "abstract": "Following the death of mother-of-five Alice Webb after a liquid Brazilian butt lift (BBL), her family has expressed outrage that beauty therapist Jordan James Parke, arrested on suspicion of her manslaughter, is still selling weight-loss jabs online while on bail.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/family-outraged-as-lip-king-sells-illegal-weight-loss-injections-after-fatal-non-surgical-bbl",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "glp1_aesthetics"
+      ],
+      "dossier_use_buckets": [
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Transjectual co-founder Joelle Rotsaert on inclusive aesthetic care",
+      "abstract": "Transjectual co-founder Joelle Rotsaert discusses gender-affirming aesthetics, inclusive patient care, redefining beauty standards, and improving access to supportive healthcare.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/gender-affirming-inclusive-aesthetic-care-joelle-rotsaert",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Higher dose weight loss injection gains UK approval",
+      "abstract": "A higher dose of Novo Nordisk’s weight loss medication, Wegovy has been approved by the Medicines and Healthcare products Regulatory Agency (MHRA) for weight management in patients with obesity in the UK.​",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/higher-dosage-weight-loss-injection-wegovy-gains-approval-in-the-uk",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "glp1_aesthetics"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "How to choose the right LED device for cosmetic treatments",
+      "abstract": "LED light therapy is a staple in professional beauty, but not all devices deliver the same results. Here are the key factors practitioners should consider when choosing an LED device for safe and effective cosmetic treatments.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/how-to-choose-the-right-led-device-for-cosmetic-treatments",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Fox eye lift with dermal fillers",
+      "abstract": "I launched my first signature treatment, InclinEyes, in May. It uses dermal filler to achieve lifted brows, enhanced symmetry and subtly elongated eyes. It was born out of a mix of concern from first-hand observations in my clinic, and a fixation and determination to solve a “puzzle”.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/how-to-devise-your-own-signature-injectable-treatm",
+      "pdf_url": "",
+      "year": "2021",
+      "topics": [
+        "dermal_fillers",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "combination_observation"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "How to treat melasma in clinic according to the experts",
+      "abstract": "The advice on tackling hyperpigmentation, from dermatologist Dr Jinah Yoo, is shared to mark International Pigmentation Day.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/how-to-treat-melasma-in-clinic",
+      "pdf_url": "",
+      "year": "2023",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Hydrafacial appoint Reena Sandhu as product and brand marketing manager",
+      "abstract": "Reena Sandhu has been appointed international product and brand marketing manager for Hydrafacial, leading international product and brand marketing strategy across Europe, the Middle East,Africa; Asia-Pacific; and Latin America.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/hydrafacial-appoint-reena-sandhu-as-international-product-and-brand-marketing-manager",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "MHRA’s largest seizure of unlicensed weight loss medicines",
+      "abstract": "In a major crackdown, the Medicines and Healthcare products Regulatory Agency (MHRA) has dismantled what is believed to be the UK’s first illicit production facility for weight-loss medicine – and the largest single seizure of trafficked weight-loss medicines ever recorded globally.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/illicit-weight-loss-injection-factory-dismantled-by-uk-regulator",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "glp1_aesthetics",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor"
+      ],
+      "quality_score": 6,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Patients are using AI to obtain weight loss drugs from pharmacies",
+      "abstract": "An ITV News investigation has revealed that patients are using AI and photo editing tools to alter images to obtain weight loss drugs.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/investigation-reveals-patients-are-using-ai-and-editing-tools-to-obtain-weight-loss-drugs-from-online-pharmacies",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "glp1_aesthetics"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "May 2026 latest aesthetic products and devices",
+      "abstract": "Discover the best new aesthetic products of May 2026. See the trending skincare, device, and aesthetic launches we're loving this month.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/may-aesthetic-products-roundup",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "New British College of Cosmetic Surgery launches",
+      "abstract": "The College has been established to create an official, profession-led standard for cosmetic surgery practice in the UK.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/new-british-college-of-cosmetic-surgery-launches",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Optimising combination treatments in aesthetic medicine",
+      "abstract": "Dr Shirin Lakhani explores evidence-based combination treatments in aesthetic medicine, focusing on regenerative strategies, PRP, and optimised protocols for improved clinical outcomes and patient satisfaction.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/optimising-combination-treatments-in-aesthetic-medicine",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "combination_observation"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Peptides in aesthetics: evidence, safety and regulation",
+      "abstract": "Explore how peptides are transforming aesthetic medicine, from GLP-1 therapies to regenerative treatments, and the growing need for safety, regulation and evidence-based practice.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/peptides-aesthetic-medicine-evidence-safety-regulation",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "regenerative_prp",
+        "glp1_aesthetics",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Pharmacist suspended over illegal botulinum toxin prescribing",
+      "abstract": "Pharmacist Cornelius Agoye has been suspended for 18 months after a BBC investigation revealed he supplied botulinum toxin without patient assessments, highlighting risks in the UK aesthetics industry.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/pharmacist-suspended-botulinum-toxin-uk",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "injectables_neurotoxins"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Plumping the lips without filler",
+      "abstract": "Overfilled lips are taking a backseat, with naturally hydrated, plump lips stepping into the spotlight with minimal carefully placed injectables and regenerative treatments, such as injectable skin boosters, becoming the latest trend in lip plumping.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/plumping-the-lips-without-filler",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "injectables_neurotoxins",
+        "dermal_fillers",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Regenerative medicine",
+      "abstract": "",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/regenerative-medicine1",
+      "pdf_url": "",
+      "year": "2000",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 3,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Skin boosters: HA, polynucleotides & biorevitalisers explained",
+      "abstract": "A clinician-led guide to skin boosters, comparing hyaluronic acid, biorevitalisers and polynucleotides (PN/PDRN), with evidence, indications and treatment sequencing.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/skin-boosters-ha-vs-polynucleotides-biorevitalisers",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "dermal_fillers",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 6,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Prejuvenation: why under-35s are choosing a less-is-more approach to skin health",
+      "abstract": "Discover how prejuvenation is reshaping aesthetic treatments for under-35s, focusing on collagen support, skin resilience, and a less-is-more approach to long-term skin health.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/the-best-aesthetic-treatments-for-prejuvenation-and-skin-longevity",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "dermal_fillers",
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "The dangers of an unregulated cosmetic injectables industry",
+      "abstract": "​Unlike other areas of medicine, the aesthetics industry remains largely unregulated. According to the Chartered Institute of Environmental Health, over two-thirds (68%) of cosmetic injections are administered by non-medics.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/the-dangers-of-an-unregulated-cosmetic-injectables-industry",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "injectables_neurotoxins"
+      ],
+      "dossier_use_buckets": [
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Master anatomy-driven lower facial toxin techniques with Sharon Bennett at Aesthetic Medicine London 2026",
+      "abstract": "Master lower facial aesthetics with Sharon Bennett at #AMLondon 2026. Discover anatomy-driven botulinum toxin strategies at the BAMAN Spring Symposium. Register now.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/the-glp-1-era-and-facial-aesthetics-at-am-london-20261",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "injectables_neurotoxins"
+      ],
+      "dossier_use_buckets": [
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Wellness and aesthetic trends shaping expectations",
+      "abstract": "How wellness trends are reshaping aesthetic treatments, client expectations and clinic services.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/the-wellness-and-aesthetic-trends-shaping-patient-expectations-and-demands",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 4,
+      "quality_tier": "D",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "UKHSA-issues-warning-over-botulism-caused-by-fake-toxin",
+      "abstract": "Forty-one cases of botulism poisoning have now been recorded in England following the suspected use of unlicensed 'Botox-like' products.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/ukhsa-issues-warning-over-botulism",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "injectables_neurotoxins",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor"
+      ],
+      "quality_score": 6,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Understanding lipoedema: how to help patients non-surgically",
+      "abstract": "Learn lipoedema symptoms, causes and how non-surgical therapies like MLD, non-invasive devices and compression can support patients holistically.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/understanding-lipoedema-how-to-help-patients-non-surgically",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "body_contouring"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 5,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "What is nanoneedling?",
+      "abstract": "What is nanoneedling and how does it compare to microneedling? Experts explain the benefits, contraindications, skin concerns, results and treatment tips for therapists.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/what-is-nanoneedling",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor"
+      ],
+      "quality_score": 6,
+      "quality_tier": "C",
+      "pmid": "",
+      "is_pubmed": false
+    }
+  ],
+  "candidates": [
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Exosomes in Dermatological Aesthetics & Cosmetic Skin Care",
+      "abstract": "The skin, as the largest organ of the human body, is continuously exposed to external influences and aging processes.",
+      "doi": "10.24966/cdt-8771/100147",
+      "url": "https://www.heraldopenaccess.us/openaccess/exosomes-in-dermatological-aesthetics-cosmetic-skin-care",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Glutamic-Acid Grafted Hyaluronic Acid Inhibits Inflammatory Factors via Fibroblast and Skin Model Tests",
+      "abstract": "The study describes how excessive inflammation can compromise the skin barrier and lead to issues like aging and various skin diseases",
+      "doi": "10.24966/cdt-8771/100143",
+      "url": "https://www.heraldopenaccess.us/openaccess/glutamic-acid-grafted-hyaluronic-acid-inhibits-inflammatory-factors-via-fibroblast-and-skin-model-tests",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers",
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Injection of Enriched Hyaluronic Acid for Vaginal Dryness in a Tamoxifen User",
+      "abstract": "The injectable use of cross-linked Hyaluronic Acid (HA) gel in the vaginal walls has demonstrated encouraging results in improving the symptoms of vaginal dryness but it was associated with non-thrombotic pulmonar embolism.",
+      "doi": "10.24966/cdt-8771/100115",
+      "url": "https://www.heraldopenaccess.us/openaccess/injection-of-enriched-hyaluronic-acid-for-vaginal-dryness-in-a-tamoxifen-user",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "injectables_neurotoxins",
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Microneedle Radiofrequency Combined with Human Fibroblast Conditioned Media for Acne Scars and Skin Rejuvenation",
+      "abstract": "Acne vulgaris is one of the most common dermatology problems in the world. Acne scar can cause stress for sufferers. Microneedle Radiofrequency (MR) clinically has an effectiveness treating acne, acne scars and skin aging. MR acting as electrodes and directly deliver radiofrequency energy deep into the skin to induce new collagen production, dermal thickening and re epitelization.",
+      "doi": "10.24966/cdt-8771/100056",
+      "url": "https://www.heraldopenaccess.us/openaccess/microneedle-radiofrequency-combined-with-human-fibroblast-conditioned-media-for-acne-scars-and-skin-rejuvenation",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers",
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "combination_observation",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Microneedling for Medical and Aesthetic Purposes: Current Indications and New Advances",
+      "abstract": "This process triggers the release of growth factors and the recruitment of platelets and neutrophils to induce the natural wound-healing cascade leading to non-fibrotic skin remodeling",
+      "doi": "10.24966/cdt-8771/100123",
+      "url": "https://www.heraldopenaccess.us/openaccess/microneedling-for-medical-and-aesthetic-purposes-current-indications-and-new-advances",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "rf_microneedling_ultrasound",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Platelet Rich Plasma in the Treatment of Frontal Fibrosing Alopecia",
+      "abstract": "Frontal Fibrosing Alopecia (FFA) represents a form of scaring alopecia more frequent in postmenopausal women that presents with frontal hairline recession. It is typically classified as a variant of lichen planopilaris. Treatment of FFA can be challenging with poor long-term outcomes.",
+      "doi": "10.24966/cdt-8771/100091",
+      "url": "https://www.heraldopenaccess.us/openaccess/platelet-rich-plasma-in-the-treatment-of-frontal-fibrosing-alopecia",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "The Relationship Between Melasma and Serum Zinc Levels",
+      "abstract": "Melasma is a common pigmentary disorder, particularly prevalent in the Asian population. Often referred to as the",
+      "doi": "10.24966/cdt-8771/100150",
+      "url": "https://www.heraldopenaccess.us/openaccess/the-relationship-between-melasma-and-serum-zinc-levels",
+      "pdf_url": "",
+      "year": "2019",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "source_only_reference"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Journal of Clinical Dermatology & Therapy",
+      "journal": "Journal of Clinical Dermatology & Therapy",
+      "publisher": "Herald Scholarly Open Access",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by",
+      "title": "Tissue Integration an Cellular Response to Collagen Biostimulators in Orofacial Harmonization: An Integrative Review",
+      "abstract": "What is the impact of collagen biostimulators on tissue integration, healing, and foreign body response in humans and animals within the context of facial harmonization and experimental studies?",
+      "doi": "10.24966/cdt-8771/100149",
+      "url": "https://www.heraldopenaccess.us/openaccess/tissue-integration-an-cellular-response-to-collagen-biostimulators-in-orofacial-harmonization-an-integrative-review",
+      "pdf_url": "https://pdfs.semanticscholar.org/1cd9/70cd11ab43f347d87b5f4565c5e67f8108d2.pdf",
+      "year": "2019",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Cutaneous Collagenous Vasculopathy in a Young Adult: A Case Report",
+      "abstract": "Cutaneous collagenous vasculopathy (CCV) is a microangiopathy characterized by diffuse cutaneous telangiectasias presenting initially in the extremities. It was first described in 2000 with nearly 60 cases reported primarily in middle-aged adults. It shares clinical features with generalized essential telangiectasia but is distinct in its histopathology. The pathophysiology remains unknown. We present a case of pediatric onset of CCV in a young woman.",
+      "doi": "10.25251/skin.8.5.17",
+      "url": "https://skin.dermsquared.com/skin/article/view/2342",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2342/2184",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "The Effect of Platelet Rich Plasma (PRP) Plus Microneedling Versus Tranexamic Acid Plus Microneedling in the Biometric Characteristics of Melasma: A Before-After, Assessor Analysis, Blinded, Clinical Trial",
+      "abstract": "Background: Melasma is a chronic, acquired, focal pigment disorder showing symmetrical hyperpigmentation or hypermelanosis of photo-exposed areas on the face. Tranexamic acid (TXA) is a treatment for melasma. The regression of melasma after platelet-rich plasma (PRP) treatment is an interesting finding. Objectives:&nbsp;To evaluate the effect of PRP plus microneedling vs. tranexamic acid plus microneedling on the quality of melasma. Methods:&nbsp;This is a left-right split-face comparison study with 18 patients with melasma. The patients underwent four sessions of PRP plus microneedling and tranexamic acid (5%) plus microneedling on right and left sides of the face, respectively, at monthly intervals. Evaluations were performed before the start of treatment and one month after the last treatment session. Results: Totally, 20 female patients with melasma were included with a mean age of 41 years (range: 34-49 years). Five participants had Fitzpatrick phototype II, eleven had phototype III, and others had phototype IV skin. Both TXA + microneedling and PRP + micro-needling caused a significant reduction in the Tewameter measurement (mean difference PRP =-3.33, P=0.003, and mean difference TXA =-2.15, P=0.003). In addition, the median delta E in the patients who received both treatments was significantly decreased after the treatment (mean difference =6.66, P&lt;0.001 in TXA + microneedling group; mean difference =1.90, P&lt;0.001 in PRP + microneedling group). The patients who received TXA + microneedling showed a significant reduction in melanin mexameter measurement. The patients were satisfied with both treatments. Conclusion:&nbsp;This study showed that PRP and tranexamic acid with microneedling have a significant effect in reducing the MASI score and are considered an effective treatment. Although none of these two methods was superior over the other one, they can be a good combination or alternative for the treatment of melasma because they have good efficacy, safety, tolerability, and satisfaction among patients.",
+      "doi": "10.25251/skin.8.4.3",
+      "url": "https://skin.dermsquared.com/skin/article/view/2505",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2505/2131",
+      "year": "2024",
+      "topics": [
+        "rf_microneedling_ultrasound",
+        "skin_quality_peels",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Allergens Causing Allergic Contact Dermatitis in Cosmetic Products: A Systematic Review",
+      "abstract": "Background: The increasing use of cosmetics worldwide has led to a rise in allergic reactions, particularly due to inadequate risk assessment. Identifying common allergens in cosmetic products causing dermatitis is crucial for effective prevention and management strategies. Objectives: This systematic review aims to determine the list of allergens that most commonly cause allergic contact dermatitis in cosmetic products and to find the patch test positivity rate for cosmetic products. Methods: This systematic review, following the PRISMA guidelines, investigated patch test results on cosmetic-induced contact dermatitis from January 2013 to September 2023 on PubMed, Cochrane, and Medline databases. Inclusion criteria comprised retrospective cohort and clinical trial studies reporting patch test positivity rates and positive allergens in cosmetics, with eligibility determined through independent screening, full-text evaluation, and data extraction. Exclusion criteria comprised abstract-only publications, non-English or Indonesian languages, review articles, and studies with incomplete text. Result: 13 studies were included out of 2,162 initially screened articles, involving 111,097 participants. The selected studies encompassed ten retrospective studies and three clinical trials conducted in various locations, including India, Brazil, North America, Korea, Sweden, and the Czech Republic. The patch test positivity rate ranged from 13% to 100%. The predominant allergens identified in cosmetics were nickel sulfate, fragrance mix I, cobalt chloride, para-phenylenediamine base, potassium dichromate, and balsam of Peru. Conclusion: This systematic review highlights the diversity in patch test positivity rates and identifies key allergens responsible for allergic contact dermatitis in cosmetic products, emphasizing the need for comprehensive evaluation and awareness of cosmetic safety.",
+      "doi": "10.25251/skin.8.6.1",
+      "url": "https://skin.dermsquared.com/skin/article/view/2750",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/2750/2228",
+      "year": "2024",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor"
+      ],
+      "quality_score": 11,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Targeted 308-nm Excimer Laser A Safe and Effective Solution for Inflammatory Skin Disorders",
+      "abstract": "Background: The 308-nanometer excimer laser is a targeted ultraviolet B (UVB) light therapy that delivers high-intensity UVB rays directly to affected skin. It has shown considerable efficacy in managing various inflammatory skin conditions, including Psoriasis, Vitiligo, Atopic dermatitis (Eczema), Leukoderma, Alopecia Areata, Chronic recalcitrant dermatitis, Lichen planus, Cutaneous T-cell Lymphoma (e.g. Mycosis fungoides/ Sezary Syndrome), Parapsoriasis, Pityriasis lichenoides chronica, Pruritus, Urticaria pigmentosa, Superficial mycoses (e.g., dermatophytosis [ringworm]. The patient demographic of some of these conditions (e.g. Vitiligo) tends to skew towards patients with darker skin tones. Results: The excimer laser is particularly effective for treating resistant areas, such as the scalp, palmoplantar psoriasis, and hand and foot dermatitis, which often do not respond well to conventional therapies. It has also demonstrated notable success in promoting repigmentation in facial vitiligo, especially in patients with Fitzpatrick skin types IV–VI. Treatment results are typically observed quickly after 5-10 sessions, with sustained improvement and psoriasis clearance evident even at 1-year follow-up. Over the years, access to the Excimer laser procedures has expanded with the availability of these procedures in many private clinics as well as academic facilities. That has increased the availability of the treatment modality and patient choice of therapy. Conclusions: The excimer laser provides a safe, non-invasive treatment option with a strong record of efficacy for multiple inflammatory skin conditions. It is a viable alternative to systemic therapies and can be used either alone or in conjunction with other treatments for optimal patient outcomes.",
+      "doi": "10.25251/skin.8.supp.502",
+      "url": "https://skin.dermsquared.com/skin/article/view/3031",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3031/2275",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "The Rise of TikTok Facial Filler Influencers: Implications for Demand and Practice",
+      "abstract": "Background: This study seeks to analyze online engagement with established TikTok accounts sharing public information about facial fillers and compare these trends with reported industry demand for fillers in 2023. Methods: Relevant TikTok accounts with a focus on facial fillers and aesthetics were identified, with account followers, video likes, and uploads in 2023 measured. Accounts included in our study had to be currently active and English-speaking, with particular attention to high follower accounts (e.g. greater than 20,000 followers). Results: The TikTok accounts analyzed collectively had 1,659,300 online followers with a 11% increase in followers in 2023. Additionally, the total number of likes increased by 6,408,800 and total video content uploads increased by 1,362. Conclusion: According to industry data, there was an 8% increase in filler procedures performed in 2023 suggesting that increased demand may coincide with heightened social media exposure. Due to growing concern over misinformation and a lack of accredited content, the sharing and support of qualified educational material should be emphasized.",
+      "doi": "10.25251/skin.9.1.10",
+      "url": "https://skin.dermsquared.com/skin/article/view/3178",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3178/2381",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Extensive Foreign Body Granulomas Induced by Calcium Hydroxyapatite Filler",
+      "abstract": "Background: Calcium hydroxylapatite (CaHA) is a biocompatible dermal filler used for soft tissue augmentation and collagen stimulation. While generally well-tolerated, rare cases of delayed onset inflammatory nodules, including foreign body granulomas, have been reported. The mechanism for these reactions remains unclear, with potential contributing factors including large particle size, injection technique, and pathogenic contamination leading to biofilm formation.&nbsp; Case presentation: A 69-year-old female presented with multiple firm, erythematous nodules on the face and neck six months after receiving CaHA filler injections at her esthetician’s house. Histopathologic analysis revealed granulomatous inflammation with foreign body giant cells surrounding birefringent material, consistent with a foreign body reaction to CaHA. Although no biofilm was identified, concerns were raised regarding potential contamination due to the non-sterile injection environment. The patient was treated with oral corticosteroids and weekly intralesional triamcinolone injections, leading to gradual improvement over ten months, though residual nodules remained. Conclusion: This case underscores the potential for granulomatous reactions following CaHA filler injections, especially in non-sterile environments. Given the increasing popularity of soft-tissue fillers, dermatologists should maintain a high index of suspicion for inflammatory reactions and emphasize the importance of sterile injection practices.",
+      "doi": "10.25251/skin.9.3.14",
+      "url": "https://skin.dermsquared.com/skin/article/view/3253",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3253/2486",
+      "year": "2024",
+      "topics": [
+        "dermal_fillers",
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "sales_education_support",
+        "timing_maintenance",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Emotional Anatomy: Botulinum Toxin and the Regulation of Mood",
+      "abstract": "Purpose: Emotions are expressed via coordinated contraction of the small muscles of the face to convey psychological expression. Manipulation of this coordinated movement can affect the emotions that patients experience and results in an influence of limbic system activity. Botulinum toxin is the most popular cosmetic procedure for correction of contraction-associated fine lines and wrinkles, and acts via temporary muscle relaxation. This review explores the effects that botulinum toxin has on specific muscle groups and thereby on emotional expression and feeling. Methods: A literature review regarding understanding of facial anatomy and expressions as well as botulinum toxin’s effect on emotions and communication was conducted via PubMed using search terms such as “botulinum toxin” AND “emotion”. Results were screened for relevance and to include English-only articles. Further articles were included through citation tracking. Authors’ clinical experience was also included. Results: A total of 50 articles were included based on relevance and search terms. Two additional book chapters were added from author knowledge. Biological feedback from the facial feedback, facial mimicry, and emotional contagion are the basis of botulinum toxin-induced emotional influence. The paralysis of muscles associated with frowning (glabellar complex) and smiling (zygomaticus and orbicularis oculi) as a treatment for wrinkles and fine lines can result in patients experiencing more or less positive or negative emotions, depending on which muscles are targeted. Patients treated in the glabellar region only with botulinum toxin reported significant increases in their mood, which was attributed to their acquired inability to produce a frown. This included clinically depressed patients who experienced a significant improvement in depression scores or resolution of depression altogether. Treatment of the “crow’s feet” region canceled the glabella effect when treated alone, resulting in a more negative mood. Conclusions: Facial expressions can influence mood states and perception of emotions. Although known traditionally as a cosmetic treatment, botulinum toxin can also be used to influence patient mood via facial muscle paralysis, and importantly, offers an alternative treatment modality for depression.",
+      "doi": "10.25251/skin.10.supp.570",
+      "url": "https://skin.dermsquared.com/skin/article/view/3255",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3255/2455",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Evaluating the Quality of Social Media Content on Platelet-Rich Plasma for Androgenetic Alopecia and Facial Aesthetics: A Cross-Sectional Study",
+      "abstract": "Purpose: Platelet-rich plasma (PRP) has gained popularity on social media recently for different forms of alopecia and facial aesthetics. Patients increasingly turn to social media for medical advice to help inform their treatment choice. This study assessed the quality of content, creator type, and engagement of content on PRP. Methods: TikTok was searched using keywords related to PRP, identifying the top 180 most-liked videos, of which 140 videos met inclusion and exclusion criteria and were analyzed for duration, views, likes, creator type, and content type. Creators were categorized as dermatologists, other physicians, non-physician health care providers (NPHCPs), or laypeople. Three reviewers assessed each video using the modified DISCERN tool. Intra-class correlation (ICC) was used to determine inter-assessor reliability. An analysis of variance (ANOVA) test was used to compare mean scores across creator categories. Results: Most videos were created by laypeople (61%) and NPHCPs (15%), with dermatologists and other physicians contributing less (11% and 12%, respectively). Most dermatologist and other physician videos were educational, while laypeople’s content was predominantly advertisements or experience-based. Overall, video quality was very poor, with median modified-DISCERN of 1. The grading scale revealed significant differences in the quality of content. Dermatologists and other physicians scored significantly higher than laypeople (p&lt;0.004 and &lt;0.002, respectively) and NPHCPs (p&lt;0.04 and &lt;0.04, respectively) on the modified-DISCERN for androgenetic alopecia. Dermatologists and other physicians scored significantly higher than laypeople (p&lt;0.001 and &lt;0.001, respectively) and NPHCPs (p&lt;0.001 and &lt;0.001, respectively) on the modified-DISCERN for facial aesthetics. Conclusions: This analysis reveals a significant need for improved regulation and quality of medical information shared on social media platforms and increased content production of physician created videos to ensure patient safety and informed decision making.",
+      "doi": "10.25251/skin.10.supp.559",
+      "url": "https://skin.dermsquared.com/skin/article/view/3256",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3256/2443",
+      "year": "2024",
+      "topics": [
+        "regenerative_prp",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Clinical Efficacy of the Human Tyrosinase Inhibitor Thiamidol (isobutylamido thiazolyl resorcinol) in Melasma",
+      "abstract": "Clinical Efficacy of the Human Tyrosinase Inhibitor Thiamidol (isobutylamido thiazolyl resorcinol) in Melasma Dennis Roggenkamp1, Adel Sammain1, Manuela Fürstenau2, Martina Kausch2, Thierry Passeron3,4, Ludger Kolbe2 1International Medical Management, Beiersdorf AG, Hamburg, Germany, 2Research &amp; Development, Beiersdorf AG, Hamburg, Germany, 3Centre Méditerranéen de Médecine Moléculaire – C3M, University Côte d’Azur, INSERM U1065, Nice, France, 4Department of Dermatology, University Côte d’Azur, CHU Nice, Nice, France Thiamidol (isobutylamido thiazolyl resorcinol) was the most potent inhibitor of human tyrosinase identified out of 50,000 screened substances. In vivo, it was well tolerated and improved melasma significantly. This was the first 24-week, randomized, double-blind, vehicle-controlled, cosmetic clinical study to assess the efficacy and tolerability of Thiamidol in moderate-to-severe melasma in phototype III-V subjects with subsequent regression phase. Females allocated to the Thiamidol treatment group (n=23), applied daily Thiamidol-based Serum followed either by a Thiamidol cream with SPF 30 in the morning or by Thiamidol cream without SPF in the evening. The vehicle group (25 females) followed the same skin care routine using the corresponding vehicle formulations. Subjects returned for a follow-up visit 13-20 weeks after treatment (regression phase). Assessments included clinical photography, Melasma Area and Severity Index (MASI), skin lightness, quality of life, and tolerability. Baseline demographics and hyperpigmentation were well balanced across all treatment groups. Clinical photography and MASI improved significantly with Thiamidol versus baseline (p &lt; 0.001) and vehicle (p &lt; 0.001- 0.043) at all time points up to treatment end. At follow-up, MASI was still significantly lower than at baseline but similar for treatment and vehicle groups. Skin lightness and quality of life improved significantly versus baseline without significant differences between treatment and vehicle groups. This study demonstrated that Thiamidol is well tolerated and superior in improving melasma compared to baseline and vehicle over a treatment period of 24 weeks.",
+      "doi": "10.25251/skin.10.supp.544",
+      "url": "https://skin.dermsquared.com/skin/article/view/3315",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3315/2433",
+      "year": "2024",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Combined Thiamidol and Low-fluence Q-switched Nd:YAG Laser for the Treatment of Facial Hyperpigmentation",
+      "abstract": "Background: Thiamidol (isobutylamido thiazolyl resorcinol) is a novel human tyrosinase inhibitor recently shown to be effective in the treatment of hyperpigmentation. Low-fluence Q-switched Nd:YAG 1064-nm laser (LFQS) has proven to be effective for various hyperpigmentary conditions. However, there have been no studies to date on the efficacy and safety of combined Thiamidol and LFQS treatment. Objectives: To compare the efficacy and safety of combined Thiamidol-based serum and LFQS with LFQS monotherapy for facial hyperpigmentation. Materials and Methods: Patients with symmetrical facial hyperpigmentation were treated with five sessions of once weekly LFQS on the whole face. One side was randomly treated with a Thiamidol-based serum formulation and the other side received a placebo cream for 12 weeks. Patients were followed for 8 weeks after the last laser treatment. Relative lightness index (RL*I), Facial Hyperpigmentation Severity Score on the Malar Area (FHSSm), patient satisfaction, recurrence, and adverse events were recorded. Results: Twenty-four (N=24) patients completed the study. Both sides demonstrated significant reductions of mean RL*I and mean FHSSm from baseline (P &lt; .01). At the 4th week, the Thiamidol-based serum treated side showed more improvement in mean RL*I than the placebo-treated side (62.5% vs 47.3% improvement, P &lt; .05). The mean FHSSm on the Thiamidol-based serum treated was reduced at a significantly higher percentage than the placebo- treated side (54.4% vs 40.2% reduction, P &lt; .05). Partial recurrence was observed on both sides. No serious side effects were noted. Conclusion: Combined Thiamidol-based serum and LFQS therapy was more superior than LFQS monotherapy in the treatment of facial hyperpigmentation. Thiamidol-based formulations may serve as adjuvant treatment for patients with hyperpigmentation with standard therapy.",
+      "doi": "10.25251/skin.10.supp.547",
+      "url": "https://skin.dermsquared.com/skin/article/view/3319",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3319/2436",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Treatment of Erythematotelangiectatic Rosacea with Laser and Topical Beta Blocker: A Split-Face Case Study",
+      "abstract": "Introduction: Erythematotelangiectatic rosacea (ER) is the most common rosacea subtype, yet it is the most difficult to control with most standard topical and oral therapies. Case Report: We present a case of a 63-year-old male with persistent facial burning, flushing, erythema, and telangiectasias, consistent with severe ER, unresponsive to a 10-year course of oral doxycycline. Following the twice-daily topical application of timolol maleate and two pulsed-dye laser (PDL) treatments over an 8-week period, both subjective and objective improvements in the patient's ER were observed. Discussion and Conclusions: This case report illustrates timolol maleate as a potential adjuvant to PDL therapy for the management of severe ER. To our knowledge, this represents the first case of ER successfully treated with both timolol maleate and PDL, offering an additional treatment option for patients with this challenging disease.",
+      "doi": "10.25251/e9yxtj18",
+      "url": "https://skin.dermsquared.com/skin/article/view/3356",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3356/2563",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Toxic Shock Syndrome After Fractionated Ablative CO2 Laser",
+      "abstract": "Patient History: A 62-year-old female with history of hyperlipidemia, alcohol use disorder and transient ischemic attack presented to the emergency department with disorientation and a diffuse exanthematous eruption. Five days prior, she underwent a cosmetic CO2 fractionated laser procedure at a medical spa by a non-board-certified physician. Two days post-treatment she developed fever, headache, nausea, vomiting, visual changes and profuse watery diarrhea. Her condition worsened, marked by persistent fever and continuous diarrhea. She was brought to the ED five days post-procedure after developing a rash and altered mental status. Vitals revealed tachycardia, hypotension, with subsequent vitals showing tachycardia and fever. Physical examination displayed a well-demarcated, mask-like honey-colored crusted facial rash with notable sparing around the eyes and lips, with a diffuse morbilliform rash and pronounced intertriginous erythema. Ultimately, she developed chronic petaloid facial scarring, decompensated mixed septic-cardiogenic shock and retinal injury before recovering from targeted antibiosis. Biopsies &amp; Laboratory data: Heavy growth methicillin-sensitive staph aureus on bacterial culture. Herpes Simplex and Zoster PCR negative. Severe thrombocytopenia. No histologic analysis was required for diagnosis. Diagnosis: Staphylococcal toxic shock syndrome Treatment: ICU resuscitation. Clindamycin, cefazolin, mupirocin, and prophylactic acyclovir in addition to cephalexin at discharge. Discussion: This case highlights the severe complications that can arise post-cosmetic laser treatments, emphasizing the importance of a thorough patient history, post-operative care and communication, and proper training of personnel performing laser procedures.",
+      "doi": "10.25251/686zdx68",
+      "url": "https://skin.dermsquared.com/skin/article/view/3594",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3594/2872",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor",
+        "sales_education_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Counterfeit Botulinum Toxin and Cosmetic Iatrogenic Botulism: Emerging Threats that Require Regulatory Reform",
+      "abstract": "Background: There has been a concerning increase in reported cases of cosmetic iatrogenic botulism (CIB) linked to botulinum neurotoxin type A (BoNTA) injections performed by unlicensed or untrained individuals or involving counterfeit BoNTA products administered in non-healthcare settings. Methods: A search was conducted across PubMed, Google Scholar, and Cochrane databases from their inception to identify reports in English regarding CIB linked to procedures carried out by unlicensed or untrained individuals or involving counterfeit BoNTA products. Reviews, letters, and commentaries were excluded. Additionally, online searches were performed to locate reports from Federal and State Boards and Medical Societies. Results: Ten reports of such occurrences were identified, six in the United States and four globally, involving a total of 303 participants. Four of these reports included health advisories issued by the Centers for Disease Control and Prevention (CDC) and State Boards. All but two reports specified the patient’s gender, with a predominance of female patients. Symptoms of botulism typically began within three days of procedure–the most common initial symptoms were blurred vision and ptosis. Approximately half of the patients required hospitalization. When administered, botulism antitoxin proved immediately effective, leading to shorter hospital stays and no fatalities. Discussion: The regulatory gaps that may contribute to unsafe practices in this area are highlighted. There is an urgent need for unified national regulations in the United States, along with global standards, to clearly define who is authorized to perform these procedures and under what conditions they can do so. Furthermore, it is essential to enhance enforcement measures and increase public awareness to protect patients and uphold the highest safety standards.",
+      "doi": "10.25251/kkby0454",
+      "url": "https://skin.dermsquared.com/skin/article/view/3596",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3596/2572",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "A Comparative Analysis of Intralesional Injection Triamcinolone Acetonide, Injection Bleomycin, and Radiofrequency Ablation in the treatment of keloids",
+      "abstract": "Introduction Keloids are benign overgrowths of fibrous tissue that arise from abnormal wound healing. In addition to symptoms like itching, pain, and texture changes, keloids can cause cosmetic disfigurement and psychological distress, particularly when located on exposed body parts. Numerous treatment modalities exist, but comparative data regarding efficacy and side effect profiles remain limited. Aims &amp; Objectives This study aimed to compare the efficacy and side effect profile of intralesional triamcinolone acetonide (TAC), intralesional bleomycin, and intralesional radiofrequency ablation (RFA) in the management of keloids. Methods A total of 117 patients with keloids were enrolled and randomized into three treatment groups: Group A (TAC), Group B (bleomycin), and Group C (RFA). Nine patients were lost to follow-up. Treatment efficacy was assessed using the Patient and Observer Scar Assessment Scale (POSAS), and side effects were monitored throughout the study period. Results All three groups showed significant reductions in POSAS scores compared to baseline. Therapeutic effectiveness was highest in Group A (100%), followed by Group B (80.6%) and Group C (72.2%) (p = 0.004). Side effects were reported in 72% of patients in Groups A and B, and 83.3% in Group C. No recurrence was observed during the 8-week follow-up after treatment completion. Conclusion All three modalities demonstrated effectiveness in keloid treatment. Triamcinolone showed the greatest efficacy with a relatively favorable side effect profile. Bleomycin was moderately effective, while RFA, though effective, was associated with the highest rate of side effects. Limitations Unblinded design, small sample size, short follow-up duration, and potential observer/patient bias.",
+      "doi": "10.25251/bdds8p16",
+      "url": "https://skin.dermsquared.com/skin/article/view/3621",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3621/2701",
+      "year": "2024",
+      "topics": [
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "timing_maintenance",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 10,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Clinical Approach to Botulinum Toxin in Cosmetic Dermatology and Neurological Conditions",
+      "abstract": "Introduction: Botulinum toxin is a mainstay of treatment in cosmetic dermatology and neurology. Initially approved for ocular disorders, it is now widely used for cosmetic procedures and neurological conditions, such as chronic migraine and spasticity. This review explores the clinical approach to botulinum toxin in patients with overlapping aesthetic and therapeutic needs, highlighting current evidence, safety considerations, and interdisciplinary coordination. Methods: A review of literature on botulinum toxin in cosmetic dermatology and neurology was performed. Original and review articles published before July 4th, 2025 were evaluated for relevance. Discussion: Botulinum toxin inhibits acetylcholine release at the neuromuscular junction by cleaving SNAP-25, leading to reversible muscle paralysis. It reduces dynamic facial wrinkles by relaxing overactive muscles and has additional uses like treating hyperhidrosis and possibly enhancing dermal remodeling. In neurology, botulinum toxin inhibits pain neurotransmitters in chronic migraine and reduces spasticity in conditions like stroke or multiple sclerosis by blocking excessive motor neuron activity. It also relieves dystonia by targeting abnormal muscle contractions. Botulinum toxin is a safe treatment, with common side effects limited to mild local reactions; serious risks are rare but include unwanted diffusion and antibody formation. Careful dosing, anatomical precision, and patient selection minimize complications and improves outcomes. Conclusion: A coordinated, interdisciplinary approach is essential for patients needing both therapeutic and cosmetic treatment. Synchronizing injection timing, dosing, and communication between providers ensures optimal outcomes and minimizes risk.",
+      "doi": "10.25251/6e6n5t29",
+      "url": "https://skin.dermsquared.com/skin/article/view/3636",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/3636/2569",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "lasers_energy_devices"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 12,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Optimizing Laser and Light-Emitting Technologies: Clinical Considerations and Procedural Insights",
+      "abstract": "Introduction Laser and light-based energy devices play an increasingly prominent role in clinical and aesthetic dermatology, driven by continual advances aimed at enhancing safety, minimizing recovery time, and broadening applicability across diverse skin phototypes. As technologies evolve, clinicians are increasingly tasked with selecting and integrating multiple modalities in a manner that optimizes efficacy while accounting for tolerability and individual patient characteristics. This work synthesizes key clinical considerations and procedural insights from current literature and expert consensus to guide nuanced, patient-centered application of laser and light-based treatments in clinical and aesthetic dermatology. Methods Clinical studies, consensus statements, and expert recommendations were reviewed to synthesize practical guidance on patient selection, device selection, parameter optimization, treatment sequencing, and strategies for minimizing complications. The scope of indications included skin rejuvenation, photodamage, rhytid reduction, vascular and pigmented lesions, scarring, hair removal, and other clinical indications with emphasis on real-world procedural decision making. Clinical applications discussed also included the use of laser and light-based devices for vascular malformations such as port-wine stains, scarring, and inflammatory and pigmentary disorders including psoriasis and vitiligo. Results/Discussion Key considerations include selecting wavelength and pulse duration appropriate for the clinical or aesthetic applications, the depth and absorption characteristics of the target chromophore, initiating treatment with conservative fluence and density settings, and adjusting parameters gradually. Longer wavelengths are generally preferred in higher Fitzpatrick phototypes to reduce pigmentary risk. Fractional delivery systems facilitate effective resurfacing with shorter recovery periods, while nonablative platforms offer reliable improvement for select indications. Recognition of appropriate clinical endpoints helps reduce the risk of overtreatment and adverse events. Sequential or same‑day multimodal approaches, such as vascular laser treatment followed by fractional resurfacing, or combining intense pulsed light with nonablative fractional laser for clinical applications such as scars, can be associated with improved outcomes compared with monotherapy. Adjunctive modalities, including radiofrequency, microneedling, ultrasound, injectables, and platelet‑rich plasma may further enhance results when integrated thoughtfully. Preventive measures such as pretreatment skin conditioning, strict photoprotection, epidermal cooling, and antiviral prophylaxis in appropriate patients are associated with reduced complication rates. Conclusion Laser and light-based clinical and aesthetic treatments benefit from an individualized, indication-driven approach that integrates patient characteristics, thoughtful device selection, parameter optimization, and strategic sequencing. Integrating these considerations can support clinicians in safely and effectively incorporating laser and light-based modalities into comprehensive treatment plans.",
+      "doi": "10.25251/kwvy1y97",
+      "url": "https://skin.dermsquared.com/skin/article/view/4186",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4186/2867",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "lasers_energy_devices",
+        "rf_microneedling_ultrasound",
+        "skin_quality_peels",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Safety and Efficacy of an Oral Nutraceutical Supplement Gummy and Peptide Serum in Promoting Hair Growth: Initial Results of A Randomized Placebo Controlled Trial with an Open Label Extension",
+      "abstract": "Background Female pattern hair loss (FPHL) has a significant psychosocial impact, yet limited FDA approved treatments, leading many to seek nutraceutical alternatives, which lack clinical evidence. This study evaluates a combined oral and topical regimen to promote hair growth and density. Methods Eighty-five females aged 28-65 with self-perceived hair thinning and FPHL will receive active or placebo proprietary nutraceutical supplement gummy and peptide serum for three months, followed by a six month open label phase. Outcomes include phototrichogram analysis, participant assessments, SOCAi™ analysis, and investigator assessments. Safety is assessed via adverse events (AEs) and laboratory assessments. Results Interim data for forty-eight enrolled females with Ludwig I or II FPHL was analyzed (Table 1): Higher mean change in hair count in the active vs. placebo group after three months. In the active group, 82.6% of patients showed improvement in WAASQ scores, with mean improvement of 26.7% at three months and continued improvement at six months. IAAGA was significantly higher in the active group compared to placebo after three months (Figure 1). The treatment group showed a 312% relative improvement compared to placebo and 26.4% improvement compared to the crossover group per SOCAi™ analysis (Figures 2 &amp; 3). Meaningful change is trackable in just 90 days with SOCAi™ (Figure 4). PGIS scores improved in 62.5% of active participants at three months (Figure 5). No clinically significant laboratory changes. Seven AEs were reported, majority were mild to moderately severe and deemed unrelated to treatment. Conclusion Initial data suggests that this proprietary nutraceutical supplement gummy and peptide serum appears to be safe and effective in the treatment of FPHL, a condition where treatment options remain limited despite high prevalence and significant patient burden.",
+      "doi": "10.25251/0razgx60",
+      "url": "https://skin.dermsquared.com/skin/article/view/4226",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4226/2851",
+      "year": "2024",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Curcumin (Curcuma longa): Applications in Clinical, Regenerative and Aesthetic Dermatology",
+      "abstract": "Background Curcumin (CUR), the principal polyphenol in Curcuma longa, has gained increasing interest in dermatology because of its antioxidant, anti-inflammatory, antimicrobial, photoprotective, and regenerative properties. Despite versatile biological activity, its clinical use has been limited by poor bioavailability and significant product variability across formulations. Methods A targeted PubMed search was conducted using a combination of the following keywords: ‘curcumin,’ ‘turmeric,’ and ‘dermatology.’ Only articles in English and relevant to this review were included. Additional articles were included through citation tracking and authors’ clinical expertise. Results The search yielded 375 results, and 94 articles and two webpages were included based on inclusion and exclusion criteria. Discussion CUR modulates multiple intracellular pathways resulting in reduced pro-inflammatory cytokine expression, improved oxidative balance, and enhanced tissue repair. Despite an extremely favorable safety profile, CUR’s clinical use remains limited by poor bioavailability; however, newer formulations, including FDA-recognized medical foods, have substantially improved absorption and product consistency. Clinically, CUR has shown immunomodulatory and anti-inflammatory effects applicable to cutaneous conditions including psoriasis, atopic dermatitis, and photodamage, and has exhibited antimicrobial activity in acne. Aesthetically, CUR reduces melanogenesis and provides firming effects by limiting oxidative stress and matrix metalloproteinase activity. Regeneratively, it modulates key longevity-associated pathways involved in cellular senescence, wound healing and anti-aging. Conclusion CUR represents a safe and multifaceted agent with clinical, aesthetic, and regenerative dermatologic benefits. Prescriptive “medical foods” may be an answer to the clinical and aesthetic limitations of the use of CUR by increasing bioavailability and reducing variability, though more robust clinical trials are needed to define optimal dosing and long-term efficacy.",
+      "doi": "10.25251/526zed25",
+      "url": "https://skin.dermsquared.com/skin/article/view/4228",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4228/2849",
+      "year": "2024",
+      "topics": [
+        "lasers_energy_devices",
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "timing_maintenance"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "SKIN: The Journal of Cutaneous Medicine",
+      "journal": "SKIN: The Journal of Cutaneous Medicine",
+      "publisher": "Dermatology Education Foundation",
+      "source_kind": "journal",
+      "authority_rank": 3,
+      "rights_class": "open_access_cc_by_nc",
+      "title": "Neuromodulators for Facial Aesthetics: Mechanistic Postulates and Clinical Implications",
+      "abstract": "Background Neuromodulators, primarily botulinum toxin type A (BoNT-A), are a widely used nonsurgical intervention for facial aesthetics. Their applications have expanded from the upper face to the midface, lower face, and neck, driven by advances in anatomical understanding, injection techniques, and patient-tailored approaches. The growing number of available BoNT-A formulations and advanced injection techniques necessitates a detailed understanding to optimize outcomes and minimize complications. Methods A targeted PubMed search was conducted using a combination of the following keywords: ‘botulinum toxin’ and ‘neuromodulators.’ Articles were screened for relevance. Additional articles were included through citation tracking and authors’ clinical expertise. Results Although all BoNT-A products share a common mechanism of action, variability in molecular potency, receptor interactions, patient factors, and injection technique contribute to heterogeneous clinical outcomes. This review synthesizes current mechanistic, biochemical, and clinical evidence to propose a series of postulates that explain how toxin–receptor binding, synaptic vesicle protein 2 (SV2) receptor availability, light chain activity, and toxin distribution collectively determine clinical effect. Recent innovations include formation of hybrid toxins, the use of neuromodulators for facial lifting and shaping, microdroplet (microbotox) techniques for skin quality improvement, and ultrasound-guided injections for anatomical precision. Conclusions Neuromodulators are central to modern facial aesthetics, with expanding formulations and innovations. We propose a series of postulates that may assist clinicians in optimizing toxin selection, injection strategy, and patient outcomes while minimizing adverse effects.",
+      "doi": "10.25251/m8jf0r96",
+      "url": "https://skin.dermsquared.com/skin/article/view/4231",
+      "pdf_url": "https://skin.dermsquared.com/skin/article/download/4231/2848",
+      "year": "2024",
+      "topics": [
+        "injectables_neurotoxins",
+        "rf_microneedling_ultrasound"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "combination_observation",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 13,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Understanding autoimmune disease and skin sensitivity",
+      "abstract": "Dr Ginni Mansberg explains how autoimmune disease contributes to skin sensitivity in aesthetic practice and why understanding skin barrier dysfunction is essential for safe and effective treatment outcomes.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/autoimmune-disease-and-skin-sensitivity",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "skin_quality_peels"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "BCAM warns public over illegal and unregulated peptide injections",
+      "abstract": "The British College of Aesthetic Medicine (BCAM) warns against unregulated online peptide injections, highlighting major safety and legal risks for patients.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/bcam-warning-over-illegal-and-unregulated-peptide-injections",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "medspa_general"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support",
+        "structured_taxonomy_support"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Why evidence, patient safety and ethics outweighs trends",
+      "abstract": "Dr Lisa Dinley discusses aesthetic medicine, patient safety, ethics and why evidence-based practice must outweigh social media trends, hype and influencer culture.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/dr-lisa-dinley-aesthetic-medicine-patient-safety-evidence-based-practice",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor",
+        "sales_education_support"
+      ],
+      "quality_score": 9,
+      "quality_tier": "A",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Optimising combination treatments in aesthetic medicine",
+      "abstract": "Dr Shirin Lakhani explores evidence-based combination treatments in aesthetic medicine, focusing on regenerative strategies, PRP, and optimised protocols for improved clinical outcomes and patient satisfaction.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/optimising-combination-treatments-in-aesthetic-medicine",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "regenerative_prp"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "sales_education_support",
+        "combination_observation"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Peptides in aesthetics: evidence, safety and regulation",
+      "abstract": "Explore how peptides are transforming aesthetic medicine, from GLP-1 therapies to regenerative treatments, and the growing need for safety, regulation and evidence-based practice.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/peptides-aesthetic-medicine-evidence-safety-regulation",
+      "pdf_url": "",
+      "year": "2026",
+      "topics": [
+        "regenerative_prp",
+        "glp1_aesthetics",
+        "practice_safety_patient_selection"
+      ],
+      "dossier_use_buckets": [
+        "clinical_gateway_source",
+        "safety_floor"
+      ],
+      "quality_score": 8,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    },
+    {
+      "discovery_source": "direct_publisher_crawl",
+      "registry_journal": "Aesthetic Medicine",
+      "journal": "Aesthetic Medicine",
+      "publisher": "Mark Allen Group",
+      "source_kind": "industry",
+      "authority_rank": 4,
+      "rights_class": "unknown",
+      "title": "Pharmacist suspended over illegal botulinum toxin prescribing",
+      "abstract": "Pharmacist Cornelius Agoye has been suspended for 18 months after a BBC investigation revealed he supplied botulinum toxin without patient assessments, highlighting risks in the UK aesthetics industry.",
+      "doi": "",
+      "url": "https://aestheticmed.co.uk/pharmacist-suspended-botulinum-toxin-uk",
+      "pdf_url": "",
+      "year": "2025",
+      "topics": [
+        "injectables_neurotoxins"
+      ],
+      "dossier_use_buckets": [
+        "safety_floor",
+        "sales_education_support",
+        "timing_maintenance"
+      ],
+      "quality_score": 7,
+      "quality_tier": "B",
+      "pmid": "",
+      "is_pubmed": false
+    }
+  ],
+  "errors": []
+}
