@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Pipeline Integrity & Data Strategy
-status: Milestone complete
-stopped_at: Completed 12-02-PLAN.md — all 37 combination fuel docs generated, QC report created
-last_updated: "2026-06-14T18:31:20.679Z"
+status: Phase 12 blocked — checkpoint rejected
+stopped_at: "12-03 Task 3 checkpoint REJECTED — Chris reviewed fuel docs in UI, content quality failed human review. Automated QC passed but content itself deemed unusable. Rework required before phase can close."
+last_updated: "2026-06-14T21:00:00.000Z"
 progress:
   total_phases: 3
   completed_phases: 3
@@ -19,12 +19,12 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-14)
 
 **Core value:** OpenEvidence for aesthetic medicine — every clinical claim backed by cited, linkable data
-**Current focus:** Phase 15 — runtime-stabilization
+**Current focus:** Phase 12 — combination-fuel-documents
 
 ## Current Position
 
-Phase: 11.1
-Plan: Not started
+Phase: 12 (combination-fuel-documents) — BLOCKED (checkpoint rejected)
+Plan: 3 of 3 (Tasks 1-2 complete, Task 3 checkpoint rejected — content quality failed human review)
 
 ## v2.0 Phases at a Glance (Planned)
 
@@ -108,6 +108,7 @@ Plan: Not started
 - [Phase 12]: Evidence level weak used for all Sculptra combination pairs — FDA label combination caveat is key disclosure
 - [Phase 12]: SKINVIVE pairs set to weak evidence — microdroplet HA is distinct category from volumizing fillers; BoNT-A+filler studies do not apply
 - [Phase 12]: Botox+Morpheus8 set to strong evidence — DOI 10.1111/j.1524-4725.2005.31105 directly supports same-day RF + BoNT-A safety
+- [Phase 12]: 12-03 checkpoint REJECTED — 37 batch-generated fuel docs passed automated QC (7/7 dimensions) but failed human content quality review. Automated QC checks structure, not substance. Rework required with fundamentally different approach.
 
 ### v1.0 Carry-Forward Context
 
@@ -147,7 +148,7 @@ Plan: Not started
 
 ## Session Continuity
 
-Last session: 2026-06-14T18:24:11.345Z
-Stopped at: Completed 12-02-PLAN.md — all 37 combination fuel docs generated, QC report created
+Last session: 2026-06-14T21:00:00.000Z
+Stopped at: 12-03 checkpoint REJECTED — fuel doc content failed human quality review despite passing automated QC
 Resume file: None
-Next action: Execute 15-02-PLAN.md (frontend page rewrite)
+Next action: Determine rework approach for combination fuel doc content (different generation method, human-in-the-loop, or fundamentally different prompting)

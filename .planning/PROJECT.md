@@ -24,17 +24,23 @@ The A360 Global Library (GL) is a structured knowledge system for aesthetic medi
 - `sales_education` is the PRIMARY lens — deepest compile effort, no liability ceiling
 - Key sections: combination_therapy, cost_benefit, benefit_framing, objection_reframes, maintenance_story
 
-## Current Milestone: v1.1 Pipeline Integrity & Data Strategy
+## Current Milestone: v2.0 Agent Runtime Inspector
 
-**Goal:** Fix operational gaps exposed during v1.0 — validation, execution tracking, podcast data strategy, content quality, and pairing SQL reconciliation — before building more content on a shaky foundation.
+**Goal:** Upgrade the mock Agent Tester into a full runtime observability console that shows the observable trace of every agent run — tool calls, data fetches, evidence lookups, model calls, artifacts, errors, timing — live as it happens and replayable after.
 
 **Target features:**
-- SQL validation harness (per-phase validation files, content fingerprinting gate)
-- Execution manifest (dependency-ordered inventory of all SQL files with status tracking)
-- Podcast data strategy (two-layer evidence model: research layer with anonymous IDs, production layer with PubMed/FDA/consensus)
-- Pairing SQL reconciliation (regenerate SQL from reviewed cards, reconsider Sculptra tiers, apply Chris's review decisions)
-- Content quality gate (hash-based deduplication, product name verification, evidence specificity check)
-- Evidence provenance cleanup (PubMed URL backfill, podcast contamination audit, research vs production source separation)
+- Structured runtime event contract (AgentRunEvent schema with typed events for every runtime phase)
+- Live SSE streaming of trace events to UI
+- Durable trace persistence (agent_runs, agent_run_events, agent_run_artifacts tables)
+- Execution timeline UI (Deep Research-style vertical timeline with expandable steps)
+- Step detail drawer (Summary, Input, Output, Sources, Raw JSON, Errors, Timing tabs)
+- Tool-specific renderers (patient context, fuel docs, evidence links, clinical literature, product info)
+- Universal output viewer (markdown, JSON, table, care plan, evidence list, raw fallback)
+- Replay mode for demo stability (replayable from stored events without rerunning model/tools)
+- Seeded demo scenarios (Sofia Reyes + Consultation Analyst at minimum)
+- Partial/degraded run handling (continue when one tool fails, show exactly where failure occurred)
+- PHI/PII redaction by default (admin mode for raw data, logged access)
+- Run metrics (duration, tokens, tool counts, source counts, artifact counts)
 
 ## Current State (2026-06-13)
 
