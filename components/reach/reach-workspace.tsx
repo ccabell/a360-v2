@@ -13,12 +13,9 @@ import {
 import { BlockCard } from "@/components/studio/BlockCard";
 import type { BlockCardHandle } from "@/components/studio/BlockCard";
 import { BlockConnector } from "@/components/studio/BlockConnector";
-import {
-  UserSearch,
-  Lightbulb,
-  MessageSquareText,
-  CalendarClock,
-} from "lucide-react";
+import { UserSearch, Lightbulb, Mail } from "lucide-react";
+import { CampaignViewer } from "@/components/reach/campaign-viewer";
+import { parseCampaign, type ReachCampaign } from "@/lib/reach/campaign";
 
 interface PatientOption {
   id: string;
@@ -40,7 +37,7 @@ const BLOCKS = [
     title: "Signal Extraction",
     subtitle: "Patient opportunity signals & intent markers",
     color: "blue" as const,
-    tools: ["get_patient_context", "search_podcast"],
+    tools: ["get_patient_context"],
     prompt: `You are a patient signal analyst for a medical aesthetics practice. Analyze this patient's consultation data and extract actionable reach signals.
 
 ## What to Extract
@@ -73,7 +70,12 @@ Be specific. Pull directly from consultation transcript signals. This feeds the 
     title: "Campaign Strategy",
     subtitle: "Outreach angle, timing & channel plan",
     color: "violet" as const,
-    tools: ["search_podcast", "search_fuel_documents", "query_product_database"],
+    tools: [
+      "get_patient_context",
+      "search_fuel_documents",
+      "get_product_info",
+      "query_product_database",
+    ],
     prompt: `You are a patient re-engagement strategist for a medical aesthetics practice. Based on the signal extraction above, design a targeted outreach campaign strategy.
 
 ## Campaign Strategy Output
@@ -103,74 +105,28 @@ Choose one primary angle and explain why it fits this patient:
 How do you know this campaign worked?`,
   },
   {
-    keys: ["reach_plan_agent", "consultation_summarizer"],
-    icon: MessageSquareText,
-    title: "Message Copy",
-    subtitle: "Personalized outreach copy for each touch",
-    color: "emerald" as const,
-    tools: ["search_podcast", "search_fuel_documents"],
-    prompt: `You are a patient communications copywriter for a medical aesthetics practice. Based on the signal extraction and campaign strategy above, write the actual outreach copy.
-
-Write personalized message copy for each touchpoint in the campaign strategy.
-
-## Format for Each Message
-
-**Touch [N] — [Channel] — [Day X Post-Consult]**
-
-Subject line (if email): [subject]
-
----
-[Full message body — use patient's first name, reference specific treatments discussed]
-
----
-CTA: [specific call to action]
-
----
-
-**Requirements:**
-- Use patient's first name throughout
-- Reference the specific treatments they discussed (not generic messaging)
-- Avoid clinical jargon in patient-facing copy unless the patient showed clinical interest
-- Never fabricate outcomes or make unsubstantiated medical claims
-- Include a clear, low-friction CTA in every message
-- Keep email under 200 words; SMS under 160 characters
-
-Write all touches in this response.`,
-  },
-  {
-    keys: ["reach_plan_agent", "consultation_summarizer"],
-    icon: CalendarClock,
-    title: "Follow-Up Schedule",
-    subtitle: "Cadence, automation rules & re-engagement triggers",
+    keys: ["reach_email_composer"],
+    icon: Mail,
+    title: "Email Campaign",
+    subtitle: "Hyperpersonalized email sequence + CRM payload",
     color: "orange" as const,
-    tools: ["search_podcast"],
-    prompt: `You are a patient retention specialist for a medical aesthetics practice. Based on all prior analysis, design the complete follow-up schedule and automation rules for this patient.
+    tools: [
+      "get_patient_context",
+      "search_fuel_documents",
+      "get_product_info",
+      "query_product_database",
+    ],
+    prompt: `Generate the hyperpersonalized email campaign for this patient.
 
-## Follow-Up Schedule
+First call get_patient_context, then classify the campaign type and produce the full campaign as valid JSON exactly matching your output format. Use the campaign strategy context above to inform tone, cadence, and content themes.
 
-**Immediate Follow-Up (0-7 days)**
-Actions to take within the first week post-consultation.
-
-**Short-Term Nurture (1-4 weeks)**
-Touchpoints to maintain engagement if patient hasn't booked.
-
-**Long-Term Retention (1-6 months)**
-Ongoing relationship touchpoints after initial engagement or booking.
-
-**Re-Activation Triggers**
-| Trigger | Action | Channel | Timing |
-|---------|--------|---------|--------|
-| ... | ... | ... | ... |
-
-**Practice Staff Actions**
-Items requiring human touch: personal calls, handwritten notes, in-clinic check-ins.
-
-**Exit Criteria**
-When to stop outreach / move patient to dormant status.
-
-Be specific and actionable. A practice coordinator should be able to follow this schedule directly.`,
+Return JSON only — no markdown fences, no commentary.`,
   },
 ];
+
+// The final block (`reach_email_composer`) emits structured campaign JSON —
+// its output is rendered by CampaignViewer, not the raw BlockCard markdown.
+const COMPOSER_INDEX = BLOCKS.length - 1;
 
 function buildContextPrefix(outputs: string[], upToIndex: number): string {
   const parts: string[] = [];
@@ -207,6 +163,7 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
   const [completedCount, setCompletedCount] = useState(0);
   const [runAllActive, setRunAllActive] = useState(false);
   const [agentsError, setAgentsError] = useState<string | null>(null);
+  const [campaign, setCampaign] = useState<ReachCampaign | null>(null);
 
   const blockRefs = useRef<Array<React.RefObject<BlockCardHandle | null>>>(
     BLOCKS.map(() => React.createRef<BlockCardHandle | null>()),
@@ -265,6 +222,11 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
         return next;
       });
 
+      // The composer block's output is campaign JSON — parse it for the viewer.
+      if (blockIndex === COMPOSER_INDEX) {
+        setCampaign(parseCampaign(output));
+      }
+
       const nextIndex = blockIndex + 1;
       if (nextIndex < BLOCKS.length) {
         const context = buildContextPrefix(outputsRef.current, nextIndex);
@@ -295,6 +257,7 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
     if (!selectedPatientId) return;
     setRunAllActive(true);
     setCompletedCount(0);
+    setCampaign(null);
     outputsRef.current = new Array(BLOCKS.length).fill("");
     setBlockStatuses(new Array(BLOCKS.length).fill("idle") as BlockStatus[]);
     setTimeout(() => {
@@ -324,7 +287,7 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
                   A360 Reach
                 </h1>
                 <p className="mt-1 text-xs text-muted-foreground">
-                  4-agent campaign pipeline · signals → strategy → copy → schedule
+                  Campaign pipeline · signals → strategy → email campaign
                 </p>
               </div>
             </div>
@@ -337,7 +300,10 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
               </label>
               <Select
                 value={selectedPatientId}
-                onValueChange={(v) => setSelectedPatientId(v ?? "")}
+                onValueChange={(v) => {
+                  setSelectedPatientId(v ?? "");
+                  setCampaign(null);
+                }}
               >
                 <SelectTrigger className="h-9 w-full">
                   <SelectValue placeholder="Select a patient…" />
@@ -416,6 +382,15 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
               )}
             </div>
           ))}
+
+          {campaign && (
+            <CampaignViewer
+              campaign={campaign}
+              agentId={resolveAgent(BLOCKS[COMPOSER_INDEX].keys, agents)}
+              patientId={selectedPatientId}
+              onCampaignChange={setCampaign}
+            />
+          )}
         </div>
       </div>
     </div>

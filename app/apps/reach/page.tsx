@@ -11,7 +11,7 @@ export default function StandaloneReachPage() {
       icon={Share2}
       theme="reach"
       subtitle="Patient Re-Engagement Engine"
-      badge="4-Agent Pipeline"
+      badge="Email Campaign Pipeline"
       footer="A360 Reach generates campaign suggestions for licensed aesthetic professionals. All outreach must comply with practice-level consent and marketing authorization policies."
     >
       <ReachWorkspace showHeader={false} />
