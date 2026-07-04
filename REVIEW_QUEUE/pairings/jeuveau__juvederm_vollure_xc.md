@@ -14,29 +14,34 @@
 | 3. Limitation Coverage | PASS | Jeuveau does_not_solve: "Cannot restore lost volume." Juvederm Vollure XC addresses volume. Juvederm Vollure XC does_not_solve: "Cannot address dynamic wrinkles." Jeuveau addresses this. |
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
 | 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
-| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Cross-ecosystem pairing (Evolus neurotoxin + Allergan filler). |
+| 7. Patient Clarity | PASS | Clear distinction: Jeuveau relaxes movement lines; Vollure smooths nasolabial folds. Two different problems, two different solutions. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Limited Jeuveau-specific published evidence. Common tier appropriate. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Newer market entrant, often positioned on price. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Juvederm Vollure XC addresses mid-depth volume (NLF) -- two different aspects of aging treated through two different mechanisms.
+Jeuveau ("Newtox") is an aesthetics-only neurotoxin manufactured using Hi-Pure technology by Evolus -- it has no therapeutic indications, being designed solely for cosmetic use. It addresses dynamic wrinkles through the same botulinum toxin type A mechanism as other neurotoxins. Vollure's VYCROSS-crosslinked HA addresses nasolabial folds and moderate facial lines with an 18-month duration. The combination treats dynamic expression lines (Jeuveau) alongside mid-depth volume loss in the NLF area (Vollure). Note: Jeuveau has limited product-specific published evidence compared to longer-established neurotoxins. The neurotoxin + filler complementarity is mechanism-based and well-established at the category level. Jeuveau maintenance: every 3-4 months. Vollure maintenance: every 12-18 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Newer market entrant, often positioned on price. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Jeuveau 2 weeks before Vollure to assess muscle response before addressing static NLF lines. Standard neurotoxin + filler sequencing applies. Jeuveau retreatment at 3-4 months; Vollure touch-ups at 12-18 months.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Jeuveau is a wrinkle relaxer designed specifically for cosmetic use -- it works by relaxing the muscles that cause expression lines like frown lines and crow's feet. But it can't address the deeper lines that run from your nose to your mouth -- those nasolabial folds come from volume loss over time, not muscle movement. Vollure is a filler designed specifically for those lines, and it typically lasts about 18 months. If you're noticing both expression lines and those deeper smile-line folds, addressing both treats the full picture -- movement-based lines and volume-based lines are two different concerns that each need their own approach."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"When explaining Jeuveau to patients: 'Jeuveau is sometimes called Newtox -- it's a wrinkle relaxer made specifically for cosmetic use. It works the same way as other neurotoxins by relaxing the muscles that cause expression lines.' If patients ask how it compares to other neurotoxins: be straightforward that it works through the same mechanism, and your provider can discuss which option makes the most sense for their individual case. On the pairing with Vollure: 'Vollure addresses a different concern -- the deeper lines around your nose and mouth that come from volume loss, not muscle movement. It's specifically designed for nasolabial folds and tends to last about 18 months.' Note: Jeuveau is an Evolus product and Vollure is Allergan, so they don't share a loyalty program. Let the clinical discussion guide product selection."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Jeuveau:** Indicated for moderate to severe glabellar lines in adults. Aesthetics-only indication, Hi-Pure manufacturing technology.
+- **FDA label -- Juvederm Vollure XC:** Indicated for moderate to severe facial wrinkles and folds (including nasolabial folds) in adults over 21. VYCROSS crosslinking, 18-month duration.
+- **Jeuveau differentiator:** Aesthetics-only FDA indication, Hi-Pure manufacturing technology, Evolus ecosystem (per FDA-approved labeling).
+- **Vollure specificity:** VYCROSS crosslinking, FDA-approved for NLF, 18-month duration (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 

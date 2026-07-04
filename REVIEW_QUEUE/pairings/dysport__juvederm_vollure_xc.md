@@ -15,28 +15,33 @@
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
 | 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
 | 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 7. Patient Clarity | PASS | Clear distinction: Dysport relaxes movement lines across broad areas (forehead, crow's feet); Vollure smooths nasolabial folds. Two different problems, two different solutions. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Broader diffusion pattern, faster onset. Well-documented in multiple podcast episodes. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Juvederm Vollure XC addresses mid-depth volume (NLF) -- two different aspects of aging treated through two different mechanisms.
+Dysport's broader diffusion pattern makes it well-suited for treating large dynamic zones (forehead, lateral crow's feet) with fewer injection points, while Vollure's VYCROSS-crosslinked HA addresses nasolabial folds and moderate facial lines with an 18-month duration. The combination treats two distinct layers of facial aging: Dysport relaxes the muscles causing expression lines (with faster onset at 2-5 days vs 7-14 for some neurotoxins), while Vollure restores mid-depth volume loss in the lower face. Both are established products in their respective categories. Dysport maintenance: every 3-4 months. Vollure maintenance: every 12-18 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Broader diffusion pattern, faster onset. Well-documented in multiple podcast episodes. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Dysport 2 weeks before Vollure to assess muscle response before addressing static NLF lines. Dysport's faster onset (2-5 days) means the provider can evaluate dynamic wrinkle improvement sooner than with some other neurotoxins. Vollure touch-ups typically needed at 12-18 months; Dysport retreatment at 3-4 months.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Dysport works by relaxing the muscles that create expression lines -- it's especially effective for smoothing broad areas like the forehead and crow's feet, and many patients notice results within a few days. But Dysport can't address the deeper lines around your nose and mouth that come from volume loss over time. Vollure is a hyaluronic acid filler designed specifically for those nasolabial fold lines, and it typically lasts about 18 months. If you're seeing both expression lines and those deeper smile lines, addressing them together often produces a more balanced result than treating either one alone."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"When a patient mentions both forehead lines and nasolabial folds, you can explain: 'Those are actually two different concerns with two different causes. The forehead and crow's feet lines come from muscle movement -- Dysport is designed for those areas, and it tends to work well across broader zones. The deeper lines around your nose and mouth are from volume loss over time -- that's where Vollure comes in. Vollure is specifically designed for those nasolabial fold lines and tends to last longer than some other fillers in that area.' If they ask about doing both: 'Some patients choose to address both in the same visit, others prefer to start with one and see how they feel. There's no medical reason you can't do both at once -- your provider would do the Dysport first, then the filler.' The goal is helping patients understand why these are two separate treatments for two separate problems."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Dysport:** Indicated for moderate to severe glabellar lines in adults. Broader diffusion pattern, faster onset (2-5 days).
+- **FDA label -- Juvederm Vollure XC:** Indicated for moderate to severe facial wrinkles and folds (including nasolabial folds) in adults over 21. VYCROSS crosslinking, 18-month duration.
+- **Dysport differentiator:** Broader diffusion pattern suitable for large treatment zones, faster clinical onset at 2-5 days (per FDA-approved labeling and published clinical data).
+- **Vollure specificity:** VYCROSS crosslinking, FDA-approved for NLF, 18-month duration (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 

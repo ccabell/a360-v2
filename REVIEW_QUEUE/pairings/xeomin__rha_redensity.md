@@ -10,33 +10,38 @@
 | Gate | Result | Notes |
 |------|--------|-------|
 | 1. Concern Overlap | PASS | Both address facial aging. Xeomin targets dynamic wrinkles; RHA Redensity targets perioral fine lines with flexible HA. |
-| 2. Mechanism Complementarity | PASS | Neuromodulation (muscle relaxation) vs HA gel scaffold (volume restoration). Different mechanisms at different tissue layers. |
-| 3. Limitation Coverage | PASS | Xeomin does_not_solve: "Cannot restore lost volume." RHA Redensity addresses volume. RHA Redensity does_not_solve: "Cannot address dynamic wrinkles." Xeomin addresses this. |
+| 2. Mechanism Complementarity | PASS | Neuromodulation (muscle relaxation) vs resilient HA (fine line refinement in dynamic areas). Different mechanisms at different tissue layers. |
+| 3. Limitation Coverage | PASS | Xeomin does_not_solve: "Cannot restore lost volume or refine perioral lines." RHA Redensity addresses perioral fine lines. RHA Redensity does_not_solve: "Cannot address dynamic wrinkles in upper face." Xeomin addresses this. |
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
-| 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
-| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 5. Safety | PASS | No known contraindications. Xeomin does not contain accessory proteins; some providers consider this when long-term immunogenicity is a concern. |
+| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Cross-ecosystem pairing (Merz neurotoxin + Revance filler). |
+| 7. Patient Clarity | PASS | Clear distinction: Xeomin relaxes movement lines in upper face as a pure neurotoxin; RHA Redensity refines fine lines around the mouth. Two different zones, two different concerns. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while RHA Redensity addresses perioral fine lines with flexible HA -- two different aspects of aging treated through two different mechanisms.
+Xeomin's "naked molecule" formulation (no complexing proteins, 0.55ng vs 4.5ng for Botox) is a consideration for providers evaluating long-term immunogenicity, as it does not contain accessory proteins. RHA Redensity uses resilient HA technology specifically designed for perioral fine lines and dynamic areas -- it is a "finishing filler" that refines fine lines in areas of constant movement. For patients planning long-term multi-product treatment, Xeomin's lower immunogenicity risk pairs well with a long-term filler maintenance plan. The combination addresses upper-face dynamic wrinkles (Xeomin) alongside perioral fine line refinement (RHA Redensity). This is a cross-ecosystem pairing (Merz + Revance). Xeomin maintenance: every 3-4 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Xeomin 2 weeks before RHA Redensity to assess upper-face muscle response before refining perioral lines. RHA Redensity is typically used as a finishing step after any structural fillers have been placed. In a comprehensive plan: structural filler first, then neurotoxin, then RHA Redensity for perioral refinement. Xeomin retreatment at 3-4 months.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Xeomin is a wrinkle relaxer known as the 'pure' or 'naked' neurotoxin -- it contains only the active ingredient without the extra proteins found in some other options. Some providers consider Xeomin when long-term immunogenicity is a concern, as it does not contain accessory proteins. The fine lines around your mouth are a separate concern -- that area is always moving, and those lines develop differently than expression lines in the forehead. RHA Redensity is a specialized filler designed for exactly those delicate perioral lines. It uses a resilient formula that moves naturally with your expressions rather than stiffening the area. These are two different concerns in two different parts of the face, each addressed by a product designed for that specific purpose."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"Two distinct product stories here. On Xeomin: 'It's the naked molecule -- just the active neurotoxin without complexing proteins. For patients who plan to maintain neurotoxin treatment for years, some providers consider this when long-term immunogenicity is a concern, as it does not contain the accessory proteins found in some other neurotoxins.' On RHA Redensity: 'It's designed specifically for the perioral area -- those fine lines around the mouth that are constantly in motion. It's sometimes called a finishing filler because it handles the fine details that broader treatments can't address. The resilient HA formula flexes with natural expressions rather than resisting them.' These are different ecosystems (Merz + Revance) -- no shared loyalty program. For patients planning comprehensive long-term treatment, Xeomin's immunogenicity profile is a genuine clinical consideration, not a marketing angle."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Xeomin:** Indicated for moderate to severe glabellar lines in adults. IncobotulinumtoxinA -- contains no accessory proteins; room-temperature stable.
+- **FDA label -- RHA Redensity:** Indicated for perioral area (superficial to mid dermis) for correction of dynamic perioral rhytids in adults over 22. Resilient HA for dynamic facial areas.
+- **Xeomin differentiator:** No accessory/complexing proteins (incobotulinumtoxinA), room-temperature stable, Merz ecosystem (per FDA-approved labeling).
+- **RHA Redensity specificity:** Resilient HA technology designed for dynamic perioral areas; finishing filler for fine line refinement (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 
