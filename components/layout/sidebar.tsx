@@ -23,6 +23,7 @@ import {
   GraduationCap,
   Tv,
   Headphones,
+  Package,
 } from "lucide-react";
 
 // The demo build shows only the suite below; everything else is scope:"internal"
@@ -35,6 +36,7 @@ const menuItems = [
   { name: "Reach", href: "/dashboard/reach", icon: Share2 },
   { name: "Intelligence", href: "/dashboard/intelligence", icon: Sparkles },
   { name: "Library", href: "/dashboard/library", icon: Library },
+  { name: "Products", href: "/dashboard/products", icon: Package },
   { name: "Pearce Channel", href: "/dashboard/academy", icon: GraduationCap },
   { name: "Video Navigator", href: "/tube", icon: Tv },
   { name: "Podcast Navigator", href: "/podcast", icon: Headphones },
@@ -90,11 +92,12 @@ export function Sidebar() {
           const isActive =
             item.href === "/dashboard"
               ? pathname === "/dashboard"
-              : pathname.startsWith(item.href);
+              : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
           return (
             <Link key={item.href} href={item.href}>
               <button
+                aria-current={isActive ? "page" : undefined}
                 className={`w-full px-4 py-2.5 rounded-lg flex items-center gap-3 transition-all text-sm font-medium ${
                   isActive
                     ? "bg-sidebar-primary/10 text-sidebar-primary border border-sidebar-primary/30"

@@ -1,9 +1,28 @@
 import { NextRequest } from "next/server";
-import { retrieveTubeSources, type TubeSource } from "@/lib/tube/chat-retrieval";
+import { retrieveTubeSources, tokenize, type TubeSource } from "@/lib/tube/chat-retrieval";
 import { streamAnthropic } from "@/lib/academy/anthropic-stream";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
+
+interface ChatTurn {
+  role: "user" | "assistant";
+  content: string;
+}
+
+// In-memory sliding-window rate limiter — fine for this single-instance demo
+// (no shared store needed; state resets on redeploy/restart).
+const RATE_LIMIT = 10;
+const RATE_WINDOW_MS = 60_000;
+const hits = new Map<string, number[]>();
+
+function isRateLimited(key: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(key) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  recent.push(now);
+  hits.set(key, recent);
+  return recent.length > RATE_LIMIT;
+}
 
 /**
  * A360 Video Navigator AI chat — semantic RAG over the full YouTube aesthetics
@@ -30,8 +49,31 @@ function buildSystem(sources: TubeSource[]): string {
 }
 
 export async function POST(req: NextRequest) {
-  const body = (await req.json().catch(() => ({}))) as { query?: string };
-  const q = (body.query ?? "").trim().replace(/<[^>]*>/g, "");
+  const ip = (req.headers.get("x-forwarded-for") ?? "unknown").split(",")[0].trim() || "unknown";
+  if (isRateLimited(ip)) {
+    return new Response(
+      JSON.stringify({ error: "Too many requests — try again in a moment." }),
+      { status: 429, headers: { "Content-Type": "application/json" } },
+    );
+  }
+
+  const body = (await req.json().catch(() => ({}))) as {
+    query?: string;
+    messages?: ChatTurn[];
+    videoId?: string;
+  };
+  const videoId = typeof body.videoId === "string" && body.videoId.trim() ? body.videoId.trim() : undefined;
+  // Accept the new { messages } shape (transcript so far) while keeping the
+  // old { query } shape working for compatibility.
+  const rawMessages: ChatTurn[] =
+    Array.isArray(body.messages) && body.messages.length > 0
+      ? body.messages
+      : body.query
+        ? [{ role: "user", content: body.query }]
+        : [];
+
+  const lastUserIdx = rawMessages.reduce((acc, m, i) => (m.role === "user" ? i : acc), -1);
+  const q = (rawMessages[lastUserIdx]?.content ?? "").trim().replace(/<[^>]*>/g, "");
 
   const encoder = new TextEncoder();
   if (!q) {
@@ -47,12 +89,25 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  // Replace the latest user turn with its sanitized text for both retrieval and generation.
+  const conversation = rawMessages.map((m, i) => (i === lastUserIdx ? { ...m, content: q } : m));
+
+  // Retrieval: tokenize the latest question; if that yields too few terms,
+  // merge in tokens from earlier user turns (most recent first) so a
+  // pronoun-only follow-up ("what dose for that?") still retrieves on-topic.
+  const termSet = new Set(tokenize(q));
+  for (let i = lastUserIdx - 1; i >= 0 && termSet.size < 3; i--) {
+    if (conversation[i].role !== "user") continue;
+    for (const t of tokenize(conversation[i].content)) termSet.add(t);
+  }
+  const retrievalQuery = termSet.size > 0 ? Array.from(termSet).join(" ") : q;
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const emit = (ev: unknown) =>
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(ev)}\n\n`));
       try {
-        const sources = await retrieveTubeSources(q);
+        const sources = await retrieveTubeSources(retrievalQuery, 12, videoId);
         emit({ type: "sources", sources });
 
         if (sources.length === 0) {
@@ -60,17 +115,25 @@ export async function POST(req: NextRequest) {
             "I couldn't find anything on that in the video library. Try a clinical topic like vascular occlusion, masseter Botox, tear trough technique, skin tightening, or body contouring.";
           for (const tok of msg.match(/\S+\s*/g) ?? [msg]) emit({ type: "token", text: tok });
           emit({ type: "done" });
-          controller.close();
-          return;
+          return; // finally handles the single close
         }
 
         let fullText = "";
         if (process.env.ANTHROPIC_API_KEY) {
           try {
+            const grounding = "Answer using ONLY the sources above, citing [S#] for every claim:";
+            let last8 = conversation.slice(-8);
+            // The Anthropic API requires the first turn to be "user" — drop a
+            // leading assistant turn left over from the 8-message window.
+            if (last8[0]?.role === "assistant") last8 = last8.slice(1);
+            const messages = last8.map((m, i) =>
+              i === last8.length - 1 ? { ...m, content: `${m.content}\n\n${grounding}` } : m,
+            );
             const gen = streamAnthropic({
               model: "claude-opus-4-8",
               system: buildSystem(sources),
-              prompt: `Question: ${q}\n\nAnswer using ONLY the sources above, citing [S#] for every claim:`,
+              prompt: `Question: ${q}\n\n${grounding}`,
+              messages,
               maxTokens: 700,
             });
             for await (const delta of gen) {
@@ -96,7 +159,11 @@ export async function POST(req: NextRequest) {
       } catch (err) {
         emit({ type: "error", message: err instanceof Error ? err.message : "unknown error" });
       } finally {
-        controller.close();
+        try {
+          controller.close();
+        } catch {
+          /* already closed or errored (e.g. client disconnected mid-stream) */
+        }
       }
     },
   });

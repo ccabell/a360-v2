@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ChevronRight, Sparkles } from "lucide-react";
 import {
   getTubeVideos,
@@ -6,15 +7,39 @@ import {
   getTubeIndex,
 } from "@/lib/tube/server";
 import { TubeExplore } from "@/components/tube/tube-explore";
+import type { TubeCardVideo } from "@/lib/tube/types";
 
 export const metadata = {
   title: "Navigate · A360 Video Navigator",
 };
 
+/** Truncates at a word boundary within `max` chars, appending "…" when cut. */
+function truncateSummary(summary: string, max = 240): string {
+  if (summary.length <= max) return summary;
+  const cut = summary.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${(lastSpace > 0 ? cut.slice(0, lastSpace) : cut).trimEnd()}…`;
+}
+
 export default function TubeExplorePage() {
   const videos = getTubeVideos();
   const facets = getTubeFacets();
   const { stats } = getTubeIndex();
+
+  // Slim payload for the client: drop unused fields (url, audience, tagged,
+  // hasTranscript) and truncate summaries — the full video list is ~1.6 MB.
+  const cardVideos: TubeCardVideo[] = videos.map((v) => ({
+    id: v.id,
+    title: v.title,
+    channel: v.channel,
+    contentType: v.contentType,
+    treatments: v.treatments,
+    anatomy: v.anatomy,
+    concerns: v.concerns,
+    patientSafe: v.patientSafe,
+    chunkCount: v.chunkCount,
+    summary: truncateSummary(v.summary),
+  }));
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -48,7 +73,9 @@ export default function TubeExplorePage() {
       </div>
 
       <div className="mt-8">
-        <TubeExplore videos={videos} facets={facets} />
+        <Suspense fallback={null}>
+          <TubeExplore videos={cardVideos} facets={facets} />
+        </Suspense>
       </div>
     </div>
   );

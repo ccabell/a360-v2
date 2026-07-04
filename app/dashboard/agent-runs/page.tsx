@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
   SelectContent,
@@ -182,9 +183,22 @@ export default function AgentRunsPage() {
       {/* Run list */}
       <div className="space-y-2">
         {loading ? (
-          <div className="py-12 text-center text-sm text-muted-foreground">
-            Loading agent runs...
-          </div>
+          Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-4 rounded-lg border border-border bg-card p-4"
+            >
+              <Skeleton className="h-9 w-9 shrink-0 rounded-full" />
+              <div className="min-w-0 flex-1 space-y-2">
+                <Skeleton className="h-3.5 w-44" />
+                <Skeleton className="h-3 w-64" />
+              </div>
+              <div className="flex shrink-0 items-center gap-3">
+                <Skeleton className="h-5 w-20 rounded-full" />
+                <Skeleton className="h-3 w-12" />
+              </div>
+            </div>
+          ))
         ) : filtered.length === 0 ? (
           <div className="py-12 text-center">
             <Bot className="mx-auto h-8 w-8 text-muted-foreground/40" />

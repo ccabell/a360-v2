@@ -28,6 +28,26 @@ export interface TubeVideo {
   chunkCount: number;
 }
 
+/**
+ * Slim per-card shape used by the Explore grid — the full `TubeVideo` list is
+ * ~1.6 MB and only these fields are needed for the cards/filters, so
+ * `explore/page.tsx` maps down to this before handing videos to the client.
+ * `TubeVideo` must remain structurally assignable to this (the watch page
+ * still passes full `TubeVideo` objects into `TubeCard`).
+ */
+export interface TubeCardVideo {
+  id: string;
+  title: string;
+  channel: string;
+  contentType: string | null;
+  treatments: string[];
+  anatomy: string[];
+  concerns: string[];
+  patientSafe: boolean;
+  chunkCount: number;
+  summary: string;
+}
+
 export interface FacetValue {
   value: string;
   label: string;

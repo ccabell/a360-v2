@@ -10,6 +10,7 @@
  * embedding and yields the same timestamped citations.)
  */
 import { createClient } from "@supabase/supabase-js";
+import { channelLabel } from "./channels";
 
 export interface TubeSource {
   id: string;
@@ -27,27 +28,8 @@ const rag = createClient(
   process.env.RAG_SUPABASE_KEY ?? "placeholder",
 );
 
-const CHANNEL_LABELS: Record<string, string> = {
-  drtimpearce: "Dr Tim Pearce",
-  drtimepearce: "Dr Tim Pearce",
-  waveplasticsurgery: "Wave Plastic Surgery",
-  aafe_tv: "AAFE",
-  btlaestheticsint: "BTL Aesthetics",
-  lumenisaesthetics: "Lumenis",
-  erchoniaemea: "Erchonia",
-  sciton: "Sciton",
-  botoxcosmetic: "BOTOX Cosmetic",
-  galdermaint: "Galderma",
-  skinceuticals: "SkinCeuticals",
-  revisionskincare: "Revision Skincare",
-  inmodesolutions: "InMode",
-  stevenweiner: "Dr Steven Weiner",
-};
-function channelLabel(c: string | null | undefined): string {
-  if (!c) return "YouTube";
-  return CHANNEL_LABELS[c] ?? c.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
-}
-function fmt(sec: number): string {
+/** Format seconds as m:ss (or h:mm:ss). Exported for the watch page's Moments list. */
+export function fmt(sec: number): string {
   const h = Math.floor(sec / 3600);
   const m = Math.floor((sec % 3600) / 60);
   const s = Math.floor(sec % 60);
@@ -61,7 +43,8 @@ const STOP = new Set([
   "that", "at", "as", "by", "from", "about", "should", "my", "your", "if", "we",
 ]);
 
-function tokenize(q: string): string[] {
+/** Tokenize a message into scoring terms (specific/long terms first). Exported for conversation-memory term merging in the chat route. */
+export function tokenize(q: string): string[] {
   return Array.from(
     new Set(
       q.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/\s+/).filter((t) => t.length > 2 && !STOP.has(t)),
@@ -91,23 +74,54 @@ export async function getVideoMetaById(
   return { title: (r.video_title ?? "Untitled").trim() || "Untitled", channel: channelLabel(r.manufacturer_name) };
 }
 
-/** Retrieve grounded, deep-linkable sources for a question (keyword + scoring). */
-export async function retrieveTubeSources(question: string, max = 12): Promise<TubeSource[]> {
+/**
+ * Retrieve grounded, deep-linkable sources for a question (keyword + scoring).
+ *
+ * When `videoId` is given, results are scoped to that video (for the
+ * watch-page "Ask about this video" chat) and the per-video diversification
+ * cap below is skipped since every result already shares one video.
+ */
+export async function retrieveTubeSources(
+  question: string,
+  max = 12,
+  videoId?: string,
+): Promise<TubeSource[]> {
   const terms = tokenize(question);
   if (terms.length === 0) return [];
 
-  // OR over the (specific-first) terms; pull a wide candidate pool to score.
-  const orFilter = terms.map((t) => `chunk_text.ilike.%${t}%`).join(",");
-  const { data, error } = await rag
-    .from("manufacturer_youtube_transcript")
-    .select("video_id,video_title,start_time,chunk_text,manufacturer_name")
-    .or(orFilter)
-    .limit(500);
-  if (error || !Array.isArray(data)) return [];
+  // Query per term (most-specific/longest first, capped at 6) so a common word
+  // can't flood the pool before scoring — each term gets its own slice.
+  const queryTerms = terms.slice(0, 6);
+  const results = await Promise.all(
+    queryTerms.map((t) => {
+      let q = rag
+        .from("manufacturer_youtube_transcript")
+        .select("video_id,video_title,start_time,chunk_text,manufacturer_name")
+        .ilike("chunk_text", `%${t}%`);
+      if (videoId) q = q.eq("video_id", videoId);
+      return q.limit(120);
+    }),
+  );
+
+  // Merge + dedupe by video_id + start_time.
+  const seen = new Set<string>();
+  const data: Row[] = [];
+  for (const { data: rows, error } of results) {
+    if (error || !Array.isArray(rows)) continue;
+    for (const r of rows as Row[]) {
+      const key = `${r.video_id}:${r.start_time}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      data.push(r);
+    }
+  }
+  if (data.length === 0) return [];
 
   // Score by distinct-term overlap; bonus when all terms co-occur.
-  const minMatch = terms.length >= 3 ? 2 : 1; // drop single-common-word noise
-  const scored = (data as Row[])
+  // When scoped to one video, a single-term match is enough — the video scope
+  // already constrains relevance, and zero sources is the worse failure.
+  const minMatch = !videoId && terms.length >= 3 ? 2 : 1; // drop single-common-word noise
+  const scored = data
     .map((r) => {
       const lower = (r.chunk_text ?? "").toLowerCase();
       const title = (r.video_title ?? "").toLowerCase();
@@ -121,14 +135,17 @@ export async function retrieveTubeSources(question: string, max = 12): Promise<T
     .filter((x) => x.r.video_id && x.r.chunk_text && x.matched >= minMatch)
     .sort((a, b) => b.score - a.score);
 
-  // Diversify across videos (max 3 moments per video).
+  // Diversify across videos (max 3 moments per video) — skipped when scoped
+  // to a single video, since the cap would otherwise throttle results to 3.
   const perVideo = new Map<string, number>();
   const out: TubeSource[] = [];
   for (const { r } of scored) {
     const vid = r.video_id as string;
-    const n = perVideo.get(vid) ?? 0;
-    if (n >= 3) continue;
-    perVideo.set(vid, n + 1);
+    if (!videoId) {
+      const n = perVideo.get(vid) ?? 0;
+      if (n >= 3) continue;
+      perVideo.set(vid, n + 1);
+    }
     const start = Math.max(0, Math.floor(Number(r.start_time) || 0));
     const ch = channelLabel(r.manufacturer_name);
     out.push({
@@ -145,4 +162,47 @@ export async function retrieveTubeSources(question: string, max = 12): Promise<T
     if (out.length >= max) break;
   }
   return out;
+}
+
+/**
+ * Evenly-spaced "Moments" for a video's watch page — a lightweight preview of
+ * what's covered without running the full chat. Returns [] (never throws)
+ * when the video has no transcript chunks, so the caller can just skip the
+ * section.
+ */
+export async function getVideoMoments(
+  videoId: string,
+  max = 8,
+): Promise<{ start: number; label: string }[]> {
+  const { data, error } = await rag
+    .from("manufacturer_youtube_transcript")
+    .select("start_time,chunk_text")
+    .eq("video_id", videoId)
+    .order("start_time", { ascending: true })
+    .limit(400);
+  if (error || !Array.isArray(data) || data.length === 0) return [];
+
+  const rows = data as { start_time: number | null; chunk_text: string | null }[];
+  const n = rows.length;
+  const count = Math.min(max, n);
+
+  // Evenly-spaced indices across the ordered chunk list.
+  const indices = new Set<number>();
+  for (let i = 0; i < count; i++) {
+    indices.add(count === 1 ? 0 : Math.round((i * (n - 1)) / (count - 1)));
+  }
+
+  return Array.from(indices)
+    .sort((a, b) => a - b)
+    .map((idx) => {
+      const r = rows[idx];
+      const start = Math.max(0, Math.floor(Number(r.start_time) || 0));
+      const text = (r.chunk_text ?? "").replace(/\s+/g, " ").trim();
+      let label = text.slice(0, 140);
+      if (text.length > 140) {
+        const lastSpace = label.lastIndexOf(" ");
+        label = (lastSpace > 0 ? label.slice(0, lastSpace) : label) + "…";
+      }
+      return { start, label };
+    });
 }

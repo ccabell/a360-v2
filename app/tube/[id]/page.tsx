@@ -2,20 +2,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Video } from "lucide-react";
 import { getTubeVideos } from "@/lib/tube/server";
-import { getVideoMetaById } from "@/lib/tube/chat-retrieval";
+import { fmt, getVideoMetaById, getVideoMoments } from "@/lib/tube/chat-retrieval";
 import { TubePlayer } from "@/components/tube/tube-player";
 import { TubeCard } from "@/components/tube/tube-card";
+import { TubeTutorClient } from "@/components/tube/tube-tutor-client";
+import { channelLabel } from "@/lib/tube/channels";
 
-const CHANNEL_LABELS: Record<string, string> = {
-  drtimpearce: "Dr Tim Pearce", drtimepearce: "Dr Tim Pearce",
-  waveplasticsurgery: "Wave Plastic Surgery", aafe_tv: "AAFE",
-  btlaestheticsint: "BTL Aesthetics", lumenisaesthetics: "Lumenis",
-  erchoniaemea: "Erchonia", sciton: "Sciton", botoxcosmetic: "BOTOX Cosmetic",
-  galdermaint: "Galderma", skinceuticals: "SkinCeuticals",
-  revisionskincare: "Revision Skincare", inmodesolutions: "InMode",
-};
-const channelLabel = (c: string) =>
-  CHANNEL_LABELS[c] ?? c.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase());
+const ASK_STARTERS = [
+  "Summarize the key technique shown",
+  "What safety points are covered?",
+  "Who is this treatment suitable for?",
+  "What products or devices are mentioned?",
+];
 
 export default async function TubeWatchPage({
   params,
@@ -48,6 +46,7 @@ export default async function TubeWatchPage({
     : [];
 
   const tags = baked ? [...baked.anatomy, ...baked.concerns].slice(0, 6) : [];
+  const moments = await getVideoMoments(id);
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-6">
@@ -102,6 +101,33 @@ export default async function TubeWatchPage({
           ))}
         </div>
       )}
+
+      {moments.length > 0 && (
+        <section className="mt-8">
+          <h2 className="font-heading text-lg font-bold text-white">Moments</h2>
+          <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {moments.map((m) => (
+              <Link
+                key={m.start}
+                href={`/tube/${id}?t=${m.start}`}
+                className="flex items-start gap-2.5 rounded-lg bg-white/5 p-3 ring-1 ring-white/10 transition-colors hover:bg-white/10"
+              >
+                <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[11px] font-semibold text-primary">
+                  {fmt(m.start)}
+                </span>
+                <span className="text-sm text-neutral-300">{m.label}</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section className="mt-10">
+        <h2 className="font-heading text-lg font-bold text-white">Ask about this video</h2>
+        <div className="mt-4 h-[28rem]">
+          <TubeTutorClient videoId={id} starters={ASK_STARTERS} />
+        </div>
+      </section>
 
       {related.length > 0 && (
         <section className="mt-10">
