@@ -39,6 +39,7 @@ export default function TubeExplorePage() {
     patientSafe: v.patientSafe,
     chunkCount: v.chunkCount,
     summary: truncateSummary(v.summary),
+    publishedAt: v.publishedAt,
   }));
 
   return (

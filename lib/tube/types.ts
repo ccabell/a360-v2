@@ -26,6 +26,8 @@ export interface TubeVideo {
   /** Whether a transcript exists (chunk_count > 0). */
   hasTranscript: boolean;
   chunkCount: number;
+  /** YouTube upload date (ISO yyyy-mm-dd); null when the backfill couldn't fetch it. */
+  publishedAt: string | null;
 }
 
 /**
@@ -46,6 +48,7 @@ export interface TubeCardVideo {
   patientSafe: boolean;
   chunkCount: number;
   summary: string;
+  publishedAt: string | null;
 }
 
 export interface FacetValue {
