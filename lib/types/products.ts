@@ -1,4 +1,8 @@
-/** Types for `v_gl_v1_product_card` — the V1 Global Library product card view. */
+/**
+ * Types for `v_gl_v1_product_card` — the V1 Global Library product card view.
+ * `ProductCard.evidence` is not part of the view; it's joined on from
+ * `evidence_links` in lib/products.ts before the card reaches the UI.
+ */
 
 export interface ProductQuant {
   unit: string;
@@ -38,6 +42,22 @@ export interface ProductPricing {
   notes: string | null;
 }
 
+/** One clinical citation backing a product's claims (from `evidence_links`). */
+export interface ProductEvidence {
+  id: string;
+  /** pubmed | fda_label | ifu | youtube | llm_inference */
+  source: string;
+  field_name: string | null;
+  claim_text: string | null;
+  snippet: string | null;
+  url: string | null;
+  pmid: string | null;
+  doi: string | null;
+  source_reference: string | null;
+  /** 1 = highest authority (FDA label, boxed warning); higher = weaker. */
+  authority_rank: number | null;
+}
+
 export interface ProductCard {
   id: string;
   name: string;
@@ -62,4 +82,6 @@ export interface ProductCard {
   pairings: ProductPairing[] | null;
   patient_education_md: string | null;
   faq_md: string | null;
+  /** Clinical citations, joined on in lib/products.ts (not from the view). */
+  evidence: ProductEvidence[];
 }
