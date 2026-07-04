@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Search, X, SlidersHorizontal, Tv } from "lucide-react";
-import type { TubeVideo, TubeFacets, FacetValue } from "@/lib/tube/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Search, X, SlidersHorizontal, Tv, ShieldCheck } from "lucide-react";
+import type { TubeCardVideo, TubeFacets, FacetValue } from "@/lib/tube/types";
 import { TubeCard } from "./tube-card";
 
 interface Props {
-  videos: TubeVideo[];
+  videos: TubeCardVideo[];
   facets: TubeFacets;
 }
 
@@ -16,56 +17,118 @@ const GROUPS: {
   key: GroupKey;
   title: string;
   /** Video field this facet filters on. */
-  field: keyof TubeVideo;
+  field: keyof TubeCardVideo;
   /** True if the video field is an array. */
   isArray: boolean;
+  /** URL search param name for this group (differs from `key` for contentTypes). */
+  param: string;
 }[] = [
-  { key: "anatomy", title: "Facial & body area", field: "anatomy", isArray: true },
-  { key: "concerns", title: "Concern", field: "concerns", isArray: true },
-  { key: "treatments", title: "Treatment", field: "treatments", isArray: true },
-  { key: "channels", title: "Channel", field: "channel", isArray: false },
-  { key: "contentTypes", title: "Type of video", field: "contentType", isArray: false },
+  { key: "anatomy", title: "Facial & body area", field: "anatomy", isArray: true, param: "anatomy" },
+  { key: "concerns", title: "Concern", field: "concerns", isArray: true, param: "concerns" },
+  { key: "treatments", title: "Treatment", field: "treatments", isArray: true, param: "treatments" },
+  { key: "channels", title: "Channel", field: "channel", isArray: false, param: "channels" },
+  { key: "contentTypes", title: "Type of video", field: "contentType", isArray: false, param: "types" },
 ];
 
 const PAGE = 48;
+const Q_DEBOUNCE_MS = 300;
 
-export function TubeExplore({ videos, facets }: Props) {
-  const [sel, setSel] = useState<Record<GroupKey, Set<string>>>({
+function emptySel(): Record<GroupKey, Set<string>> {
+  return {
     anatomy: new Set(),
     concerns: new Set(),
     treatments: new Set(),
     channels: new Set(),
     contentTypes: new Set(),
-  });
-  const [query, setQuery] = useState("");
+  };
+}
+
+function selFromParams(sp: URLSearchParams): Record<GroupKey, Set<string>> {
+  const sel = emptySel();
+  for (const g of GROUPS) {
+    const raw = sp.get(g.param);
+    if (raw) sel[g.key] = new Set(raw.split(",").filter(Boolean));
+  }
+  return sel;
+}
+
+export function TubeExplore({ videos, facets }: Props) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [sel, setSel] = useState<Record<GroupKey, Set<string>>>(() => selFromParams(searchParams));
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const [safeOnly, setSafeOnly] = useState(() => searchParams.get("safe") === "1");
   const [limit, setLimit] = useState(PAGE);
+
+  const qDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (qDebounce.current) clearTimeout(qDebounce.current);
+  }, []);
+
+  /** Writes the given (or current) state to the URL without a scroll/navigation. */
+  const writeUrl = (next: {
+    sel?: Record<GroupKey, Set<string>>;
+    query?: string;
+    safeOnly?: boolean;
+  }) => {
+    const s = next.sel ?? sel;
+    const q = next.query ?? query;
+    const safe = next.safeOnly ?? safeOnly;
+    const params = new URLSearchParams();
+    if (q.trim()) params.set("q", q.trim());
+    for (const g of GROUPS) {
+      const values = [...s[g.key]];
+      if (values.length) params.set(g.param, values.join(","));
+    }
+    if (safe) params.set("safe", "1");
+    const qs = params.toString();
+    router.replace(qs ? `?${qs}` : "?", { scroll: false });
+  };
 
   const toggle = (group: GroupKey, value: string) => {
     setSel((prev) => {
       const next = new Set(prev[group]);
-      next.has(value) ? next.delete(value) : next.add(value);
-      return { ...prev, [group]: next };
+      if (next.has(value)) next.delete(value);
+      else next.add(value);
+      const nextSel = { ...prev, [group]: next };
+      writeUrl({ sel: nextSel });
+      return nextSel;
     });
     setLimit(PAGE);
   };
 
-  const clearAll = () => {
-    setSel({
-      anatomy: new Set(),
-      concerns: new Set(),
-      treatments: new Set(),
-      channels: new Set(),
-      contentTypes: new Set(),
+  const toggleSafeOnly = () => {
+    setSafeOnly((prev) => {
+      const next = !prev;
+      writeUrl({ safeOnly: next });
+      return next;
     });
-    setQuery("");
+    setLimit(PAGE);
   };
 
-  const activeCount = GROUPS.reduce((n, g) => n + sel[g.key].size, 0);
+  const onQueryChange = (value: string) => {
+    setQuery(value);
+    setLimit(PAGE);
+    if (qDebounce.current) clearTimeout(qDebounce.current);
+    qDebounce.current = setTimeout(() => writeUrl({ query: value }), Q_DEBOUNCE_MS);
+  };
+
+  const clearAll = () => {
+    if (qDebounce.current) clearTimeout(qDebounce.current);
+    setSel(emptySel());
+    setQuery("");
+    setSafeOnly(false);
+    router.replace("?", { scroll: false });
+  };
+
+  const activeCount = GROUPS.reduce((n, g) => n + sel[g.key].size, 0) + (safeOnly ? 1 : 0);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return videos
       .filter((v) => {
+        if (safeOnly && !v.patientSafe) return false;
         // AND across groups, OR within a group.
         for (const g of GROUPS) {
           const chosen = sel[g.key];
@@ -82,7 +145,7 @@ export function TubeExplore({ videos, facets }: Props) {
         return true;
       })
       .sort((a, b) => b.chunkCount - a.chunkCount);
-  }, [videos, sel, query]);
+  }, [videos, sel, query, safeOnly]);
 
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
@@ -99,6 +162,18 @@ export function TubeExplore({ videos, facets }: Props) {
             </button>
           )}
         </div>
+        <button
+          onClick={toggleSafeOnly}
+          aria-pressed={safeOnly}
+          className={`mb-4 flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left text-xs font-medium transition-colors ${
+            safeOnly
+              ? "bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/30"
+              : "text-neutral-300 ring-1 ring-white/10 hover:bg-white/5"
+          }`}
+        >
+          <ShieldCheck className="h-3.5 w-3.5" />
+          Patient-safe only
+        </button>
         <div className="space-y-5">
           {GROUPS.map((g) => (
             <FacetGroup
@@ -119,11 +194,9 @@ export function TubeExplore({ videos, facets }: Props) {
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
           <input
             value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setLimit(PAGE);
-            }}
+            onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Search 2,548 videos by title or summary…"
+            aria-label="Search videos by title or summary"
             className="w-full rounded-xl border border-white/10 bg-neutral-900 py-3 pl-10 pr-3 text-sm text-white placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </div>
@@ -188,11 +261,25 @@ function FacetGroup({
   onToggle: (value: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
-  const shown = expanded ? values.slice(0, 40) : values.slice(0, 8);
+  const [filter, setFilter] = useState("");
+  const showFilterInput = expanded && values.length > 8;
+  const visible = showFilterInput && filter.trim()
+    ? values.filter((f) => f.label.toLowerCase().includes(filter.trim().toLowerCase()))
+    : values;
+  const shown = expanded ? visible : visible.slice(0, 8);
 
   return (
     <div>
       <p className="mb-2 text-xs font-semibold text-neutral-300">{title}</p>
+      {showFilterInput && (
+        <input
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder={`Filter ${title.toLowerCase()}…`}
+          aria-label={`Filter ${title.toLowerCase()}`}
+          className="mb-1.5 w-full rounded-md border border-white/10 bg-neutral-900 px-2 py-1 text-xs text-white placeholder:text-neutral-500 focus:outline-none focus:ring-1 focus:ring-primary/40"
+        />
+      )}
       <div className="flex flex-col gap-1">
         {shown.map((f) => {
           const active = selected.has(f.value);
@@ -200,6 +287,7 @@ function FacetGroup({
             <button
               key={f.value}
               onClick={() => onToggle(f.value)}
+              aria-pressed={active}
               className={`flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-xs transition-colors ${
                 active
                   ? "bg-primary/15 text-primary ring-1 ring-primary/30"

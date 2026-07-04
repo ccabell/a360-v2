@@ -12,6 +12,12 @@ export interface AnthropicStreamOpts {
   model: string;
   system: string;
   prompt: string;
+  /**
+   * Multi-turn conversation. When provided, sent as the Messages API
+   * `messages` array instead of wrapping `prompt` in a single user turn.
+   * `prompt` continues to work when `messages` is omitted.
+   */
+  messages?: { role: "user" | "assistant"; content: string }[];
   maxTokens?: number;
   temperature?: number;
 }
@@ -46,7 +52,7 @@ export async function* streamAnthropic(
         : {}),
       system: opts.system,
       stream: true,
-      messages: [{ role: "user", content: opts.prompt }],
+      messages: opts.messages ?? [{ role: "user", content: opts.prompt }],
     }),
   });
 

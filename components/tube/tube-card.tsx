@@ -1,36 +1,15 @@
 import Link from "next/link";
 import { Play, Video } from "lucide-react";
-import type { TubeVideo } from "@/lib/tube/types";
+import type { TubeCardVideo } from "@/lib/tube/types";
 import { youtubeThumb } from "@/lib/academy/youtube";
-
-const CHANNEL_LABELS: Record<string, string> = {
-  drtimpearce: "Dr Tim Pearce",
-  waveplasticsurgery: "Wave Plastic Surgery",
-  aafe_tv: "AAFE",
-  btlaestheticsint: "BTL Aesthetics",
-  lumenisaesthetics: "Lumenis",
-  erchoniaemea: "Erchonia",
-  sciton: "Sciton",
-  botoxcosmetic: "BOTOX Cosmetic",
-  galdermaint: "Galderma",
-  skinceuticals: "SkinCeuticals",
-  revisionskincare: "Revision Skincare",
-  inmodesolutions: "InMode",
-};
-
-function channelLabel(c: string): string {
-  return (
-    CHANNEL_LABELS[c] ??
-    c.replace(/_/g, " ").replace(/\b\w/g, (m) => m.toUpperCase())
-  );
-}
+import { channelLabel } from "@/lib/tube/channels";
 
 function tagLabel(t: string): string {
   return t.replace(/_/g, " ");
 }
 
 /** A YouTube-aesthetics video card — links out to the real video. */
-export function TubeCard({ video }: { video: TubeVideo }) {
+export function TubeCard({ video }: { video: TubeCardVideo }) {
   const thumb = youtubeThumb(video.id, "hq");
   const tags = [...video.anatomy.slice(0, 1), ...video.concerns.slice(0, 2)].slice(0, 3);
 
