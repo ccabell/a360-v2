@@ -1,22 +1,12 @@
-# DEPLOY SOURCE — a360-v2-wse
+# Deploy Source
 
-This directory is the canonical deploy source for the **a360-v2-wse** Vercel project.
+**PRIMARY domain (Chris, 2026-07-04): `a360-v2-wse.vercel.app`** — Vercel project `a360-v2-wse`
+(`prj_KXW7C1STkHbNTag6v0WEA1Ey8G3A`). Deploys **branch `main`** via CLI (`vercel --prod`) from a
+clean worktree linked to that project. Secondary: Vercel project `a360-v2`
+(`prj_fQJi3NmjWMRq2NqJyURuKzSPvyn7`) also serves `main` (a360-v2.vercel.app).
+**Rule:** production deploys of either project come from `main` only; never `vercel --name` from
+an unfamiliar folder; verify `.vercel/project.json` before every deploy. Both projects need the
+same `SHARE_LINK_SECRET` so share links work on both domains.
+**Required production env:** the lib/env.ts set (OPS/AGENT/RAG Supabase, AGENT_SERVICE_URL, RAG_SEARCH_URL, BETA_ACCESS_PASSWORD) + `SHARE_LINK_SECRET` (portfolio share links, added 2026-07-04).
 
-| Field | Value |
-|---|---|
-| App | a360-v2-wse (WSE demo suite + Video/Podcast Navigator) |
-| Vercel project | `a360-v2-wse` |
-| Project ID | `prj_KXW7C1STkHbNTag6v0WEA1Ey8G3A` |
-| Org ID | `team_hOeESw8UbVnqMawOzR5NfoFF` |
-| Canonical URL | https://a360-v2-wse.vercel.app |
-| Deploy method | **Vercel CLI** (`vercel deploy --prod --yes`) — NOT git-push. "pushed" ≠ "deployed". |
-| Git | worktree of `Aesthetics-360/a360-v2`; ship from `main` (feature branches merge to `main` first) |
-
-## Before deploying (deploy-safety checklist)
-
-1. You are in `C:\Projects\a360-v2-wse` and this file exists. ✔ (that's the point of this file)
-2. `.vercel/project.json` `projectId` == `prj_KXW7C1STkHbNTag6v0WEA1Ey8G3A`.
-3. `git status` clean; on the intended branch; latest code committed + pushed.
-4. Deploy with the linked project only — **never** `vercel --name X` (it relinks the project to the current dir and can overwrite a live app).
-
-Registry: `A360_Hub\INFRASTRUCTURE.md` → Deployable app registry.
+Created 2026-07-04 during the audit remediation (deploy-safety standard, INFRASTRUCTURE.md).
