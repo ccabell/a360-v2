@@ -1,42 +1,43 @@
 # RHA Redensity + Sculptra Aesthetic
 
-**Tier:** common
+**Tier:** conditional
 **Type:** sequential
 **Strength:** strong
-**Same Session OK:** true
+**Same Session OK:** conditional (Same visit may be appropriate when performed in different areas/planes by an experienced injector. FDA labeling notes safety/effectiveness not evaluated in combination with other products. Stage Sculptra first and reassess before HA refinement when possible.)
 
 ## Gate Results
 
 | Gate | Result | Notes |
 |------|--------|-------|
-| 1. Concern Overlap | PASS | Both address volume loss. Sculptra stimulates collagen for gradual restoration; RHA Redensity provides perioral detail work with flexible HA. |
-| 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (gradual, durable, biologic) vs HA gel scaffold (immediate, temporary, structural). Different timelines and mechanisms. |
-| 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot provide immediate volume correction." RHA Redensity provides immediate results. RHA Redensity does_not_solve: "Cannot stimulate long-term collagen production." Sculptra does this. |
-| 4. Timing Compatibility | PASS | Same-session per Dr. Tom van Eijk: Sculptra subdermal + filler at targeted depths. Different tissue planes. |
-| 5. Safety | PASS | No contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). |
-| 6. Commercial Viability | PASS | Premium treatment plan. Galderma "Sculpt & Lift" campaign validates commercial model. |
-| 7. Patient Clarity | PASS | "Sculptra is the foundation -- it rebuilds structure over months. Filler is the finishing touches -- immediate contour and definition." |
-| 8. Source Support | PASS | 15+ chunks across 5+ shows. "Sculpt & Lift" protocol. Dr. Tom van Eijk same-session protocol. Evidence strength 5/5. |
+| 1. Concern Overlap | PASS | Both address aging. Sculptra stimulates collagen for gradual structural restoration; RHA Redensity addresses perioral fine lines with resilient HA. |
+| 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (gradual, durable, biologic) vs resilient HA gel (immediate, flexible, dynamic-area specific). Different timelines and mechanisms. |
+| 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot provide immediate fine-line correction in dynamic areas." RHA Redensity provides this. RHA Redensity does_not_solve: "Cannot stimulate long-term collagen production." Sculptra does this. |
+| 4. Timing Compatibility | PASS | Different tissue planes and depths. Sequential staging preferred -- Sculptra first, then assess need for perioral HA refinement. Same-session possible by experienced injectors but not evaluated in controlled trials. |
+| 5. Safety | PASS | No known contraindications. Different injection depths (Sculptra subdermal, RHA Redensity superficial/perioral). FDA labeling notes combination use has not been systematically evaluated. |
+| 6. Commercial Viability | PASS | Premium treatment plan addressing both structural and fine-detail aging. Revance (RHA Redensity) paired with Galderma (Sculptra). |
+| 7. Patient Clarity | PASS | "Sculptra supports deep collagen production. RHA Redensity smooths the fine lines around your mouth that move when you talk and smile. Different depths, different purposes." |
+| 8. Source Support | PARTIAL | Expert consensus supports biostimulator + HA filler combinations in clinical practice. RHA Redensity's resilient HA technology designed for dynamic areas. No published controlled trial data. Evidence strength: LOW (expert consensus only). |
 
 ## Content Fields
 
 ### Clinical Rationale
-Sculptra foundation + RHA Redensity for perioral detail work with flexible HA. Sculptra stimulates collagen production over months, rebuilding the underlying structural support that aging depletes. RHA Redensity provides immediate, precise volume correction at targeted depths. The "Sculpt & Lift" protocol -- foundation first, then refinement -- means patients typically need less filler and results look more natural and last longer because the underlying structure is restored.
+Sculptra stimulates deep collagen production; RHA Redensity addresses perioral fine lines -- one of the most dynamic areas of the face. RHA Redensity uses resilient HA technology specifically designed to accommodate natural facial movement, which is critical around the mouth where patients talk, smile, and eat constantly. Sculptra provides structural collagen support in the perioral region, while RHA Redensity smooths the fine lines on the surface. These work at different depths and for different purposes: Sculptra addresses the gradual collagen loss that allows lines to form, while RHA Redensity directly corrects the visible lines in a way that moves naturally with the face. Note: No published controlled trial data exists for this specific combination. The FDA Sculptra label states that safety and effectiveness in combination with other products have not been evaluated in controlled clinical trials.
 
 ### Timing Guidance
-Sculptra first for foundation, then HA filler for contour. Can be same session (different tissue planes) or sequential (Sculptra series first, then refine with filler). Sculptra: 2-3 sessions, 4-6 weeks apart. HA filler: as needed for refinement after Sculptra foundation is established.
+Sequential staging preferred: Sculptra series first (2-3 sessions, 4-6 weeks apart), then assess perioral lines 4-6 weeks after. Sculptra's collagen stimulation may partially improve perioral lines by restoring underlying support, so waiting allows assessment of how much fine-line correction is still needed. Same-session treatment at different tissue planes and depths is performed by some experienced injectors but has not been evaluated in controlled trials. RHA Redensity: targeted perioral application after Sculptra collagen stimulation is underway.
 
 ### Patient Education Text
-Tell the patient: "Sculptra works gradually over several months to rebuild the collagen your skin has lost with age -- think of it as strengthening the foundation. Once that foundation is in place, filler can be used to add precise contour and definition. By starting with the foundation, you typically need less filler and the results look more natural and last longer."
+Tell the patient: "The fine lines around your mouth are in one of the most active areas of your face -- you're constantly talking, smiling, eating. That's why they may benefit from a filler that moves naturally with your expressions. RHA Redensity is designed for that -- it's a resilient filler that flexes with your facial movement. But those lines also form partly because the deeper collagen structure in your face has been thinning over time. Sculptra addresses that -- it supports collagen production gradually over months. Your provider may suggest building the deeper structure with Sculptra first, then using RHA Redensity to smooth the fine surface lines around your mouth. This combination is used in clinical practice, but it has not been evaluated in controlled clinical trials. Your provider can discuss whether it makes sense for your individual situation."
 
 ### Staff Talking Points
-"When a patient has both volume loss and skin quality concerns, explain that addressing one without the other may leave them wanting more. 'Sculptra rebuilds the underlying structure over time, while filler provides the immediate contour you're looking for. Some patients choose to start with Sculptra to build a strong foundation, then add filler to refine. Others want some immediate results and choose to do both.' Let the patient's goals guide the conversation -- some prefer gradual improvement, others want immediate results."
+"Perioral lines are a common concern, and this pairing may address them from two directions. 'The fine lines around the mouth form for two reasons: the skin is constantly moving there, and the underlying collagen support has thinned over time. RHA Redensity is a resilient HA designed for dynamic areas -- it smooths those lines while still allowing natural movement. Sculptra supports the deeper collagen production that the perioral region needs.' When Sculptra restores underlying structure, perioral lines may improve even before filler is applied, so patients may need less RHA Redensity than if it were used alone. This combination is used in clinical practice but has not been evaluated in controlled trials. RHA Redensity is a Revance product and Sculptra is Galderma -- this is a clinical pairing based on each product's specific strength, not a brand bundle. Present it as an option the provider may recommend based on individual needs."
 
 ## Evidence
 
-- **"Sculpt & Lift" protocol:** Galderma-documented approach combining Sculptra foundation with HA filler contouring
-- **Dr. Tom van Eijk:** "In the same session, flood the subdermal tissue with Sculptra... fern pattern will take care of the things, the details they actually see in the mirror" -- Business of Injecting, Ep 254
-- **Expert consensus:** "If it's like an overall volume deficit... I would go with Sculptra first... For more immediate result, contour, more definition... the HA filler." -- Injector Podcast
+- **FDA Sculptra Aesthetic labeling:** Indicated for correction of shallow to deep nasolabial fold contour deficiencies and other facial wrinkles. "The safety and effectiveness of SCULPTRA Aesthetic used in combination with other products and procedures have not been evaluated in controlled clinical trials."
+- **Expert consensus:** Expert consensus supports biostimulator + HA filler combinations in clinical practice based on the rationale that PLLA collagen stimulation and HA gel correction address different mechanisms at different tissue depths.
+- **RHA technology:** Resilient HA designed to accommodate dynamic facial movement -- particularly relevant for perioral area.
+- **Evidence Type: LOW (expert consensus only; no published combination data; FDA label notes combination use not systematically evaluated)**
 
 ## Review Checklist (per D-08)
 

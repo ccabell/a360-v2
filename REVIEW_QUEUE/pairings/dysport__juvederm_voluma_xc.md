@@ -15,28 +15,33 @@
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
 | 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
 | 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 7. Patient Clarity | PASS | Clear distinction: Dysport relaxes movement lines across broad facial zones; Voluma restores structural cheek volume. Two different problems, two different solutions. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Broader diffusion pattern, faster onset. Well-documented in multiple podcast episodes. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Juvederm Voluma XC addresses deep cheek volume -- two different aspects of aging treated through two different mechanisms.
+Dysport's broader diffusion pattern treats large dynamic zones (forehead, crow's feet) effectively with fewer injection points, while Voluma provides deep structural volume restoration in the cheeks using VYCROSS technology with up to 2-year duration. This combination addresses two distinct layers: Dysport relaxes the muscles causing upper-face expression lines (with faster onset at 2-5 days), while Voluma rebuilds the foundational cheek structure lost with aging. Voluma is typically placed first in multi-filler protocols as a structural base. Patients who are highly active may metabolize Voluma faster. Dysport maintenance: every 3-4 months. Voluma maintenance: every 18-24 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Broader diffusion pattern, faster onset. Well-documented in multiple podcast episodes. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Dysport 2 weeks before Voluma to assess muscle response. Voluma is a structural filler -- in multi-filler treatment plans, cheek volume is typically restored first to provide a scaffold for other fillers placed lower in the face. Dysport's faster onset (2-5 days) allows earlier assessment of dynamic wrinkle improvement. Voluma touch-ups at 18-24 months; Dysport retreatment at 3-4 months.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Dysport is designed to relax the muscles that cause expression lines -- it works especially well across broader areas like the forehead and around the eyes, and you may notice results within just a few days. But relaxing those muscles can't bring back the cheek volume that naturally decreases over time. Voluma is a structural filler placed deep in the cheeks to restore that foundation -- it's one of the longer-lasting fillers available, often holding for up to two years. If you're noticing both expression lines up top and a loss of cheek fullness, treating both addresses the full picture of facial aging rather than just one part of it."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"When a patient says they look tired or their face looks 'deflated,' it helps to separate the concerns: 'The lines on your forehead and around your eyes -- those are from muscle movement, and Dysport addresses those by relaxing the muscles. But if you're also noticing your cheeks look flatter or less defined than they used to, that's structural volume loss, which happens naturally over time. Voluma is designed specifically for deep cheek volume -- it acts like a scaffold to lift and restore that structure.' On timing: 'If we're doing both, we'd typically do the Dysport first. Some patients do both in one visit, others prefer to stage them. Your provider will help you decide what makes sense for your goals.' Emphasize that cheek volume restoration can improve the overall appearance of the lower face too, since it provides structural support."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Dysport:** Indicated for moderate to severe glabellar lines in adults. Broader diffusion pattern, faster onset (2-5 days).
+- **FDA label -- Juvederm Voluma XC:** Indicated for age-related volume deficit in the cheek area in adults over 21. VYCROSS crosslinking, up to 2-year duration.
+- **Dysport differentiator:** Broader diffusion pattern suitable for large treatment zones, faster clinical onset at 2-5 days (per FDA-approved labeling and published clinical data).
+- **Voluma specificity:** VYCROSS crosslinking, FDA-approved for cheek augmentation, up to 2-year duration (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 

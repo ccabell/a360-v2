@@ -39,6 +39,12 @@ export interface ExchangeAgent {
   kind: AgentKind;
   /** For kind === "embed". */
   href?: string;
+  /**
+   * Maps this card to a lib/portfolio/registry.ts prototype. Audience
+   * share-link visitors only see cards whose portfolioSlug is in their
+   * audience; cards without one are internal/beta-only in audience views.
+   */
+  portfolioSlug?: string;
 }
 
 export const AGENTS: ExchangeAgent[] = [
@@ -363,6 +369,7 @@ export const AGENTS: ExchangeAgent[] = [
     lastUpdate: "2026-06-22",
     kind: "embed",
     href: "https://agelessdemo.vercel.app/",
+    portfolioSlug: "lumira",
   },
   {
     slug: "video-navigator",
@@ -434,6 +441,7 @@ export const AGENTS: ExchangeAgent[] = [
     lastUpdate: "2026-06-23",
     kind: "embed",
     href: "/tube",
+    portfolioSlug: "tube",
   },
 
   // ---------------------------------------------------------------------------
@@ -494,6 +502,7 @@ export const AGENTS: ExchangeAgent[] = [
     size: "EMR module",
     lastUpdate: "2026-06-23",
     kind: "static",
+    portfolioSlug: "scribe",
   },
   {
     slug: "notes",
@@ -608,6 +617,7 @@ export const AGENTS: ExchangeAgent[] = [
     size: "EMR module",
     lastUpdate: "2026-06-23",
     kind: "static",
+    portfolioSlug: "tcp-demo",
   },
   {
     slug: "reach",
@@ -663,6 +673,7 @@ export const AGENTS: ExchangeAgent[] = [
     size: "EMR module",
     lastUpdate: "2026-06-23",
     kind: "static",
+    portfolioSlug: "reach",
   },
 ];
 

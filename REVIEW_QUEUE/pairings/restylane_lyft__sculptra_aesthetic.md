@@ -1,42 +1,43 @@
 # Restylane Lyft + Sculptra Aesthetic
 
-**Tier:** common
+**Tier:** conditional
 **Type:** sequential
 **Strength:** strong
-**Same Session OK:** true
+**Same Session OK:** conditional (Same visit may be appropriate when performed in different areas/planes by an experienced injector. FDA labeling notes safety/effectiveness not evaluated in combination with other products. Stage Sculptra first and reassess before HA refinement when possible.)
 
 ## Gate Results
 
 | Gate | Result | Notes |
 |------|--------|-------|
-| 1. Concern Overlap | PASS | Both address volume loss. Sculptra stimulates collagen for gradual restoration; Restylane Lyft provides midface/hand volume. |
+| 1. Concern Overlap | PASS | Both address volume loss. Sculptra stimulates collagen for gradual restoration; Restylane Lyft provides midface structure and hand volume. |
 | 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (gradual, durable, biologic) vs HA gel scaffold (immediate, temporary, structural). Different timelines and mechanisms. |
 | 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot provide immediate volume correction." Restylane Lyft provides immediate results. Restylane Lyft does_not_solve: "Cannot stimulate long-term collagen production." Sculptra does this. |
-| 4. Timing Compatibility | PASS | Same-session per Dr. Tom van Eijk: Sculptra subdermal + filler at targeted depths. Different tissue planes. |
-| 5. Safety | PASS | No contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). |
-| 6. Commercial Viability | PASS | Premium treatment plan. Galderma "Sculpt & Lift" campaign validates commercial model. |
-| 7. Patient Clarity | PASS | "Sculptra is the foundation -- it rebuilds structure over months. Filler is the finishing touches -- immediate contour and definition." |
-| 8. Source Support | PASS | 15+ chunks across 5+ shows. "Sculpt & Lift" protocol. Dr. Tom van Eijk same-session protocol. Evidence strength 5/5. |
+| 4. Timing Compatibility | PASS | Different tissue planes. Sequential staging preferred -- Sculptra first, then assess need for HA refinement. Same-session possible by experienced injectors but not evaluated in controlled trials. |
+| 5. Safety | PASS | No known contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). FDA labeling notes combination use has not been systematically evaluated. |
+| 6. Commercial Viability | PASS | Premium treatment plan. Galderma ecosystem -- both Restylane Lyft and Sculptra are Galderma products, enabling loyalty program alignment. |
+| 7. Patient Clarity | PASS | "Sculptra supports collagen production over months. Restylane Lyft adds immediate midface structure and can also address hands. Same manufacturer." |
+| 8. Source Support | PARTIAL | Expert consensus supports this combination in clinical practice. No published controlled trial data for the specific combination. Evidence strength: LOW (expert consensus only). |
 
 ## Content Fields
 
 ### Clinical Rationale
-Sculptra foundation + Restylane Lyft for midface/hand volume. Sculptra stimulates collagen production over months, rebuilding the underlying structural support that aging depletes. Restylane Lyft provides immediate, precise volume correction at targeted depths. The "Sculpt & Lift" protocol -- foundation first, then refinement -- means patients typically need less filler and results look more natural and last longer because the underlying structure is restored.
+Sculptra stimulates collagen production; Restylane Lyft provides immediate midface structure and is also FDA-approved for hand rejuvenation. Both are Galderma products, offering genuine ecosystem synergy -- same manufacturer, compatible product design, and aligned loyalty programs. For midface: Sculptra builds the collagen base while Lyft provides the immediate structural contouring. For hands: Sculptra can stimulate collagen in dorsal hand tissue while Lyft provides immediate volume correction to reduce visible tendons and veins. This dual-area capability (face + hands) makes the combination relevant for patients seeking comprehensive age-related improvement. Note: No published controlled trial data exists for this specific combination. The FDA Sculptra label states that safety and effectiveness in combination with other products have not been evaluated in controlled clinical trials.
 
 ### Timing Guidance
-Sculptra first for foundation, then HA filler for contour. Can be same session (different tissue planes) or sequential (Sculptra series first, then refine with filler). Sculptra: 2-3 sessions, 4-6 weeks apart. HA filler: as needed for refinement after Sculptra foundation is established.
+Sequential staging preferred: Sculptra series first (2-3 sessions, 4-6 weeks apart), then Lyft for structural contouring 4-6 weeks after for refinement. Same-session treatment in different tissue planes is performed by some experienced injectors but has not been evaluated in controlled trials. Restylane Lyft: as needed for midface structure or hand volume after Sculptra collagen stimulation is established. Galderma ecosystem means training and loyalty programs cover both products.
 
 ### Patient Education Text
-Tell the patient: "Sculptra works gradually over several months to rebuild the collagen your skin has lost with age -- think of it as strengthening the foundation. Once that foundation is in place, filler can be used to add precise contour and definition. By starting with the foundation, you typically need less filler and the results look more natural and last longer."
+Tell the patient: "Sculptra works gradually over several months to support collagen production -- it's strengthening the foundation. Restylane Lyft is a structural filler that adds immediate definition to your cheeks and midface, and it's also approved for hands. They're both made by Galderma. Your provider may suggest building the collagen support with Sculptra first, then using Lyft to add the specific contour and structure you want. If your hands are also a concern, both products can be used there. This combination is used in clinical practice, but it has not been evaluated in controlled clinical trials. Your provider can discuss whether this approach makes sense for your individual situation."
 
 ### Staff Talking Points
-"When a patient has both volume loss and skin quality concerns, explain that addressing one without the other may leave them wanting more. 'Sculptra rebuilds the underlying structure over time, while filler provides the immediate contour you're looking for. Some patients choose to start with Sculptra to build a strong foundation, then add filler to refine. Others want some immediate results and choose to do both.' Let the patient's goals guide the conversation -- some prefer gradual improvement, others want immediate results."
+"Restylane Lyft + Sculptra is a Galderma ecosystem pairing -- same manufacturer, aligned training, and loyalty program benefits. Clinically: 'Sculptra supports collagen production gradually. Lyft gives you the immediate midface structure -- the cheekbone definition and lift. Starting with collagen support means the contouring filler sits on a stronger base and you may need less of it.' A unique advantage of this pairing is dual-area treatment -- Lyft is FDA-approved for hands, and Sculptra can stimulate hand collagen as well. This combination is used in clinical practice but has not been evaluated in controlled trials. Present it as an option the provider may recommend based on individual needs."
 
 ## Evidence
 
-- **"Sculpt & Lift" protocol:** Galderma-documented approach combining Sculptra foundation with HA filler contouring
-- **Dr. Tom van Eijk:** "In the same session, flood the subdermal tissue with Sculptra... fern pattern will take care of the things, the details they actually see in the mirror" -- Business of Injecting, Ep 254
-- **Expert consensus:** "If it's like an overall volume deficit... I would go with Sculptra first... For more immediate result, contour, more definition... the HA filler." -- Injector Podcast
+- **FDA Sculptra Aesthetic labeling:** Indicated for correction of shallow to deep nasolabial fold contour deficiencies and other facial wrinkles. "The safety and effectiveness of SCULPTRA Aesthetic used in combination with other products and procedures have not been evaluated in controlled clinical trials."
+- **Galderma ecosystem:** Both Restylane Lyft and Sculptra are Galderma products -- manufacturer-aligned pairing.
+- **Expert consensus:** Expert consensus supports biostimulator + HA filler combinations in clinical practice based on the rationale that PLLA collagen stimulation and HA gel correction address different mechanisms at different tissue depths.
+- **Evidence Type: LOW (expert consensus only; no published combination data; FDA label notes combination use not systematically evaluated)**
 
 ## Review Checklist (per D-08)
 

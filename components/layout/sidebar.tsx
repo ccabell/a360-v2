@@ -24,6 +24,7 @@ import {
   Tv,
   Headphones,
   Package,
+  LayoutGrid,
 } from "lucide-react";
 
 // The demo build shows only the suite below; everything else is scope:"internal"
@@ -41,6 +42,7 @@ const menuItems = [
   { name: "Video Navigator", href: "/tube", icon: Tv },
   { name: "Podcast Navigator", href: "/podcast", icon: Headphones },
   // ── Internal only (hidden in the demo build) ─────────────────────────────
+  { name: "Portfolio", href: "/dashboard/portfolio", icon: LayoutGrid, scope: "internal" },
   { name: "Patients", href: "/dashboard/patients", icon: Users, scope: "internal" },
   { name: "Global Library", href: "/dashboard/global-library", icon: BookOpenCheck, scope: "internal" },
   { name: "LPOA", href: "/dashboard/lpoa", icon: BookOpen, scope: "internal" },

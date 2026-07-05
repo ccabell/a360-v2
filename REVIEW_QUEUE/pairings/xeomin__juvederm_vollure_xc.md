@@ -13,30 +13,35 @@
 | 2. Mechanism Complementarity | PASS | Neuromodulation (muscle relaxation) vs HA gel scaffold (volume restoration). Different mechanisms at different tissue layers. |
 | 3. Limitation Coverage | PASS | Xeomin does_not_solve: "Cannot restore lost volume." Juvederm Vollure XC addresses volume. Juvederm Vollure XC does_not_solve: "Cannot address dynamic wrinkles." Xeomin addresses this. |
 | 4. Timing Compatibility | PASS | Same-session compatible. Neurotoxin first, then filler. |
-| 5. Safety | PASS | No known contraindications. Same safety profile as all neurotoxin+filler combinations. |
-| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Most common pairing category in medical aesthetics. |
-| 7. Patient Clarity | PASS | Clear distinction: movement lines vs volume loss. Two different problems, two different solutions. |
-| 8. Source Support | PASS | Category-level evidence from 20+ chunks. Less product-specific evidence than Botox, hence common tier. |
+| 5. Safety | PASS | No known contraindications. Xeomin's lack of complexing proteins is a consideration for providers evaluating long-term immunogenicity, as it does not contain accessory proteins. |
+| 6. Commercial Viability | PASS | Standard neurotoxin+filler combination. Cross-ecosystem pairing (Merz neurotoxin + Allergan filler). |
+| 7. Patient Clarity | PASS | Clear distinction: Xeomin relaxes movement lines as a pure neurotoxin; Vollure smooths nasolabial folds. Two different problems, two different solutions. |
+| 8. Source Support | PASS | Category-level published evidence supports combination. Less product-specific pairing evidence than Botox, hence common tier. |
 
 ## Content Fields
 
 ### Clinical Rationale
-Same category-level rationale as Botox+filler pairs. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months. Less product-specific corpus evidence than Botox, but identical mechanism of complementarity with HA fillers. Neurotoxin relaxes dynamic muscles while Juvederm Vollure XC addresses mid-depth volume (NLF) -- two different aspects of aging treated through two different mechanisms.
+Xeomin is a "naked molecule" neurotoxin -- it contains no complexing proteins (0.55ng vs 4.5ng for Botox), which is a consideration for providers evaluating long-term immunogenicity, as it does not contain accessory proteins. This makes it a consideration for patients planning extended combination therapy. Vollure's VYCROSS-crosslinked HA addresses nasolabial folds and moderate facial lines with an 18-month duration. The combination treats dynamic expression lines (Xeomin) alongside mid-depth NLF volume loss (Vollure). Xeomin is room-temperature stable, which is a practical advantage for practices. Xeomin maintenance: every 3-4 months. Vollure maintenance: every 12-18 months.
 
 ### Timing Guidance
-Same session or sequential visits. Neurotoxin administered first. If sequential: neurotoxin 2 weeks before filler to see muscle response before filling static lines. Pure neurotoxin (no complexing proteins). Potentially lower antibody formation risk in long-term plans. Maintenance: every 3-4 months.
+Same session or sequential visits. Neurotoxin administered first, filler second. If sequential: Xeomin 2 weeks before Vollure to assess muscle response before addressing static NLF lines. Standard neurotoxin + filler sequencing applies. Xeomin retreatment at 3-4 months; Vollure touch-ups at 12-18 months. Some providers consider Xeomin's lack of accessory proteins relevant for long-term combination plans.
 
 ### Patient Education Text
-Tell the patient: "Botox helps relax the muscles that cause expression lines -- like frown lines and crow's feet. But it can't restore volume that's been lost over time. If you're noticing both lines from movement AND a loss of fullness in your cheeks or around your mouth, filler addresses that volume loss through a completely different approach. Many patients find that treating both concerns creates a more balanced, natural-looking result than treating either one alone."
+Tell the patient: "Xeomin is a wrinkle relaxer that's sometimes described as a 'pure' or 'naked' neurotoxin -- it contains only the active ingredient without the extra proteins found in some other neurotoxins. Some providers consider this when planning long-term treatment, as it does not contain the accessory proteins found in some other neurotoxins. Vollure is a filler designed specifically for the nasolabial fold lines -- those deeper lines from your nose to your mouth -- and it typically lasts about 18 months. If you're noticing both expression lines and those deeper folds, Xeomin addresses the movement-based lines while Vollure addresses the volume-based lines. They work through completely different mechanisms."
 
 ### Staff Talking Points
-"When a patient comes in concerned about looking tired or aged, you might explain: 'Botox can help with the lines around your eyes and forehead -- those are caused by muscle movement. But if you're also noticing that your cheeks look flatter than they used to, that's volume loss, which Botox can't address. Filler works on a different layer to restore that structure. Some patients choose to address both in the same visit, while others prefer to start with one and see how they feel.' The key is helping patients understand these are two different problems requiring two different solutions -- not an upsell."
+"Xeomin's key differentiator is its purity. When explaining: 'Xeomin is sometimes called the naked molecule -- it contains only the active toxin without the extra proteins that other neurotoxins have. This may be relevant for patients who plan to use neurotoxin long-term, as it does not contain the accessory proteins found in some other neurotoxins, which some providers consider when long-term immunogenicity is a concern.' On the Vollure pairing: 'Vollure is specifically designed for the nasolabial fold lines and typically lasts about 18 months. These are different concerns -- Xeomin handles the expression lines, Vollure handles the volume loss lines.' Practical note: Xeomin is room-temperature stable, which is a logistics advantage. This is a cross-brand pairing (Merz + Allergan) -- different loyalty programs."
 
 ## Evidence
 
-- **Category-level:** 90-woman dose-ranging study confirms neurotoxin + filler superiority (mechanism-based, applies to all BoNT-A products)
-- **Dr. David Eccleston:** Confirms nuanced differences between neurotoxins but complementarity with fillers is mechanism-based, not brand-specific
-- **Dr. Teri Fisher:** "Botox immobilizes the muscles, minimizing movement and allowing fillers to last longer"
+**Evidence Type:** MODERATE (class-level PubMed, no product-specific study for this pair)
+
+- **PubMed DOI 10.1097/DSS.0000000000000754:** BoNT-A and HA fillers may be performed together in either sequence; combination is superior to either alone. Category-level evidence applicable to all BoNT-A + HA filler pairs.
+- **FDA label -- Xeomin:** Indicated for moderate to severe glabellar lines in adults. IncobotulinumtoxinA -- contains no accessory proteins; room-temperature stable.
+- **FDA label -- Juvederm Vollure XC:** Indicated for moderate to severe facial wrinkles and folds (including nasolabial folds) in adults over 21. VYCROSS crosslinking, 18-month duration.
+- **Xeomin differentiator:** No accessory/complexing proteins (incobotulinumtoxinA), room-temperature stable, Merz ecosystem (per FDA-approved labeling).
+- **Vollure specificity:** VYCROSS crosslinking, FDA-approved for NLF, 18-month duration (per FDA-approved labeling).
+- **Accepted clinical practice:** BoNT-A neuromodulation combined with HA addresses complementary aspects of facial aging. Neurotoxin-first sequencing in same-session protocols is standard.
 
 ## Review Checklist (per D-08)
 

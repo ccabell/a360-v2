@@ -42,6 +42,7 @@ next-env.d.ts
 
 .vercel
 
-# playwright / test artifacts
+# claude code scratch worktrees + playwright / test artifacts
+/.claude/
 /test-results/
 *.log

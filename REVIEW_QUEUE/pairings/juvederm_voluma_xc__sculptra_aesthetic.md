@@ -1,9 +1,9 @@
 # Juvederm Voluma XC + Sculptra Aesthetic
 
-**Tier:** common
+**Tier:** conditional
 **Type:** sequential
 **Strength:** strong
-**Same Session OK:** true
+**Same Session OK:** conditional (Same visit may be appropriate when performed in different areas/planes by an experienced injector. FDA labeling notes safety/effectiveness not evaluated in combination with other products. Stage Sculptra first and reassess before HA refinement when possible.)
 
 ## Gate Results
 
@@ -12,31 +12,31 @@
 | 1. Concern Overlap | PASS | Both address volume loss. Sculptra stimulates collagen for gradual restoration; Juvederm Voluma XC provides deep cheek volume restoration. |
 | 2. Mechanism Complementarity | PASS | PLLA collagen stimulation (gradual, durable, biologic) vs HA gel scaffold (immediate, temporary, structural). Different timelines and mechanisms. |
 | 3. Limitation Coverage | PASS | Sculptra does_not_solve: "Cannot provide immediate volume correction." Juvederm Voluma XC provides immediate results. Juvederm Voluma XC does_not_solve: "Cannot stimulate long-term collagen production." Sculptra does this. |
-| 4. Timing Compatibility | PASS | Same-session per Dr. Tom van Eijk: Sculptra subdermal + filler at targeted depths. Different tissue planes. |
-| 5. Safety | PASS | No contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). |
-| 6. Commercial Viability | PASS | Premium treatment plan. Galderma "Sculpt & Lift" campaign validates commercial model. |
-| 7. Patient Clarity | PASS | "Sculptra is the foundation -- it rebuilds structure over months. Filler is the finishing touches -- immediate contour and definition." |
-| 8. Source Support | PASS | 15+ chunks across 5+ shows. "Sculpt & Lift" protocol. Dr. Tom van Eijk same-session protocol. Evidence strength 5/5. |
+| 4. Timing Compatibility | PASS | Different tissue planes. Sequential staging preferred -- Sculptra first, then assess need for HA refinement. Same-session possible by experienced injectors but not evaluated in controlled trials. |
+| 5. Safety | PASS | No known contraindications. Different injection depths (Sculptra subdermal, HA at targeted depths). FDA labeling notes combination use has not been systematically evaluated. |
+| 6. Commercial Viability | PASS | Premium treatment plan. Allergan product paired with Galderma biostimulator -- cross-manufacturer but clinically sound. |
+| 7. Patient Clarity | PASS | "Sculptra supports collagen production over months. Voluma adds precise cheek contour immediately. Different depths, different timelines." |
+| 8. Source Support | PARTIAL | Expert consensus supports this combination in clinical practice. No published controlled trial data for the specific combination. Evidence strength: LOW (expert consensus only). |
 
 ## Content Fields
 
 ### Clinical Rationale
-Sculptra foundation + Juvederm Voluma XC for deep cheek volume restoration. Sculptra stimulates collagen production over months, rebuilding the underlying structural support that aging depletes. Juvederm Voluma XC provides immediate, precise volume correction at targeted depths. The "Sculpt & Lift" protocol -- foundation first, then refinement -- means patients typically need less filler and results look more natural and last longer because the underlying structure is restored.
+Sculptra stimulates collagen production; Voluma provides structural cheek contouring with immediate HA gel correction. Voluma is a robust HA filler designed for deep cheek volume -- it provides the immediate structural contour that Sculptra cannot deliver right away. By establishing Sculptra collagen stimulation first, practices may find patients need less Voluma at each subsequent touch-up, as the collagen support provides a more durable base layer. Note: No published controlled trial data exists for this specific combination. The FDA Sculptra label states that safety and effectiveness in combination with other products have not been evaluated in controlled clinical trials.
 
 ### Timing Guidance
-Sculptra first for foundation, then HA filler for contour. Can be same session (different tissue planes) or sequential (Sculptra series first, then refine with filler). Sculptra: 2-3 sessions, 4-6 weeks apart. HA filler: as needed for refinement after Sculptra foundation is established.
+Sequential staging preferred: Sculptra series first (2-3 sessions, 4-6 weeks apart), then refine with Voluma 4-6 weeks after the last Sculptra session once collagen stimulation is underway. Same-session treatment in different tissue planes is performed by some experienced injectors but has not been evaluated in controlled trials. Voluma: as needed for cheek contour refinement after Sculptra collagen stimulation is established.
 
 ### Patient Education Text
-Tell the patient: "Sculptra works gradually over several months to rebuild the collagen your skin has lost with age -- think of it as strengthening the foundation. Once that foundation is in place, filler can be used to add precise contour and definition. By starting with the foundation, you typically need less filler and the results look more natural and last longer."
+Tell the patient: "Sculptra works gradually over several months to support collagen production -- think of it as strengthening the foundation of your facial structure. Voluma is a filler designed specifically for cheek contouring -- it adds precise definition and lift right away. Your provider may suggest starting with Sculptra to build that collagen support, then using Voluma for contouring on top of a stronger base. This combination is used in clinical practice, but it has not been evaluated in controlled clinical trials. Your provider can discuss whether this approach makes sense for your individual situation."
 
 ### Staff Talking Points
-"When a patient has both volume loss and skin quality concerns, explain that addressing one without the other may leave them wanting more. 'Sculptra rebuilds the underlying structure over time, while filler provides the immediate contour you're looking for. Some patients choose to start with Sculptra to build a strong foundation, then add filler to refine. Others want some immediate results and choose to do both.' Let the patient's goals guide the conversation -- some prefer gradual improvement, others want immediate results."
+"When a patient wants cheek restoration, explain the two layers: 'There's the underlying structure -- the collagen that's been thinning over time -- and then there's the specific contour and definition you see in the mirror. Sculptra supports that underlying collagen production gradually. Voluma gives you the precise cheek sculpting on top. Some patients start with Sculptra to build the support, then add Voluma to refine. Others want some immediate cheek definition and discuss both with their provider.' This combination is used in clinical practice but has not been evaluated in controlled trials. Allergan (Voluma) and Galderma (Sculptra) are different manufacturers -- this is a clinical pairing, not a brand bundle. Present it as an option the provider may recommend based on individual needs."
 
 ## Evidence
 
-- **"Sculpt & Lift" protocol:** Galderma-documented approach combining Sculptra foundation with HA filler contouring
-- **Dr. Tom van Eijk:** "In the same session, flood the subdermal tissue with Sculptra... fern pattern will take care of the things, the details they actually see in the mirror" -- Business of Injecting, Ep 254
-- **Expert consensus:** "If it's like an overall volume deficit... I would go with Sculptra first... For more immediate result, contour, more definition... the HA filler." -- Injector Podcast
+- **FDA Sculptra Aesthetic labeling:** Indicated for correction of shallow to deep nasolabial fold contour deficiencies and other facial wrinkles. "The safety and effectiveness of SCULPTRA Aesthetic used in combination with other products and procedures have not been evaluated in controlled clinical trials."
+- **Expert consensus:** Expert consensus supports biostimulator + HA filler combinations in clinical practice based on the rationale that PLLA collagen stimulation and HA gel correction address different mechanisms at different tissue depths.
+- **Evidence Type: LOW (expert consensus only; no published combination data; FDA label notes combination use not systematically evaluated)**
 
 ## Review Checklist (per D-08)
 
