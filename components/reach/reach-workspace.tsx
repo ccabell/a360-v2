@@ -15,7 +15,14 @@ import type { BlockCardHandle } from "@/components/studio/BlockCard";
 import { BlockConnector } from "@/components/studio/BlockConnector";
 import { UserSearch, Lightbulb, Mail } from "lucide-react";
 import { CampaignViewer } from "@/components/reach/campaign-viewer";
+import type { CampaignStatus, EmailReview } from "@/components/reach/campaign-viewer";
 import { parseCampaign, type ReachCampaign } from "@/lib/reach/campaign";
+
+interface SavedMeta {
+  id: string;
+  status: CampaignStatus;
+  reviews: EmailReview[];
+}
 
 interface PatientOption {
   id: string;
@@ -164,6 +171,9 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
   const [runAllActive, setRunAllActive] = useState(false);
   const [agentsError, setAgentsError] = useState<string | null>(null);
   const [campaign, setCampaign] = useState<ReachCampaign | null>(null);
+  const [savedMeta, setSavedMeta] = useState<SavedMeta | null>(null);
+  const [viewerKey, setViewerKey] = useState("fresh-0");
+  const runNonce = useRef(0);
 
   const blockRefs = useRef<Array<React.RefObject<BlockCardHandle | null>>>(
     BLOCKS.map(() => React.createRef<BlockCardHandle | null>()),
@@ -253,11 +263,38 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
     [],
   );
 
+  // Selecting a patient restores any previously saved/approved campaign for
+  // that patient (Phase 3 HITL), else clears the surface.
+  const selectPatient = useCallback((v: string) => {
+    setSelectedPatientId(v);
+    setCampaign(null);
+    setSavedMeta(null);
+    if (!v) return;
+    fetch(`/api/reach/campaigns?patient_id=${encodeURIComponent(v)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((res) => {
+        const d = res?.data;
+        if (d?.campaign) {
+          setCampaign(d.campaign as ReachCampaign);
+          setSavedMeta({
+            id: d.id,
+            status: d.status as CampaignStatus,
+            reviews: Array.isArray(d.reviews) ? (d.reviews as EmailReview[]) : [],
+          });
+          setViewerKey(`saved-${d.id}`);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   const handleRunAll = useCallback(() => {
     if (!selectedPatientId) return;
     setRunAllActive(true);
     setCompletedCount(0);
     setCampaign(null);
+    setSavedMeta(null);
+    runNonce.current += 1;
+    setViewerKey(`fresh-${runNonce.current}`);
     outputsRef.current = new Array(BLOCKS.length).fill("");
     setBlockStatuses(new Array(BLOCKS.length).fill("idle") as BlockStatus[]);
     setTimeout(() => {
@@ -300,10 +337,7 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
               </label>
               <Select
                 value={selectedPatientId}
-                onValueChange={(v) => {
-                  setSelectedPatientId(v ?? "");
-                  setCampaign(null);
-                }}
+                onValueChange={(v) => selectPatient(v ?? "")}
               >
                 <SelectTrigger className="h-9 w-full">
                   <SelectValue placeholder="Select a patient…" />
@@ -385,10 +419,12 @@ export function ReachWorkspace({ showHeader = true }: { showHeader?: boolean }) 
 
           {campaign && (
             <CampaignViewer
+              key={viewerKey}
               campaign={campaign}
               agentId={resolveAgent(BLOCKS[COMPOSER_INDEX].keys, agents)}
               patientId={selectedPatientId}
               onCampaignChange={setCampaign}
+              initialSaved={savedMeta}
             />
           )}
         </div>
