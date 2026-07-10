@@ -24,8 +24,13 @@ const serverSchema = z.object({
   RAG_SUPABASE_URL: z.string().url(),
   RAG_SUPABASE_KEY: z.string().min(1),
 
-  // External services
-  RAG_SEARCH_URL: z.string().url(),
+  // External services. RAG_SEARCH_URL may be the literal "disabled" — the
+  // RAG Search Railway service is optional and lib/retrieval/sources.ts
+  // already checks for an http(s) prefix before using it.
+  RAG_SEARCH_URL: z.string().refine(
+    (v) => v === "disabled" || v.startsWith("http://") || v.startsWith("https://"),
+    { message: "must be a URL or the literal 'disabled'" },
+  ),
   AI_GATEWAY_API_KEY: z.string().min(1),
 
   // Auth
