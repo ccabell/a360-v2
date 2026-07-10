@@ -29,6 +29,10 @@ import {
   Sparkles,
   Wrench,
   Star,
+  Copy,
+  Check,
+  RotateCcw,
+  Eraser,
 } from "lucide-react";
 import {
   TOOL_METADATA,
@@ -209,8 +213,8 @@ function TimelineItem({
   if (event.type === "status") {
     return (
       <div className="flex items-start gap-2 py-1.5 px-3">
-        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500/10">
-          <Bot className="h-3 w-3 text-blue-500" />
+        <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
+          <Bot className="h-3 w-3 text-primary" />
         </div>
         <span className="text-xs text-muted-foreground flex-1 min-w-0">
           {event.stage === "run_created"
@@ -244,9 +248,9 @@ function TimelineItem({
   ) : isError ? (
     <XCircle className="h-3.5 w-3.5 text-red-500" />
   ) : pending ? (
-    <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-400" />
+    <Loader2 className="h-3.5 w-3.5 animate-spin text-primary" />
   ) : (
-    <CheckCircle className="h-3.5 w-3.5 text-blue-400" />
+    <CheckCircle className="h-3.5 w-3.5 text-primary" />
   );
 
   const summary = (() => {
@@ -550,6 +554,20 @@ export default function AgentTesterPage() {
 
   const hasResults = output.length > 0 || toolEvents.length > 0 || runMeta;
 
+  const [copiedOut, setCopiedOut] = useState(false);
+  const copyOutput = useCallback(() => {
+    if (!output) return;
+    navigator.clipboard?.writeText(output);
+    setCopiedOut(true);
+    setTimeout(() => setCopiedOut(false), 1500);
+  }, [output]);
+  const clearRun = useCallback(() => {
+    setOutput("");
+    setToolEvents([]);
+    setRunMeta(null);
+    setExpandedEvents(new Set());
+  }, []);
+
   // Use viewport-based height: 100vh minus the header (~130px)
   // This ensures the page is always exactly one screen, never overflows
   return (
@@ -767,10 +785,40 @@ export default function AgentTesterPage() {
         <div className="flex flex-1 min-h-0">
           {/* -- Left: Output -- */}
           <div className="flex flex-[3] flex-col min-w-0 min-h-0 border-r border-border">
-            <div className="shrink-0 border-b border-border px-8 py-2.5">
+            <div className="shrink-0 border-b border-border px-8 py-2 flex items-center justify-between">
               <span className="text-xs font-semibold text-foreground">
                 Output
               </span>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={copyOutput}
+                  disabled={!output}
+                  title="Copy output"
+                  className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                >
+                  {copiedOut ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                  {copiedOut ? "Copied" : "Copy"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleRun()}
+                  disabled={running || !selectedAgentId || !userMessage.trim()}
+                  title="Re-run with the same input"
+                  className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                >
+                  <RotateCcw className="h-3 w-3" /> Re-run
+                </button>
+                <button
+                  type="button"
+                  onClick={clearRun}
+                  disabled={running}
+                  title="Clear this run"
+                  className="flex items-center gap-1 rounded-md border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-foreground disabled:opacity-40"
+                >
+                  <Eraser className="h-3 w-3" /> Clear
+                </button>
+              </div>
             </div>
             {runMeta?.error && (
               <div className="shrink-0 border-b border-red-300 bg-red-50 px-6 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">
