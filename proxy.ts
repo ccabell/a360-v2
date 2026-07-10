@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
+import { ADMIN_SESSION_COOKIE, adminSessionToken, adminPassword } from "@/lib/admin-auth";
 import { audienceRoutePrefixes, getAudience } from "@/lib/portfolio/registry";
 import {
   AUDIENCE_COOKIE,
@@ -58,9 +59,31 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/api/ask") ||
     pathname.startsWith("/podcast") ||
     pathname.startsWith("/api/podcast") ||
-    pathname.startsWith("/share/")
+    pathname.startsWith("/share/") ||
+    pathname === "/admin/login" ||
+    pathname.startsWith("/api/admin-auth")
   ) {
     return NextResponse.next();
+  }
+
+  // Admin gate: /admin/* has its own password, independent of the main beta
+  // gate and reachable even when EXCHANGE_ONLY is set — the CMS must stay
+  // usable while the rest of the app is contained to the Exchange for an
+  // external share link. Resolves fully here (allow or redirect) so admin
+  // paths never fall through to the containment/beta checks below.
+  if (pathname.startsWith("/admin")) {
+    const adminPw = adminPassword();
+    if (!adminPw) {
+      return new NextResponse("Admin access is not configured", { status: 503 });
+    }
+    const cookie = request.cookies.get(ADMIN_SESSION_COOKIE)?.value;
+    const expected = await adminSessionToken(adminPw);
+    if (cookie === expected) return NextResponse.next();
+
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    url.searchParams.set("from", pathname);
+    return NextResponse.redirect(url);
   }
 
   // Standalone apps under /apps/* — public unless listed in GATED_APPS

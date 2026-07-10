@@ -24,8 +24,13 @@ const serverSchema = z.object({
   RAG_SUPABASE_URL: z.string().url(),
   RAG_SUPABASE_KEY: z.string().min(1),
 
-  // External services
-  RAG_SEARCH_URL: z.string().url(),
+  // External services. RAG_SEARCH_URL may be the literal "disabled" — the
+  // RAG Search Railway service is optional and lib/retrieval/sources.ts
+  // already checks for an http(s) prefix before using it.
+  RAG_SEARCH_URL: z.string().refine(
+    (v) => v === "disabled" || v.startsWith("http://") || v.startsWith("https://"),
+    { message: "must be a URL or the literal 'disabled'" },
+  ),
   AI_GATEWAY_API_KEY: z.string().min(1),
 
   // Auth
@@ -47,7 +52,16 @@ let _cached: ServerEnv | null = null;
 export function serverEnv(): ServerEnv {
   if (_cached) return _cached;
 
-  const result = serverSchema.safeParse(process.env);
+  // Defensive: some Vercel-stored values have picked up a trailing newline in
+  // the past (e.g. from a piped-in CLI set that appended CRLF) which fails
+  // exact-match/URL checks below even though the value is otherwise correct.
+  // Trim every var before validating rather than chasing this field-by-field.
+  const trimmedEnv: Record<string, string | undefined> = {};
+  for (const [key, value] of Object.entries(process.env)) {
+    trimmedEnv[key] = typeof value === "string" ? value.trim() : value;
+  }
+
+  const result = serverSchema.safeParse(trimmedEnv);
   if (!result.success) {
     const missing = result.error.issues
       .map((i) => `  ${i.path.join(".")}: ${i.message}`)
