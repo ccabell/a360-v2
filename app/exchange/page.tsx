@@ -1,4 +1,4 @@
-import { AGENTS } from "@/lib/exchange/agents";
+import { listAgents } from "@/lib/exchange/agents";
 import { getViewerAudience } from "@/lib/portfolio/viewer";
 import { ExchangeCatalog } from "@/components/exchange/exchange-catalog";
 
@@ -10,13 +10,16 @@ export const dynamic = "force-dynamic";
  * sessions and ungated dev see the full catalog.
  */
 export default async function ExchangePage() {
-  const viewer = await getViewerAudience();
+  const [viewer, allAgents] = await Promise.all([
+    getViewerAudience(),
+    listAgents(),
+  ]);
   const agents =
     viewer.kind === "audience"
-      ? AGENTS.filter(
+      ? allAgents.filter(
           (a) => a.portfolioSlug && viewer.slugs.includes(a.portfolioSlug),
         )
-      : AGENTS;
+      : allAgents;
 
   return <ExchangeCatalog agents={agents} />;
 }

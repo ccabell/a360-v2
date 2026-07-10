@@ -16,10 +16,9 @@ export default async function AgentDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const agent = getAgent(slug);
+  const [agent, viewer] = await Promise.all([getAgent(slug), getViewerAudience()]);
   if (!agent) notFound();
 
-  const viewer = await getViewerAudience();
   if (
     viewer.kind === "audience" &&
     !(agent.portfolioSlug && viewer.slugs.includes(agent.portfolioSlug))
@@ -27,5 +26,5 @@ export default async function AgentDetailPage({
     notFound();
   }
 
-  return <AgentDetail slug={slug} />;
+  return <AgentDetail agent={agent} />;
 }

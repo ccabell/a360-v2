@@ -76,29 +76,44 @@ export function ExchangeCatalog({ agents }: { agents: ExchangeAgent[] }) {
           className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent via-transparent to-background"
         />
 
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm backdrop-blur">
+        <div className="mx-auto max-w-6xl px-6 py-12 sm:py-16">
+          {/* Brand spec-line accent (thin rule + tick cluster) */}
+          <div aria-hidden className="mb-6 flex items-center gap-2">
+            <span className="h-px w-10 bg-primary" />
+            <span className="h-px w-20 bg-border" />
+            <span className="flex items-end gap-[3px]">
+              {[3, 5, 3, 6, 3, 4].map((h, i) => (
+                <span
+                  key={i}
+                  className="w-px bg-border"
+                  style={{ height: `${h * 2}px` }}
+                />
+              ))}
+            </span>
+          </div>
+
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
             <Sparkles className="size-3.5 text-primary" />
             Clinically grounded AI for aesthetic practices
           </div>
 
-          <h1 className="mt-6 max-w-3xl font-heading text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+          <h1 className="mt-6 max-w-3xl font-heading text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">
             The Agent Exchange
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             A curated marketplace of AI agents that bring intelligence to every
             consultation — from clinical documentation to patient financing.
           </p>
 
           {/* Search */}
-          <div className="mt-9 max-w-lg">
+          <div className="mt-8 max-w-lg">
             <div className="relative">
               <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search agents by name, publisher, or capability…"
-                className="h-12 rounded-xl pl-11 text-sm shadow-sm ring-1 ring-foreground/[0.03]"
+                className="h-11 pl-11 text-sm"
               />
             </div>
           </div>

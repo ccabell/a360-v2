@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import {
   ArrowLeft,
   Star,
@@ -12,17 +11,19 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
+  ShieldCheck,
+  Plug,
+  Download,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { getAgent } from "@/lib/exchange/agents";
+import type { ExchangeAgent } from "@/lib/exchange/agents";
 
-export function AgentDetail({ slug }: { slug: string }) {
-  const agent = getAgent(slug);
-  const shots = agent?.screenshots ?? [];
+export function AgentDetail({ agent }: { agent: ExchangeAgent }) {
+  const shots = agent.screenshots ?? [];
   const [lightbox, setLightbox] = React.useState<number | null>(null);
 
   const go = React.useCallback(
@@ -46,8 +47,6 @@ export function AgentDetail({ slug }: { slug: string }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox, go]);
 
-  if (!agent) return notFound();
-
   return (
     <div className="min-h-svh bg-background">
       {/* Header band */}
@@ -66,7 +65,7 @@ export function AgentDetail({ slug }: { slug: string }) {
           </Link>
 
           <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-card ring-1 ring-foreground/10">
+            <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
               {agent.logo ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -86,7 +85,18 @@ export function AgentDetail({ slug }: { slug: string }) {
                 {agent.name}
               </h1>
               <p className="mt-1 text-sm text-muted-foreground">{agent.publisher}</p>
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+              <div className="mt-3 flex flex-wrap items-center gap-2.5 text-sm">
+                {agent.verified && (
+                  <Badge className="gap-1 border-emerald-500/20 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <ShieldCheck className="size-3.5" />
+                    A360 Verified
+                  </Badge>
+                )}
+                {agent.badges?.map((b) => (
+                  <Badge key={b} className="bg-primary/10 text-primary">
+                    {b}
+                  </Badge>
+                ))}
                 <span className="inline-flex items-center gap-1.5">
                   <Star className="size-4 fill-amber-400 text-amber-400" />
                   <span className="font-medium">{agent.rating.toFixed(1)}</span>
@@ -96,7 +106,19 @@ export function AgentDetail({ slug }: { slug: string }) {
                 <Badge className="bg-primary/10 text-primary [a]:hover:bg-primary/20">
                   {agent.price}
                 </Badge>
+                {agent.installCount && (
+                  <span className="inline-flex items-center gap-1.5 text-muted-foreground">
+                    <Download className="size-3.5" />
+                    {agent.installCount}
+                  </span>
+                )}
               </div>
+              {agent.emrCompatibility && agent.emrCompatibility.length > 0 && (
+                <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Plug className="size-3.5" />
+                  Works with {agent.emrCompatibility.join(", ")}
+                </p>
+              )}
             </div>
 
             <div className="shrink-0">
@@ -131,7 +153,7 @@ export function AgentDetail({ slug }: { slug: string }) {
                   key={src}
                   type="button"
                   onClick={() => setLightbox(i)}
-                  className="group/shot relative aspect-[16/10] w-[320px] shrink-0 cursor-zoom-in overflow-hidden rounded-xl border bg-card ring-1 ring-foreground/5 transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring sm:w-[360px]"
+                  className="group/shot relative aspect-[16/10] w-[320px] shrink-0 cursor-zoom-in overflow-hidden rounded-lg border bg-card transition-shadow hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring sm:w-[360px]"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -154,6 +176,9 @@ export function AgentDetail({ slug }: { slug: string }) {
               <TabsList variant="line">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="usecases">Use Cases</TabsTrigger>
+                {agent.agentReviews && agent.agentReviews.length > 0 && (
+                  <TabsTrigger value="reviews">Reviews</TabsTrigger>
+                )}
                 <TabsTrigger value="updates">Updates</TabsTrigger>
               </TabsList>
 
@@ -164,11 +189,27 @@ export function AgentDetail({ slug }: { slug: string }) {
                     {agent.description}
                   </p>
                 </section>
+
+                {/* KPI proof strip */}
+                {agent.kpis && agent.kpis.length > 0 && (
+                  <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    {agent.kpis.map((k) => (
+                      <div
+                        key={k.label}
+                        className="rounded-xl border bg-card p-4"
+                      >
+                        <p className="font-heading text-xl font-semibold text-primary">
+                          {k.value}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">{k.label}</p>
+                      </div>
+                    ))}
+                  </section>
+                )}
+
                 <section>
-                  <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-                    Key features
-                  </h2>
-                  <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <SectionLabel>Key features</SectionLabel>
+                  <ul className="mt-3.5 grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {agent.features.map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm">
                         <Check className="mt-0.5 size-4 shrink-0 text-primary" />
@@ -177,6 +218,127 @@ export function AgentDetail({ slug }: { slug: string }) {
                     ))}
                   </ul>
                 </section>
+
+                {/* Integrations & data — the API / integration transparency box */}
+                {(agent.emrCompatibility?.length ||
+                  agent.integrations?.length ||
+                  agent.dataFields) && (
+                  <section className="rounded-xl border bg-card p-5">
+                    <SectionLabel>Integrations &amp; data</SectionLabel>
+                    {agent.integrationDepth && (
+                      <p className="mt-2 text-sm">
+                        <span className="text-muted-foreground">Integration depth: </span>
+                        <span className="font-medium">{agent.integrationDepth}</span>
+                      </p>
+                    )}
+                    {agent.emrCompatibility?.length ? (
+                      <div className="mt-3">
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                          Works with
+                        </p>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {agent.emrCompatibility.map((e) => (
+                            <Badge key={e} variant="outline" className="font-normal">
+                              {e}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                    {agent.integrations?.length ? (
+                      <div className="mt-3">
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                          Connects to
+                        </p>
+                        <div className="mt-1.5 flex flex-wrap gap-1.5">
+                          {agent.integrations.map((i) => (
+                            <Badge key={i.name} variant="outline" className="font-normal">
+                              {i.name}
+                              {i.type ? (
+                                <span className="ml-1 text-muted-foreground">· {i.type}</span>
+                              ) : null}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                    {agent.dataFields && (
+                      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {agent.dataFields.reads?.length ? (
+                          <div>
+                            <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                              Reads
+                            </p>
+                            <ul className="mt-1.5 space-y-1">
+                              {agent.dataFields.reads.map((r) => (
+                                <li key={r} className="text-sm text-foreground/90">
+                                  {r}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null}
+                        {agent.dataFields.writes?.length ? (
+                          <div>
+                            <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+                              Writes
+                            </p>
+                            <ul className="mt-1.5 space-y-1">
+                              {agent.dataFields.writes.map((w) => (
+                                <li key={w} className="text-sm text-foreground/90">
+                                  {w}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
+                    {agent.dataFields?.retention && (
+                      <p className="mt-3 text-xs text-muted-foreground">
+                        {agent.dataFields.retention}
+                      </p>
+                    )}
+                  </section>
+                )}
+
+                {/* Pricing */}
+                {agent.pricingTiers && agent.pricingTiers.length > 0 && (
+                  <section>
+                    <SectionLabel>Pricing</SectionLabel>
+                    <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {agent.pricingTiers.map((t) => (
+                        <div
+                          key={t.name}
+                          className="rounded-xl border bg-card p-5"
+                        >
+                          <p className="font-heading text-sm font-semibold">{t.name}</p>
+                          <p className="mt-1">
+                            <span className="font-heading text-2xl font-semibold">
+                              {t.price}
+                            </span>
+                            {t.note ? (
+                              <span className="ml-1 text-xs text-muted-foreground">
+                                {t.note}
+                              </span>
+                            ) : null}
+                          </p>
+                          <ul className="mt-3 space-y-1.5">
+                            {t.features.map((f) => (
+                              <li key={f} className="flex items-start gap-2 text-sm">
+                                <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                                <span>{f}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Pricing shown is illustrative demo data.
+                    </p>
+                  </section>
+                )}
               </TabsContent>
 
               {/* Use Cases */}
@@ -184,7 +346,7 @@ export function AgentDetail({ slug }: { slug: string }) {
                 {agent.useCases.map((uc) => (
                   <div
                     key={uc.label}
-                    className="rounded-xl border bg-card p-4 ring-1 ring-foreground/5"
+                    className="rounded-xl border bg-card p-4"
                   >
                     <h3 className="font-heading text-sm font-semibold">{uc.label}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
@@ -193,6 +355,40 @@ export function AgentDetail({ slug }: { slug: string }) {
                   </div>
                 ))}
               </TabsContent>
+
+              {/* Reviews */}
+              {agent.agentReviews && agent.agentReviews.length > 0 && (
+                <TabsContent value="reviews" className="space-y-3">
+                  {agent.agentReviews.map((r, idx) => (
+                    <div
+                      key={idx}
+                      className="rounded-xl border bg-card p-4"
+                    >
+                      <div className="flex items-center gap-0.5">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star
+                            key={i}
+                            className={cn(
+                              "size-3.5",
+                              i < r.rating
+                                ? "fill-amber-400 text-amber-400"
+                                : "text-muted-foreground/30",
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <p className="mt-2 text-sm text-foreground/90">&ldquo;{r.quote}&rdquo;</p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {r.author}
+                        {r.role ? ` · ${r.role}` : ""}
+                      </p>
+                    </div>
+                  ))}
+                  <p className="text-xs text-muted-foreground">
+                    Reviews are demo placeholder data.
+                  </p>
+                </TabsContent>
+              )}
 
               {/* Updates */}
               <TabsContent value="updates" className="space-y-3">
@@ -215,8 +411,17 @@ export function AgentDetail({ slug }: { slug: string }) {
           <aside className="space-y-6 lg:border-l lg:pl-6">
             <InfoBlock label="Developer" value={agent.developer} />
             <InfoBlock label="Category" value={agent.category} />
+            {agent.integrationDepth && (
+              <InfoBlock label="Integration" value={`${agent.integrationDepth} · EMR`} />
+            )}
             <InfoBlock label="Size" value={agent.size} />
             <InfoBlock label="Last updated" value={agent.lastUpdate} />
+            {agent.verified && (
+              <InfoBlock
+                label="Compliance"
+                value={`A360 Verified${agent.verifiedDate ? ` · ${agent.verifiedDate}` : ""}`}
+              />
+            )}
 
             <div>
               <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -302,6 +507,22 @@ export function AgentDetail({ slug }: { slug: string }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Section eyebrow with the A360 brand hairline motif — a short brand-blue
+ * segment leading an uppercase label. Ties every section to the brand guide's
+ * "colored leading segment + thin rule" design language.
+ */
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="h-3.5 w-0.5 rounded-full bg-primary" />
+      <h2 className="font-heading text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+        {children}
+      </h2>
     </div>
   );
 }

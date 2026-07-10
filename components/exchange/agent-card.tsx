@@ -6,16 +6,20 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { ExchangeAgent } from "@/lib/exchange/agents";
 
-/** Category-keyed cover tint so the grid reads as a cohesive set. */
+/**
+ * Category-keyed cover tint so the grid reads as a cohesive set. Cool,
+ * restrained hues per the A360 brand palette — subtle differentiation, not
+ * saturated color blocks.
+ */
 const CATEGORY_TINT: Record<string, string> = {
-  Analytics: "from-sky-700/55",
-  Financial: "from-emerald-700/55",
-  Training: "from-violet-700/55",
-  Imaging: "from-fuchsia-700/55",
-  Knowledge: "from-cyan-700/55",
-  Documentation: "from-indigo-700/55",
-  Planning: "from-amber-700/55",
-  Marketing: "from-rose-700/55",
+  Analytics: "from-sky-600/40",
+  Financial: "from-teal-600/40",
+  Training: "from-indigo-600/40",
+  Imaging: "from-cyan-600/40",
+  Knowledge: "from-sky-500/40",
+  Documentation: "from-blue-600/40",
+  Planning: "from-slate-600/40",
+  Marketing: "from-violet-600/40",
 };
 
 export function AgentCard({ agent }: { agent: ExchangeAgent }) {
@@ -27,7 +31,7 @@ export function AgentCard({ agent }: { agent: ExchangeAgent }) {
       href={`/exchange/${agent.slug}`}
       className="group/link block focus-visible:outline-none"
     >
-      <Card className="h-full gap-0 overflow-hidden p-0 transition-all duration-200 group-hover/link:-translate-y-1 group-hover/link:shadow-xl group-hover/link:ring-foreground/15 group-focus-visible/link:ring-2 group-focus-visible/link:ring-ring">
+      <Card className="h-full gap-0 overflow-hidden p-0 shadow-none transition-all duration-200 group-hover/link:-translate-y-0.5 group-hover/link:shadow-md group-hover/link:ring-primary/25 group-focus-visible/link:ring-2 group-focus-visible/link:ring-ring">
         {/* Screenshot cover */}
         <div className="relative aspect-[16/10] overflow-hidden bg-muted">
           {cover ? (
@@ -38,18 +42,22 @@ export function AgentCard({ agent }: { agent: ExchangeAgent }) {
               className="size-full object-cover object-top transition-transform duration-300 group-hover/link:scale-[1.03]"
             />
           ) : (
-            <div className="size-full bg-gradient-to-br from-muted to-secondary" />
+            <div className="flex size-full items-center justify-center bg-gradient-to-br from-secondary via-card to-muted">
+              <span className="font-heading text-6xl font-bold text-primary/15">
+                {agent.name.charAt(0)}
+              </span>
+            </div>
           )}
           <div
             className={cn(
-              "absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-90 mix-blend-multiply",
+              "absolute inset-0 bg-gradient-to-t via-transparent to-transparent opacity-70 mix-blend-multiply",
               tint,
             )}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
           {/* Logo chip */}
-          <div className="absolute bottom-3 left-3 flex size-12 items-center justify-center overflow-hidden rounded-xl bg-card/95 shadow-sm ring-1 ring-foreground/10 backdrop-blur">
+          <div className="absolute bottom-3 left-3 flex size-12 items-center justify-center overflow-hidden rounded-lg bg-card/95 shadow-sm ring-1 ring-foreground/10 backdrop-blur">
             {agent.logo ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
