@@ -52,7 +52,16 @@ let _cached: ServerEnv | null = null;
 export function serverEnv(): ServerEnv {
   if (_cached) return _cached;
 
-  const result = serverSchema.safeParse(process.env);
+  // Defensive: some Vercel-stored values have picked up a trailing newline in
+  // the past (e.g. from a piped-in CLI set that appended CRLF) which fails
+  // exact-match/URL checks below even though the value is otherwise correct.
+  // Trim every var before validating rather than chasing this field-by-field.
+  const trimmedEnv: Record<string, string | undefined> = {};
+  for (const [key, value] of Object.entries(process.env)) {
+    trimmedEnv[key] = typeof value === "string" ? value.trim() : value;
+  }
+
+  const result = serverSchema.safeParse(trimmedEnv);
   if (!result.success) {
     const missing = result.error.issues
       .map((i) => `  ${i.path.join(".")}: ${i.message}`)
