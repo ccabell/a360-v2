@@ -39,6 +39,12 @@ const serverSchema = z.object({
   // Sentry (optional — disabled in dev)
   SENTRY_DSN: z.string().url().optional(),
   NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
+
+  // Command Center feeds (optional — features degrade gracefully without them)
+  GITHUB_TOKEN: z.string().min(1).optional(), // commits + JOURNAL feeds (read-only PAT)
+  VERCEL_API_TOKEN: z.string().min(1).optional(), // live deploy-status badges
+  VERCEL_TEAM_ID: z.string().min(1).optional(),
+  HUB_JOURNAL_REPO: z.string().min(1).optional(), // defaults to ccabell/a360-hub
 });
 
 export type ServerEnv = z.infer<typeof serverSchema>;

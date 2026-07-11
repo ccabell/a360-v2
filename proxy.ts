@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
 import { ADMIN_SESSION_COOKIE, adminSessionToken, adminPassword } from "@/lib/admin-auth";
-import { audienceRoutePrefixes, getAudience } from "@/lib/portfolio/registry";
+import { audienceRoutePrefixes, getAudience } from "@/lib/portfolio/audiences";
 import {
   AUDIENCE_COOKIE,
   shareSecret,

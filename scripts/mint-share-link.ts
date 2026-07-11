@@ -13,7 +13,7 @@ import { config } from "dotenv";
 
 config({ path: ".env.local" });
 
-import { AUDIENCES, getAudience } from "../lib/portfolio/registry";
+import { AUDIENCES, getAudience } from "../lib/portfolio/audiences";
 import { mintShareToken } from "../lib/portfolio/share";
 
 const ALLOWED_DAYS = [7, 30];

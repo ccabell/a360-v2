@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getAudience } from "@/lib/portfolio/registry";
+import { getAudience } from "@/lib/portfolio/audiences";
 import {
   AUDIENCE_COOKIE,
   shareSecret,

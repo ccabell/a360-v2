@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
-import { getAudience } from "./registry";
+import { getAudience } from "./audiences";
 import { AUDIENCE_COOKIE, shareSecret, verifyShareToken } from "./share";
 
 /**

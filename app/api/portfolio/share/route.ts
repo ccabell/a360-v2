@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
-import { getAudience } from "@/lib/portfolio/registry";
+import { getAudience } from "@/lib/portfolio/audiences";
 import { mintShareToken, shareSecret } from "@/lib/portfolio/share";
 
 export const dynamic = "force-dynamic";
