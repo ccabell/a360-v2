@@ -249,6 +249,33 @@ export function AgentEditForm({
               />
             </Field>
           </div>
+          <div className="grid grid-cols-3 gap-4">
+            <Field label="Kind">
+              <NativeSelect
+                value={agent.kind}
+                onChange={(v) => set("kind", v as ExchangeAgent["kind"])}
+                options={[
+                  { value: "static", label: "Static (detail page only)" },
+                  { value: "live", label: "Live (in-app route)" },
+                  { value: "embed", label: "Embed (external demo)" },
+                ]}
+              />
+            </Field>
+            <Field label="Demo / prototype link (href)">
+              <Input
+                value={agent.href ?? ""}
+                placeholder="https://... or /dashboard/..."
+                onChange={(e) => set("href", e.target.value || undefined)}
+              />
+            </Field>
+            <Field label="Portfolio slug">
+              <Input
+                value={agent.portfolioSlug ?? ""}
+                placeholder="agent-exchange"
+                onChange={(e) => set("portfolioSlug", e.target.value || undefined)}
+              />
+            </Field>
+          </div>
           <div className="flex items-center gap-6 rounded-lg border bg-card p-3">
             <label className="flex items-center gap-2 text-sm">
               <input
