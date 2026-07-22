@@ -1,0 +1,78 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - heading "A360" [level=2] [ref=f1e10]
+        - paragraph [ref=f1e11]: Intelligence Platform
+      - navigation [ref=f1e12]:
+        - link [ref=f1e13] [cursor=pointer]:
+          - /url: /dashboard
+          - button "Overview" [ref=f1e14]
+        - link [ref=f1e21] [cursor=pointer]:
+          - /url: /dashboard/scribe
+          - button "Scribe" [ref=f1e22]
+        - link [ref=f1e27] [cursor=pointer]:
+          - /url: /dashboard/tcp
+          - button "TCP" [ref=f1e28]
+        - link [ref=f1e33] [cursor=pointer]:
+          - /url: /dashboard/reach
+          - button "Reach" [ref=f1e34]
+        - link [ref=f1e42] [cursor=pointer]:
+          - /url: /dashboard/intelligence
+          - button "Intelligence" [ref=f1e43]
+        - link [ref=f1e48] [cursor=pointer]:
+          - /url: /dashboard/library
+          - button "Library" [ref=f1e49]
+        - link [ref=f1e53] [cursor=pointer]:
+          - /url: /dashboard/products
+          - button "Products" [ref=f1e54]
+        - link [ref=f1e60] [cursor=pointer]:
+          - /url: /dashboard/academy
+          - button "Pearce Channel" [ref=f1e61]
+        - link [ref=f1e66] [cursor=pointer]:
+          - /url: /tube
+          - button "Video Navigator" [ref=f1e67]
+        - link [ref=f1e72] [cursor=pointer]:
+          - /url: /podcast
+          - button "Podcast Navigator" [ref=f1e73]
+        - link [ref=f1e77] [cursor=pointer]:
+          - /url: /dashboard/portfolio
+          - button "Portfolio" [ref=f1e78]
+        - link [ref=f1e85] [cursor=pointer]:
+          - /url: /dashboard/patients
+          - button "Patients" [ref=f1e86]
+        - link [ref=f1e93] [cursor=pointer]:
+          - /url: /dashboard/global-library
+          - button "Global Library" [ref=f1e94]
+        - link [ref=f1e99] [cursor=pointer]:
+          - /url: /dashboard/lpoa
+          - button "LPOA" [ref=f1e100]
+        - link [ref=f1e105] [cursor=pointer]:
+          - /url: /dashboard/age-progression
+          - button "Age Progression" [ref=f1e106]
+        - link [ref=f1e111] [cursor=pointer]:
+          - /url: /dashboard/agent-tester
+          - button "Agent Tester" [ref=f1e112]
+        - link [ref=f1e116] [cursor=pointer]:
+          - /url: /dashboard/studio
+          - button "Studio" [ref=f1e117]
+        - link [ref=f1e122] [cursor=pointer]:
+          - /url: /dashboard/history
+          - button "History" [ref=f1e123]
+        - link [ref=f1e129] [cursor=pointer]:
+          - /url: /dashboard/agent-runs
+          - button "Agent Runs" [ref=f1e130]
+        - link [ref=f1e135] [cursor=pointer]:
+          - /url: /dashboard/agents
+          - button "Agent Manager" [ref=f1e136]
+        - link [ref=f1e141] [cursor=pointer]:
+          - /url: /dashboard/fuel-library
+          - button "Fuel Library" [ref=f1e142]
+        - link [ref=f1e146] [cursor=pointer]:
+          - /url: /dashboard/before-after
+          - button "Before After" [ref=f1e147]
+      - button "Settings" [ref=f1e155]
+    - generic [ref=f1e160]:
+      - heading "A360 Intelligence Platform" [level=1] [ref=f1e161]
+      - paragraph [ref=f1e162]: Evidence-based consultation & treatment planning
+  - button "Open Next.js Dev Tools" [ref=f1e169] [cursor=pointer]

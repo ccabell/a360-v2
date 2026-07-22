@@ -1,0 +1,221 @@
+- generic [ref=e1]:
+  - generic [ref=e41]:
+    - generic [ref=e42]:
+      - generic [ref=e43]:
+        - heading "A360" [level=2] [ref=e49]
+        - paragraph [ref=e50]: Intelligence Platform
+      - navigation [ref=e51]:
+        - link [ref=e52] [cursor=pointer]:
+          - /url: /dashboard
+          - button "Overview" [ref=e53]
+        - link [ref=e60] [cursor=pointer]:
+          - /url: /dashboard/scribe
+          - button "Scribe" [ref=e61]
+        - link [ref=e66] [cursor=pointer]:
+          - /url: /dashboard/tcp
+          - button "TCP" [ref=e67]
+        - link [ref=e72] [cursor=pointer]:
+          - /url: /dashboard/reach
+          - button "Reach" [ref=e73]
+        - link [ref=e81] [cursor=pointer]:
+          - /url: /dashboard/intelligence
+          - button "Intelligence" [ref=e82]
+        - link [ref=e87] [cursor=pointer]:
+          - /url: /dashboard/library
+          - button "Library" [ref=e88]
+        - link [ref=e92] [cursor=pointer]:
+          - /url: /dashboard/products
+          - button "Products" [ref=e93]
+        - link [ref=e99] [cursor=pointer]:
+          - /url: /dashboard/academy
+          - button "Pearce Channel" [ref=e100]
+        - link [ref=e105] [cursor=pointer]:
+          - /url: /tube
+          - button "Video Navigator" [ref=e106]
+        - link [ref=e111] [cursor=pointer]:
+          - /url: /podcast
+          - button "Podcast Navigator" [ref=e112]
+        - link [ref=e116] [cursor=pointer]:
+          - /url: /dashboard/portfolio
+          - button "Portfolio" [ref=e117]
+        - link [ref=e124] [cursor=pointer]:
+          - /url: /dashboard/patients
+          - button "Patients" [ref=e125]
+        - link [ref=e132] [cursor=pointer]:
+          - /url: /dashboard/global-library
+          - button "Global Library" [ref=e133]
+        - link [ref=e138] [cursor=pointer]:
+          - /url: /dashboard/lpoa
+          - button "LPOA" [ref=e139]
+        - link [ref=e144] [cursor=pointer]:
+          - /url: /dashboard/age-progression
+          - button "Age Progression" [ref=e145]
+        - link [ref=e150] [cursor=pointer]:
+          - /url: /dashboard/agent-tester
+          - button "Agent Tester" [ref=e151]
+        - link [ref=e155] [cursor=pointer]:
+          - /url: /dashboard/studio
+          - button "Studio" [ref=e156]
+        - link [ref=e161] [cursor=pointer]:
+          - /url: /dashboard/history
+          - button "History" [ref=e162]
+        - link [ref=e168] [cursor=pointer]:
+          - /url: /dashboard/agent-runs
+          - button "Agent Runs" [ref=e169]
+        - link [ref=e174] [cursor=pointer]:
+          - /url: /dashboard/agents
+          - button "Agent Manager" [ref=e175]
+        - link [ref=e180] [cursor=pointer]:
+          - /url: /dashboard/fuel-library
+          - button "Fuel Library" [ref=e181]
+        - link [ref=e185] [cursor=pointer]:
+          - /url: /dashboard/before-after
+          - button "Before After" [ref=e186]
+      - button "Settings" [ref=e194]
+    - generic [ref=e198]:
+      - generic [ref=e199]:
+        - heading "A360 Intelligence Platform" [level=1] [ref=e200]
+        - paragraph [ref=e201]: Evidence-based consultation & treatment planning
+      - generic [ref=e203]:
+        - generic [ref=e204]:
+          - generic [ref=e205]: No patient loaded
+          - button "Add Patient" [ref=e211]
+        - generic [ref=e215]:
+          - complementary [ref=e216]:
+            - generic [ref=e218]:
+              - generic [ref=e219]: Rx
+              - generic [ref=e221]:
+                - paragraph [ref=e222]: Candela GentleMax Pro
+                - paragraph [ref=e223]: Dual-wavelength 755 nm / 1064 nm · Operator Manual Reference
+            - navigation [ref=e224]:
+              - paragraph [ref=e225]: Navigation
+              - button [ref=e226]
+              - button [ref=e230]
+              - button [ref=e235]
+              - button [ref=e240]
+            - paragraph [ref=e246]: GentleMAX Operator's Manual Rev 06 (PN 8501-00-1810)
+          - generic [ref=e1216]:
+            - generic [ref=e1217]:
+              - heading "Recommended Settings" [level=2] [ref=e1218]
+              - paragraph [ref=e1219]: Enter the patient profile; the tool calculates a starting protocol from cited clinical sources, constrained to the GentleMax Pro's real device envelope. These are advisory starting points — verify against a test spot and obtain clinician sign-off.
+            - generic [ref=e1220]:
+              - generic [ref=e1221]:
+                - generic [ref=e1222]:
+                  - generic [ref=e1223]: Indication
+                  - generic [ref=e1224]:
+                    - button "Hair removal" [ref=e1225]
+                    - button "Facial vascular" [ref=e1226]
+                    - button "Leg vascular" [ref=e1227]
+                - generic [ref=e1228]:
+                  - generic [ref=e1229]: Fitzpatrick skin type
+                  - generic [ref=e1230]:
+                    - button "I" [ref=e1231]
+                    - button "II" [ref=e1232]
+                    - button "III" [ref=e1233]
+                    - button "IV" [ref=e1234]
+                    - button "V" [active] [ref=e1235]
+                    - button "VI" [ref=e1236]
+                - generic [ref=e1237]:
+                  - generic [ref=e1238]: Hair thickness
+                  - generic [ref=e1239]:
+                    - button "fine" [ref=e1240]
+                    - button "medium" [ref=e1241]
+                    - button "coarse" [ref=e1242]
+              - generic [ref=e1245]:
+                - generic [ref=e1246]:
+                  - generic [ref=e1247]: 1064 nm Nd:YAG
+                  - generic [ref=e1250]: GentleMax Pro
+                - generic [ref=e1251]:
+                  - generic [ref=e1252]: Hair removal — medium hair
+                  - generic [ref=e1253]: Fitzpatrick V
+                - generic [ref=e1254]:
+                  - generic [ref=e1255]:
+                    - generic [ref=e1256]: FLUENCE
+                    - generic [ref=e1257]:
+                      - generic [ref=e1258]: "37"
+                      - generic [ref=e1259]: J/cm²
+                  - generic [ref=e1260]:
+                    - generic [ref=e1261]:
+                      - generic [ref=e1262]: SPOT SIZE
+                      - generic [ref=e1263]:
+                        - generic [ref=e1264]: "10"
+                        - generic [ref=e1265]: mm
+                    - generic [ref=e1266]:
+                      - generic [ref=e1267]: PULSE WIDTH
+                      - generic [ref=e1268]:
+                        - generic [ref=e1269]: "22"
+                        - generic [ref=e1270]: ms
+                    - generic [ref=e1271]:
+                      - generic [ref=e1272]: DCD COOLING
+                      - generic [ref=e1273]:
+                        - generic [ref=e1274]: 70/20
+                        - generic [ref=e1275]: ms
+                    - generic [ref=e1276]:
+                      - generic [ref=e1277]: REP RATE
+                      - generic [ref=e1278]:
+                        - generic [ref=e1279]: —
+                        - generic [ref=e1280]: Hz
+                - generic [ref=e1281]: CROSS-PLATFORM 1064 NM · VERIFY
+            - generic [ref=e1284]:
+              - generic [ref=e1285]: Fine-tune (device controls)
+              - generic [ref=e1289]:
+                - generic [ref=e1290]:
+                  - generic [ref=e1291]: Fluence
+                  - generic [ref=e1292]:
+                    - button [ref=e1293] [cursor=pointer]
+                    - generic [ref=e1295]: 37J/cm²
+                    - button [ref=e1296] [cursor=pointer]
+                  - generic [ref=e1298]: range 6–100 J/cm² · 10 mm
+                - generic [ref=e1299]:
+                  - generic [ref=e1300]: Step (p72)
+                  - generic [ref=e1301]:
+                    - button "1" [ref=e1302] [cursor=pointer]
+                    - button "2" [ref=e1303] [cursor=pointer]
+                    - button "5" [ref=e1304] [cursor=pointer]
+                    - button "10" [ref=e1305] [cursor=pointer]
+                    - button "20" [ref=e1306] [cursor=pointer]
+                - generic [ref=e1307]:
+                  - generic [ref=e1308]: Spot size
+                  - generic [ref=e1309]:
+                    - button [ref=e1310] [cursor=pointer]
+                    - generic [ref=e1313]: 10mm
+                    - button [ref=e1314] [cursor=pointer]
+              - paragraph [ref=e1317]: Fluence adjusts in the device's real increments (1/2/5/10/20 J/cm², p72) and stays clamped to the manual's fluence envelope for the selected spot (p73).
+            - generic [ref=e1318]:
+              - strong [ref=e1319]: 1064 nm
+              - text: selected · 1064 nm Nd:YAG is preferred for Fitzpatrick IV–VI (safer in darker/tanned skin).
+            - generic [ref=e1320]:
+              - generic [ref=e1321]: "Evidence: Cross-platform 1064 nm"
+              - generic [ref=e1324]:
+                - link "PMC2840900 (2010) — Long-pulsed 1064 nm Nd:YAG hair removal in dark (IV–VI) skin · Device was Cutera Coolglide (not Candela); 1064 nm dosing transfers with caution — cross-platform reference." [ref=e1366] [cursor=pointer]:
+                  - /url: https://pmc.ncbi.nlm.nih.gov/articles/PMC2840900/
+                  - generic [ref=e1371]:
+                    - generic [ref=e1372]: PMC2840900 (2010)
+                    - text: — Long-pulsed 1064 nm Nd:YAG hair removal in dark (IV–VI) skin
+                    - generic [ref=e1373]: · Device was Cutera Coolglide (not Candela); 1064 nm dosing transfers with caution — cross-platform reference.
+                - link "Cross-source consensus (—) — Epidermal-cooling dosing principle (fluence↓ / pulse↑ / cooling↑ as skin darkens) · DCD hair-removal values are principle-derived starting points, not a published table." [ref=e1333] [cursor=pointer]:
+                  - /url: https://pmc.ncbi.nlm.nih.gov/articles/PMC3458278/
+                  - generic [ref=e1338]:
+                    - generic [ref=e1339]: Cross-source consensus (—)
+                    - text: — Epidermal-cooling dosing principle (fluence↓ / pulse↑ / cooling↑ as skin darkens)
+                    - generic [ref=e1340]: · DCD hair-removal values are principle-derived starting points, not a published table.
+            - generic [ref=e1345]:
+              - text: Within the manual's 6–100 J/cm² envelope for 10 mm (p73).
+              - button "view p.73" [ref=e1346] [cursor=pointer]
+            - generic [ref=e1349]:
+              - text: Clinical notes
+              - list [ref=e1350]:
+                - listitem [ref=e1351]: Thicker hair → higher fluence, shorter pulse; finer hair → lower fluence, longer pulse.
+                - listitem [ref=e1352]: Dosing table is from a cross-platform 1064 nm study; verify on-device and start with a test spot.
+              - generic [ref=e1353]:
+                - strong [ref=e1354]: "Interval:"
+                - text: 4–8 weeks (facial 4–6, body 6–8) ·
+                - strong [ref=e1355]: "Sessions:"
+                - text: 6–8 typical
+            - generic [ref=e1359]:
+              - strong [ref=e1360]: Advisory — not a manufacturer chart.
+              - text: These values are computed from the cited clinical sources above (the operator manual does not publish treatment settings) and constrained to the device envelope. Confirm against Candela's Clinical Treatment Guidelines, a test spot, and clinician sign-off before use. Start low and titrate ~10% per visit if no adverse reaction.
+            - paragraph [ref=e1361]: Device envelope + safety limits from the GentleMAX Operator's Manual, Rev 06 (PN 8501-00-1810).
+        - button "Manual" [ref=e1363]
+  - button "Open Next.js Dev Tools" [ref=e32] [cursor=pointer]
+  - alert [ref=e40]

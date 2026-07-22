@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import { extractPDFChunks, findRelevantChunks } from "./pdfSearch";
 import { activeDevice } from "./lpoa/devices/gentlemax-pro";
+import { buildDeviceFactsBlock } from "./lpoa/deviceFacts";
 
 export interface PatientInfo {
   name: string;
@@ -48,16 +49,18 @@ Your role is to answer questions from licensed medical practitioners about laser
 
 ${patientSection}
 
-RELEVANT MANUAL CONTENT (extracted from the actual PDF):
+${buildDeviceFactsBlock()}
+
+RELEVANT MANUAL CONTENT (keyword-retrieved from the actual PDF — supplements the verified device data above):
 ${context}
 
-Based on the above content, provide accurate answers with the EXACT page numbers shown in brackets like [Page X] in the context above.
+Based on the above content, provide accurate answers with the EXACT page numbers shown in brackets like [Page X] above.
 
 RESPONSE GUIDELINES:
-1. Answer STRICTLY from the RELEVANT MANUAL CONTENT above. Do not use outside knowledge or general laser-treatment assumptions.
+1. Answer STRICTLY from the VERIFIED DEVICE DATA and RELEVANT MANUAL CONTENT above. Do not use outside knowledge or general laser-treatment assumptions. The VERIFIED DEVICE DATA is authoritative manual content — device capability/limit/range/spec questions should be answered from it directly.
 2. Be concise and clinically precise — use proper terminology.
-3. Always include safety notes when the manual content contains them (eyewear, cryogen/cooling, contraindications, burns risk).
-4. IMPORTANT — this manual is a device/safety manual and does NOT contain per-indication recommended treatment settings (Candela defers those to a separate Clinical Treatment Guidelines document). If asked for a recommended fluence/pulse/DCD for an indication or skin type and it is not in the content above, say so plainly — never invent or estimate a value.
+3. Always include safety notes when the content above contains them (eyewear, cryogen/cooling, contraindications, burns risk).
+4. IMPORTANT — this manual does NOT contain per-indication recommended treatment settings (Candela defers those to a separate Clinical Treatment Guidelines document). If asked for a recommended fluence/pulse/DCD for an indication or skin type, say so plainly and never invent a value — but DO state the device's allowed range for that configuration from the tables above, and note that the Settings Builder module provides literature-based starting points.
 5. After your main answer, output a JSON block of citations in this exact format:
    <citations>
    [

@@ -1,0 +1,132 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - generic [ref=f1e4]:
+        - heading "A360" [level=2] [ref=f1e10]
+        - paragraph [ref=f1e11]: Intelligence Platform
+      - navigation [ref=f1e12]:
+        - link [ref=f1e13] [cursor=pointer]:
+          - /url: /dashboard
+          - button "Overview" [ref=f1e14]
+        - link [ref=f1e21] [cursor=pointer]:
+          - /url: /dashboard/scribe
+          - button "Scribe" [ref=f1e22]
+        - link [ref=f1e27] [cursor=pointer]:
+          - /url: /dashboard/tcp
+          - button "TCP" [ref=f1e28]
+        - link [ref=f1e33] [cursor=pointer]:
+          - /url: /dashboard/reach
+          - button "Reach" [ref=f1e34]
+        - link [ref=f1e42] [cursor=pointer]:
+          - /url: /dashboard/intelligence
+          - button "Intelligence" [ref=f1e43]
+        - link [ref=f1e48] [cursor=pointer]:
+          - /url: /dashboard/library
+          - button "Library" [ref=f1e49]
+        - link [ref=f1e53] [cursor=pointer]:
+          - /url: /dashboard/products
+          - button "Products" [ref=f1e54]
+        - link [ref=f1e60] [cursor=pointer]:
+          - /url: /dashboard/academy
+          - button "Pearce Channel" [ref=f1e61]
+        - link [ref=f1e66] [cursor=pointer]:
+          - /url: /tube
+          - button "Video Navigator" [ref=f1e67]
+        - link [ref=f1e72] [cursor=pointer]:
+          - /url: /podcast
+          - button "Podcast Navigator" [ref=f1e73]
+        - link [ref=f1e77] [cursor=pointer]:
+          - /url: /dashboard/portfolio
+          - button "Portfolio" [ref=f1e78]
+        - link [ref=f1e85] [cursor=pointer]:
+          - /url: /dashboard/patients
+          - button "Patients" [ref=f1e86]
+        - link [ref=f1e93] [cursor=pointer]:
+          - /url: /dashboard/global-library
+          - button "Global Library" [ref=f1e94]
+        - link [ref=f1e99] [cursor=pointer]:
+          - /url: /dashboard/lpoa
+          - button "LPOA" [ref=f1e100]
+        - link [ref=f1e105] [cursor=pointer]:
+          - /url: /dashboard/age-progression
+          - button "Age Progression" [ref=f1e106]
+        - link [ref=f1e111] [cursor=pointer]:
+          - /url: /dashboard/agent-tester
+          - button "Agent Tester" [ref=f1e112]
+        - link [ref=f1e116] [cursor=pointer]:
+          - /url: /dashboard/studio
+          - button "Studio" [ref=f1e117]
+        - link [ref=f1e122] [cursor=pointer]:
+          - /url: /dashboard/history
+          - button "History" [ref=f1e123]
+        - link [ref=f1e129] [cursor=pointer]:
+          - /url: /dashboard/agent-runs
+          - button "Agent Runs" [ref=f1e130]
+        - link [ref=f1e135] [cursor=pointer]:
+          - /url: /dashboard/agents
+          - button "Agent Manager" [ref=f1e136]
+        - link [ref=f1e141] [cursor=pointer]:
+          - /url: /dashboard/fuel-library
+          - button "Fuel Library" [ref=f1e142]
+        - link [ref=f1e146] [cursor=pointer]:
+          - /url: /dashboard/before-after
+          - button "Before After" [ref=f1e147]
+      - button "Settings" [ref=f1e155]
+    - generic [ref=f1e159]:
+      - generic [ref=f1e160]:
+        - heading "A360 Intelligence Platform" [level=1] [ref=f1e161]
+        - paragraph [ref=f1e162]: Evidence-based consultation & treatment planning
+      - generic [ref=f1e173]:
+        - generic [ref=f1e174]:
+          - generic [ref=f1e175]: No patient loaded
+          - button "Add Patient" [ref=f1e181]
+        - generic [ref=f1e185]:
+          - complementary [ref=f1e186]:
+            - generic [ref=f1e188]:
+              - generic [ref=f1e189]: Rx
+              - generic [ref=f1e191]:
+                - paragraph [ref=f1e192]: Candela GentleMax Pro
+                - paragraph [ref=f1e193]: Dual-wavelength 755 nm / 1064 nm · Operator Manual Reference
+            - navigation [ref=f1e194]:
+              - paragraph [ref=f1e195]: Navigation
+              - button [ref=f1e196]
+              - button [ref=f1e200]
+              - button [ref=f1e205]
+              - button [ref=f1e210]
+            - paragraph [ref=f1e216]: GentleMAX Operator's Manual Rev 06 (PN 8501-00-1810)
+          - generic [ref=f1e218]:
+            - generic [ref=f1e219]:
+              - generic [ref=f1e220]:
+                - heading "Manual Search" [level=2] [ref=f1e224]
+                - button "New chat" [ref=f1e246]
+              - paragraph [ref=f1e225]: Ask questions about the clinical manual
+            - generic [ref=f1e226]:
+              - generic [ref=f1e250]: What is the maximum fluence for a 10 mm Alexandrite spot?
+              - generic [ref=f1e258]:
+                - generic [ref=f1e259]: "# Maximum Fluence for 10 mm Alexandrite Spot The **maximum fluence for a 10 mm Alexandrite (755 nm) spot depends on the pulse width band**: | Pulse Width Band | Maximum Fluence | |---|---| | **0.25–0.50 ms** | 12 J/cm² | | **3–300 ms** | 60 J/cm² | These are the device's **allowed operating ranges** — the upper limits of fluence the GentleMax Pro can deliver at this spot size. [Page 73] **Note:** Fluence adjusts in increments of 1, 2, 5, 10, or 20 J/cm². [Page 72] --- ### Important Reminder This manual does **not** contain recommended treatment fluences for specific indications or skin types. Those are found in the separate **Clinical Treatment Guidelines** document. The Settings Builder module provides literature-based starting points for your clinical decision-making."
+                - generic [ref=f1e260]:
+                  - button "Manual — Fluence Capability Tables — 755 nm Alexandrite p.73" [ref=f1e261]:
+                    - generic [ref=f1e264]: Manual — Fluence Capability Tables — 755 nm Alexandrite
+                    - generic [ref=f1e265]: p.73
+                  - button "Manual — Fluence Adjustment Increments p.72" [ref=f1e270]:
+                    - generic [ref=f1e273]: Manual — Fluence Adjustment Increments
+                    - generic [ref=f1e274]: p.72
+                - generic [ref=f1e279]:
+                  - generic [ref=f1e280]: Follow-up questions
+                  - button "What is the maximum fluence for the 10 mm spot at 1064 nm (Nd:YAG)?" [ref=f1e284]
+                  - button "What are the minimum fluence values for the 10 mm Alexandrite spot?" [ref=f1e285]
+                  - button "How do I select the appropriate pulse width band for my clinical application?" [ref=f1e286]
+            - generic [ref=f1e235]:
+              - textbox "Ask about the manual..." [ref=f1e236]
+              - button [disabled] [ref=f1e237]
+        - button "Manual" [ref=f1e242]
+  - generic [ref=f1e168] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=f1e169]
+    - generic [ref=f1e287]:
+      - button "Open issues overlay" [ref=f1e288]:
+        - generic [ref=f1e289]:
+          - generic [ref=f1e290]: "0"
+          - generic [ref=f1e291]: "1"
+        - generic [ref=f1e292]: Issue
+      - button "Collapse issues badge" [ref=f1e293]
+  - alert [ref=f1e245]

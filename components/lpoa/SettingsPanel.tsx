@@ -151,7 +151,7 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
     spotMm: effSpot,
     pulseMs: rec.pulseMs,
     dcdMs: rec.dcd.match(/\d+/g)?.join("/") ?? null,
-    repRateHz: null,
+    repRateHz: "0.5–10", // device capability (manual p77); no per-indication rec exists
     status: rec.confidence === "candela_device" ? "verified" : "advisory",
     statusLabel: adjusted ? "ADJUSTED · VERIFY" : `${tier.label.toUpperCase()} · VERIFY`,
   };
@@ -171,27 +171,22 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
         </p>
       </div>
 
-      {/* Two-column: inputs + device screen */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start" }}>
-        {/* Inputs */}
-        <div className="flex flex-col" style={{ gap: 14, flex: "1 1 260px", minWidth: 240 }}>
-          {patient && (
-            <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
-              Patient: <strong style={{ color: "var(--foreground)" }}>{patient.name}</strong>
-              {prefillIndication !== "hair_removal" && " · indication prefilled from concerns"}
-            </div>
-          )}
-          <Segmented label="Indication" options={INDICATIONS.map((i) => i.id)} value={indication} onChange={setIndication} fmt={(id) => INDICATIONS.find((i) => i.id === id)!.label} />
-          <Segmented label="Fitzpatrick skin type" options={FITZ} value={fitz} onChange={setFitz} />
-          {isHair && <Segmented label="Hair thickness" options={THICKNESS} value={thickness} onChange={setThickness} />}
-          {isFacialVasc && <Segmented label="Vessel size" options={VESSELS.map((v) => v.id)} value={vessel} onChange={setVessel} fmt={(id) => VESSELS.find((v) => v.id === id)!.label} />}
-        </div>
-
-        {/* Device screen */}
-        <div style={{ flex: "1 1 300px", minWidth: 280, maxWidth: 460 }}>
-          <DeviceScreen reading={reading} />
-        </div>
-      </div>
+      {/* Two-column workspace: inputs + device controls left · result + grounding right */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start", paddingBottom: 56 }}>
+        {/* LEFT — patient inputs + device controls */}
+        <div className="flex flex-col" style={{ gap: 16, flex: "1 1 340px", minWidth: 300 }}>
+          <div className="flex flex-col" style={{ gap: 14 }}>
+            {patient && (
+              <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+                Patient: <strong style={{ color: "var(--foreground)" }}>{patient.name}</strong>
+                {prefillIndication !== "hair_removal" && " · indication prefilled from concerns"}
+              </div>
+            )}
+            <Segmented label="Indication" options={INDICATIONS.map((i) => i.id)} value={indication} onChange={setIndication} fmt={(id) => INDICATIONS.find((i) => i.id === id)!.label} />
+            <Segmented label="Fitzpatrick skin type" options={FITZ} value={fitz} onChange={setFitz} />
+            {isHair && <Segmented label="Hair thickness" options={THICKNESS} value={thickness} onChange={setThickness} />}
+            {isFacialVasc && <Segmented label="Vessel size" options={VESSELS.map((v) => v.id)} value={vessel} onChange={setVessel} fmt={(id) => VESSELS.find((v) => v.id === id)!.label} />}
+          </div>
 
       {/* Fine-tune — real device increments, clamped to the manual envelope */}
       <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
@@ -261,6 +256,11 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
           Fluence adjusts in the device&apos;s real increments (1/2/5/10/20 J/cm², p72) and stays clamped to the manual&apos;s fluence envelope for the selected spot (p73).
         </p>
       </div>
+        </div>
+
+        {/* RIGHT — calculated result + grounding */}
+        <div className="flex flex-col" style={{ gap: 12, flex: "1 1 340px", minWidth: 300, maxWidth: 520 }}>
+          <DeviceScreen reading={reading} />
 
       {/* Wavelength rationale */}
       <div className="rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)", padding: "10px 12px", fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
@@ -329,6 +329,8 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
           clinical sources above (the operator manual does not publish treatment settings) and constrained
           to the device envelope. Confirm against Candela&apos;s Clinical Treatment Guidelines, a test spot,
           and clinician sign-off before use. Start low and titrate ~10% per visit if no adverse reaction.
+        </div>
+      </div>
         </div>
       </div>
 
