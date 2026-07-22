@@ -172,7 +172,7 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
       </div>
 
       {/* Two-column workspace: inputs + device controls left · result + grounding right */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start", paddingBottom: 56 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start" }}>
         {/* LEFT — patient inputs + device controls */}
         <div className="flex flex-col" style={{ gap: 16, flex: "1 1 340px", minWidth: 300 }}>
           <div className="flex flex-col" style={{ gap: 14 }}>
@@ -262,31 +262,7 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
         <div className="flex flex-col" style={{ gap: 12, flex: "1 1 340px", minWidth: 300, maxWidth: 520 }}>
           <DeviceScreen reading={reading} />
 
-      {/* Wavelength rationale */}
-      <div className="rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)", padding: "10px 12px", fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
-        <strong style={{ color: "var(--foreground)" }}>{rec.wavelength} nm</strong> selected · {rec.notes[0]}
-      </div>
-
-      {/* Evidence + advisory */}
-      <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
-        <div className="flex items-center gap-2" style={{ marginBottom: 8 }}>
-          <span style={{ width: 8, height: 8, borderRadius: 999, background: tier.color }} />
-          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Evidence: {tier.label}</span>
-        </div>
-        <div className="flex flex-col" style={{ gap: 6 }}>
-          {rec.sources.map((s) => (
-            <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-start gap-1.5" style={{ fontSize: 12, color: "var(--foreground)", textDecoration: "none" }}>
-              <ExternalLink size={12} style={{ color: "var(--muted-foreground)", flexShrink: 0, marginTop: 2 }} />
-              <span>
-                <span style={{ fontWeight: 500 }}>{s.authors} ({s.year})</span> — {s.label}
-                {s.note && <span style={{ color: "var(--muted-foreground)" }}> · {s.note}</span>}
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
-
-      {/* Envelope check */}
+      {/* Live feedback tied to the result: envelope check + wavelength rationale */}
       <div
         className="rounded-lg flex items-start gap-2"
         style={{ background: "var(--muted)", border: "1px solid var(--border)", padding: "10px 12px" }}
@@ -303,41 +279,77 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
           </button>
         </div>
       </div>
+      <div style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5, padding: "0 2px" }}>
+        <strong style={{ color: "var(--foreground)" }}>{rec.wavelength} nm</strong> selected · {rec.notes[0]}
+      </div>
+        </div>
+      </div>
 
-      {/* Clinical notes */}
-      {rec.notes.length > 1 && (
-        <div>
-          <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            Clinical notes
-          </span>
-          <ul style={{ marginTop: 6, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
-            {rec.notes.slice(1).map((n, i) => (
-              <li key={i} style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>{n}</li>
+      {/* Reference band — full width, three columns */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: 14,
+          alignItems: "stretch",
+          marginBottom: 48,
+        }}
+      >
+        {/* Evidence sources */}
+        <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: 8 }}>
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: tier.color }} />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Evidence: {tier.label}</span>
+          </div>
+          <div className="flex flex-col" style={{ gap: 6 }}>
+            {rec.sources.map((s) => (
+              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-start gap-1.5" style={{ fontSize: 12, color: "var(--foreground)", textDecoration: "none" }}>
+                <ExternalLink size={12} style={{ color: "var(--muted-foreground)", flexShrink: 0, marginTop: 2 }} />
+                <span>
+                  <span style={{ fontWeight: 500 }}>{s.authors} ({s.year})</span> — {s.label}
+                  {s.note && <span style={{ color: "var(--muted-foreground)" }}> · {s.note}</span>}
+                </span>
+              </a>
             ))}
-          </ul>
-          <div style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 8 }}>
-            <strong style={{ color: "var(--foreground)" }}>Interval:</strong> {rec.interval} · <strong style={{ color: "var(--foreground)" }}>Sessions:</strong> {rec.sessions}
           </div>
         </div>
-      )}
 
-      {/* Advisory / sign-off banner */}
-      <div className="rounded-lg flex items-start gap-2.5" style={{ background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.3)", padding: 12 }}>
-        <ShieldAlert size={16} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
-        <div style={{ fontSize: 12, color: "var(--foreground)", lineHeight: 1.55 }}>
-          <strong>Advisory — not a manufacturer chart.</strong> These values are computed from the cited
-          clinical sources above (the operator manual does not publish treatment settings) and constrained
-          to the device envelope. Confirm against Candela&apos;s Clinical Treatment Guidelines, a test spot,
-          and clinician sign-off before use. Start low and titrate ~10% per visit if no adverse reaction.
+        {/* Clinical notes + protocol */}
+        <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)", display: "block", marginBottom: 8 }}>
+            Clinical notes
+          </span>
+          {rec.notes.length > 1 && (
+            <ul style={{ paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
+              {rec.notes.slice(1).map((n, i) => (
+                <li key={i} style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>{n}</li>
+              ))}
+            </ul>
+          )}
+          <div style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 8 }}>
+            <strong style={{ color: "var(--foreground)" }}>Interval:</strong> {rec.interval}
+            <br />
+            <strong style={{ color: "var(--foreground)" }}>Sessions:</strong> {rec.sessions}
+          </div>
+        </div>
+
+        {/* Advisory / sign-off */}
+        <div className="rounded-lg flex flex-col" style={{ background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.3)", padding: 14, gap: 8 }}>
+          <div className="flex items-start gap-2.5">
+            <ShieldAlert size={16} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
+            <div style={{ fontSize: 12, color: "var(--foreground)", lineHeight: 1.55 }}>
+              <strong>Advisory — not a manufacturer chart.</strong> Values are computed from the cited
+              clinical sources (the operator manual does not publish treatment settings) and constrained
+              to the device envelope. Confirm against Candela&apos;s Clinical Treatment Guidelines, a test
+              spot, and clinician sign-off before use. Start low; titrate ~10% per visit if no adverse
+              reaction.
+            </div>
+          </div>
+          <p style={{ fontSize: 11, color: "var(--muted-foreground)", display: "flex", alignItems: "center", gap: 4, marginTop: "auto" }}>
+            <Sliders size={11} /> Device envelope + safety limits from the {activeDevice.manual.name}, {activeDevice.manual.revision}.
+          </p>
         </div>
       </div>
-        </div>
-      </div>
-
-      {/* Source footer */}
-      <p style={{ fontSize: 11, color: "var(--muted-foreground)", display: "flex", alignItems: "center", gap: 4 }}>
-        <Sliders size={11} /> Device envelope + safety limits from the {activeDevice.manual.name}, {activeDevice.manual.revision}.
-      </p>
     </div>
   );
 }
