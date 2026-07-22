@@ -10,7 +10,7 @@ import { PatientHeader } from "@/components/lpoa/PatientHeader";
 import type { PDFViewerHandle } from "@/components/lpoa/PDFViewer";
 import { activeDevice } from "@/lib/lpoa/devices/gentlemax-pro";
 
-type NavItem = "index" | "search" | "settings" | "faqs";
+type NavItem = "index" | "search" | "settings" | "safety" | "faqs";
 
 const PDF_URL = activeDevice.manual.url;
 
@@ -28,6 +28,10 @@ const SearchPanel = dynamic(
 );
 const SettingsPanel = dynamic(
   () => import("@/components/lpoa/SettingsPanel").then((m) => m.SettingsPanel),
+  { ssr: false },
+);
+const SafetyPanel = dynamic(
+  () => import("@/components/lpoa/SafetyPanel").then((m) => m.SafetyPanel),
   { ssr: false },
 );
 const FAQsPanel = dynamic(
@@ -101,6 +105,7 @@ export function LPOAViewer() {
           {activeNav === "settings" && (
             <SettingsPanel onJumpToPage={jumpToPage} patient={patient} />
           )}
+          {activeNav === "safety" && <SafetyPanel onJumpToPage={jumpToPage} />}
           {activeNav === "faqs" && <FAQsPanel onJumpToPage={jumpToPage} />}
         </div>
 

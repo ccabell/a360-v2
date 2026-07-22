@@ -1,9 +1,9 @@
 "use client";
 
-import { BookOpen, Search, Settings2, HelpCircle } from "lucide-react";
+import { BookOpen, Search, Settings2, ShieldAlert, HelpCircle } from "lucide-react";
 import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 
-export type NavItem = "index" | "search" | "settings" | "faqs";
+export type NavItem = "index" | "search" | "settings" | "safety" | "faqs";
 
 const PDF_NAME = activeDevice.manual.name;
 const PDF_VERSION = activeDevice.manual.revision || "";
@@ -12,6 +12,7 @@ const navItems: { id: NavItem; label: string; icon: React.ReactNode }[] = [
   { id: "index", label: "Manual Index", icon: <BookOpen size={16} /> },
   { id: "search", label: "Assistant", icon: <Search size={16} /> },
   { id: "settings", label: "Settings Builder", icon: <Settings2 size={16} /> },
+  { id: "safety", label: "Safety", icon: <ShieldAlert size={16} /> },
   { id: "faqs", label: "FAQs", icon: <HelpCircle size={16} /> },
 ];
 
