@@ -37,7 +37,11 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
     const measureWidth = useCallback(() => {
       if (containerRef.current) {
         const w = containerRef.current.clientWidth - 96;
-        setPageWidth(Math.min(Math.max(w, 400), 720));
+        // Quantize to 32px buckets and only update on real change: re-measuring
+        // on page load while the scrollbar toggles clientWidth otherwise
+        // oscillates width -> page reload -> re-measure in an infinite loop.
+        const next = Math.round(Math.min(Math.max(w, 400), 720) / 32) * 32;
+        setPageWidth((prev) => (prev === next ? prev : next));
       }
     }, []);
 
@@ -138,7 +142,7 @@ export const PDFViewer = forwardRef<PDFViewerHandle, PDFViewerProps>(
         <div
           ref={containerRef}
           className="flex-1 overflow-y-auto flex items-start justify-center py-8 px-6"
-          style={{ background: "#525659", position: "relative" }}
+          style={{ background: "#525659", position: "relative", scrollbarGutter: "stable" }}
           onLoad={measureWidth}
         >
           <Document

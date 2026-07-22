@@ -106,6 +106,11 @@ function parseResponse(raw: string): {
     content = content.replace(/<followups>[\s\S]*?<\/followups>/, "").trim();
   }
 
+  // If the response was truncated mid-block (max_tokens), an unterminated
+  // <citations>/<followups> tag can remain — strip from the opening tag to the
+  // end so raw JSON never leaks into the visible message.
+  content = content.replace(/<(citations|followups)>[\s\S]*$/, "").trim();
+
   return { content, citations, followups };
 }
 

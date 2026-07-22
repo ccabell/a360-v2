@@ -20,7 +20,9 @@ export async function POST(req: NextRequest) {
     },
     body: JSON.stringify({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 800,
+      // 800 truncated structured answers mid-<followups>, leaking raw tags into
+      // the UI; 1600 gives tables + citations + followups room to complete.
+      max_tokens: 1600,
       temperature: 0.3,
       system: systemPrompt,
       messages: messages,

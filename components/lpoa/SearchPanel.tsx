@@ -11,11 +11,100 @@ import {
   AlertCircle,
   MessageCircle,
 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useAISearch } from "../../lib/useAISearch";
 import type { PatientInfo } from "../../lib/useAISearch";
 import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 
 const SUGGESTED_QUESTIONS = activeDevice.suggestedQuestions;
+
+// Turn inline "[Page 73]" / "[Pages 74–75]" / "[Pages 77, 105, 154]" citations
+// into markdown links (#lpoa-page-N) so each page number becomes clickable.
+function linkifyPageCitations(md: string): string {
+  return md.replace(/\[Pages?\s+([0-9][0-9,\s–\-—]*)\]/g, (_m, nums: string) => {
+    const pages = nums.match(/\d+/g) ?? [];
+    if (pages.length === 0) return _m;
+    const links = pages.map((p) => `[p.${p}](#lpoa-page-${p})`).join(" · ");
+    return `(${links})`;
+  });
+}
+
+/** Assistant message body: GFM markdown with clickable page citations. */
+function MarkdownMessage({
+  content,
+  onJumpToPage,
+}: {
+  content: string;
+  onJumpToPage: (page: number) => void;
+}) {
+  return (
+    <div className="lpoa-md">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          a: ({ href, children }) => {
+            const m = /^#lpoa-page-(\d+)$/.exec(href ?? "");
+            if (m) {
+              const page = Number(m[1]);
+              return (
+                <button
+                  onClick={() => onJumpToPage(page)}
+                  title={`Open manual page ${page}`}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 3,
+                    padding: "0 6px",
+                    borderRadius: 999,
+                    fontSize: 11,
+                    fontWeight: 600,
+                    lineHeight: "18px",
+                    background: "var(--secondary)",
+                    color: "var(--primary)",
+                    border: "1px solid var(--border)",
+                    cursor: "pointer",
+                    verticalAlign: "baseline",
+                  }}
+                >
+                  <BookOpen size={9} />
+                  {children}
+                </button>
+              );
+            }
+            return (
+              <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "var(--primary)" }}>
+                {children}
+              </a>
+            );
+          },
+          h1: ({ children }) => <p style={{ fontSize: 13.5, fontWeight: 700, margin: "10px 0 4px" }}>{children}</p>,
+          h2: ({ children }) => <p style={{ fontSize: 13, fontWeight: 700, margin: "10px 0 4px" }}>{children}</p>,
+          h3: ({ children }) => <p style={{ fontSize: 12.5, fontWeight: 700, margin: "8px 0 3px" }}>{children}</p>,
+          p: ({ children }) => <p style={{ margin: "4px 0", lineHeight: 1.6 }}>{children}</p>,
+          ul: ({ children }) => <ul style={{ margin: "4px 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 3 }}>{children}</ul>,
+          ol: ({ children }) => <ol style={{ margin: "4px 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 3 }}>{children}</ol>,
+          li: ({ children }) => <li style={{ lineHeight: 1.55 }}>{children}</li>,
+          hr: () => <hr style={{ border: "none", borderTop: "1px solid var(--border)", margin: "10px 0" }} />,
+          table: ({ children }) => (
+            <div style={{ overflowX: "auto", margin: "6px 0" }}>
+              <table style={{ borderCollapse: "collapse", fontSize: 12, width: "100%" }}>{children}</table>
+            </div>
+          ),
+          th: ({ children }) => (
+            <th style={{ border: "1px solid var(--border)", padding: "4px 8px", background: "var(--muted)", textAlign: "left", fontWeight: 600 }}>{children}</th>
+          ),
+          td: ({ children }) => <td style={{ border: "1px solid var(--border)", padding: "4px 8px" }}>{children}</td>,
+          code: ({ children }) => (
+            <code style={{ background: "var(--muted)", borderRadius: 4, padding: "1px 5px", fontSize: 12 }}>{children}</code>
+          ),
+        }}
+      >
+        {linkifyPageCitations(content)}
+      </ReactMarkdown>
+    </div>
+  );
+}
 
 interface SearchPanelProps {
   onJumpToPage: (page: number) => void;
@@ -187,13 +276,17 @@ export function SearchPanel({
                 lineHeight: 1.6,
               }}
             >
-              {msg.content}
+              {msg.role === "assistant" ? (
+                <MarkdownMessage content={msg.content} onJumpToPage={onJumpToPage} />
+              ) : (
+                msg.content
+              )}
             </div>
             {msg.citations && msg.citations.length > 0 && (
               <div className="flex flex-wrap gap-1.5 w-full">
-                {msg.citations.map((cite) => (
+                {msg.citations.map((cite, ci) => (
                   <button
-                    key={cite.label}
+                    key={`${cite.label}-${cite.page}-${ci}`}
                     onClick={() => onJumpToPage(cite.page)}
                     className="flex items-center gap-1 rounded transition-colors"
                     style={{
