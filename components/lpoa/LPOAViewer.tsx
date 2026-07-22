@@ -36,7 +36,7 @@ const FAQsPanel = dynamic(
 );
 
 export function LPOAViewer() {
-  const [activeNav, setActiveNav] = useState<NavItem>("settings");
+  const [activeNav, setActiveNav] = useState<NavItem>("index");
   const [patient, setPatient] = useState<PatientInfo | null>(null);
   const [showModal, setShowModal] = useState(false);
   // The PDF is a right-side drawer for every module except "index" (where it's

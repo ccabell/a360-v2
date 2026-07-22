@@ -233,6 +233,25 @@ export function recommend(inputs: RecInputs): Recommendation {
 
 import { activeDevice } from "./devices/gentlemax-pro";
 
+/** Valid discrete spot sizes for a wavelength, from the manual fluence tables. */
+export function spotsForWavelength(wavelength: "755" | "1064"): number[] {
+  return Array.from(
+    new Set(activeDevice.fluenceTables.filter((r) => r.wavelength === wavelength).map((r) => r.spotMm)),
+  ).sort((a, b) => a - b);
+}
+
+/** The tabulated fluence envelope [min,max] for a wavelength+spot, or null. */
+export function fluenceEnvelope(
+  wavelength: "755" | "1064",
+  spotMm: number,
+): { min: number; max: number } | null {
+  const rows = activeDevice.fluenceTables.filter(
+    (r) => r.wavelength === wavelength && r.spotMm === spotMm,
+  );
+  if (rows.length === 0) return null;
+  return { min: Math.min(...rows.map((r) => r.minJcm2)), max: Math.max(...rows.map((r) => r.maxJcm2)) };
+}
+
 /** Check a recommended fluence against the manual's tabulated envelope (p73). */
 export function envelopeCheck(
   wavelength: "755" | "1064",

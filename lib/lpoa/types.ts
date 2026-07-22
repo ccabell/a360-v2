@@ -96,6 +96,8 @@ export interface LpoaDevice {
     };
     repetitionRateHz: CitedValue<string>;
     eyewearOd: CitedValue<string>;
+    /** Discrete fluence adjustment increments the device offers (J/cm², p72). */
+    fluenceIncrementsJcm2: { values: number[]; page: number };
   };
 
   /** Real fluence-capability tables (p73). Device envelope, NOT recommended doses. */

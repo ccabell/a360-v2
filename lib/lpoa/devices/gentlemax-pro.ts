@@ -55,6 +55,7 @@ export const gentlemaxPro: LpoaDevice = {
       value: "O.D. ≥ 5.8 at 755 nm; O.D. ≥ 6.3 at 1064 nm",
       page: 26,
     },
+    fluenceIncrementsJcm2: { values: [1, 2, 5, 10, 20], page: 72 },
   },
 
   // Real fluence-capability tables from manual p73 (device envelope / limits).

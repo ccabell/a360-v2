@@ -1,12 +1,14 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { AlertTriangle, BookOpen, CheckCircle2, ExternalLink, ShieldAlert, Sliders } from "lucide-react";
+import { AlertTriangle, BookOpen, CheckCircle2, ChevronLeft, ChevronRight, ExternalLink, Minus, Plus, RotateCcw, ShieldAlert, Sliders } from "lucide-react";
 import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 import type { PatientInfo } from "../../lib/useAISearch";
 import {
   recommend,
   envelopeCheck,
+  fluenceEnvelope,
+  spotsForWavelength,
   TIER_LABEL,
   type Indication,
   type Fitzpatrick,
@@ -102,20 +104,56 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
     () => recommend({ indication, fitzpatrick: fitz, hairThickness: thickness, vesselSize: vessel }),
     [indication, fitz, thickness, vessel],
   );
-  const env = useMemo(() => envelopeCheck(rec.wavelength, rec.spotMm, rec.fluence), [rec]);
   const tier = TIER_LABEL[rec.confidence];
+
+  // Fine-tune: the provider adjusts the recommended values the way the real
+  // device works — fluence in discrete increments (p72), spot cycles through
+  // valid sizes — always clamped to the manual envelope.
+  const [adjFluence, setAdjFluence] = useState<number | null>(null);
+  const [adjSpot, setAdjSpot] = useState<number | null>(null);
+  const [step, setStep] = useState<number>(1);
+
+  const recKey = `${indication}|${fitz}|${thickness}|${vessel}`;
+  useEffect(() => {
+    setAdjFluence(null);
+    setAdjSpot(null);
+  }, [recKey]);
+
+  const spotOptions = useMemo(() => spotsForWavelength(rec.wavelength), [rec.wavelength]);
+  const effSpot = adjSpot ?? rec.spotMm;
+  const envelope = fluenceEnvelope(rec.wavelength, effSpot);
+  const clamp = (v: number) => (envelope ? Math.min(envelope.max, Math.max(envelope.min, v)) : v);
+  const effFluence = clamp(adjFluence ?? rec.fluence);
+  const adjusted = adjFluence !== null || adjSpot !== null;
+
+  const env = useMemo(
+    () => envelopeCheck(rec.wavelength, effSpot, effFluence),
+    [rec.wavelength, effSpot, effFluence],
+  );
+
+  const stepFluence = (dir: -1 | 1) => setAdjFluence((prev) => clamp((prev ?? rec.fluence) + dir * step));
+  const changeSpot = (dir: -1 | 1) => {
+    const i = spotOptions.indexOf(effSpot);
+    const ni = Math.min(spotOptions.length - 1, Math.max(0, i + dir));
+    setAdjSpot(spotOptions[ni]);
+    setAdjFluence(null); // re-clamp from the recommended value against the new spot
+  };
+  const resetAdjust = () => {
+    setAdjFluence(null);
+    setAdjSpot(null);
+  };
 
   const reading: ScreenReading = {
     wavelength: rec.wavelength,
     indication: rec.indication,
     fitzpatrick: `Fitzpatrick ${rec.fitzpatrick}`,
-    fluence: rec.fluence,
-    spotMm: rec.spotMm,
+    fluence: effFluence,
+    spotMm: effSpot,
     pulseMs: rec.pulseMs,
     dcdMs: rec.dcd.match(/\d+/g)?.join("/") ?? null,
     repRateHz: null,
     status: rec.confidence === "candela_device" ? "verified" : "advisory",
-    statusLabel: `${tier.label.toUpperCase()} · VERIFY`,
+    statusLabel: adjusted ? "ADJUSTED · VERIFY" : `${tier.label.toUpperCase()} · VERIFY`,
   };
 
   const isHair = indication === "hair_removal";
@@ -153,6 +191,75 @@ export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelPro
         <div style={{ flex: "1 1 300px", minWidth: 280, maxWidth: 460 }}>
           <DeviceScreen reading={reading} />
         </div>
+      </div>
+
+      {/* Fine-tune — real device increments, clamped to the manual envelope */}
+      <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: 10 }}>
+          <div className="flex items-center gap-2">
+            <Sliders size={14} style={{ color: "var(--muted-foreground)" }} />
+            <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Fine-tune (device controls)</span>
+          </div>
+          {adjusted && (
+            <button onClick={resetAdjust} className="flex items-center gap-1" style={{ fontSize: 11, color: "var(--primary)", background: "none", border: "none", cursor: "pointer" }}>
+              <RotateCcw size={11} /> Reset to recommended
+            </button>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 18, alignItems: "flex-end" }}>
+          {/* Fluence stepper */}
+          <div className="flex flex-col gap-1.5">
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Fluence</span>
+            <div className="flex items-center" style={{ border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
+              <button onClick={() => stepFluence(-1)} style={{ width: 34, height: 34, background: "var(--muted)", border: "none", borderRight: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Minus size={14} />
+              </button>
+              <div style={{ minWidth: 76, textAlign: "center", padding: "0 10px" }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: "var(--foreground)" }}>{effFluence}</span>
+                <span style={{ fontSize: 11, color: "var(--muted-foreground)", marginLeft: 3 }}>J/cm²</span>
+              </div>
+              <button onClick={() => stepFluence(1)} style={{ width: 34, height: 34, background: "var(--muted)", border: "none", borderLeft: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Plus size={14} />
+              </button>
+            </div>
+            {envelope && (
+              <span style={{ fontSize: 10.5, color: "var(--muted-foreground)" }}>range {envelope.min}–{envelope.max} J/cm² · {effSpot} mm</span>
+            )}
+          </div>
+
+          {/* Step selector */}
+          <div className="flex flex-col gap-1.5">
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Step (p72)</span>
+            <div className="flex gap-1">
+              {activeDevice.specs.fluenceIncrementsJcm2.values.map((s) => (
+                <button key={s} onClick={() => setStep(s)} style={{ fontSize: 12, fontWeight: 600, minWidth: 30, height: 34, borderRadius: 6, border: `1px solid ${step === s ? "var(--primary)" : "var(--border)"}`, background: step === s ? "var(--primary)" : "var(--card)", color: step === s ? "var(--primary-foreground, #fff)" : "var(--foreground)", cursor: "pointer" }}>
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Spot cycler */}
+          <div className="flex flex-col gap-1.5">
+            <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>Spot size</span>
+            <div className="flex items-center" style={{ border: "1px solid var(--border)", borderRadius: 8, overflow: "hidden" }}>
+              <button onClick={() => changeSpot(-1)} disabled={spotOptions.indexOf(effSpot) === 0} style={{ width: 34, height: 34, background: "var(--muted)", border: "none", borderRight: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <ChevronLeft size={14} />
+              </button>
+              <div style={{ minWidth: 58, textAlign: "center", padding: "0 8px" }}>
+                <span style={{ fontSize: 16, fontWeight: 700, color: "var(--foreground)" }}>{effSpot}</span>
+                <span style={{ fontSize: 11, color: "var(--muted-foreground)", marginLeft: 2 }}>mm</span>
+              </div>
+              <button onClick={() => changeSpot(1)} disabled={spotOptions.indexOf(effSpot) === spotOptions.length - 1} style={{ width: 34, height: 34, background: "var(--muted)", border: "none", borderLeft: "1px solid var(--border)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <ChevronRight size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+        <p style={{ fontSize: 10.5, color: "var(--muted-foreground)", marginTop: 10 }}>
+          Fluence adjusts in the device&apos;s real increments (1/2/5/10/20 J/cm², p72) and stays clamped to the manual&apos;s fluence envelope for the selected spot (p73).
+        </p>
       </div>
 
       {/* Wavelength rationale */}
