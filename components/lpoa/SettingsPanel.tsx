@@ -1,208 +1,39 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import {
-  AlertTriangle,
-  BookOpen,
-  Info,
-  Lock,
-  Thermometer,
-  ShieldAlert,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { useMemo, useState, useEffect } from "react";
+import { AlertTriangle, BookOpen, CheckCircle2, ExternalLink, ShieldAlert, Sliders } from "lucide-react";
 import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
-import type { FluenceRow } from "../../lib/lpoa/types";
+import type { PatientInfo } from "../../lib/useAISearch";
+import {
+  recommend,
+  envelopeCheck,
+  TIER_LABEL,
+  type Indication,
+  type Fitzpatrick,
+  type HairThickness,
+  type VesselSize,
+} from "../../lib/lpoa/recommendations";
+import { DeviceScreen, type ScreenReading } from "./DeviceScreen";
 
-// ─────────────────────────────────────────────────────────────────────────
-// Settings Builder — honest, source-locked replacement for the old
-// computeGuidance() rules engine.
-//
-// The doctor picks wavelength + spot size + pulse band; the tool shows the
-// REAL fluence envelope (min/max) from the operator manual (p73), the real DCD
-// cooling ranges (p74-75), and validates the doctor's chosen fluence against
-// those limits. It does NOT invent a "recommended" number — the manual doesn't
-// contain one, so the recommendation renders LOCKED with an honest reason.
-// Every value shown carries a real manual page citation.
-// ─────────────────────────────────────────────────────────────────────────
+// Settings Builder — the tool CALCULATES recommended optimal settings from
+// patient inputs and displays them on the device screen. Recommendations are
+// sourced from cited clinical literature (see lib/lpoa/recommendations.ts),
+// constrained to the manual's real envelope, and flagged advisory pending
+// clinician sign-off. The manual's device envelope is never fabricated.
 
-interface PageCitation {
-  label: string;
-  section: string;
-  pages: number[];
-}
+const INDICATIONS: { id: Indication; label: string }[] = [
+  { id: "hair_removal", label: "Hair removal" },
+  { id: "vascular_facial", label: "Facial vascular" },
+  { id: "vascular_leg", label: "Leg vascular" },
+];
+const FITZ: Fitzpatrick[] = ["I", "II", "III", "IV", "V", "VI"];
+const THICKNESS: HairThickness[] = ["fine", "medium", "coarse"];
+const VESSELS: { id: VesselSize; label: string }[] = [
+  { id: "small", label: "< 0.5 mm" },
+  { id: "medium", label: "0.5–1.0 mm" },
+];
 
-const MANUAL = activeDevice.manual.name;
-
-// ── Reusable UI primitives (unchanged from the original surface) ─────────
-
-function ArcGauge({
-  value,
-  max,
-  color,
-  label,
-  unit,
-  size = 96,
-}: {
-  value: number;
-  max: number;
-  color: string;
-  label: string;
-  unit: string;
-  size?: number;
-}) {
-  const pct = max > 0 ? Math.min(1, value / max) : 0;
-  const r = size / 2 - 8;
-  const circumference = Math.PI * r; // half-circle
-  const strokeDash = circumference * pct;
-
-  return (
-    <div className="flex flex-col items-center gap-1">
-      <div style={{ position: "relative", width: size, height: size / 2 + 10 }}>
-        <svg width={size} height={size / 2 + 10} style={{ overflow: "visible" }}>
-          <path
-            d={`M 8 ${size / 2} A ${r} ${r} 0 0 1 ${size - 8} ${size / 2}`}
-            fill="none"
-            stroke="var(--muted)"
-            strokeWidth={7}
-            strokeLinecap="round"
-          />
-          <path
-            d={`M 8 ${size / 2} A ${r} ${r} 0 0 1 ${size - 8} ${size / 2}`}
-            fill="none"
-            stroke={color}
-            strokeWidth={7}
-            strokeLinecap="round"
-            strokeDasharray={`${strokeDash} ${circumference}`}
-            style={{ transition: "stroke-dasharray 0.5s ease" }}
-          />
-        </svg>
-        <div
-          style={{ position: "absolute", bottom: 4, left: 0, right: 0, textAlign: "center" }}
-        >
-          <span style={{ fontSize: 20, fontWeight: 700, color: "var(--foreground)", lineHeight: 1 }}>
-            {value}
-          </span>
-          <span style={{ fontSize: 10, color: "var(--muted-foreground)", marginLeft: 2 }}>
-            {unit}
-          </span>
-        </div>
-      </div>
-      <span style={{ fontSize: 11, color: "var(--muted-foreground)", fontWeight: 500 }}>
-        {label}
-      </span>
-    </div>
-  );
-}
-
-function ThermoBar({ value, max, color }: { value: number; max: number; color: string }) {
-  const pct = max > 0 ? Math.min(1, value / max) : 0;
-  return (
-    <div className="flex flex-col items-center gap-1" style={{ height: 80 }}>
-      <div
-        className="relative rounded-full overflow-hidden"
-        style={{ width: 12, height: 64, background: "var(--muted)", flexShrink: 0 }}
-      >
-        <div
-          className="absolute bottom-0 w-full rounded-full"
-          style={{ height: `${pct * 100}%`, background: color, transition: "height 0.5s ease" }}
-        />
-      </div>
-      <Thermometer size={12} style={{ color }} />
-    </div>
-  );
-}
-
-function CitationNav({
-  citations,
-  onJumpToPage,
-}: {
-  citations: PageCitation[];
-  onJumpToPage: (page: number) => void;
-}) {
-  const entries = citations.flatMap((c) =>
-    c.pages.map((p) => ({ label: c.label, section: c.section, page: p })),
-  );
-  const [idx, setIdx] = useState(0);
-  const current = entries[Math.min(idx, entries.length - 1)];
-  if (!current) return null;
-
-  return (
-    <div
-      className="flex items-center gap-1 mt-2 rounded-md overflow-hidden"
-      style={{ border: "1px solid var(--border)", background: "var(--card)" }}
-    >
-      <button
-        onClick={() => setIdx((i) => Math.max(0, i - 1))}
-        disabled={idx === 0}
-        className="flex items-center justify-center"
-        style={{
-          width: 24,
-          height: 28,
-          flexShrink: 0,
-          borderRight: "1px solid var(--border)",
-          color: idx === 0 ? "var(--border)" : "var(--muted-foreground)",
-          background: "transparent",
-        }}
-      >
-        <ChevronLeft size={12} />
-      </button>
-      <button
-        onClick={() => onJumpToPage(current.page)}
-        className="flex items-center gap-1.5 flex-1 px-2"
-        style={{ height: 28, minWidth: 0 }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent)")}
-        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-      >
-        <BookOpen size={10} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
-        <span className="truncate" style={{ fontSize: 11, color: "var(--foreground)", fontWeight: 500 }}>
-          {current.label}
-        </span>
-        <span className="truncate" style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
-          {current.section}
-        </span>
-        <span
-          style={{ fontSize: 11, color: "var(--muted-foreground)", flexShrink: 0, marginLeft: "auto" }}
-        >
-          p.{current.page}
-        </span>
-      </button>
-      <span
-        style={{
-          fontSize: 10,
-          color: "var(--muted-foreground)",
-          flexShrink: 0,
-          padding: "0 6px",
-          borderLeft: "1px solid var(--border)",
-          height: 28,
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        {Math.min(idx, entries.length - 1) + 1}/{entries.length}
-      </span>
-      <button
-        onClick={() => setIdx((i) => Math.min(entries.length - 1, i + 1))}
-        disabled={idx >= entries.length - 1}
-        className="flex items-center justify-center"
-        style={{
-          width: 24,
-          height: 28,
-          flexShrink: 0,
-          borderLeft: "1px solid var(--border)",
-          color: idx >= entries.length - 1 ? "var(--border)" : "var(--muted-foreground)",
-          background: "transparent",
-        }}
-      >
-        <ChevronRight size={12} />
-      </button>
-    </div>
-  );
-}
-
-// ── Small building blocks ────────────────────────────────────────────────
-
-function Segmented<T extends string | number>({
+function Segmented<T extends string>({
   label,
   options,
   value,
@@ -225,19 +56,20 @@ function Segmented<T extends string | number>({
           const active = opt === value;
           return (
             <button
-              key={String(opt)}
+              key={opt}
               onClick={() => onChange(opt)}
-              className="rounded-md transition-colors"
               style={{
                 fontSize: 12,
                 fontWeight: 500,
-                padding: "6px 10px",
+                padding: "6px 12px",
+                borderRadius: 8,
                 border: `1px solid ${active ? "var(--primary)" : "var(--border)"}`,
                 background: active ? "var(--primary)" : "var(--card)",
                 color: active ? "var(--primary-foreground, #fff)" : "var(--foreground)",
+                textTransform: "capitalize",
               }}
             >
-              {fmt ? fmt(opt) : String(opt)}
+              {fmt ? fmt(opt) : opt}
             </button>
           );
         })}
@@ -246,262 +78,156 @@ function Segmented<T extends string | number>({
   );
 }
 
-function LockedCard({
-  label,
-  reason,
-  citations,
-  onJumpToPage,
-}: {
-  label: string;
-  reason: string;
-  citations: PageCitation[];
-  onJumpToPage: (page: number) => void;
-}) {
-  return (
-    <div
-      className="rounded-lg p-3"
-      style={{ background: "var(--muted)", border: "1px dashed var(--border)" }}
-    >
-      <div className="flex gap-2.5">
-        <Lock size={15} style={{ color: "var(--muted-foreground)", flexShrink: 0, marginTop: 1 }} />
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2" style={{ marginBottom: 3 }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              {label}
-            </p>
-            <span
-              style={{
-                fontSize: 9,
-                fontWeight: 700,
-                padding: "1px 6px",
-                borderRadius: 999,
-                background: "var(--card)",
-                border: "1px solid var(--border)",
-                color: "var(--muted-foreground)",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              Locked · not in manual
-            </span>
-          </div>
-          <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>{reason}</p>
-          <CitationNav citations={citations} onJumpToPage={onJumpToPage} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ── Main panel ────────────────────────────────────────────────────────────
-
 interface SettingsPanelProps {
   onJumpToPage: (page: number) => void;
+  patient?: PatientInfo | null;
 }
 
-export function SettingsPanel({ onJumpToPage }: SettingsPanelProps) {
-  const device = activeDevice;
-  const tables = device.fluenceTables;
+export function SettingsPanel({ onJumpToPage, patient = null }: SettingsPanelProps) {
+  // Light prefill from patient concerns (Fitzpatrick isn't in the patient record).
+  const prefillIndication = useMemo<Indication>(() => {
+    const c = (patient?.concerns ?? []).join(" ").toLowerCase();
+    if (/vein|vascular|telangiecta|rosacea|redness/.test(c)) return "vascular_facial";
+    return "hair_removal";
+  }, [patient]);
 
-  const wavelengths = useMemo(
-    () => Array.from(new Set(tables.map((r) => r.wavelength))) as FluenceRow["wavelength"][],
-    [tables],
+  const [indication, setIndication] = useState<Indication>(prefillIndication);
+  const [fitz, setFitz] = useState<Fitzpatrick>("III");
+  const [thickness, setThickness] = useState<HairThickness>("medium");
+  const [vessel, setVessel] = useState<VesselSize>("small");
+
+  useEffect(() => setIndication(prefillIndication), [prefillIndication]);
+
+  const rec = useMemo(
+    () => recommend({ indication, fitzpatrick: fitz, hairThickness: thickness, vesselSize: vessel }),
+    [indication, fitz, thickness, vessel],
   );
-  const [wavelength, setWavelength] = useState<FluenceRow["wavelength"]>(wavelengths[0]);
+  const env = useMemo(() => envelopeCheck(rec.wavelength, rec.spotMm, rec.fluence), [rec]);
+  const tier = TIER_LABEL[rec.confidence];
 
-  const spotOptions = useMemo(
-    () => Array.from(new Set(tables.filter((r) => r.wavelength === wavelength).map((r) => r.spotMm))).sort((a, b) => a - b),
-    [tables, wavelength],
-  );
-  const [spotMm, setSpotMm] = useState<number>(spotOptions[0]);
+  const reading: ScreenReading = {
+    wavelength: rec.wavelength,
+    indication: rec.indication,
+    fitzpatrick: `Fitzpatrick ${rec.fitzpatrick}`,
+    fluence: rec.fluence,
+    spotMm: rec.spotMm,
+    pulseMs: rec.pulseMs,
+    dcdMs: rec.dcd.match(/\d+/g)?.join("/") ?? null,
+    repRateHz: null,
+    status: rec.confidence === "candela_device" ? "verified" : "advisory",
+    statusLabel: `${tier.label.toUpperCase()} · VERIFY`,
+  };
 
-  // Keep spot valid when wavelength changes.
-  const effectiveSpot = spotOptions.includes(spotMm) ? spotMm : spotOptions[0];
-
-  const bandOptions = useMemo(
-    () => tables.filter((r) => r.wavelength === wavelength && r.spotMm === effectiveSpot).map((r) => r.pulseBandMs),
-    [tables, wavelength, effectiveSpot],
-  );
-  const [band, setBand] = useState<string>(bandOptions[0]);
-  const effectiveBand = bandOptions.includes(band) ? band : bandOptions[0];
-
-  const row = useMemo(
-    () => tables.find((r) => r.wavelength === wavelength && r.spotMm === effectiveSpot && r.pulseBandMs === effectiveBand),
-    [tables, wavelength, effectiveSpot, effectiveBand],
-  );
-
-  // Doctor's chosen fluence — starts at the envelope midpoint (a neutral
-  // starting point within real limits, NOT a manual recommendation).
-  const [fluence, setFluence] = useState<number | null>(null);
-  const chosen = fluence ?? (row ? Math.round((row.minJcm2 + row.maxJcm2) / 2) : 0);
-  const inRange = row ? chosen >= row.minJcm2 && chosen <= row.maxJcm2 : false;
-
-  const fluenceCitation: PageCitation[] = [
-    { label: "Fluence table", section: `${wavelength} nm, ${effectiveSpot} mm`, pages: [73] },
-  ];
-
-  const wlLabel = wavelength === "755" ? "755 nm Alexandrite" : "1064 nm Nd:YAG";
-  const wlColor = wavelength === "755" ? "#4f46e5" : "#0891b2";
+  const isHair = indication === "hair_removal";
+  const isFacialVasc = indication === "vascular_facial";
 
   return (
-    <div className="flex flex-col gap-4" style={{ padding: 16, overflowY: "auto" }}>
+    <div className="flex flex-col" style={{ padding: 20, overflowY: "auto", gap: 18 }}>
       {/* Header */}
       <div>
-        <h2 style={{ fontSize: 15, fontWeight: 700, color: "var(--foreground)" }}>Settings Builder</h2>
-        <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5, marginTop: 2 }}>
-          Real operating envelope from the {MANUAL}. Choose a configuration; every
-          value is cited to a manual page. Recommended clinical doses are not in
-          this manual and stay locked.
+        <h2 style={{ fontSize: 17, fontWeight: 700, color: "var(--foreground)" }}>Recommended Settings</h2>
+        <p style={{ fontSize: 12.5, color: "var(--muted-foreground)", lineHeight: 1.5, marginTop: 3, maxWidth: 640 }}>
+          Enter the patient profile; the tool calculates a starting protocol from cited clinical
+          sources, constrained to the {activeDevice.model}&apos;s real device envelope. These are advisory
+          starting points — verify against a test spot and obtain clinician sign-off.
         </p>
       </div>
 
-      {/* Selectors */}
-      <div className="flex flex-col gap-3">
-        <Segmented
-          label="Wavelength"
-          options={wavelengths}
-          value={wavelength}
-          onChange={(v) => {
-            setWavelength(v);
-            setFluence(null);
-          }}
-          fmt={(v) => (v === "755" ? "755 nm Alexandrite" : "1064 nm Nd:YAG")}
-        />
-        <Segmented
-          label="Spot size"
-          options={spotOptions}
-          value={effectiveSpot}
-          onChange={(v) => {
-            setSpotMm(v);
-            setFluence(null);
-          }}
-          fmt={(v) => `${v} mm`}
-        />
-        <Segmented
-          label="Pulse duration band"
-          options={bandOptions}
-          value={effectiveBand}
-          onChange={(v) => {
-            setBand(v);
-            setFluence(null);
-          }}
-          fmt={(v) => `${v} ms`}
-        />
+      {/* Two-column: inputs + device screen */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start" }}>
+        {/* Inputs */}
+        <div className="flex flex-col" style={{ gap: 14, flex: "1 1 260px", minWidth: 240 }}>
+          {patient && (
+            <div style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
+              Patient: <strong style={{ color: "var(--foreground)" }}>{patient.name}</strong>
+              {prefillIndication !== "hair_removal" && " · indication prefilled from concerns"}
+            </div>
+          )}
+          <Segmented label="Indication" options={INDICATIONS.map((i) => i.id)} value={indication} onChange={setIndication} fmt={(id) => INDICATIONS.find((i) => i.id === id)!.label} />
+          <Segmented label="Fitzpatrick skin type" options={FITZ} value={fitz} onChange={setFitz} />
+          {isHair && <Segmented label="Hair thickness" options={THICKNESS} value={thickness} onChange={setThickness} />}
+          {isFacialVasc && <Segmented label="Vessel size" options={VESSELS.map((v) => v.id)} value={vessel} onChange={setVessel} fmt={(id) => VESSELS.find((v) => v.id === id)!.label} />}
+        </div>
+
+        {/* Device screen */}
+        <div style={{ flex: "1 1 300px", minWidth: 280, maxWidth: 460 }}>
+          <DeviceScreen reading={reading} />
+        </div>
       </div>
 
-      {/* Real fluence envelope */}
-      {row && (
-        <div
-          className="rounded-lg p-4"
-          style={{ background: "var(--card)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-              Fluence envelope · {wlLabel} · {effectiveSpot} mm · {effectiveBand} ms
-            </span>
-          </div>
+      {/* Wavelength rationale */}
+      <div className="rounded-lg" style={{ background: "var(--muted)", border: "1px solid var(--border)", padding: "10px 12px", fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
+        <strong style={{ color: "var(--foreground)" }}>{rec.wavelength} nm</strong> selected · {rec.notes[0]}
+      </div>
 
-          <div className="flex items-center gap-5">
-            <ArcGauge value={chosen} max={row.maxJcm2} color={wlColor} label="your setting" unit="J/cm²" />
-            <div className="flex-1 flex flex-col gap-2" style={{ minWidth: 0 }}>
-              <div className="flex items-baseline gap-2">
-                <span style={{ fontSize: 22, fontWeight: 700, color: "var(--foreground)" }}>
-                  {row.minJcm2}–{row.maxJcm2}
-                </span>
-                <span style={{ fontSize: 12, color: "var(--muted-foreground)" }}>J/cm² allowed range</span>
-              </div>
-              <input
-                type="range"
-                min={row.minJcm2}
-                max={row.maxJcm2}
-                value={Math.min(Math.max(chosen, row.minJcm2), row.maxJcm2)}
-                onChange={(e) => setFluence(Number(e.target.value))}
-                style={{ width: "100%", accentColor: wlColor }}
-              />
-              <div
-                className="flex items-center gap-1.5"
-                style={{ fontSize: 12, color: inRange ? "var(--muted-foreground)" : "#dc2626", fontWeight: 500 }}
-              >
-                {inRange ? (
-                  <>
-                    <Info size={13} />
-                    <span>{chosen} J/cm² is within the manual's limits for this configuration.</span>
-                  </>
-                ) : (
-                  <>
-                    <AlertTriangle size={13} />
-                    <span>{chosen} J/cm² is outside the manual's {row.minJcm2}–{row.maxJcm2} J/cm² range.</span>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
-          <CitationNav citations={fluenceCitation} onJumpToPage={onJumpToPage} />
+      {/* Evidence + advisory */}
+      <div className="rounded-lg" style={{ background: "var(--card)", border: "1px solid var(--border)", padding: 14 }}>
+        <div className="flex items-center gap-2" style={{ marginBottom: 8 }}>
+          <span style={{ width: 8, height: 8, borderRadius: 999, background: tier.color }} />
+          <span style={{ fontSize: 12, fontWeight: 700, color: "var(--foreground)" }}>Evidence: {tier.label}</span>
         </div>
-      )}
-
-      {/* Locked recommendation — the honest core */}
-      {device.lockedFields
-        .filter((f) => f.key === "recommended_fluence")
-        .map((f) => (
-          <LockedCard
-            key={f.key}
-            label={f.label}
-            reason={f.reason}
-            citations={[{ label: "Deferred to Guided Mode / Guidelines", section: "", pages: f.deferredToPages }]}
-            onJumpToPage={onJumpToPage}
-          />
-        ))}
-
-      {/* Real DCD cooling ranges */}
-      <div className="rounded-lg p-3" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
-        <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-            DCD cooling ranges
-          </span>
-          <ThermoBar value={1} max={2} color="#0ea5e9" />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          {device.dcd.map((d) => (
-            <div key={d.param} className="flex items-center justify-between" style={{ fontSize: 12 }}>
-              <span style={{ color: "var(--muted-foreground)" }}>{d.param}</span>
-              <span style={{ color: "var(--foreground)", fontWeight: 500, textAlign: "right", marginLeft: 8 }}>
-                {d.range}
+        <div className="flex flex-col" style={{ gap: 6 }}>
+          {rec.sources.map((s) => (
+            <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-start gap-1.5" style={{ fontSize: 12, color: "var(--foreground)", textDecoration: "none" }}>
+              <ExternalLink size={12} style={{ color: "var(--muted-foreground)", flexShrink: 0, marginTop: 2 }} />
+              <span>
+                <span style={{ fontWeight: 500 }}>{s.authors} ({s.year})</span> — {s.label}
+                {s.note && <span style={{ color: "var(--muted-foreground)" }}> · {s.note}</span>}
               </span>
-            </div>
+            </a>
           ))}
         </div>
-        <CitationNav
-          citations={[{ label: "Dynamic Cooling Device", section: "spray / delay / post", pages: [74, 75] }]}
-          onJumpToPage={onJumpToPage}
-        />
       </div>
 
-      {/* Pulse-width honesty note */}
-      {device.specs.pulseWidthMs.inconsistencyNote && (
-        <div
-          className="rounded-lg p-3"
-          style={{ background: "var(--muted)", border: "1px solid var(--border)" }}
-        >
-          <div className="flex gap-2.5">
-            <ShieldAlert size={15} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                Pulse width: {device.specs.pulseWidthMs.capability}
-              </p>
-              <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>
-                {device.specs.pulseWidthMs.inconsistencyNote}
-              </p>
-            </div>
+      {/* Envelope check */}
+      <div
+        className="rounded-lg flex items-start gap-2"
+        style={{ background: "var(--muted)", border: "1px solid var(--border)", padding: "10px 12px" }}
+      >
+        {env.ok ? (
+          <CheckCircle2 size={15} style={{ color: "#16a34a", flexShrink: 0, marginTop: 1 }} />
+        ) : (
+          <AlertTriangle size={15} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
+        )}
+        <div style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
+          {env.text}{" "}
+          <button onClick={() => onJumpToPage(env.page)} style={{ color: "var(--primary)", fontWeight: 500, background: "none", border: "none", padding: 0, cursor: "pointer" }}>
+            <BookOpen size={11} style={{ display: "inline", verticalAlign: "middle" }} /> view p.{env.page}
+          </button>
+        </div>
+      </div>
+
+      {/* Clinical notes */}
+      {rec.notes.length > 1 && (
+        <div>
+          <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Clinical notes
+          </span>
+          <ul style={{ marginTop: 6, paddingLeft: 16, display: "flex", flexDirection: "column", gap: 4 }}>
+            {rec.notes.slice(1).map((n, i) => (
+              <li key={i} style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5 }}>{n}</li>
+            ))}
+          </ul>
+          <div style={{ fontSize: 12, color: "var(--muted-foreground)", marginTop: 8 }}>
+            <strong style={{ color: "var(--foreground)" }}>Interval:</strong> {rec.interval} · <strong style={{ color: "var(--foreground)" }}>Sessions:</strong> {rec.sessions}
           </div>
         </div>
       )}
 
+      {/* Advisory / sign-off banner */}
+      <div className="rounded-lg flex items-start gap-2.5" style={{ background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.3)", padding: 12 }}>
+        <ShieldAlert size={16} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
+        <div style={{ fontSize: 12, color: "var(--foreground)", lineHeight: 1.55 }}>
+          <strong>Advisory — not a manufacturer chart.</strong> These values are computed from the cited
+          clinical sources above (the operator manual does not publish treatment settings) and constrained
+          to the device envelope. Confirm against Candela&apos;s Clinical Treatment Guidelines, a test spot,
+          and clinician sign-off before use. Start low and titrate ~10% per visit if no adverse reaction.
+        </div>
+      </div>
+
       {/* Source footer */}
-      <p style={{ fontSize: 11, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
-        Source: {MANUAL}, {device.manual.revision}. Every value above is quoted
-        from the manual and links to its page. Where the manual does not specify a
-        value, this tool shows a locked state instead of a number.
+      <p style={{ fontSize: 11, color: "var(--muted-foreground)", display: "flex", alignItems: "center", gap: 4 }}>
+        <Sliders size={11} /> Device envelope + safety limits from the {activeDevice.manual.name}, {activeDevice.manual.revision}.
       </p>
     </div>
   );
