@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef } from "react";
 import { extractPDFChunks, findRelevantChunks } from "./pdfSearch";
+import { activeDevice } from "./lpoa/devices/gentlemax-pro";
 
 export interface PatientInfo {
   name: string;
@@ -28,7 +29,7 @@ function buildSystemPrompt(
   patient: PatientInfo | null,
   context: string,
 ): string {
-  const pdfName = process.env.NEXT_PUBLIC_PDF_NAME || "Joule Operator Manual";
+  const pdfName = "Candela GentleMax Pro Operator's Manual";
 
   const patientSection = patient
     ? `
@@ -53,24 +54,23 @@ ${context}
 Based on the above content, provide accurate answers with the EXACT page numbers shown in brackets like [Page X] in the context above.
 
 RESPONSE GUIDELINES:
-1. Base answers strictly on information found in a laser/IPL operator manual (protocols, fluence ranges, cooling settings, safety, skin type classifications, contraindications, pulse durations, spot sizes, treatment intervals).
+1. Answer STRICTLY from the RELEVANT MANUAL CONTENT above. Do not use outside knowledge or general laser-treatment assumptions.
 2. Be concise and clinically precise — use proper terminology.
-3. Always include safety notes when relevant (PIH risk, cooling requirements, test patches).
-4. After your main answer, output a JSON block of citations in this exact format:
+3. Always include safety notes when the manual content contains them (eyewear, cryogen/cooling, contraindications, burns risk).
+4. IMPORTANT — this manual is a device/safety manual and does NOT contain per-indication recommended treatment settings (Candela defers those to a separate Clinical Treatment Guidelines document). If asked for a recommended fluence/pulse/DCD for an indication or skin type and it is not in the content above, say so plainly — never invent or estimate a value.
+5. After your main answer, output a JSON block of citations in this exact format:
    <citations>
    [
-     {"label": "§X.X", "section": "Section Name", "page": N}
+     {"label": "Manual", "section": "Section Name", "page": N}
    ]
    </citations>
-   Estimate realistic section/page numbers based on typical operator manual structure.
-   Include 2-4 citations per answer.
-   Use the actual page numbers from the PDF content provided above — do not estimate.
-5. After citations, suggest 2-3 natural follow-up questions the clinician might ask next, based on your answer and the manual content. Output them as:
+   Use ONLY the exact [Page N] numbers that appear in the content above. NEVER estimate, guess, or fabricate a page number. If the content has no page you can cite, output an empty array [].
+6. After citations, suggest 2-3 natural follow-up questions the clinician might ask next, based on your answer and the manual content. Output them as:
    <followups>
    ["Follow-up question 1?", "Follow-up question 2?", "Follow-up question 3?"]
    </followups>
    Keep them concise, clinically relevant, and different from what was already asked.
-6. If you cannot answer from manual context, say so clearly.`;
+7. If the content above does not answer the question, say so clearly and do not fabricate an answer.`;
 }
 
 function parseResponse(raw: string): {
@@ -132,8 +132,7 @@ async function callOpenAI(
   return data.choices[0]?.message?.content ?? "";
 }
 
-const PDF_URL =
-  process.env.NEXT_PUBLIC_PDF_URL || "/Joule+Operator+Manual+Rev+Y.pdf";
+const PDF_URL = activeDevice.manual.url;
 
 export function useAISearch(patient: PatientInfo | null) {
   const [messages, setMessages] = useState<Message[]>([]);

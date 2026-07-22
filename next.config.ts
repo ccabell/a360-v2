@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
     "/dashboard/tube/**": ["./lib/tube/data/**"],
     "/api/academy/**": ["./lib/academy/data/**"],
   },
+  // react-pdf/pdfjs-dist (LPOA manual viewer) ships ESM that webpack transpiles
+  // through Next's compiler cleanly; kept explicit so a future webpack dev run
+  // doesn't regress. (The dev crash was the eval-source-map devtool that
+  // `next dev --webpack` forces; the dev script uses turbopack to avoid it.)
+  transpilePackages: ["react-pdf", "pdfjs-dist"],
   async headers() {
     return [
       {

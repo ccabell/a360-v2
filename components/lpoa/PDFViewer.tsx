@@ -12,10 +12,10 @@ import { Document, Page } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import { pdfjs } from "react-pdf";
+import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 
-const PDF_URL =
-  process.env.NEXT_PUBLIC_PDF_URL || "/Joule+Operator+Manual+Rev+Y.pdf";
-const PDF_NAME = process.env.NEXT_PUBLIC_PDF_NAME || "LPOA Manual";
+const PDF_URL = activeDevice.manual.url;
+const PDF_NAME = activeDevice.manual.name;
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 

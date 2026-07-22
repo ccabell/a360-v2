@@ -1,0 +1,132 @@
+{
+  "_meta": {
+    "source_pdf": "C:\\Projects\\lpoa\\Candela_Medical\\GentleMax_Pro_Operator_Manual.pdf",
+    "source_document": "Candela GentleMAX Operator's Manual, PN 8501-00-1810 Revision 06, June 2007",
+    "extracted": "2026-07-16",
+    "extraction_method": "PyMuPDF full-text + clinical applications-specialist review, page-cited",
+    "citation_rule": "Every value carries the manual page it came from. Values NOT present in this manual (per-indication recommended settings) are recorded in `gaps` and MUST render locked in the tool, never fabricated.",
+    "critical_finding": "This is a device/safety manual. It contains real device SPECIFICATION envelopes (fluence ranges, DCD ranges, spot sizes, limits) and full safety content, but deliberately DEFERS all per-indication/per-Fitzpatrick recommended treatment settings to a separate document (Candela Clinical Treatment Guidelines P/N 8502-00-0907, not in corpus). Recommended-setting fields are therefore source-UNsupported and render locked."
+  },
+  "device": {
+    "name": "GentleMAX / GentleMax Pro",
+    "manufacturer": "Candela Corporation",
+    "wavelengths": ["755 nm (Alexandrite)", "1064 nm (Nd:YAG)"],
+    "manual_revision": "Revision 06 (PN 8501-00-1810)",
+    "manual_date": "June 2007",
+    "page": 1
+  },
+  "specifications": {
+    "wavelengths": [
+      {"nm": 755, "type": "Alexandrite", "page": 20},
+      {"nm": 1064, "type": "Nd:YAG", "page": 20},
+      {"nm": "755 + 1064", "type": "Dual-wavelength, optically combined, single delivery system", "page": 20}
+    ],
+    "spot_sizes_mm": {
+      "system_inventory": "1.5, 3, 6, 8, 10, 12, 15, 18 mm (8 lens cartridges)",
+      "page": 154,
+      "notes": [
+        {"text": "WARNING: no currently approved indications for 1.5 mm and 3 mm spot sizes at 755 nm", "page": 72},
+        {"text": "Alexandrite fluence table lists only 6,8,10,12,15,18 mm; Nd:YAG table lists all incl. 1.5,3 mm", "page": 73}
+      ]
+    },
+    "fluence_tables_Jcm2": {
+      "_note": "Real fluence CAPABILITY ranges from the p73 tables, by wavelength x spot size x pulse-duration band. These are device envelopes / limits, NOT recommended treatment doses.",
+      "page": 73,
+      "755_alexandrite": [
+        {"spot_mm": 6,  "pulse_band_ms": "0.25-0.50", "min": 6,  "max": 30},
+        {"spot_mm": 6,  "pulse_band_ms": "3-300",     "min": 35, "max": 150},
+        {"spot_mm": 8,  "pulse_band_ms": "0.25-0.50", "min": 6,  "max": 20},
+        {"spot_mm": 8,  "pulse_band_ms": "3-300",     "min": 20, "max": 100},
+        {"spot_mm": 10, "pulse_band_ms": "0.25-0.50", "min": 6,  "max": 12},
+        {"spot_mm": 10, "pulse_band_ms": "3-300",     "min": 20, "max": 60},
+        {"spot_mm": 12, "pulse_band_ms": "3-300",     "min": 10, "max": 40},
+        {"spot_mm": 15, "pulse_band_ms": "3-300",     "min": 6,  "max": 30},
+        {"spot_mm": 18, "pulse_band_ms": "3-300",     "min": 6,  "max": 20}
+      ],
+      "1064_ndyag": [
+        {"spot_mm": 1.5, "pulse_band_ms": "0.25-0.50", "min": 200, "max": 600},
+        {"spot_mm": 3,   "pulse_band_ms": "0.25-0.50", "min": 50,  "max": 460},
+        {"spot_mm": 6,   "pulse_band_ms": "0.25-0.50", "min": 6,   "max": 30},
+        {"spot_mm": 6,   "pulse_band_ms": "3-300",     "min": 35,  "max": 200},
+        {"spot_mm": 8,   "pulse_band_ms": "0.25-0.50", "min": 6,   "max": 20},
+        {"spot_mm": 8,   "pulse_band_ms": "3-300",     "min": 20,  "max": 150},
+        {"spot_mm": 10,  "pulse_band_ms": "0.25-0.50", "min": 6,   "max": 12},
+        {"spot_mm": 10,  "pulse_band_ms": "3-300",     "min": 20,  "max": 100},
+        {"spot_mm": 12,  "pulse_band_ms": "3-300",     "min": 10,  "max": 70},
+        {"spot_mm": 15,  "pulse_band_ms": "3-300",     "min": 6,   "max": 44},
+        {"spot_mm": 18,  "pulse_band_ms": "3-300",     "min": 6,   "max": 30}
+      ],
+      "fluence_increment": {"text": "adjustable in increments of 1, 2, 5, 10, 20 J/cm2", "page": 72}
+    },
+    "max_delivered_energy": [
+      {"wavelength": "755", "value_J": 53, "page": 154},
+      {"wavelength": "1064", "value_J": 79.2, "page": 154},
+      {"note": "Output energy accuracy +/- 20%", "page": 154}
+    ],
+    "pulse_width_ms": {
+      "capability": "0.25 to 300 ms (spec table states 0.35-300; control text & Table 3-6 state 0.25-300)",
+      "bands": ["0.25-0.50", "3-300", "10-300"],
+      "pages": [77, 105, 154, 73],
+      "spec_inconsistency_flag": "Min pulse width printed as 0.35 ms (p154) vs 0.25 ms (p77,105). Surface both; do not silently pick one."
+    },
+    "repetition_rate_hz": {"capability": "Single, or 0.5 to 10 Hz depending on spot size / pulse duration", "page": 77},
+    "dcd_cooling": [
+      {"param": "Pre-Spray duration", "range": "0 (off), or 10-100 ms", "page": 74},
+      {"param": "Delay duration", "range": "3-150 ms", "page": 75},
+      {"param": "Post-Spray duration", "range": "0 (off), or 10-50 ms", "page": 75},
+      {"param": "Cryogen", "value": "HFC 134a / GentleCool, 1000 g canister, dual-canister auto-switch", "page": 154}
+    ],
+    "safety_specs": [
+      {"name": "Laser class", "value": "Class 4", "page": 24},
+      {"name": "Eyewear O.D.", "value": ">=5.8 @ 755 nm; >=6.3 @ 1064 nm", "page": 26},
+      {"name": "Warm-up", "value": "~15-20 min", "page": 71},
+      {"name": "Fiber bend radius", "value": "never pulse below 6 in (15 cm) radius", "page": 27}
+    ]
+  },
+  "indications_in_manual": [
+    {"name": "Hair removal", "wavelengths": "755 + 1064", "page": 22},
+    {"name": "Dermatological vascular lesions", "wavelengths": "755 + 1064", "page": 22},
+    {"name": "Photorejuvenation (software application option)", "wavelengths": "755 + 1064", "page": 101},
+    {"name": "Other indicated dermatological applications", "wavelengths": "755 + 1064", "page": 22}
+  ],
+  "treatment_parameters_recommended": {
+    "_status": "ABSENT FROM THIS MANUAL — renders LOCKED",
+    "reason": "Candela defers recommended fluence/pulse/DCD/spot per indication and Fitzpatrick to Clinical Treatment Guidelines P/N 8502-00-0907 and on-device Guided Mode software; not printed here.",
+    "pages": [22, 29, 103]
+  },
+  "contraindications": [
+    {"text": "Personal history of skin cancer, such as melanoma", "page": 23},
+    {"text": "Infected 'target' tattoo site or adjacent areas", "page": 23},
+    {"text": "Photosensitivity in the 755 nm region", "page": 23},
+    {"text": "Using medication for which infra-red light is a contraindication", "page": 23}
+  ],
+  "warnings_precautions": [
+    {"text": "Class 4 laser: protective eyewear required for all persons in the treatment room during operation", "page": 24},
+    {"text": "Match spot size on lens cartridge/distance gauge to the control-panel spot size or improper energy is delivered", "page": 24},
+    {"text": "Always recalibrate after changing delivery system/handpiece/lens/windows; failure may deliver excessive energy", "page": 24},
+    {"text": "Too-short cryogen spray duration for a given spot size may cause patient burns", "page": 33},
+    {"text": "Spot overlap may cause crescent and general burns", "page": 33},
+    {"text": "Tilting the distance gauge produces an elliptical spot and crescent burns; hold perpendicular", "page": 33},
+    {"text": "Replace cryogen canister when prompted or reduced epidermal cooling may cause burns", "page": 33},
+    {"text": "Flash-fire hazard in O2-enriched atmosphere; shave/keep hair-bearing areas moist; avoid alcohol/acetone prep", "page": 30},
+    {"text": "Cryogen ventilation: keep area <1000 ppm; min 40 sq ft room; rooms <513 sq ft need >=130 CFM exhaust", "page": 28},
+    {"text": "Frostbite distances (Table 1-3): 27 in visual from canister; 19 in visual from handpiece tip", "page": 29},
+    {"text": "Caution with 1.5 mm and 3.0 mm spots at 755 nm — no currently approved indications", "page": 72}
+  ],
+  "guided_mode_inputs": {
+    "_note": "The device's Guided Mode collects these to pick 'commonly used settings' — but the resulting numbers live in software/Treatment Guidelines, not this manual.",
+    "hair_removal": ["Skin (Fitzpatrick type, Tan)", "Hair (Color, Thickness)"],
+    "vascular": ["Skin (Fitzpatrick type)", "Vessel (Type, Size)"],
+    "photorejuvenation": ["Skin (Fitzpatrick type)", "Treatment (Type/Location)"],
+    "page": 103
+  },
+  "gaps": [
+    "No per-indication recommended treatment settings (deferred to Clinical Treatment Guidelines P/N 8502-00-0907).",
+    "No fluence-by-Fitzpatrick tables (inputs feed Guided Mode software; numbers not printed).",
+    "No recommended pulse duration / DCD / rep-rate / spot per indication.",
+    "No number of passes, treatment intervals, or fluence-titration guidance.",
+    "No clinical endpoints or expected tissue responses.",
+    "Pulse-width min inconsistency: 0.35 ms (spec table) vs 0.25 ms (control text)."
+  ],
+  "assessment": "Authoritative for device operating envelope + hard limits + full safety layer. Empty of per-indication clinical doses by design. A source-locked tool can confidently show real fluence/DCD/spot/pulse capability ranges and safety gates, and must render recommended-setting fields LOCKED with 'not specified in operator manual' rather than any number."
+}

@@ -7,11 +7,11 @@ import { PDFSidebar } from "@/components/lpoa/PDFSidebar";
 import { PatientModal, type PatientInfo } from "@/components/lpoa/PatientModal";
 import { PatientHeader } from "@/components/lpoa/PatientHeader";
 import type { PDFViewerHandle } from "@/components/lpoa/PDFViewer";
+import { activeDevice } from "@/lib/lpoa/devices/gentlemax-pro";
 
 type NavItem = "index" | "search" | "settings" | "faqs";
 
-const PDF_URL =
-  process.env.NEXT_PUBLIC_PDF_URL || "/Joule+Operator+Manual+Rev+Y.pdf";
+const PDF_URL = activeDevice.manual.url;
 
 const PDFViewer = dynamic(
   () => import("@/components/lpoa/PDFViewer").then((m) => m.PDFViewer),

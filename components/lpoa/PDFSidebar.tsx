@@ -1,16 +1,17 @@
 "use client";
 
 import { BookOpen, Search, Settings2, HelpCircle } from "lucide-react";
+import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 
 export type NavItem = "index" | "search" | "settings" | "faqs";
 
-const PDF_NAME = process.env.NEXT_PUBLIC_PDF_NAME || "LPOA Manual";
-const PDF_VERSION = process.env.NEXT_PUBLIC_PDF_VERSION || "";
+const PDF_NAME = activeDevice.manual.name;
+const PDF_VERSION = activeDevice.manual.revision || "";
 
 const navItems: { id: NavItem; label: string; icon: React.ReactNode }[] = [
-  { id: "index", label: "Index", icon: <BookOpen size={16} /> },
-  { id: "search", label: "Search", icon: <Search size={16} /> },
-  { id: "settings", label: "Optimal Settings", icon: <Settings2 size={16} /> },
+  { id: "index", label: "Manual Index", icon: <BookOpen size={16} /> },
+  { id: "search", label: "Assistant", icon: <Search size={16} /> },
+  { id: "settings", label: "Settings Builder", icon: <Settings2 size={16} /> },
   { id: "faqs", label: "FAQs", icon: <HelpCircle size={16} /> },
 ];
 
@@ -41,7 +42,7 @@ export function PDFSidebar({ active, onChange }: PDFSidebarProps) {
                 lineHeight: 1.2,
               }}
             >
-              LaserGuide Pro
+              {activeDevice.branding.name}
             </p>
             <p
               style={{
@@ -50,7 +51,7 @@ export function PDFSidebar({ active, onChange }: PDFSidebarProps) {
                 lineHeight: 1.2,
               }}
             >
-              Clinical Reference
+              {activeDevice.branding.subtitle}
             </p>
           </div>
         </div>

@@ -1,82 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
-  ChevronRight,
   AlertTriangle,
   BookOpen,
-  CheckCircle2,
   Info,
-  Zap,
-  RotateCcw,
+  Lock,
   Thermometer,
-  Activity,
-  Gauge,
+  ShieldAlert,
   ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
+import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
+import type { FluenceRow } from "../../lib/lpoa/types";
 
-const STEPS = [
-  "Module",
-  "Treatment Goal",
-  "Fitzpatrick Type",
-  "Treatment Area",
-  "PIH History",
-];
-
-const OPTIONS: Record<string, string[]> = {
-  Module: [
-    "BBL 560nm (Vascular/Pigment)",
-    "BBL 590nm (Pigment/Rejuv)",
-    "BBL 640nm (Hair/Deep)",
-    "BBL 695nm (Hair/Dark skin)",
-    "1064nm Nd:YAG",
-  ],
-  "Treatment Goal": [
-    "Vascular Lesions",
-    "Pigmentation / Melasma",
-    "Skin Rejuvenation",
-    "Hair Removal",
-    "Acne Treatment",
-    "Rosacea",
-  ],
-  "Fitzpatrick Type": ["Type I–II", "Type III–IV", "Type V", "Type VI"],
-  "Treatment Area": [
-    "Face — Full",
-    "Face — Periorbital",
-    "Neck & Décolleté",
-    "Body",
-    "Legs",
-    "Sensitive Zones",
-  ],
-  "PIH History": [
-    "None",
-    "Mild (resolved < 4 wks)",
-    "Moderate (resolved > 4 wks)",
-    "Severe / Persistent",
-  ],
-};
-
-// Settings table derived from the device manual (image provided)
-interface DeviceSettings {
-  fluence: number;
-  fluenceRange: [number, number];
-  fluenceMax: number;
-  pulseWidth: number;
-  pulseWidthRange: [number, number];
-  pulseWidthMax: number;
-  temperature: number;
-  temperatureRange: [number, number];
-  temperatureMax: number;
-  filter: string;
-  passes: string;
-}
-
-interface Reasoning {
-  fluence: string;
-  pulseWidth: string;
-  temperature: string;
-  general: string;
-}
+// ─────────────────────────────────────────────────────────────────────────
+// Settings Builder — honest, source-locked replacement for the old
+// computeGuidance() rules engine.
+//
+// The doctor picks wavelength + spot size + pulse band; the tool shows the
+// REAL fluence envelope (min/max) from the operator manual (p73), the real DCD
+// cooling ranges (p74-75), and validates the doctor's chosen fluence against
+// those limits. It does NOT invent a "recommended" number — the manual doesn't
+// contain one, so the recommendation renders LOCKED with an honest reason.
+// Every value shown carries a real manual page citation.
+// ─────────────────────────────────────────────────────────────────────────
 
 interface PageCitation {
   label: string;
@@ -84,249 +32,9 @@ interface PageCitation {
   pages: number[];
 }
 
-interface ParameterCitations {
-  fluence: PageCitation[];
-  pulseWidth: PageCitation[];
-  temperature: PageCitation[];
-}
+const MANUAL = activeDevice.manual.name;
 
-interface GuidanceResult {
-  settings: DeviceSettings;
-  reasoning: Reasoning;
-  citations: ParameterCitations;
-  safety: string[];
-  manualSections: { label: string; section: string; page: number }[];
-  confidence: number;
-  warnings: string[];
-}
-
-function computeGuidance(selections: Record<string, string>): GuidanceResult {
-  const ft = selections["Fitzpatrick Type"] ?? "";
-  const pih = selections["PIH History"] ?? "";
-  const area = selections["Treatment Area"] ?? "";
-  const module = selections["Module"] ?? "";
-  const goal = selections["Treatment Goal"] ?? "";
-
-  const isTypeI_II = ft.includes("I–II");
-  const isTypeIII_IV = ft.includes("III–IV");
-  const isTypeV = ft === "Type V";
-  const isTypeVI = ft === "Type VI";
-  const isHighPIH = pih.includes("Moderate") || pih.includes("Severe");
-  const isSensitive =
-    area.includes("Periorbital") || area.includes("Sensitive");
-  const isBBL590 = module.includes("590");
-  const isBBL640 = module.includes("640") || module.includes("695");
-
-  // Base settings per manual table
-  let fluence = 11;
-  let pulseWidth = 20;
-  let temperature = 20;
-  let filter = "560nm";
-
-  if (isTypeI_II) {
-    fluence = 11;
-    pulseWidth = 20;
-    temperature = 20;
-    filter = "560nm";
-  } else if (isTypeIII_IV) {
-    fluence = 9;
-    pulseWidth = 20;
-    temperature = 20;
-    filter = "560nm";
-  } else if (isTypeV) {
-    fluence = 9;
-    pulseWidth = 30;
-    temperature = 15;
-    filter = "590nm";
-  } else if (isTypeVI) {
-    fluence = 7;
-    pulseWidth = 40;
-    temperature = 10;
-    filter = "695nm";
-  }
-
-  // Override filter from module selection
-  if (isBBL590) filter = "590nm";
-  if (isBBL640) filter = "640nm";
-
-  // PIH adjustment
-  if (isHighPIH) {
-    fluence = Math.max(5, fluence - 2);
-    temperature = Math.max(10, temperature - 5);
-  }
-
-  // Sensitive zone adjustment
-  if (isSensitive) {
-    fluence = Math.max(5, fluence - 1);
-  }
-
-  // Goal adjustments
-  if (goal.includes("Vascular")) {
-    pulseWidth = Math.max(10, pulseWidth - 5);
-  } else if (goal.includes("Hair")) {
-    pulseWidth = pulseWidth + 10;
-    fluence = fluence + 1;
-  } else if (goal.includes("Rejuvenation")) {
-    fluence = Math.max(6, fluence - 1);
-  }
-
-  const fluenceMax = 22;
-  const pulseWidthMax = 60;
-  const tempMax = 30;
-
-  const reasoning: Reasoning = {
-    fluence: isTypeI_II
-      ? `Type I–II skin has low melanin density, allowing higher fluence (${fluence} J/cm²) for effective chromophore absorption without epidermal injury risk.`
-      : isTypeIII_IV
-        ? `Type III–IV skin carries elevated melanin competition. Fluence reduced to ${fluence} J/cm² to minimize non-specific epidermal heating while maintaining therapeutic effect.`
-        : isTypeV
-          ? `Type V skin requires conservative fluence (${fluence} J/cm²) due to high competing melanin. Longer wavelength filter shifts absorption away from melanin toward the target chromophore.`
-          : `Dark skin type requires careful fluence selection (${fluence} J/cm²) with longer wavelength filter to reduce melanin absorption and thermal injury risk.`,
-
-    pulseWidth: goal.includes("Vascular")
-      ? `Vascular targets have a short thermal relaxation time (~1–5ms). Pulse width of ${pulseWidth}ms is set near the upper limit to allow vessel wall heating while sparing surrounding tissue.`
-      : isTypeV || isTypeVI
-        ? `Extended pulse width (${pulseWidth}ms) for darker skin types distributes heat delivery over a longer interval, reducing peak epidermal temperature and PIH risk.`
-        : `Pulse width of ${pulseWidth}ms matches the thermal relaxation time of the target chromophore for this skin type and treatment goal, balancing efficacy with safety.`,
-
-    temperature:
-      temperature <= 15
-        ? `Aggressive contact cooling (${temperature}°C) is essential for this skin type to pre-cool the epidermis before each pulse, protecting the dermal-epidermal junction from thermal damage.`
-        : `Contact cooling at ${temperature}°C provides adequate epidermal protection while maintaining target tissue temperature in the therapeutic range. Optimal for this skin type.`,
-
-    general: isHighPIH
-      ? `Settings adjusted –15% from baseline due to documented PIH history. Pre-treat with hydroquinone 4% for 4–6 weeks. Extend treatment intervals to 8–10 weeks.`
-      : isSensitive
-        ? `Sensitive treatment zone — settings conservatively adjusted. Maintain ≤10% spot overlap and limit total pulses per session.`
-        : `Settings correspond to standard ${filter} BBL protocol for ${ft} skin. Perform a single test patch 24 hours prior to full treatment and document patient response.`,
-  };
-
-  const safety: string[] = [];
-  if (isTypeV || isTypeVI)
-    safety.push(
-      "High melanin skin type — verify filter selection matches wavelength. Monitor for immediate graying; stop if observed.",
-    );
-  if (isHighPIH)
-    safety.push(
-      "PIH history documented — pre-treatment hydroquinone and strict post-treatment sun avoidance are mandatory.",
-    );
-  if (isSensitive)
-    safety.push(
-      "Sensitive zone selected — use corneal shields for periorbital work. Do not exceed the recommended spot count.",
-    );
-  if (goal.includes("Vascular"))
-    safety.push(
-      "Vascular target — expect immediate vessel clearing (vessel blanching). Avoid re-treating the same site within 15 minutes.",
-    );
-  if (safety.length === 0)
-    safety.push(
-      "No elevated risk flags for this configuration. Follow standard protocol and document parameters.",
-    );
-
-  const manualSections = [
-    { label: "§3.2", section: "Skin Type Assessment", page: 16 },
-    { label: "§3.3", section: "Fluence & Pulse Duration", page: 20 },
-    ...(isHighPIH
-      ? [{ label: "§5.2", section: "PIH Prevention", page: 45 }]
-      : []),
-    ...(isSensitive
-      ? [{ label: "§4.3", section: "Sensitive Zones", page: 38 }]
-      : []),
-  ];
-
-  const filled = Object.values(selections).filter(Boolean).length;
-  const confidence = Math.min(98, Math.round((filled / STEPS.length) * 100));
-
-  // Per-parameter citations with multi-page support
-  const citations: ParameterCitations = {
-    fluence: [
-      { label: "§3.2", section: "Skin Type Assessment", pages: [16, 17, 18] },
-      { label: "§3.3", section: "Fluence & Pulse Duration", pages: [20, 21] },
-      ...(isHighPIH
-        ? [
-            {
-              label: "§5.2",
-              section: "PIH Prevention — Fluence Adjustment",
-              pages: [45, 46],
-            },
-          ]
-        : []),
-    ],
-    pulseWidth: [
-      {
-        label: "§3.3",
-        section: "Fluence & Pulse Duration",
-        pages: [20, 22, 24],
-      },
-      { label: "§3.2", section: "Skin Type Protocol Table", pages: [16, 18] },
-      ...(goal.includes("Vascular")
-        ? [
-            {
-              label: "§4.1",
-              section: "Vascular Pulse Parameters",
-              pages: [31, 32],
-            },
-          ]
-        : []),
-      ...(isTypeV || isTypeVI
-        ? [
-            {
-              label: "§5.1",
-              section: "Dark Skin Pulse Selection",
-              pages: [43, 44],
-            },
-          ]
-        : []),
-    ],
-    temperature: [
-      { label: "§3.4", section: "Cooling Protocols", pages: [27, 28, 29] },
-      {
-        label: "§3.2",
-        section: "Skin Type Cooling Requirements",
-        pages: [16, 19],
-      },
-      ...(isSensitive
-        ? [
-            {
-              label: "§4.3",
-              section: "Sensitive Zone Cooling",
-              pages: [38, 39],
-            },
-          ]
-        : []),
-    ],
-  };
-
-  return {
-    settings: {
-      fluence,
-      fluenceRange: [fluence - 1, fluence + 1],
-      fluenceMax,
-      pulseWidth,
-      pulseWidthRange: [pulseWidth - 2, pulseWidth + 2],
-      pulseWidthMax,
-      temperature,
-      temperatureRange: [temperature - 2, temperature + 2],
-      temperatureMax: tempMax,
-      filter,
-      passes: isSensitive ? "1–2 passes" : "2–3 passes",
-    },
-    reasoning,
-    citations,
-    safety,
-    manualSections,
-    confidence,
-    warnings: isHighPIH
-      ? [
-          "Pre-treat with hydroquinone 4% × 4–6 wks",
-          "Extend intervals to 8–10 weeks",
-          "Mandatory SPF 50+ throughout course",
-        ]
-      : [],
-  };
-}
-
-// ── Visual gauge components ──────────────────────────────────────────
+// ── Reusable UI primitives (unchanged from the original surface) ─────────
 
 function ArcGauge({
   value,
@@ -334,7 +42,7 @@ function ArcGauge({
   color,
   label,
   unit,
-  size = 88,
+  size = 96,
 }: {
   value: number;
   max: number;
@@ -343,7 +51,7 @@ function ArcGauge({
   unit: string;
   size?: number;
 }) {
-  const pct = Math.min(1, value / max);
+  const pct = max > 0 ? Math.min(1, value / max) : 0;
   const r = size / 2 - 8;
   const circumference = Math.PI * r; // half-circle
   const strokeDash = circumference * pct;
@@ -351,12 +59,7 @@ function ArcGauge({
   return (
     <div className="flex flex-col items-center gap-1">
       <div style={{ position: "relative", width: size, height: size / 2 + 10 }}>
-        <svg
-          width={size}
-          height={size / 2 + 10}
-          style={{ overflow: "visible" }}
-        >
-          {/* Track */}
+        <svg width={size} height={size / 2 + 10} style={{ overflow: "visible" }}>
           <path
             d={`M 8 ${size / 2} A ${r} ${r} 0 0 1 ${size - 8} ${size / 2}`}
             fill="none"
@@ -364,7 +67,6 @@ function ArcGauge({
             strokeWidth={7}
             strokeLinecap="round"
           />
-          {/* Fill */}
           <path
             d={`M 8 ${size / 2} A ${r} ${r} 0 0 1 ${size - 8} ${size / 2}`}
             fill="none"
@@ -372,89 +74,44 @@ function ArcGauge({
             strokeWidth={7}
             strokeLinecap="round"
             strokeDasharray={`${strokeDash} ${circumference}`}
-            style={{ transition: "stroke-dasharray 0.6s ease" }}
+            style={{ transition: "stroke-dasharray 0.5s ease" }}
           />
         </svg>
-        {/* Center value */}
         <div
-          style={{
-            position: "absolute",
-            bottom: 4,
-            left: 0,
-            right: 0,
-            textAlign: "center",
-          }}
+          style={{ position: "absolute", bottom: 4, left: 0, right: 0, textAlign: "center" }}
         >
-          <span
-            style={{
-              fontSize: 20,
-              fontWeight: 700,
-              color: "var(--foreground)",
-              lineHeight: 1,
-            }}
-          >
+          <span style={{ fontSize: 20, fontWeight: 700, color: "var(--foreground)", lineHeight: 1 }}>
             {value}
           </span>
-          <span
-            style={{
-              fontSize: 10,
-              color: "var(--muted-foreground)",
-              marginLeft: 2,
-            }}
-          >
+          <span style={{ fontSize: 10, color: "var(--muted-foreground)", marginLeft: 2 }}>
             {unit}
           </span>
         </div>
       </div>
-      <span
-        style={{
-          fontSize: 11,
-          color: "var(--muted-foreground)",
-          fontWeight: 500,
-        }}
-      >
+      <span style={{ fontSize: 11, color: "var(--muted-foreground)", fontWeight: 500 }}>
         {label}
       </span>
     </div>
   );
 }
 
-function ThermoBar({
-  value,
-  max,
-  color,
-}: {
-  value: number;
-  max: number;
-  color: string;
-}) {
-  const pct = Math.min(1, value / max);
+function ThermoBar({ value, max, color }: { value: number; max: number; color: string }) {
+  const pct = max > 0 ? Math.min(1, value / max) : 0;
   return (
     <div className="flex flex-col items-center gap-1" style={{ height: 80 }}>
       <div
         className="relative rounded-full overflow-hidden"
-        style={{
-          width: 12,
-          height: 64,
-          background: "var(--muted)",
-          flexShrink: 0,
-        }}
+        style={{ width: 12, height: 64, background: "var(--muted)", flexShrink: 0 }}
       >
         <div
-          className="absolute bottom-0 w-full rounded-full transition-all"
-          style={{
-            height: `${pct * 100}%`,
-            background: color,
-            transition: "height 0.6s ease",
-          }}
+          className="absolute bottom-0 w-full rounded-full"
+          style={{ height: `${pct * 100}%`, background: color, transition: "height 0.5s ease" }}
         />
       </div>
       <Thermometer size={12} style={{ color }} />
     </div>
   );
 }
-
-// ── Citation navigator ───────────────────────────────────────────────
 
 function CitationNav({
   citations,
@@ -463,12 +120,11 @@ function CitationNav({
   citations: PageCitation[];
   onJumpToPage: (page: number) => void;
 }) {
-  // Flatten all pages across all citations into a navigable list
   const entries = citations.flatMap((c) =>
     c.pages.map((p) => ({ label: c.label, section: c.section, page: p })),
   );
   const [idx, setIdx] = useState(0);
-  const current = entries[idx];
+  const current = entries[Math.min(idx, entries.length - 1)];
   if (!current) return null;
 
   return (
@@ -476,11 +132,10 @@ function CitationNav({
       className="flex items-center gap-1 mt-2 rounded-md overflow-hidden"
       style={{ border: "1px solid var(--border)", background: "var(--card)" }}
     >
-      {/* Prev */}
       <button
         onClick={() => setIdx((i) => Math.max(0, i - 1))}
         disabled={idx === 0}
-        className="flex items-center justify-center transition-colors"
+        className="flex items-center justify-center"
         style={{
           width: 24,
           height: 28,
@@ -492,46 +147,26 @@ function CitationNav({
       >
         <ChevronLeft size={12} />
       </button>
-
-      {/* Citation label — clicking jumps to page */}
       <button
         onClick={() => onJumpToPage(current.page)}
-        className="flex items-center gap-1.5 flex-1 transition-colors px-2"
+        className="flex items-center gap-1.5 flex-1 px-2"
         style={{ height: 28, minWidth: 0 }}
-        onMouseEnter={(e) =>
-          (e.currentTarget.style.background = "var(--accent)")
-        }
+        onMouseEnter={(e) => (e.currentTarget.style.background = "var(--accent)")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
       >
-        <BookOpen
-          size={10}
-          style={{ color: "var(--muted-foreground)", flexShrink: 0 }}
-        />
-        <span
-          className="truncate"
-          style={{ fontSize: 11, color: "var(--foreground)", fontWeight: 500 }}
-        >
+        <BookOpen size={10} style={{ color: "var(--muted-foreground)", flexShrink: 0 }} />
+        <span className="truncate" style={{ fontSize: 11, color: "var(--foreground)", fontWeight: 500 }}>
           {current.label}
         </span>
-        <span
-          className="truncate"
-          style={{ fontSize: 11, color: "var(--muted-foreground)" }}
-        >
+        <span className="truncate" style={{ fontSize: 11, color: "var(--muted-foreground)" }}>
           {current.section}
         </span>
         <span
-          style={{
-            fontSize: 11,
-            color: "var(--muted-foreground)",
-            flexShrink: 0,
-            marginLeft: "auto",
-          }}
+          style={{ fontSize: 11, color: "var(--muted-foreground)", flexShrink: 0, marginLeft: "auto" }}
         >
           p.{current.page}
         </span>
       </button>
-
-      {/* Page counter */}
       <span
         style={{
           fontSize: 10,
@@ -544,23 +179,18 @@ function CitationNav({
           alignItems: "center",
         }}
       >
-        {idx + 1}/{entries.length}
+        {Math.min(idx, entries.length - 1) + 1}/{entries.length}
       </span>
-
-      {/* Next */}
       <button
         onClick={() => setIdx((i) => Math.min(entries.length - 1, i + 1))}
-        disabled={idx === entries.length - 1}
-        className="flex items-center justify-center transition-colors"
+        disabled={idx >= entries.length - 1}
+        className="flex items-center justify-center"
         style={{
           width: 24,
           height: 28,
           flexShrink: 0,
           borderLeft: "1px solid var(--border)",
-          color:
-            idx === entries.length - 1
-              ? "var(--border)"
-              : "var(--muted-foreground)",
+          color: idx >= entries.length - 1 ? "var(--border)" : "var(--muted-foreground)",
           background: "transparent",
         }}
       >
@@ -570,599 +200,309 @@ function CitationNav({
   );
 }
 
-function ReasoningCard({
-  icon,
-  title,
-  body,
+// ── Small building blocks ────────────────────────────────────────────────
+
+function Segmented<T extends string | number>({
+  label,
+  options,
+  value,
+  onChange,
+  fmt,
+}: {
+  label: string;
+  options: T[];
+  value: T;
+  onChange: (v: T) => void;
+  fmt?: (v: T) => string;
+}) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <span style={{ fontSize: 11, fontWeight: 600, color: "var(--muted-foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+        {label}
+      </span>
+      <div className="flex flex-wrap gap-1.5">
+        {options.map((opt) => {
+          const active = opt === value;
+          return (
+            <button
+              key={String(opt)}
+              onClick={() => onChange(opt)}
+              className="rounded-md transition-colors"
+              style={{
+                fontSize: 12,
+                fontWeight: 500,
+                padding: "6px 10px",
+                border: `1px solid ${active ? "var(--primary)" : "var(--border)"}`,
+                background: active ? "var(--primary)" : "var(--card)",
+                color: active ? "var(--primary-foreground, #fff)" : "var(--foreground)",
+              }}
+            >
+              {fmt ? fmt(opt) : String(opt)}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function LockedCard({
+  label,
+  reason,
   citations,
   onJumpToPage,
 }: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-  citations?: PageCitation[];
-  onJumpToPage?: (page: number) => void;
+  label: string;
+  reason: string;
+  citations: PageCitation[];
+  onJumpToPage: (page: number) => void;
 }) {
   return (
     <div
       className="rounded-lg p-3"
-      style={{ background: "var(--muted)", border: "1px solid var(--border)" }}
+      style={{ background: "var(--muted)", border: "1px dashed var(--border)" }}
     >
-      <div className="flex gap-3">
-        <div
-          style={{
-            flexShrink: 0,
-            marginTop: 1,
-            color: "var(--muted-foreground)",
-          }}
-        >
-          {icon}
-        </div>
+      <div className="flex gap-2.5">
+        <Lock size={15} style={{ color: "var(--muted-foreground)", flexShrink: 0, marginTop: 1 }} />
         <div className="flex-1 min-w-0">
-          <p
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              color: "var(--foreground)",
-              marginBottom: 3,
-              textTransform: "uppercase",
-              letterSpacing: "0.05em",
-            }}
-          >
-            {title}
-          </p>
-          <p
-            style={{
-              fontSize: 12,
-              color: "var(--muted-foreground)",
-              lineHeight: 1.6,
-            }}
-          >
-            {body}
-          </p>
-          {citations && citations.length > 0 && onJumpToPage && (
-            <CitationNav citations={citations} onJumpToPage={onJumpToPage} />
-          )}
+          <div className="flex items-center gap-2" style={{ marginBottom: 3 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              {label}
+            </p>
+            <span
+              style={{
+                fontSize: 9,
+                fontWeight: 700,
+                padding: "1px 6px",
+                borderRadius: 999,
+                background: "var(--card)",
+                border: "1px solid var(--border)",
+                color: "var(--muted-foreground)",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
+              Locked · not in manual
+            </span>
+          </div>
+          <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>{reason}</p>
+          <CitationNav citations={citations} onJumpToPage={onJumpToPage} />
         </div>
       </div>
     </div>
   );
 }
 
+// ── Main panel ────────────────────────────────────────────────────────────
+
 interface SettingsPanelProps {
   onJumpToPage: (page: number) => void;
 }
 
 export function SettingsPanel({ onJumpToPage }: SettingsPanelProps) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selections, setSelections] = useState<Record<string, string>>({});
-  const [guidance, setGuidance] = useState<GuidanceResult | null>(null);
+  const device = activeDevice;
+  const tables = device.fluenceTables;
 
-  const stepName = STEPS[currentStep];
-  const stepOptions = OPTIONS[stepName] || [];
-  const isLastStep = currentStep === STEPS.length - 1;
+  const wavelengths = useMemo(
+    () => Array.from(new Set(tables.map((r) => r.wavelength))) as FluenceRow["wavelength"][],
+    [tables],
+  );
+  const [wavelength, setWavelength] = useState<FluenceRow["wavelength"]>(wavelengths[0]);
 
-  const handleSelect = (option: string) => {
-    const updated = { ...selections, [stepName]: option };
-    setSelections(updated);
-    if (!isLastStep) setCurrentStep((s) => s + 1);
-  };
+  const spotOptions = useMemo(
+    () => Array.from(new Set(tables.filter((r) => r.wavelength === wavelength).map((r) => r.spotMm))).sort((a, b) => a - b),
+    [tables, wavelength],
+  );
+  const [spotMm, setSpotMm] = useState<number>(spotOptions[0]);
 
-  const handleGenerate = () => setGuidance(computeGuidance(selections));
+  // Keep spot valid when wavelength changes.
+  const effectiveSpot = spotOptions.includes(spotMm) ? spotMm : spotOptions[0];
 
-  const handleReset = () => {
-    setCurrentStep(0);
-    setSelections({});
-    setGuidance(null);
-  };
+  const bandOptions = useMemo(
+    () => tables.filter((r) => r.wavelength === wavelength && r.spotMm === effectiveSpot).map((r) => r.pulseBandMs),
+    [tables, wavelength, effectiveSpot],
+  );
+  const [band, setBand] = useState<string>(bandOptions[0]);
+  const effectiveBand = bandOptions.includes(band) ? band : bandOptions[0];
+
+  const row = useMemo(
+    () => tables.find((r) => r.wavelength === wavelength && r.spotMm === effectiveSpot && r.pulseBandMs === effectiveBand),
+    [tables, wavelength, effectiveSpot, effectiveBand],
+  );
+
+  // Doctor's chosen fluence — starts at the envelope midpoint (a neutral
+  // starting point within real limits, NOT a manual recommendation).
+  const [fluence, setFluence] = useState<number | null>(null);
+  const chosen = fluence ?? (row ? Math.round((row.minJcm2 + row.maxJcm2) / 2) : 0);
+  const inRange = row ? chosen >= row.minJcm2 && chosen <= row.maxJcm2 : false;
+
+  const fluenceCitation: PageCitation[] = [
+    { label: "Fluence table", section: `${wavelength} nm, ${effectiveSpot} mm`, pages: [73] },
+  ];
+
+  const wlLabel = wavelength === "755" ? "755 nm Alexandrite" : "1064 nm Nd:YAG";
+  const wlColor = wavelength === "755" ? "#4f46e5" : "#0891b2";
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="px-4 py-4 border-b border-border shrink-0">
-        <h2
-          style={{ fontSize: 14, fontWeight: 600, color: "var(--foreground)" }}
-        >
-          Optimal Settings
-        </h2>
-        <p
-          style={{
-            fontSize: 12,
-            color: "var(--muted-foreground)",
-            marginTop: 2,
-          }}
-        >
-          Generate evidence-based device parameters
+    <div className="flex flex-col gap-4" style={{ padding: 16, overflowY: "auto" }}>
+      {/* Header */}
+      <div>
+        <h2 style={{ fontSize: 15, fontWeight: 700, color: "var(--foreground)" }}>Settings Builder</h2>
+        <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.5, marginTop: 2 }}>
+          Real operating envelope from the {MANUAL}. Choose a configuration; every
+          value is cited to a manual page. Recommended clinical doses are not in
+          this manual and stay locked.
         </p>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">
-        {/* Step progress pills */}
-        <div className="flex items-center gap-1">
-          {STEPS.map((step, i) => {
-            const done = !!selections[step];
-            const active = i === currentStep && !guidance;
-            return (
-              <div key={step} className="flex items-center gap-1 flex-1">
-                <div
-                  className="flex items-center justify-center rounded-full transition-all"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    fontSize: 9,
-                    fontWeight: 700,
-                    flexShrink: 0,
-                    background: done
-                      ? "var(--primary)"
-                      : active
-                        ? "#e0e7ff"
-                        : "var(--muted)",
-                    color: done
-                      ? "var(--primary-foreground)"
-                      : active
-                        ? "#4f46e5"
-                        : "var(--muted-foreground)",
-                  }}
-                >
-                  {done ? <CheckCircle2 size={11} /> : i + 1}
-                </div>
-                {i < STEPS.length - 1 && (
-                  <div
-                    style={{
-                      flex: 1,
-                      height: 1,
-                      background: done ? "var(--primary)" : "var(--border)",
-                    }}
-                  />
+      {/* Selectors */}
+      <div className="flex flex-col gap-3">
+        <Segmented
+          label="Wavelength"
+          options={wavelengths}
+          value={wavelength}
+          onChange={(v) => {
+            setWavelength(v);
+            setFluence(null);
+          }}
+          fmt={(v) => (v === "755" ? "755 nm Alexandrite" : "1064 nm Nd:YAG")}
+        />
+        <Segmented
+          label="Spot size"
+          options={spotOptions}
+          value={effectiveSpot}
+          onChange={(v) => {
+            setSpotMm(v);
+            setFluence(null);
+          }}
+          fmt={(v) => `${v} mm`}
+        />
+        <Segmented
+          label="Pulse duration band"
+          options={bandOptions}
+          value={effectiveBand}
+          onChange={(v) => {
+            setBand(v);
+            setFluence(null);
+          }}
+          fmt={(v) => `${v} ms`}
+        />
+      </div>
+
+      {/* Real fluence envelope */}
+      {row && (
+        <div
+          className="rounded-lg p-4"
+          style={{ background: "var(--card)", border: "1px solid var(--border)" }}
+        >
+          <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              Fluence envelope · {wlLabel} · {effectiveSpot} mm · {effectiveBand} ms
+            </span>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <ArcGauge value={chosen} max={row.maxJcm2} color={wlColor} label="your setting" unit="J/cm²" />
+            <div className="flex-1 flex flex-col gap-2" style={{ minWidth: 0 }}>
+              <div className="flex items-baseline gap-2">
+                <span style={{ fontSize: 22, fontWeight: 700, color: "var(--foreground)" }}>
+                  {row.minJcm2}–{row.maxJcm2}
+                </span>
+                <span style={{ fontSize: 12, color: "var(--muted-foreground)" }}>J/cm² allowed range</span>
+              </div>
+              <input
+                type="range"
+                min={row.minJcm2}
+                max={row.maxJcm2}
+                value={Math.min(Math.max(chosen, row.minJcm2), row.maxJcm2)}
+                onChange={(e) => setFluence(Number(e.target.value))}
+                style={{ width: "100%", accentColor: wlColor }}
+              />
+              <div
+                className="flex items-center gap-1.5"
+                style={{ fontSize: 12, color: inRange ? "var(--muted-foreground)" : "#dc2626", fontWeight: 500 }}
+              >
+                {inRange ? (
+                  <>
+                    <Info size={13} />
+                    <span>{chosen} J/cm² is within the manual's limits for this configuration.</span>
+                  </>
+                ) : (
+                  <>
+                    <AlertTriangle size={13} />
+                    <span>{chosen} J/cm² is outside the manual's {row.minJcm2}–{row.maxJcm2} J/cm² range.</span>
+                  </>
                 )}
               </div>
-            );
-          })}
+            </div>
+          </div>
+          <CitationNav citations={fluenceCitation} onJumpToPage={onJumpToPage} />
         </div>
+      )}
 
-        {/* ── FORM ── */}
-        {!guidance && (
-          <div className="flex flex-col gap-3">
-            <div>
-              <p
-                style={{
-                  fontSize: 10,
-                  color: "var(--muted-foreground)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.07em",
-                  fontWeight: 600,
-                }}
-              >
-                Step {currentStep + 1} — {stepName}
-              </p>
-              {selections[stepName] && (
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "var(--muted-foreground)",
-                    marginTop: 3,
-                  }}
-                >
-                  Selected:{" "}
-                  <span style={{ color: "var(--foreground)", fontWeight: 500 }}>
-                    {selections[stepName]}
-                  </span>
-                </p>
-              )}
-            </div>
+      {/* Locked recommendation — the honest core */}
+      {device.lockedFields
+        .filter((f) => f.key === "recommended_fluence")
+        .map((f) => (
+          <LockedCard
+            key={f.key}
+            label={f.label}
+            reason={f.reason}
+            citations={[{ label: "Deferred to Guided Mode / Guidelines", section: "", pages: f.deferredToPages }]}
+            onJumpToPage={onJumpToPage}
+          />
+        ))}
 
-            <div className="flex flex-col gap-1.5">
-              {stepOptions.map((opt) => {
-                const chosen = selections[stepName] === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleSelect(opt)}
-                    className="flex items-center justify-between rounded-lg border transition-colors"
-                    style={{
-                      padding: "9px 12px",
-                      fontSize: 13,
-                      textAlign: "left",
-                      background: chosen ? "var(--primary)" : "var(--card)",
-                      color: chosen
-                        ? "var(--primary-foreground)"
-                        : "var(--foreground)",
-                      borderColor: chosen ? "var(--primary)" : "var(--border)",
-                    }}
-                  >
-                    {opt}
-                    {!chosen && (
-                      <ChevronRight
-                        size={14}
-                        style={{ color: "var(--muted-foreground)" }}
-                      />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="flex gap-2">
-              {currentStep > 0 && (
-                <button
-                  onClick={() => setCurrentStep((s) => s - 1)}
-                  className="flex-1 rounded-lg border border-border transition-colors"
-                  style={{
-                    padding: "8px",
-                    fontSize: 13,
-                    color: "var(--muted-foreground)",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "var(--accent)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  Back
-                </button>
-              )}
-              {isLastStep && selections[stepName] && (
-                <button
-                  onClick={handleGenerate}
-                  className="flex-1 rounded-lg flex items-center justify-center gap-2"
-                  style={{
-                    padding: "9px",
-                    fontSize: 13,
-                    fontWeight: 500,
-                    background: "var(--primary)",
-                    color: "var(--primary-foreground)",
-                  }}
-                >
-                  <Zap size={14} />
-                  Generate Settings
-                </button>
-              )}
-            </div>
-
-            {Object.keys(selections).length > 0 && (
-              <div
-                className="rounded-lg p-3"
-                style={{ background: "var(--muted)", fontSize: 12 }}
-              >
-                {Object.entries(selections).map(([k, v]) => (
-                  <div key={k} className="flex justify-between gap-2 py-0.5">
-                    <span style={{ color: "var(--muted-foreground)" }}>
-                      {k}:
-                    </span>
-                    <span
-                      style={{
-                        color: "var(--foreground)",
-                        fontWeight: 500,
-                        textAlign: "right",
-                      }}
-                    >
-                      {v}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── RESULTS ── */}
-        {guidance && (
-          <div className="flex flex-col gap-5">
-            {/* Filter + pass badge */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span
-                className="rounded-full px-3 py-1"
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  background: "#dbeafe",
-                  color: "#1e40af",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {guidance.settings.filter} Filter
+      {/* Real DCD cooling ranges */}
+      <div className="rounded-lg p-3" style={{ background: "var(--card)", border: "1px solid var(--border)" }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: 8 }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            DCD cooling ranges
+          </span>
+          <ThermoBar value={1} max={2} color="#0ea5e9" />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          {device.dcd.map((d) => (
+            <div key={d.param} className="flex items-center justify-between" style={{ fontSize: 12 }}>
+              <span style={{ color: "var(--muted-foreground)" }}>{d.param}</span>
+              <span style={{ color: "var(--foreground)", fontWeight: 500, textAlign: "right", marginLeft: 8 }}>
+                {d.range}
               </span>
-              <span
-                className="rounded-full px-3 py-1"
-                style={{
-                  fontSize: 11,
-                  fontWeight: 600,
-                  background: "var(--muted)",
-                  color: "var(--muted-foreground)",
-                }}
-              >
-                {guidance.settings.passes}
-              </span>
-              {guidance.confidence >= 80 && (
-                <span
-                  className="rounded-full px-3 py-1 flex items-center gap-1"
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    background: "#dcfce7",
-                    color: "#166534",
-                  }}
-                >
-                  <CheckCircle2 size={11} /> {guidance.confidence}% confidence
-                </span>
-              )}
             </div>
-
-            {/* ── Visual gauges ── */}
-            <div
-              className="rounded-xl p-4 flex flex-col gap-4"
-              style={{
-                background: "var(--card)",
-                border: "1px solid var(--border)",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: "var(--muted-foreground)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.07em",
-                }}
-              >
-                Device Parameters
-              </p>
-
-              <div className="flex items-end justify-around gap-2">
-                <ArcGauge
-                  value={guidance.settings.fluence}
-                  max={guidance.settings.fluenceMax}
-                  color="#4f46e5"
-                  label="Fluence"
-                  unit="J/cm²"
-                  size={86}
-                />
-                <ArcGauge
-                  value={guidance.settings.pulseWidth}
-                  max={guidance.settings.pulseWidthMax}
-                  color="#0891b2"
-                  label="Pulse Width"
-                  unit="ms"
-                  size={86}
-                />
-                {/* Temperature thermometer */}
-                <div className="flex flex-col items-center gap-1">
-                  <ThermoBar
-                    value={guidance.settings.temperature}
-                    max={guidance.settings.temperatureMax}
-                    color="#0ea5e9"
-                  />
-                  <div className="text-center">
-                    <span
-                      style={{
-                        fontSize: 20,
-                        fontWeight: 700,
-                        color: "var(--foreground)",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {guidance.settings.temperature}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: 10,
-                        color: "var(--muted-foreground)",
-                        marginLeft: 2,
-                      }}
-                    >
-                      °C
-                    </span>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      color: "var(--muted-foreground)",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Temperature
-                  </span>
-                </div>
-              </div>
-
-              {/* Numeric reference row */}
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  {
-                    label: "Fluence",
-                    value: `${guidance.settings.fluence} J/cm²`,
-                    color: "#4f46e5",
-                    icon: <Gauge size={11} />,
-                  },
-                  {
-                    label: "Pulse Width",
-                    value: `${guidance.settings.pulseWidth} ms`,
-                    color: "#0891b2",
-                    icon: <Activity size={11} />,
-                  },
-                  {
-                    label: "Temperature",
-                    value: `${guidance.settings.temperature}°C`,
-                    color: "#0ea5e9",
-                    icon: <Thermometer size={11} />,
-                  },
-                ].map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-lg p-2.5 flex flex-col gap-1"
-                    style={{
-                      background: "var(--muted)",
-                      border: `1px solid ${item.color}22`,
-                    }}
-                  >
-                    <div
-                      className="flex items-center gap-1"
-                      style={{ color: item.color }}
-                    >
-                      {item.icon}
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 600,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em",
-                        }}
-                      >
-                        {item.label}
-                      </span>
-                    </div>
-                    <span
-                      style={{
-                        fontSize: 16,
-                        fontWeight: 700,
-                        color: "var(--foreground)",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* ── Why these settings ── */}
-            <div className="flex flex-col gap-2">
-              <p
-                style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: "var(--foreground)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                Clinical Rationale
-              </p>
-              <ReasoningCard
-                icon={<Gauge size={13} />}
-                title="Fluence"
-                body={guidance.reasoning.fluence}
-                citations={guidance.citations.fluence}
-                onJumpToPage={onJumpToPage}
-              />
-              <ReasoningCard
-                icon={<Activity size={13} />}
-                title="Pulse Width"
-                body={guidance.reasoning.pulseWidth}
-                citations={guidance.citations.pulseWidth}
-                onJumpToPage={onJumpToPage}
-              />
-              <ReasoningCard
-                icon={<Thermometer size={13} />}
-                title="Temperature"
-                body={guidance.reasoning.temperature}
-                citations={guidance.citations.temperature}
-                onJumpToPage={onJumpToPage}
-              />
-              <ReasoningCard
-                icon={<Info size={13} />}
-                title="Protocol Note"
-                body={guidance.reasoning.general}
-              />
-            </div>
-
-            {/* ── Safety ── */}
-            {guidance.safety.length > 0 && (
-              <div className="flex flex-col gap-2">
-                <p
-                  style={{
-                    fontSize: 12,
-                    fontWeight: 700,
-                    color: "var(--foreground)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  Safety Considerations
-                </p>
-                {guidance.safety.map((s, i) => (
-                  <div
-                    key={i}
-                    className="flex gap-2 rounded-lg p-3"
-                    style={{
-                      background: "#fef3c7",
-                      border: "1px solid #fde68a",
-                    }}
-                  >
-                    <AlertTriangle
-                      size={13}
-                      style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }}
-                    />
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: "#92400e",
-                        lineHeight: 1.5,
-                      }}
-                    >
-                      {s}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* ── Pre-treatment warnings ── */}
-            {guidance.warnings.length > 0 && (
-              <div
-                className="flex flex-col gap-1.5 rounded-lg p-3"
-                style={{ background: "#fef2f2", border: "1px solid #fecaca" }}
-              >
-                <p
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    color: "#991b1b",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  Required Pre-Treatment Steps
-                </p>
-                {guidance.warnings.map((w, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <div
-                      style={{
-                        width: 5,
-                        height: 5,
-                        borderRadius: "50%",
-                        background: "#dc2626",
-                        flexShrink: 0,
-                      }}
-                    />
-                    <p style={{ fontSize: 12, color: "#b91c1c" }}>{w}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <button
-              onClick={handleReset}
-              className="flex items-center justify-center gap-2 rounded-lg border border-border transition-colors"
-              style={{
-                padding: "8px",
-                fontSize: 12,
-                color: "var(--muted-foreground)",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "var(--accent)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
-            >
-              <RotateCcw size={13} />
-              New Assessment
-            </button>
-          </div>
-        )}
+          ))}
+        </div>
+        <CitationNav
+          citations={[{ label: "Dynamic Cooling Device", section: "spray / delay / post", pages: [74, 75] }]}
+          onJumpToPage={onJumpToPage}
+        />
       </div>
+
+      {/* Pulse-width honesty note */}
+      {device.specs.pulseWidthMs.inconsistencyNote && (
+        <div
+          className="rounded-lg p-3"
+          style={{ background: "var(--muted)", border: "1px solid var(--border)" }}
+        >
+          <div className="flex gap-2.5">
+            <ShieldAlert size={15} style={{ color: "#d97706", flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "var(--foreground)", marginBottom: 3, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                Pulse width: {device.specs.pulseWidthMs.capability}
+              </p>
+              <p style={{ fontSize: 12, color: "var(--muted-foreground)", lineHeight: 1.6 }}>
+                {device.specs.pulseWidthMs.inconsistencyNote}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Source footer */}
+      <p style={{ fontSize: 11, color: "var(--muted-foreground)", lineHeight: 1.5 }}>
+        Source: {MANUAL}, {device.manual.revision}. Every value above is quoted
+        from the manual and links to its page. Where the manual does not specify a
+        value, this tool shows a locked state instead of a number.
+      </p>
     </div>
   );
 }

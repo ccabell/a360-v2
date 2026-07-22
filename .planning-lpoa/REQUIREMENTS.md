@@ -10,6 +10,52 @@ worktree. Reference docs in `.planning-lpoa/reference/`.
 
 ---
 
+## ⚠️ PIVOT (2026-07-16) — read before the requirements below
+
+Corpus verification (P0) proved **only 1 of 14 PDFs is a real operator manual**
+(Candela GentleMax Pro; see `phases/00-verify-corpus/CORPUS_VERDICT.md`). The
+multi-device framing of R1-R9 below is **superseded**; the requirements are
+re-scoped to a **single-device deep tool** on GentleMax Pro. The IDs still map to
+ROADMAP phases, re-read as follows:
+
+- **R1 (verified corpus)** — ✓ MET. Only GentleMax Pro survives; mined to
+  `data/gentlemax-pro-manual-extract.json` (page-cited). Non-manuals dropped.
+- **R2 (device pack)** — unchanged in spirit; the pack is now built from the
+  mined dataset (every value `{value, page, sourceQuote}`; recommended-dose
+  fields `status: locked`). Joule is retired, not migrated (no real Joule manual).
+- **R3 (picker / multi-manual)** — reduced to **single device, single manual**
+  this milestone; keep the global-cache fix. The N-manual/N-device picker is
+  deferred with the multi-device effort.
+- **R4 (per-device assistant prompt)** — now the GentleMax Pro assistant prompt;
+  must answer "not specified in this manual" honestly (the manual lacks clinical doses).
+- **R5 (suggested questions/FAQs)** — now **per-module** suggested questions +
+  quick actions, GentleMax-specific (Envelope, Safety, Assistant, Planner, Sales).
+- **R6 (parameter simulator)** — becomes the **Envelope Explorer + Treatment
+  Planner + Sales module**: shows real device limits/DCD/fluence tables; does NOT
+  recommend clinical doses (renders locked). No fabricated numbers.
+- **R7 (source-lock + honest confidence)** — unchanged and central; now the P5
+  surface-wide hardening pass. Confidence = source support, never form-fill.
+- **R8 (patient prefill)** — unchanged; feeds the Treatment Planner (P4).
+- **R9 (branding)** — now Candela GentleMax Pro branding + the Planning/Sales
+  **mode switch** (new: modes reshape the surface).
+
+**New requirements added by the pivot:**
+- **R10 — Module architecture.** The surface is a set of purpose-built modules
+  (Envelope Explorer, Safety & Contraindications, Manual Assistant, Treatment
+  Planner, Capability & Positioning), not a single chat pane. Each module is
+  independently navigable and does one clinician/rep job.
+- **R11 — Planning/Sales modes.** A mode switch reshapes which modules are
+  foregrounded and their framing: Planning (clinician configuring a treatment)
+  vs Sales (rep/buyer exploring capability). Same grounded data, different lens.
+- **R12 — No-fabrication invariant (safety-critical).** Every value rendered
+  anywhere in the tool carries a real manual page citation, OR renders locked
+  with an honest reason. No number appears without a source. This is the direct,
+  surface-wide correction of the live JOULE defect and gates P6 ship.
+
+The original R1-R9 bodies remain below as reference detail.
+
+---
+
 ## Key design reconciliations (read first)
 
 **A. Per-device config = a "device pack".** The Viewer doc §10 + §21.3 already
@@ -41,18 +87,25 @@ kept; we make it per-device. Real per-device RAG remains the documented future.
 code reads it.
 **Current state:** 14 PDFs in `C:\Projects\lpoa` (per-manufacturer folders);
 `PDF_CLEANUP_VERIFICATION_STATUS.md` marks all "Manually Verified: NO". 2 are
-non-manuals (Lumenis SPLENDOR X brochure, BTL EMFACE reference). Folder naming
-inconsistent (`Cynosure_Lutronic`, `Deka_Laser`).
+non-manuals (Lumenis SPLENDOR X brochure, BTL EMFACE reference) — **excluded
+from the v1.0 catalog entirely (decided 2026-07-14)**, not part of in-scope
+verification. Folder naming inconsistent (`Cynosure_Lutronic`, `Deka_Laser`).
 **Target:** a trusted manifest mapping each in-scope device → verified PDF (URL +
-page count + manufacturer/model), with non-manuals flagged and a hosting decision.
+page count + manufacturer/model). In-scope = real operator manuals only; the 2
+non-manuals are recorded in the manifest as `excluded` (not `operator_manual`),
+not shipped in any surface this milestone.
 **Acceptance criteria:**
 - Each in-scope PDF opened; 3 random pages confirmed to match the device and be
   readable (no scrape cruft/truncation).
-- Non-manuals explicitly marked (keep-as-weak-source or defer) — never silently
-  treated as an operator manual.
+- The 2 non-manuals are recorded as excluded (source-quality `brochure`/
+  `reference`) — never silently treated as an operator manual, never wired into
+  the device catalog this milestone.
 - One manifest file (device id, manufacturer, model, pdf path/URL, page count,
-  source-quality: `operator_manual | brochure | reference`, verified: yes).
-- PDF host decided: `public/` vs GL `gl-media` public URL (recommend gl-media).
+  source-quality: `operator_manual | brochure | reference`, verified: yes,
+  in_scope: yes/no).
+- PDF host: **gl-media** (decided 2026-07-14) — verify a360-studio's "Laser
+  Manuals (LPOA)" browse root exists, or fall back to a plain gl-media bucket
+  path; complete the rights check before PDFs are made publicly reachable.
 **References:** inventory (this milestone's research), `lpoa\MANIFEST.md`,
 `lpoa\CURATION_DASHBOARD.md`.
 **Notes:** gates R3/R4 (grounding) and R6 (real citations). Fotona has 0 PDFs — out of scope.
@@ -237,13 +290,14 @@ keeps its current labels.
 
 ---
 
-## Open decisions (resolve at phase planning, not blocking commit)
+## Decisions (resolved 2026-07-14 with Chris)
 
-1. **PDF host** (R1): `public/` vs GL `gl-media` URLs — recommend gl-media (repo stays lean; reuses a360-studio approvals).
-2. **Starter-subset devices** (R6): which 2–3 — pick at P3 planning.
-3. **Non-manual sources** (R1): keep Lumenis brochure / BTL reference as weak sources, or defer those devices to "assistant-only, no simulator."
-4. **Picker placement** (R3): header dropdown vs. a landing device-select screen.
-5. **Joule citation re-verification** (R6): confirm real Joule manual pages for its existing simulator numbers as part of P1/P3 (fixes fabricated refs).
+1. **PDF host** (R1): **gl-media** — repo stays lean, reuses a360-studio approvals. Rights check + browse-root verification happen in P0.
+2. **Starter-subset devices** (R6): still open — pick at P3 planning (recommended default: Morpheus8 + GentleMax Pro, most demo-worthy; Joule is #1).
+3. **Non-manual sources** (R1): **excluded entirely from v1.0** — Lumenis SPLENDOR X and BTL EMFACE are not built this milestone (not even assistant-only).
+4. **Picker placement** (R3): still open — defer to P2 planning (recommended default: landing device-select screen over header dropdown; better demo narrative).
+5. **Joule citation re-verification** (R6): confirmed — folds into P1 (verify real Joule manual pages, replace fabricated refs there, not deferred to P3).
+6. **Clinician reviewer** (R6/P3): **unresourced — blocks P3 only.** P0-P2 proceed without it; no simulator ships without a named clinician's sign-off.
 
 ## Traceability
 

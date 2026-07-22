@@ -22,23 +22,48 @@ Every parameter recommendation is grounded in the operator's specific device
 manual and explains its reasoning — so operators trust it and can verify each
 suggestion against the cited source.
 
-## Current Milestone: v1.0 Multi-Device
+## Current Milestone: v1.0 GentleMax Pro Deep Tool  ⚠️ PIVOTED 2026-07-16
 
-**Goal:** extend LPOA from one hardcoded device (Sciton Joule) to a **device
-catalog**, so an operator picks their laser and gets: the right manual(s), a
-device-specific grounded assistant, device-specific suggested questions/FAQs,
-and — for a starter subset of devices — a device-specific parameter simulator.
+**Original goal (multi-device) proved unbuildable on real data.** Corpus
+verification (P0, 2026-07-16) text-extracted all 14 PDFs and found **only 1 is a
+genuine operator manual** — Candela GentleMax Pro. The other 13 are unrelated
+products' manuals (an oven, a diesel engine, a portable toilet, a security
+camera…), scanned no-text scans, ManualsLib landing pages, or a brochure. See
+`phases/00-verify-corpus/CORPUS_VERDICT.md`.
 
-**Approach (decided 2026-07-13):** extend the *current* per-device-config
-architecture (client-side PDF text extraction + Claude Haiku), NOT the full
-per-device vector-RAG vision. Real per-device RAG remains the documented future
-(see vision doc §"Integration with Device-Specific RAGs").
+**Pivoted goal:** build a **deep, genuinely functional, source-locked clinical
+tool** on the one real manual — not a chatbot, but purpose-built **modules** with
+**Planning** and **Sales** modes. Every value shown is a real manual quote with a
+page citation; anything the manual doesn't specify renders **locked**, never
+fabricated. The device-pack architecture is retained so more devices slot in
+later once real manuals are sourced (deferred).
 
-**Target catalog (from `C:\Projects\lpoa`, 14 PDFs / 13 devices / 10 mfrs):**
+**Modules:** Envelope Explorer (real fluence/DCD/limit tables), Safety &
+Contraindications, Manual Assistant (honest Q&A), Treatment Planner (Planning),
+Capability & Positioning (Sales). **Modes:** Planning (clinician configuring a
+treatment) ⇄ Sales (rep/buyer exploring capability). See ROADMAP.md.
+
+**Key data finding shaping the whole product:** the GentleMax Pro manual is rich
+in device *specifications* + safety but deliberately **omits per-indication
+clinical settings** (Candela defers those to a separate Clinical Treatment
+Guidelines doc, P/N 8502-00-0907, not in corpus). So recommended-dose fields are
+*honestly* source-unsupported and render locked — which is exactly the antidote
+to the live JOULE surface's fabricated numbers. Grounding dataset:
+`data/gentlemax-pro-manual-extract.json` (page-cited).
+
+**Approach (decided 2026-07-13, unchanged):** client-side PDF keyword extraction
++ Claude Haiku, NOT vector RAG.
+
+**Target catalog (from `C:\Projects\lpoa`; exact PDF/device counts finalized during
+P0 corpus verification):**
 Sciton JOULE (already live) · Candela GentleMax Pro · Cynosure Elite iQ ·
 Cutera Excel V / Excel HR / AviClear · Alma Harmony XL Pro / Soprano Ice ·
-Deka SmartXide · Quanta QX MAX · InMode BodyTite / Morpheus8 · Lumenis
-SPLENDOR X (brochure) · BTL EMFACE (reference sheet).
+Deka SmartXide · Quanta QX MAX · InMode BodyTite / Morpheus8.
+
+**Excluded this milestone (2026-07-14 decision):** Lumenis SPLENDOR X (brochure,
+not an operator manual) and BTL EMFACE (reference sheet, not an operator manual)
+are **out of the catalog entirely for v1.0** — not built as assistant-only or
+weak-source devices. Revisit once real operator manuals are sourced for either.
 
 ## Current State (2026-07-13)
 
@@ -81,7 +106,7 @@ See REQUIREMENTS.md. Summary:
 - **Deploy target:** `a360-v2-wse` Vercel project (`prj_KXW7C1STkHbNTag6v0WEA1Ey8G3A`), from `main` via CLI only. Never git-push deploy.
 - **Live URL:** https://a360-v2-wse.vercel.app/dashboard/lpoa
 - **Model:** `claude-haiku-4-5-20251001` via `app/api/lpoa-search/route.ts` (device-agnostic relay — no change needed).
-- **Manuals source:** raw PDFs in `C:\Projects\lpoa` (per-manufacturer folders). Also now reviewable/approvable into GL's `gl-media` bucket via a360-studio's "Laser Manuals (LPOA)" browse root (added 2026-07-12) — candidate PDF host so the repo doesn't carry ~41MB.
+- **Manuals source:** raw PDFs in `C:\Projects\lpoa` (per-manufacturer folders). **PDF host decision (2026-07-14): gl-media** — reviewable/approvable into GL's `gl-media` bucket via a360-studio's "Laser Manuals (LPOA)" browse root (claimed added 2026-07-12, **unverified in code** — confirm during P0 or fall back to a plain gl-media bucket path). Requires a rights check on redistributing scraped ManualsLib manuals before PDFs are made publicly reachable.
 - **Vision doc:** `C:\Projects\lpoa-viewer\__ Laser Parameter Optimization Assistant (LPOA) (1).md`.
 
 ## Reference Documents
@@ -129,6 +154,24 @@ remain the draft-from-manual → clinical-review authoring of R6/P3.
 | Draft rules from manuals → clinical review | Safety-sensitive content, not in any existing doc | 2026-07-13 |
 | Isolated worktree off `main` | Keep live wse demo + scribe branch untouched; main is deploy source | 2026-07-13 |
 | Planning in `.planning-lpoa/`, not `.planning/` | `.planning/` is the GL project's; avoid collision on merge | 2026-07-13 |
+| PDF host: **gl-media** | Keeps ~41MB out of repo; reuses a360-studio/GL approval flow. Rights check + browse-root verification happen in P0 | 2026-07-14 |
+| Exclude Lumenis SPLENDOR X + BTL EMFACE from v1.0 catalog entirely | Both are brochures/reference sheets, not operator manuals — no assistant-only fallback, just not built this milestone | 2026-07-14 |
+| **PIVOT: single-device deep tool on Candela GentleMax Pro** | Corpus verification found only 1 of 14 PDFs is a real manual; a multi-device tool with real values is impossible on this corpus. Build depth on the one real device instead. | 2026-07-16 |
+| **Tool ships WITHOUT clinician sign-off for v1.0** | The tool does NOT recommend clinical doses — it shows the manufacturer's real device limits + safety and renders recommended settings locked ("see Clinical Treatment Guidelines"). No invented clinical logic to review. A clinician is required only if a future dose-recommendation engine is added. Supersedes the 2026-07-14 "blocks P3" decision. | 2026-07-16 |
+| Retire the live JOULE surface (don't patch it) | There is no real JOULE manual in the corpus (the file is an oven manual) — the fabricated citations had no real source. Replacing JOULE with the grounded GentleMax Pro tool resolves the safety defect at the root. | 2026-07-16 |
+
+## GSD Tooling Note (2026-07-14)
+
+`gsd-tools.cjs` (the CLI backing `/gsd:*` commands) hardcodes its planning
+directory to `.planning/` with no override for an alternate name — verified by
+reading `planningDir()` in `~/.claude/get-shit-done/bin/lib/core.cjs:540-543`.
+Since this worktree's `.planning/` belongs to the separate GL project, any
+`/gsd:*` command run from here would silently read/write the **wrong**
+project. **Decision (Chris, 2026-07-14): operate this milestone manually** —
+phase `CONTEXT.md`/`PLAN.md`/`SUMMARY.md` files are authored by hand into
+`.planning-lpoa/phases/` following the same structure GSD would generate,
+without invoking `gsd-tools.cjs`. `.planning/` is never touched by this work.
 
 ---
-*Last updated: 2026-07-13 — milestone kickoff.*
+*Last updated: 2026-07-14 — Section 6 decisions resolved (PDF host, non-manual
+exclusion, clinician-reviewer scoping); GSD tooling limitation documented.*

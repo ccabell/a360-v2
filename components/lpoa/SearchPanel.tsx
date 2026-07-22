@@ -13,14 +13,9 @@ import {
 } from "lucide-react";
 import { useAISearch } from "../../lib/useAISearch";
 import type { PatientInfo } from "../../lib/useAISearch";
+import { activeDevice } from "../../lib/lpoa/devices/gentlemax-pro";
 
-const SUGGESTED_QUESTIONS = [
-  "What fluence should I use for Fitzpatrick Type IV skin?",
-  "How do I prevent PIH after treatment?",
-  "What are the cooling requirements for facial treatments?",
-  "When should I reduce pulse duration?",
-  "What spot size is recommended for body treatments?",
-];
+const SUGGESTED_QUESTIONS = activeDevice.suggestedQuestions;
 
 interface SearchPanelProps {
   onJumpToPage: (page: number) => void;
