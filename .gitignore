@@ -47,3 +47,4 @@ next-env.d.ts
 /test-results/
 /e2e/screenshots-audit/
 *.log
+.playwright-mcp/
