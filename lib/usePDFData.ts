@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+// MUST match PDFViewer.tsx exactly: pin the worker to react-pdf's own pdfjs
+// version. Resolving "pdfjs-dist" from here picks the hoisted v6 package while
+// react-pdf bundles v5 — the API/worker version mismatch makes getDocument()
+// reject, which silently killed the Document Index (numPages=0, no TOC).
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export interface OutlineSection {
   id: string;
