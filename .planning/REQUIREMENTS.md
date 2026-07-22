@@ -64,13 +64,31 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| _(to be filled by roadmap)_ | — | Pending |
+| SIDE-01 | Phase 1 | Pending |
+| SIDE-02 | Phase 1 | Pending |
+| SIDE-03 | Phase 1 | Pending |
+| SIDE-04 | Phase 1 | Pending |
+| SIDE-05 | Phase 1 | Pending |
+| TAB-01 | Phase 2 | Pending |
+| TAB-02 | Phase 2 | Pending |
+| TAB-03 | Phase 2 | Pending |
+| TAB-04 | Phase 2 | Pending |
+| TAB-05 | Phase 2 | Pending |
+| HUB-01 | Phase 3 | Pending |
+| HUB-02 | Phase 3 | Pending |
+| HUB-03 | Phase 3 | Pending |
+| HUB-04 | Phase 3 | Pending |
+| HUB-05 | Phase 3 | Pending |
+| SHIP-01 | Phase 4 | Pending |
+| SHIP-02 | Phase 4 | Pending |
+| SHIP-03 | Phase 4 | Pending |
+| SHIP-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 19 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 19 ⚠️ (until roadmap runs)
+- Mapped to phases: 19/19 ✓
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-07-16*
-*Last updated: 2026-07-16 after initial definition*
+*Last updated: 2026-07-22 after roadmap creation*
