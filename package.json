@@ -6,7 +6,8 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:portfolio-git": "node scripts/sync-portfolio-git.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.84",

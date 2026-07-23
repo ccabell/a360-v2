@@ -6,12 +6,15 @@ import {
   Archive,
   ArchiveRestore,
   ArrowUpRight,
+  ArrowUp,
   Check,
   Copy,
   Database,
+  Dot,
   ExternalLink,
   FileText,
   Code2,
+  GitCommitHorizontal,
   Info,
   Terminal,
   Trash2,
@@ -37,7 +40,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { PortfolioProject, PortfolioTask } from "@/lib/portfolio/db";
+import type {
+  GitSnapshot,
+  PortfolioProject,
+  PortfolioTask,
+} from "@/lib/portfolio/db";
 import type { DeployStatus } from "@/lib/portfolio/vercel-status";
 import {
   PRIORITY_LABELS,
@@ -169,6 +176,8 @@ export function ProjectCard({
         )}
       </div>
 
+      {p.links.git && <GitMeta git={p.links.git} />}
+
       {p.pausedReason && (
         <p className="mt-2 rounded-md bg-orange-500/10 px-2 py-1 text-xs text-orange-700 dark:text-orange-400">
           {p.pausedReason}
@@ -278,7 +287,7 @@ function ProjectDetails({
         <Info className="size-3.5" />
         Details
       </DialogTrigger>
-      <DialogContent className="max-h-[85vh] max-w-lg overflow-y-auto">
+      <DialogContent className="max-h-[85vh] w-full max-w-lg overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>{p.name}</DialogTitle>
           <DialogDescription>{p.oneLiner}</DialogDescription>
@@ -300,6 +309,8 @@ function ProjectDetails({
           <DetailRow label="AWS promotion">
             {p.promotion === "na" ? "—" : p.promotion}
           </DetailRow>
+
+          {p.links.git && <GitDetail git={p.links.git} />}
 
           {/* Everything this project touches */}
           <div className="rounded-lg border bg-muted/30 p-3">
@@ -610,6 +621,117 @@ function ManageControls({
       >
         <Trash2 className="size-3.5" />
       </Button>
+    </div>
+  );
+}
+
+/** "3d ago" / "2h ago" / "just now" from an ISO date; "" if missing/invalid. */
+function relativeTime(iso: string | null): string {
+  if (!iso) return "";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "";
+  const secs = Math.round((Date.now() - then) / 1000);
+  if (secs < 60) return "just now";
+  const mins = Math.round(secs / 60);
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.round(hrs / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.round(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  return `${Math.round(months / 12)}y ago`;
+}
+
+/** Compact last-commit + working-state line for the card footer. */
+function GitMeta({ git }: { git: GitSnapshot }) {
+  const rel = relativeTime(git.lastCommitAt);
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
+      <span className="inline-flex items-center gap-1" title={git.lastCommitAt ?? ""}>
+        <GitCommitHorizontal className="size-3.5" />
+        {rel ? `committed ${rel}` : "no commits"}
+      </span>
+      {git.dirty && (
+        <span
+          className="inline-flex items-center gap-0.5 rounded-full bg-amber-500/15 px-1.5 py-0.5 font-medium text-amber-700 dark:text-amber-400"
+          title={`${git.dirtyCount} uncommitted file${git.dirtyCount === 1 ? "" : "s"} in the working tree`}
+        >
+          <Dot className="-mx-1 size-4" />
+          {git.dirtyCount} uncommitted
+        </span>
+      )}
+      {git.ahead > 0 && (
+        <span
+          className="inline-flex items-center gap-0.5 rounded-full bg-sky-500/15 px-1.5 py-0.5 font-medium text-sky-700 dark:text-sky-400"
+          title={`${git.ahead} commit${git.ahead === 1 ? "" : "s"} not pushed`}
+        >
+          <ArrowUp className="size-3" />
+          {git.ahead} unpushed
+        </span>
+      )}
+    </div>
+  );
+}
+
+/** Working-state block for the details dialog: branch, last commit, dirty/ahead. */
+function GitDetail({ git }: { git: GitSnapshot }) {
+  return (
+    <div className="rounded-lg border bg-muted/30 p-3">
+      <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        <GitCommitHorizontal className="size-3.5" />
+        Working state
+      </p>
+      <div className="space-y-1.5 text-sm">
+        <div className="flex items-baseline gap-3">
+          <span className="w-24 shrink-0 text-xs text-muted-foreground">Branch</span>
+          <span className="min-w-0 truncate font-mono text-xs">{git.branch ?? "—"}</span>
+        </div>
+        <div className="flex items-baseline gap-3">
+          <span className="w-24 shrink-0 text-xs text-muted-foreground">Last commit</span>
+          <span className="min-w-0">
+            {git.lastCommitAt ? (
+              <>
+                {relativeTime(git.lastCommitAt)}
+                <span className="text-muted-foreground">
+                  {" "}
+                  · {(git.lastCommitAt ?? "").slice(0, 10)}
+                  {git.lastCommitSha ? ` · ${git.lastCommitSha}` : ""}
+                </span>
+                {git.lastCommitSubject && (
+                  <span className="block truncate text-xs text-muted-foreground">
+                    {git.lastCommitSubject}
+                  </span>
+                )}
+              </>
+            ) : (
+              "—"
+            )}
+          </span>
+        </div>
+        <div className="flex items-baseline gap-3">
+          <span className="w-24 shrink-0 text-xs text-muted-foreground">Uncommitted</span>
+          <span className="min-w-0">
+            {git.dirty ? (
+              <span className="font-medium text-amber-700 dark:text-amber-400">
+                {git.dirtyCount} file{git.dirtyCount === 1 ? "" : "s"} changed
+              </span>
+            ) : (
+              <span className="text-emerald-700 dark:text-emerald-400">clean</span>
+            )}
+            {git.ahead > 0 && (
+              <span className="text-sky-700 dark:text-sky-400">
+                {" "}
+                · {git.ahead} unpushed
+              </span>
+            )}
+          </span>
+        </div>
+      </div>
+      <p className="mt-2 text-[11px] text-muted-foreground">
+        Synced {relativeTime(git.syncedAt)} · run{" "}
+        <code className="font-mono">scripts/sync-portfolio-git.mjs</code> to refresh
+      </p>
     </div>
   );
 }

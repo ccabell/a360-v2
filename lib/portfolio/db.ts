@@ -31,6 +31,28 @@ export interface ProjectLinks {
   railway?: string[];
   docs?: string[];
   localPath?: string;
+  /**
+   * Local git working-state snapshot, written by scripts/sync-portfolio-git.mjs
+   * (run on Chris's PC — the deployed app can't read local repos). Captures the
+   * last commit AND uncommitted/unpushed work, which the GitHub API can't see.
+   */
+  git?: GitSnapshot;
+}
+
+export interface GitSnapshot {
+  /** ISO date of the last local commit on the checked-out branch. */
+  lastCommitAt: string | null;
+  lastCommitSha: string | null;
+  lastCommitSubject: string | null;
+  branch: string | null;
+  /** true when there are uncommitted changes in the working tree. */
+  dirty: boolean;
+  /** number of changed files (`git status --porcelain` line count). */
+  dirtyCount: number;
+  /** commits ahead of the upstream branch (unpushed); 0 if no upstream. */
+  ahead: number;
+  /** when the sync script last ran for this project (ISO). */
+  syncedAt: string;
 }
 
 export interface PortfolioProject {
