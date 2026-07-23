@@ -29,7 +29,8 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. With `NEXT_PUBLIC_APP_MODE=demo`, `scope:"internal"` items are hidden; in `internal` mode they are visible
   4. Category groups collapse/expand, and the group containing the active route is expanded (or its active state visible) on load
   5. The deployed `/dashboard` sidebar renders correctly and remains usable at 20+ entries
-**Plans**: TBD
+**Plans**: 1 plan
+- [ ] 01-01-PLAN.md — Add shadcn collapsible primitive; refactor sidebar.tsx into collapsible category groups + filter box, preserving the demo/internal split, tokens, and adding independent scroll
 **UI hint**: yes
 
 ### Phase 2: Per-Tool Project Data Tab
@@ -76,7 +77,7 @@ Phases 1-3 are independent and may execute in any order (or in parallel); Phase 
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Sidebar Restructure | 0/TBD | Not started | - |
+| 1. Sidebar Restructure | 0/1 | Not started | - |
 | 2. Per-Tool Project Data Tab | 0/TBD | Not started | - |
 | 3. Links Hub Page | 0/TBD | Not started | - |
 | 4. Ship & Verify | 0/TBD | Not started | - |
