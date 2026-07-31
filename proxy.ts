@@ -32,6 +32,17 @@ import {
 const APP_MODE = process.env.NEXT_PUBLIC_APP_MODE ?? "internal";
 const EXCHANGE_ONLY = process.env.EXCHANGE_ONLY === "true";
 
+/**
+ * Storefront de-duplication (Chris, 2026-07-31). This repo is deployed through
+ * two Vercel projects against the SAME code + DB: `a360-v2-wse` (canonical) and
+ * `a360-v2` (a legacy twin). To leave exactly ONE Agent Exchange URL, any request
+ * hitting the twin's production host is 308-redirected, path-and-query intact, to
+ * the canonical host. This code ships to both projects; the check only fires on
+ * the twin (its host matches), so the canonical deploy is unaffected — no loop.
+ */
+const CANONICAL_HOST = "a360-v2-wse.vercel.app";
+const DUPLICATE_HOSTS = new Set(["a360-v2.vercel.app"]);
+
 const STUDIO_PREFIXES = [
   "/dashboard/agents",
   "/api/agents",
@@ -47,6 +58,18 @@ function isStudioPath(pathname: string): boolean {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // One canonical Agent Exchange URL: redirect the legacy twin host → canonical,
+  // preserving path + query. Skips framework/data requests (they resolve on the
+  // canonical host once the top-level navigation has redirected).
+  const host = request.headers.get("host") ?? "";
+  if (DUPLICATE_HOSTS.has(host) && !pathname.startsWith("/_next")) {
+    const dest = request.nextUrl.clone();
+    dest.protocol = "https:";
+    dest.host = CANONICAL_HOST;
+    dest.port = "";
+    return NextResponse.redirect(dest, 308);
+  }
 
   // Always-public: login page, auth endpoints, public surfaces, health check,
   // and the share-link entry point (it verifies its own signed token).
