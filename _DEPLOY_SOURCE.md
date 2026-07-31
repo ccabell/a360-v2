@@ -12,11 +12,14 @@ same `SHARE_LINK_SECRET` so share links work on both domains.
 ## Agent Exchange (Chris, 2026-07-16)
 
 - **THE Agent Exchange is `https://a360-v2-wse.vercel.app/exchange` — the ONLY URL to share or link.**
-  `a360-v2.vercel.app/exchange` is the same code/DB via the secondary project; it is NOT canonical,
-  must never be shared, and no redirect is maintained (nothing durable points at it — the only
-  share link ever minted against a360-v2.vercel.app expired 2026-07-11). Mint all future share
-  links with `--base https://a360-v2-wse.vercel.app`. The secondary project may be paused/retired
-  in the Vercel dashboard at any time without breaking anything.
+  `a360-v2.vercel.app` is the same code/DB via the secondary project. **As of 2026-07-31 the twin
+  host 308-redirects to the canonical wse host for EVERY path** (`proxy.ts`, `DUPLICATE_HOSTS` →
+  `CANONICAL_HOST`) — so there is now one effective URL; anyone who hits `a360-v2.vercel.app/…`
+  lands on `a360-v2-wse.vercel.app/…`. The redirect ships to both projects but only fires on the
+  twin host (no loop). Still mint share links with `--base https://a360-v2-wse.vercel.app`. The
+  secondary `a360-v2` Vercel project may now be deleted in the dashboard with zero impact (the
+  redirect makes it harmless either way). If a NEW host should be added to the funnel, add it to
+  `DUPLICATE_HOSTS` in `proxy.ts`.
 - **Listings are managed ONLY through `/admin/exchange`** (DB: `exchange_agents` + `exchange-media`
   bucket in Global V3 `aejskvmpembryunnbgrk`). The hardcoded-array era is closed.
 - **Asset Factory import works in LOCAL DEV ONLY** (by design, Chris 2026-07-16): the import button
