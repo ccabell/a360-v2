@@ -644,7 +644,7 @@ function relativeTime(iso: string | null): string {
 }
 
 /** Compact last-commit + working-state line for the card footer. */
-function GitMeta({ git }: { git: GitSnapshot }) {
+export function GitMeta({ git }: { git: GitSnapshot }) {
   const rel = relativeTime(git.lastCommitAt);
   return (
     <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground">

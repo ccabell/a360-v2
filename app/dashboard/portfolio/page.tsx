@@ -8,6 +8,7 @@ import { listProjects, listTasks } from "@/lib/portfolio/db";
 import { recentCommits } from "@/lib/portfolio/github";
 import { deployStatuses } from "@/lib/portfolio/vercel-status";
 import { OpenTasksRollup } from "@/components/portfolio/open-tasks-rollup";
+import { GitMeta } from "@/components/portfolio/project-card";
 import {
   PRIORITY_STYLES,
   STATUS_STYLES,
@@ -139,6 +140,7 @@ export default async function CommandHome() {
                 <p className="line-clamp-2 text-sm text-muted-foreground">
                   {p.oneLiner}
                 </p>
+                {p.links.git && <GitMeta git={p.links.git} />}
                 <div className="mt-auto flex items-center gap-2 pt-1">
                   <Badge className={cn("capitalize", PRIORITY_STYLES[p.priority])}>
                     {p.category}
