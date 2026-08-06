@@ -123,9 +123,19 @@ export const getPatientContext = {
 // Tool: search_fuel_documents
 // ---------------------------------------------------------------------------
 
+// Repointed 2026-08-06 (GL-V3-Checkpoint plan 02-08, per the approved agent-consumption-contract.md
+// ruling) from `agent_fuel_documents` (now fully archived, D-07/AGENT-03) to `agent_reference_docs`.
+// Path 1 (product-name match) is the only path with a live data equivalent — repointed exactly as
+// ruled, filtered by `offering_id` + `status='active'`. Paths 2 (concern/body-area token match) and
+// 3 (fuel_type keyword match) have no live equivalent on `agent_reference_docs` today per the
+// ADR's own finding at the time of the ruling and are intentionally NOT repointed — fabricating a
+// fallback was explicitly forbidden ("02-08 must NOT fabricate a fallback; leave these paths
+// returning empty... until agent_reference_docs gains concern/body-area-linked rows, which is
+// population work outside this phase's scope"). Removed rather than left as dead queries against
+// an archived table.
 export const searchFuelDocuments = {
   description:
-    "Search the Global Library for curated fuel documents — product intelligence, pairing guides, treatment protocols. These are the primary knowledge source for treatment recommendations.",
+    "Search the Global Library for curated reference documents — product intelligence, pairing guides, treatment protocols. These are the primary knowledge source for treatment recommendations.",
   inputSchema: jsonSchema<{ query: string }>({
     type: "object",
     properties: {
@@ -137,13 +147,15 @@ export const searchFuelDocuments = {
   execute: async ({ query }: { query: string }): Promise<Record<string, unknown>> => {
     const formatDoc = (d: Record<string, unknown>, productName?: string | null) => ({
       id: d.id,
-      fuel_type: d.fuel_type,
+      doc_type: d.doc_type,
+      audience: d.audience,
+      lens: d.lens,
       product_name: productName ?? null,
-      content_preview: JSON.stringify(d.content).slice(0, 3000),
+      content_preview: ((d.content_md as string) ?? "").slice(0, 3000),
     });
 
-    // Path 1: match products by name → their approved fuel docs
-    // (agent_fuel_documents.offering_id = products.id via the offerings supertype)
+    // Path 1: match products by name → their linked agent_reference_docs rows
+    // (agent_reference_docs.offering_id = products.id via the offerings supertype)
     const { data: prods } = await agentSupabase
       .from("products")
       .select("id, name")
@@ -153,8 +165,8 @@ export const searchFuelDocuments = {
     if (prods?.length) {
       const nameById = new Map(prods.map((p) => [p.id as string, p.name as string]));
       const { data: docs } = await agentSupabase
-        .from("agent_fuel_documents")
-        .select("id, fuel_type, offering_id, content")
+        .from("agent_reference_docs")
+        .select("id, doc_type, audience, lens, offering_id, content_md")
         .in("offering_id", prods.map((p) => p.id))
         .eq("status", "active")
         .limit(8);
@@ -163,49 +175,7 @@ export const searchFuelDocuments = {
       }
     }
 
-    // Path 2: match concerns / body areas by token → fuel docs targeting them
-    const tokens = queryTokens(query);
-    if (tokens.length > 0) {
-      const orExpr = tokens.map((t) => `name.ilike.%${t}%`).join(",");
-      const [{ data: concerns }, { data: areas }] = await Promise.all([
-        agentSupabase.from("concerns").select("id, name").or(orExpr).limit(5),
-        agentSupabase.from("body_areas").select("id, name").or(orExpr).limit(5),
-      ]);
-
-      const filters: string[] = [];
-      if (concerns?.length) filters.push(`concern_id.in.(${concerns.map((c) => c.id).join(",")})`);
-      if (areas?.length) filters.push(`body_area_id.in.(${areas.map((a) => a.id).join(",")})`);
-
-      if (filters.length > 0) {
-        const { data: docs } = await agentSupabase
-          .from("agent_fuel_documents")
-          .select("id, fuel_type, offering_id, content")
-          .or(filters.join(","))
-          .eq("status", "active")
-          .limit(8);
-        if (docs?.length) return { results: docs.map((d) => formatDoc(d)) };
-      }
-    }
-
-    // Path 3: match fuel_type directly (e.g. "pairing", "concern").
-    // fuel_type is a Postgres enum — match known values client-side, no ilike.
-    const FUEL_TYPES = [
-      "product_fuel", "pairing_fuel", "concern_fuel", "anatomy_fuel",
-      "category_fuel", "coaching_fuel", "reach_fuel",
-    ];
-    const q = query.toLowerCase();
-    const matchedTypes = FUEL_TYPES.filter((t) => q.includes(t.replace("_fuel", "")));
-    if (matchedTypes.length > 0) {
-      const { data: byType } = await agentSupabase
-        .from("agent_fuel_documents")
-        .select("id, fuel_type, offering_id, content")
-        .in("fuel_type", matchedTypes)
-        .eq("status", "active")
-        .limit(5);
-      if (byType?.length) return { results: byType.map((d) => formatDoc(d)) };
-    }
-
-    return { results: [], message: `No fuel documents found for "${query}"` };
+    return { results: [], message: `No reference documents found for "${query}"` };
   },
 };
 
