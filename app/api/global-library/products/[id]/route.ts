@@ -7,7 +7,7 @@ export async function GET(
 ) {
   const { id } = await params;
 
-  const [productRes, fuelRes, evidenceRes, anatomyRes, concernsRes, relRes] =
+  const [productRes, docsRes, evidenceRes, anatomyRes, concernsRes, relRes] =
     await Promise.all([
       agentSupabase
         .from("products")
@@ -15,14 +15,14 @@ export async function GET(
         .eq("id", id)
         .single(),
 
+      // agent_reference_docs is the live successor to agent_fuel_documents
+      // (all 203 rows archived by GL-V3-Checkpoint's fuel-triage close-out,
+      // 2026-08-06) — every doc_type for this offering, not just one.
       agentSupabase
-        .from("agent_fuel_documents")
-        .select("id, fuel_type, status, content, updated_at, schema_version")
+        .from("agent_reference_docs")
+        .select("id, doc_type, title, content_md, status, updated_at")
         .eq("offering_id", id)
-        .eq("fuel_type", "product_fuel")
-        .order("updated_at", { ascending: false })
-        .limit(1)
-        .single(),
+        .order("updated_at", { ascending: false }),
 
       // evidence_links: source, source_reference, url, snippet, authority_rank
       agentSupabase
@@ -78,16 +78,6 @@ export async function GET(
       : null,
   }));
 
-  // Parse fuel content from JSONB
-  let fuelContent: string | null = null;
-  if (fuelRes.data?.content) {
-    const raw = fuelRes.data.content;
-    fuelContent = typeof raw === "string" ? raw : JSON.stringify(raw);
-    if (fuelContent.startsWith('"') && fuelContent.endsWith('"')) {
-      try { fuelContent = JSON.parse(fuelContent) as string; } catch { /* leave */ }
-    }
-  }
-
   // Normalize anatomy / concerns (Supabase may return array or object for joined tables)
   const anatomy = (anatomyRes.data ?? [])
     .map((r) => { const ba = r.body_area; return Array.isArray(ba) ? ba[0] ?? null : ba; })
@@ -99,9 +89,14 @@ export async function GET(
 
   return NextResponse.json({
     product: productRes.data,
-    fuel: fuelRes.data
-      ? { status: fuelRes.data.status, updated_at: fuelRes.data.updated_at, content: fuelContent }
-      : null,
+    docs: (docsRes.data ?? []).map((d) => ({
+      id: d.id,
+      docType: d.doc_type,
+      title: d.title,
+      content: d.content_md,
+      status: d.status,
+      updatedAt: d.updated_at,
+    })),
     evidence: evidenceRes.data ?? [],
     anatomy,
     concerns,

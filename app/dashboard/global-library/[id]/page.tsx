@@ -43,11 +43,28 @@ interface Product {
   manufacturer: { id: string; name: string } | null;
 }
 
-interface FuelDoc {
-  status: string;
-  updated_at: string;
+interface ReferenceDoc {
+  id: string;
+  docType: string;
+  title: string | null;
   content: string | null;
+  status: string;
+  updatedAt: string;
 }
+
+const DOC_TYPE_LABEL: Record<string, string> = {
+  deep_dive_playbook: "Deep Dive Playbook",
+  category_overview: "Category Overview",
+  clinical_summary: "Clinical Summary",
+  patient_education: "Patient Education",
+  technique_guide: "Technique Guide",
+  faq: "FAQ",
+  concern_reference: "Concern Reference",
+  anatomy_reference: "Anatomy Reference",
+  objection_handling: "Objection Handling",
+  sales_intelligence: "Sales Intelligence",
+  training_material: "Training Material",
+};
 
 interface EvidenceLink {
   id: string;
@@ -62,7 +79,7 @@ interface NamedItem { id: string; name: string }
 
 interface ProductDetail {
   product: Product;
-  fuel: FuelDoc | null;
+  docs: ReferenceDoc[];
   evidence: EvidenceLink[];
   anatomy: NamedItem[];
   concerns: NamedItem[];
@@ -205,8 +222,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const router = useRouter();
   const [data, setData] = useState<ProductDetail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [agentIntelOpen, setAgentIntelOpen] = useState(false);
+  const [openDocIds, setOpenDocIds] = useState<Set<string>>(new Set());
   const [showAllEvidence, setShowAllEvidence] = useState(false);
+
+  function toggleDoc(id: string) {
+    setOpenDocIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   useEffect(() => {
     fetch(`/api/global-library/products/${id}`)
@@ -233,7 +259,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     );
   }
 
-  const { product, fuel, evidence, anatomy, concerns, relationships } = data;
+  const { product, docs, evidence, anatomy, concerns, relationships } = data;
+  const hasActiveDoc = docs.some((d) => d.status === "active");
   const reg = product.regulatory_status ? REGULATORY_BADGE[product.regulatory_status] : null;
 
   // Featured evidence: prefer FDA label first, then pubmed, then others — show top 3
@@ -297,7 +324,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     {reg.label}
                   </span>
                 )}
-                {fuel?.status === "active" && (
+                {hasActiveDoc && (
                   <span className="flex items-center gap-1 text-[0.6rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
                     <Zap className="h-2.5 w-2.5" />
                     Agent Intelligence Active
@@ -533,42 +560,59 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           )}
 
-          {/* ── Agent Intelligence (collapsed) ── */}
-          {fuel?.content && (
+          {/* ── Agent Intelligence Documents (one collapsible per doc_type) ── */}
+          {docs.length > 0 && (
             <div>
-              <button
-                onClick={() => setAgentIntelOpen((v) => !v)}
-                className="w-full flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3.5 hover:bg-muted/30 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10">
-                    <Zap className="h-3.5 w-3.5 text-primary" />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-sm font-semibold text-foreground">Agent Intelligence Document</p>
-                    <p className="text-xs text-muted-foreground">
-                      What our AI agents know about this product · {Math.round(fuel.content.length / 1000)}K chars
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[0.6rem] font-semibold uppercase tracking-wide text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
-                    Active
-                  </span>
-                  {agentIntelOpen
-                    ? <ChevronUp className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-                    : <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
-                  }
-                </div>
-              </button>
+              <SectionHeader>Agent Intelligence</SectionHeader>
+              <div className="space-y-2">
+                {docs.map((doc) => {
+                  const open = openDocIds.has(doc.id);
+                  const label = DOC_TYPE_LABEL[doc.docType] ?? doc.docType;
+                  return (
+                    <div key={doc.id}>
+                      <button
+                        onClick={() => toggleDoc(doc.id)}
+                        className="w-full flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3.5 hover:bg-muted/30 transition-colors group"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                            <Zap className="h-3.5 w-3.5 text-primary" />
+                          </div>
+                          <div className="text-left min-w-0">
+                            <p className="text-sm font-semibold text-foreground truncate">{doc.title ?? label}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {label} · {doc.content ? `${Math.round(doc.content.length / 1000)}K chars` : "empty"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span
+                            className={`text-[0.6rem] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full ${
+                              doc.status === "active"
+                                ? "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20"
+                                : "text-muted-foreground bg-muted"
+                            }`}
+                          >
+                            {doc.status}
+                          </span>
+                          {open
+                            ? <ChevronUp className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                            : <ChevronDown className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
+                          }
+                        </div>
+                      </button>
 
-              {agentIntelOpen && (
-                <div className="mt-2 rounded-xl border border-border bg-card px-6 py-6">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
-                    {fuel.content}
-                  </ReactMarkdown>
-                </div>
-              )}
+                      {open && doc.content && (
+                        <div className="mt-2 rounded-xl border border-border bg-card px-6 py-6">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>
+                            {doc.content}
+                          </ReactMarkdown>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
