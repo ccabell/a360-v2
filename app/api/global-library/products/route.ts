@@ -14,11 +14,13 @@ export async function GET() {
     return NextResponse.json({ error: prodError.message }, { status: 500 });
   }
 
-  // Fuel doc status per product
+  // Agent-intelligence coverage per product — agent_fuel_documents was archived
+  // wholesale by GL-V3-Checkpoint's fuel-triage close-out (2026-08-06); the live
+  // successor is agent_reference_docs (offering-scoped rows only here).
   const { data: fuelDocs } = await agentSupabase
-    .from("agent_fuel_documents")
+    .from("agent_reference_docs")
     .select("offering_id, status, updated_at")
-    .eq("fuel_type", "product_fuel");
+    .not("offering_id", "is", null);
 
   // Evidence link counts per product
   const { data: evidenceLinks } = await agentSupabase
@@ -41,7 +43,18 @@ export async function GET() {
     .select("id, name");
 
   const mfrMap = Object.fromEntries((manufacturers ?? []).map((m) => [m.id, m.name]));
-  const fuelMap = Object.fromEntries((fuelDocs ?? []).map((f) => [f.offering_id, f]));
+
+  // An offering can have several agent_reference_docs rows (deep_dive_playbook,
+  // technique_guide, etc.) — prefer an 'active' one; otherwise fall back to the
+  // most recently updated row so the badge still reflects real coverage.
+  const fuelMap: Record<string, { offering_id: string; status: string; updated_at: string }> = {};
+  for (const f of fuelDocs ?? []) {
+    const existing = fuelMap[f.offering_id];
+    if (!existing || (f.status === "active" && existing.status !== "active") ||
+        (f.status === existing.status && f.updated_at > existing.updated_at)) {
+      fuelMap[f.offering_id] = f;
+    }
+  }
 
   const evidenceCount: Record<string, number> = {};
   (evidenceLinks ?? []).forEach((e) => {

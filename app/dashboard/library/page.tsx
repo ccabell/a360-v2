@@ -19,7 +19,7 @@ interface LibraryItem {
   updatedAt: string | null;
 }
 
-const CATEGORY_ORDER = ["Products", "Concerns", "Anatomy", "Pairings", "Categories", "Sales coaching", "Marketing"];
+const CATEGORY_ORDER = ["Products", "Concerns", "Anatomy", "Categories", "Techniques", "Clinical summaries", "Patient education", "FAQ", "Sales coaching"];
 
 function slug(s: string): string {
   return s.toLowerCase().trim().replace(/[^\w]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 64);
@@ -49,7 +49,7 @@ export default function LibraryPage() {
         // Deep-link support: /dashboard/library?doc=<id> (used by citation links)
         const docParam = new URLSearchParams(window.location.search).get("doc");
         const linked = docParam ? list.find((i) => i.id === docParam) : undefined;
-        const hero = linked ?? list.find((i) => i.fuelType === "product_fuel") ?? list[0];
+        const hero = linked ?? list.find((i) => i.fuelType === "deep_dive_playbook") ?? list[0];
         if (hero) setSelectedId(hero.id);
       })
       .catch(() => setItems([]))

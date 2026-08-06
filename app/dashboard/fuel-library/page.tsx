@@ -200,6 +200,22 @@ export default function FuelLibraryPage() {
 
   return (
     <div className="p-8 space-y-6">
+      {/* Deprecation notice — agent_fuel_documents was archived wholesale by
+          GL-V3-Checkpoint's fuel-triage close-out (2026-08-06). All 203 rows are
+          preserved read-only for history; the live successor is the Library page
+          (agent_reference_docs). Creating/approving new docs here re-creates the
+          undispositioned-fuel problem that close-out resolved. */}
+      <div className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-4 py-3 text-sm text-amber-900 dark:text-amber-200">
+        <strong>This page is deprecated.</strong> Agent fuel documents were archived
+        (read-only) on 2026-08-06 in favor of{" "}
+        <a href="/dashboard/library" className="underline font-medium">
+          Library
+        </a>{" "}
+        (<code className="font-mono text-xs">agent_reference_docs</code>). Existing
+        rows below are historical reference only — avoid creating or approving new
+        fuel docs here.
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

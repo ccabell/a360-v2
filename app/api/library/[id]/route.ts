@@ -3,12 +3,12 @@ import { agentSupabase } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-/** GET /api/library/[id] — one fuel document, markdown extracted + cleaned. */
+/** GET /api/library/[id] — one agent reference doc; content_md is already clean markdown. */
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { data: doc, error } = await agentSupabase
-    .from("agent_fuel_documents")
-    .select("id, fuel_type, target_type, doc_key, content, status, updated_at, quality_score")
+    .from("agent_reference_docs")
+    .select("id, doc_type, offering_id, content_md, status, updated_at")
     .eq("id", id)
     .single();
 
@@ -18,49 +18,15 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 
   return NextResponse.json({
     id: doc.id,
-    fuelType: doc.fuel_type,
-    targetType: doc.target_type,
+    fuelType: doc.doc_type,
+    targetType: doc.offering_id ? "offering" : null,
     status: doc.status,
     updatedAt: doc.updated_at,
-    markdown: extractMarkdown(doc.content),
+    markdown: clean(doc.content_md ?? ""),
   });
 }
 
-/** Fuel content comes in several shapes — string markdown, {content_md}, {body}, or structured. */
-function extractMarkdown(content: unknown): string {
-  if (content == null) return "";
-  if (typeof content === "string") {
-    let s = content;
-    if (s.startsWith('"') && s.endsWith('"')) {
-      try { s = JSON.parse(s) as string; } catch { /* leave */ }
-    }
-    return clean(s);
-  }
-  if (typeof content === "object") {
-    const o = content as Record<string, unknown>;
-    const md = o.content_md ?? o.body ?? o.markdown ?? o.md;
-    if (typeof md === "string") return clean(md);
-    return clean(objectToMarkdown(o));
-  }
-  return "";
-}
-
-/** Strip BOM, YAML frontmatter, and machine-metadata lines so it reads like a document. */
+/** Strip BOM and normalize line endings — content_md has no legacy frontmatter/metadata lines to strip. */
 function clean(md: string): string {
-  let s = md.replace(/^﻿/, "").replace(/\r\n/g, "\n");
-  s = s.replace(/^---\n[\s\S]*?\n---\n/, ""); // leading YAML frontmatter
-  s = s
-    .split("\n")
-    .filter((line) => !/^\s*\*\*(doc[_ ]?key|fuel[_ ]?type|target[_ ]?type|target[_ ]?id|doc type|schema[_ ]?version|category uuid|target|generated|source registry|status)\b/i.test(line))
-    .join("\n");
-  return s.replace(/\n{3,}/g, "\n\n").trim();
-}
-
-/** Render a structured fuel object (e.g. pairing_fuel) as readable markdown sections. */
-function objectToMarkdown(o: Record<string, unknown>): string {
-  const titleCase = (k: string) => k.replace(/[_-]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  return Object.entries(o)
-    .filter(([, v]) => typeof v === "string" && (v as string).trim())
-    .map(([k, v]) => `## ${titleCase(k)}\n\n${v as string}`)
-    .join("\n\n");
+  return md.replace(/^﻿/, "").replace(/\r\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
 }
