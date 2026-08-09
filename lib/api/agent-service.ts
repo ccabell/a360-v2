@@ -13,6 +13,10 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
     headers: {
       "Content-Type": "application/json",
+      // MCP-200: the agent service now requires bearer auth on every route.
+      ...(process.env.SERVICE_AUTH_TOKEN
+        ? { Authorization: `Bearer ${process.env.SERVICE_AUTH_TOKEN}` }
+        : {}),
       ...init?.headers,
     },
   });
