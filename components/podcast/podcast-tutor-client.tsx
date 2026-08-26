@@ -17,6 +17,7 @@ import {
   TrendingUp,
   MessageCircle,
   Presentation,
+  Radar,
 } from "lucide-react";
 
 /* ── Types ───────────────────────────────────────────────────────────────── */
@@ -51,6 +52,7 @@ interface AgentOption {
 
 const AGENTS: AgentOption[] = [
   { id: "research", name: "General Research", description: "Broad Q&A across all podcast content", icon: "Sparkles" },
+  { id: "a360-product", name: "A360 Product Intelligence", description: "What the industry says, translated into A360 product implications", icon: "Radar" },
   { id: "competitive", name: "Competitive Intelligence", description: "Competitor mentions, market moves, positioning", icon: "Target" },
   { id: "clinical", name: "Clinical Insights", description: "Treatment techniques, protocols, clinical pearls", icon: "Stethoscope" },
   { id: "business", name: "Business Strategy", description: "Practice growth, pricing, operations", icon: "TrendingUp" },
@@ -65,6 +67,7 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   TrendingUp,
   MessageCircle,
   Presentation,
+  Radar,
 };
 
 const STARTERS = [
