@@ -90,6 +90,49 @@ function tokenize(q: string): string[] {
   ).sort((a, b) => b.length - a.length);
 }
 
+/**
+ * Strip intent/temporal filler words ("trending", "latest", "news"...) from a
+ * question before it's used for keyword/FTS matching. Without this, a query
+ * like "what's trending in medspas" treats the literal word "trending" as a
+ * required search term — so a 2023 episode that happens to say "trending" in
+ * the transcript outranks genuinely recent, on-topic episodes that don't use
+ * that word. These words drive `recencyBias` detection instead (see below).
+ */
+function stripIntentWords(q: string): string {
+  return q
+    .replace(/\b(latest|newest|recent|recently|news|trending|trends?|buzzworthy|buzzing|hot topics?|viral)\b/gi, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Fetch the N most recently published episodes as a recency "top-up" pool —
+ * ensures recency-biased questions ("what's trending", "latest news") always
+ * have fresh material to draw from, even when the topic terms are too generic
+ * to naturally surface new episodes via keyword/semantic scoring alone. */
+async function fetchRecentEpisodesPool(limitN = 24): Promise<
+  { episode_id: string; title: string; showName: string; text: string; published_date: string | null }[]
+> {
+  const { data: eps } = await rag
+    .from("podcast_episodes")
+    .select("id, title, show_id, summary, published_date")
+    .not("published_date", "is", null)
+    .order("published_date", { ascending: false })
+    .limit(limitN);
+  if (!eps || eps.length === 0) return [];
+
+  const showIds = [...new Set(eps.map((e: { show_id: string | null }) => e.show_id).filter((id): id is string => !!id))];
+  const { data: shows } = await rag.from("podcast_shows").select("id, name").in("id", showIds);
+  const showMap = new Map((shows ?? []).map((s: { id: string; name: string }) => [s.id, s.name]));
+
+  return eps.map((e: { id: string; title: string; show_id: string | null; summary: string | null; published_date: string | null }) => ({
+    episode_id: e.id,
+    title: e.title,
+    showName: showMap.get(e.show_id ?? "") ?? "Unknown Show",
+    text: `${e.title}\n\n${(e.summary ?? "").replace(/^#\s*summary\s*/i, "").trim()}`,
+    published_date: e.published_date,
+  }));
+}
+
 /** Word-level fuzzy match: equal, or 1 edit apart (Teri ↔ Terri). */
 function fuzzyWordMatch(a: string, b: string): boolean {
   if (a === b) return true;
@@ -118,16 +161,21 @@ function fuzzyWordMatch(a: string, b: string): boolean {
  * 4. Enrich with show names
  */
 export async function retrievePodcastSources(
-  question: string,
+  rawQuestion: string,
   max = 12,
 ): Promise<PodcastSource[]> {
-  const terms = tokenize(question);
-
-  // "What's new / latest / trending" questions should favor recent episodes.
+  // "What's new / latest / trending" questions should favor recent episodes —
+  // detected on the ORIGINAL text before intent words are stripped below.
   const recencyBias =
     /\b(latest|newest|recent|recently|news|trending|trends?|this (year|month|week)|20(2[5-9]))\b/i.test(
-      question,
+      rawQuestion,
     );
+
+  // From here on, use the cleaned question for all keyword/FTS/semantic
+  // matching so intent words like "trending" never act as literal search
+  // terms (see stripIntentWords doc comment above).
+  const question = stripIntentWords(rawQuestion) || rawQuestion;
+  const terms = tokenize(question);
 
   // Typo corrections learned from fuzzy title matches (e.g. "teri" → "terri").
   const corrected = new Map<string, string>();
@@ -136,9 +184,11 @@ export async function retrievePodcastSources(
 
   // Kick off semantic search in parallel with the keyword pipeline.
   const semanticPromise = semanticSearch(question);
+  // Recency top-up pool — only fetched for recency-biased questions.
+  const recentPoolPromise = recencyBias ? fetchRecentEpisodesPool() : Promise.resolve([]);
 
   if (terms.length === 0) {
-    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias);
+    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias, await recentPoolPromise);
   }
 
   // --- Step 1: Episode-level search ---
@@ -311,7 +361,7 @@ export async function retrievePodcastSources(
   const allChunks = [...allChunkMap.values()];
 
   if (allChunks.length === 0 && ftsEpIds.size === 0) {
-    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias);
+    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias, await recentPoolPromise);
   }
 
   // --- Step 3: Get episode + show info ---
@@ -454,6 +504,7 @@ export async function retrievePodcastSources(
     max,
     nameMatchMode ? termRes : [],
     recencyBias,
+    await recentPoolPromise,
   );
 }
 
@@ -483,6 +534,8 @@ async function buildOutput(
   mustMatch: RegExp[] = [],
   /** Boost recently-published episodes (for "latest / what's new" questions). */
   recencyBias = false,
+  /** Recency top-up candidates from fetchRecentEpisodesPool (empty when !recencyBias). */
+  recentPool: { episode_id: string; title: string; showName: string; text: string; published_date: string | null }[] = [],
 ): Promise<PodcastSource[]> {
   const merged = new Map<
     string,
@@ -526,6 +579,20 @@ async function buildOutput(
         score: semScore,
       });
     }
+  }
+
+  // Recency top-up: add the most-recently-published episodes as low-weight
+  // candidates so a recency-biased question always has fresh material, even
+  // when normal keyword/semantic scoring didn't naturally surface any recent
+  // episode. Skipped for episodes already present via real topical matches.
+  for (const r of recentPool) {
+    if (merged.has(r.episode_id)) continue;
+    merged.set(r.episode_id, {
+      chunk: { id: `recent-${r.episode_id}`, episode_id: r.episode_id, chunk_index: 0, chunk_text: r.text },
+      title: r.title,
+      showName: r.showName,
+      score: 3, // base floor; the recency date-boost below is what lets these compete
+    });
   }
 
   // Look up publish dates for the candidate episodes — cited answers should

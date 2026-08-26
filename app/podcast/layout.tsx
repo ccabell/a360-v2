@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Headphones, Store } from "lucide-react";
+import { Headphones } from "lucide-react";
 
 /**
  * Standalone shell for the Podcast Navigator.
@@ -31,14 +31,6 @@ export default function PodcastLayout({
             <NavLink href="/podcast/explore">Browse</NavLink>
             <NavLink href="/podcast/listen-later">Listen Later</NavLink>
           </nav>
-
-          <Link
-            href="/exchange"
-            className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium text-neutral-300 transition-colors hover:bg-white/10 hover:text-white"
-          >
-            <Store className="size-3.5" />
-            Agent Exchange
-          </Link>
         </div>
       </header>
 
