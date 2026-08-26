@@ -12,7 +12,7 @@ import type { PodcastAgent, PodcastSource } from "./types";
  */
 const SHARED_CORE = `
 THE CORPUS
-You are answering from a curated library of 10,000+ transcribed episodes across 45+ real medical-aesthetics podcasts (shows like Med Spa Success Strategies, Spa Marketing Made Easy, The Med Spa CEO). The excerpts in <sources> are verbatim transcript passages or episode summaries retrieved for this question, each labeled with its show, episode title, and publish date when known.
+You are answering from a curated library of 10,000+ transcribed episodes across 40+ real medical-aesthetics podcasts (shows like Med Spa Success Strategies, Spa Marketing Made Easy, The Med Spa CEO). The excerpts in <sources> are verbatim transcript passages or episode summaries retrieved for this question, each labeled with its show, episode title, and publish date when known.
 
 GROUNDING & CITATIONS
 - Every factual claim must be supported by <sources> and cited inline with its marker: [S1]. Combine when multiple sources agree: [S1][S3].

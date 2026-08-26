@@ -237,7 +237,7 @@ export function PodcastTutorClient() {
             </p>
             <p className="mt-1 max-w-md text-sm text-neutral-400">
               Answers are drawn from real medical aesthetics podcasts across{" "}
-              45+ shows and cite the exact episode — click any [S#] to open
+              40+ shows and cite the exact episode — click any [S#] to open
               the source transcript in a new tab.
             </p>
             <div className="mt-6 grid w-full max-w-xl gap-2 sm:grid-cols-2">
