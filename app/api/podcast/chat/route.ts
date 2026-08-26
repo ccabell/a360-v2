@@ -4,7 +4,11 @@ import { getAgent, buildSystemPrompt } from "@/lib/podcast/agents";
 import { streamAnthropic } from "@/lib/academy/anthropic-stream";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+// 60s was silently killing long generations mid-stream (confirmed: a
+// truncated a360-product answer stopped well under its token budget, with
+// no error/done frame — a dropped connection, not a token-cap stop, at an
+// observed ~28 tok/s). Vercel's platform default is now 300s; stay under it.
+export const maxDuration = 280;
 
 /**
  * A360 Podcast Navigator AI chat — keyword RAG over the podcast transcript
@@ -101,8 +105,10 @@ export async function POST(req: NextRequest) {
               // steps for multi-part questions, which need more room).
               // The Product Intelligence lens answers a 6-part question with
               // EVIDENCE/PATTERN sections plus a "For A360" list — needs more
-              // room still than a typical chat answer.
-              maxTokens: agent.id === "a360-product" ? 2600 : 1536,
+              // room still than a typical chat answer. Time, not tokens, was
+              // the actual bottleneck (see maxDuration above) — 3800 tokens
+              // at ~28 tok/s is ~135s, comfortably inside the new time budget.
+              maxTokens: agent.id === "a360-product" ? 3800 : 1536,
               // Low temperature: the same question should produce a stable,
               // consistent answer run-to-run.
               temperature: 0.3,
