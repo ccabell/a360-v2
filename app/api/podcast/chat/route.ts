@@ -41,9 +41,15 @@ export async function POST(req: NextRequest) {
       headers: { "Content-Type": "application/json" },
     });
   }
-  if (q.length > 500) {
+  // 500 was sized for quick chat questions. The A360 Product Intelligence
+  // lens is explicitly a deep-research tool for the founder — multi-part
+  // questions with 5-6 sub-questions routinely run 1,500-2,500 characters,
+  // and were being hard-rejected with no indication why beyond a generic
+  // error. Give that lens real headroom; keep other lenses closer to chat-sized.
+  const maxQuestionLength = agent.id === "a360-product" ? 4000 : 800;
+  if (q.length > maxQuestionLength) {
     return new Response(
-      JSON.stringify({ error: "Question too long (max 500 characters)." }),
+      JSON.stringify({ error: `Question too long (max ${maxQuestionLength} characters).` }),
       { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
@@ -60,7 +66,11 @@ export async function POST(req: NextRequest) {
           const prevUser = [...history].reverse().find((m) => m.role === "user");
           if (prevUser) retrievalQuery = `${prevUser.content.slice(0, 200)} ${q}`;
         }
-        const sources = await retrievePodcastSources(retrievalQuery);
+        // The Product Intelligence lens fields compound, multi-facet research
+        // questions (e.g. 6 sub-questions on one topic) — 12 sources spread
+        // that thin. Widen the retrieval net for that lens specifically.
+        const sourceLimit = agent.id === "a360-product" ? 24 : 12;
+        const sources = await retrievePodcastSources(retrievalQuery, sourceLimit);
         emit({ type: "sources", sources });
 
         if (sources.length === 0) {
@@ -89,7 +99,10 @@ export async function POST(req: NextRequest) {
               // 800 was clipping legitimately long, multi-section synthesis
               // answers mid-sentence (the FORMAT rules encourage headers/
               // steps for multi-part questions, which need more room).
-              maxTokens: 1536,
+              // The Product Intelligence lens answers a 6-part question with
+              // EVIDENCE/PATTERN sections plus a "For A360" list — needs more
+              // room still than a typical chat answer.
+              maxTokens: agent.id === "a360-product" ? 2600 : 1536,
               // Low temperature: the same question should produce a stable,
               // consistent answer run-to-run.
               temperature: 0.3,

@@ -139,6 +139,12 @@ export function PodcastTutorClient() {
 
   const currentAgent = AGENTS.find((a) => a.id === agentId) ?? AGENTS[0];
   const AgentIcon = ICON_MAP[currentAgent.icon] ?? Sparkles;
+  // Mirrors the server-side cap in app/api/podcast/chat/route.ts — the
+  // Product Intelligence lens is a deep-research tool and gets real room for
+  // multi-part questions; other lenses stay chat-sized.
+  const maxQuestionLength = agentId === "a360-product" ? 4000 : 800;
+  const nearLimit = input.length > maxQuestionLength * 0.85;
+  const overLimit = input.length > maxQuestionLength;
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -331,12 +337,16 @@ export function PodcastTutorClient() {
               }
             }}
             rows={1}
-            placeholder="Ask about treatments, business strategy, competitors, patient language..."
+            placeholder={
+              agentId === "a360-product"
+                ? "Ask a deep, multi-part product research question — up to 4,000 characters..."
+                : "Ask about treatments, business strategy, competitors, patient language..."
+            }
             className="max-h-32 flex-1 resize-none rounded-xl border border-white/10 bg-neutral-950 px-4 py-3 text-sm text-white outline-none ring-primary/30 placeholder:text-neutral-500 focus:ring-2"
           />
           <button
             onClick={() => ask(input)}
-            disabled={!input.trim() || busy}
+            disabled={!input.trim() || busy || overLimit}
             className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-40"
             aria-label="Send"
           >
@@ -347,11 +357,20 @@ export function PodcastTutorClient() {
             )}
           </button>
         </div>
-        <p className="mt-2 flex items-center gap-1.5 px-1 text-[11px] text-neutral-500">
-          <ShieldCheck className="h-3 w-3" />
-          Educational reference · grounded in cited podcasts, not medical
-          advice.
-        </p>
+        <div className="mt-2 flex items-center justify-between gap-2 px-1">
+          <p className="flex items-center gap-1.5 text-[11px] text-neutral-500">
+            <ShieldCheck className="h-3 w-3" />
+            Educational reference · grounded in cited podcasts, not medical
+            advice.
+          </p>
+          {nearLimit && (
+            <span
+              className={`shrink-0 text-[11px] tabular-nums ${overLimit ? "text-red-400" : "text-neutral-500"}`}
+            >
+              {input.length.toLocaleString()} / {maxQuestionLength.toLocaleString()}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

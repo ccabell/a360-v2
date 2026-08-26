@@ -14,7 +14,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (body.password !== expected) {
+  // Trim: copy-paste and some mobile keyboards/autofill can add invisible
+  // leading/trailing whitespace, causing a correct-looking password to fail.
+  if ((body.password ?? "").trim() !== expected.trim()) {
     return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
   }
 
