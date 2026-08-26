@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { SESSION_COOKIE, sessionToken, betaPassword } from "@/lib/auth";
 import { ADMIN_SESSION_COOKIE, adminSessionToken, adminPassword } from "@/lib/admin-auth";
+import { PODCAST_SESSION_COOKIE, podcastSessionToken, podcastPassword } from "@/lib/podcast-auth";
 import { audienceRoutePrefixes, getAudience } from "@/lib/portfolio/audiences";
 import {
   AUDIENCE_COOKIE,
@@ -80,8 +81,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/ask") ||
     pathname.startsWith("/embed") ||
     pathname.startsWith("/api/ask") ||
-    pathname.startsWith("/podcast") ||
-    pathname.startsWith("/api/podcast") ||
+    pathname.startsWith("/podcast/login") ||
+    pathname.startsWith("/api/podcast-auth") ||
     pathname.startsWith("/share/") ||
     pathname === "/admin/login" ||
     pathname.startsWith("/api/admin-auth")
@@ -105,6 +106,31 @@ export async function proxy(request: NextRequest) {
 
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
+    url.searchParams.set("from", pathname);
+    return NextResponse.redirect(url);
+  }
+
+  // Podcast gate: /podcast/* and /api/podcast/* have their own password,
+  // independent of the main beta gate — so the Navigator link (and its Ask
+  // feature, which calls Claude per question) can be shared externally
+  // without exposing the rest of the app or its API-cost surface to anyone
+  // who happens to find the URL.
+  if (pathname.startsWith("/podcast") || pathname.startsWith("/api/podcast")) {
+    const podcastPw = podcastPassword();
+    if (!podcastPw) {
+      return pathname.startsWith("/api")
+        ? NextResponse.json({ error: "Podcast access is not configured" }, { status: 503 })
+        : new NextResponse("Podcast access is not configured", { status: 503 });
+    }
+    const cookie = request.cookies.get(PODCAST_SESSION_COOKIE)?.value;
+    const expected = await podcastSessionToken(podcastPw);
+    if (cookie === expected) return NextResponse.next();
+
+    if (pathname.startsWith("/api")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = "/podcast/login";
     url.searchParams.set("from", pathname);
     return NextResponse.redirect(url);
   }
