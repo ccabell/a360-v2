@@ -86,7 +86,10 @@ export async function POST(req: NextRequest) {
               model: "claude-sonnet-4-6",
               system: buildSystemPrompt(agent, sources),
               prompt: `${convo}Question: ${q}\n\nAnswer using ONLY the sources above, citing [S#] for every claim:`,
-              maxTokens: 800,
+              // 800 was clipping legitimately long, multi-section synthesis
+              // answers mid-sentence (the FORMAT rules encourage headers/
+              // steps for multi-part questions, which need more room).
+              maxTokens: 1536,
               // Low temperature: the same question should produce a stable,
               // consistent answer run-to-run.
               temperature: 0.3,
