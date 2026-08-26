@@ -56,6 +56,7 @@ export interface PodcastSource {
   chunkIndex: number;
   url: string; // in-app link: /podcast/episodes/{id}
   meta: string; // "Show Name · Chunk 3"
+  publishedDate: string | null; // episode publish date (YYYY-MM-DD)
 }
 
 export interface PodcastAgent {

@@ -99,6 +99,8 @@ function MarkdownWithCitations({
               return (
                 <Link
                   href={src.url}
+                  target="_blank"
+                  rel="noopener"
                   title={`${src.title} · ${src.meta}`}
                   className="mx-0.5 inline-flex translate-y-px items-center gap-0.5 rounded bg-primary/15 px-1.5 py-0.5 align-baseline text-[11px] font-semibold text-primary no-underline hover:bg-primary/25"
                 >
@@ -235,8 +237,8 @@ export function PodcastTutorClient() {
             </p>
             <p className="mt-1 max-w-md text-sm text-neutral-400">
               Answers are drawn from real medical aesthetics podcasts across{" "}
-              52 shows and cite the exact episode — click any [S#] to read
-              the source transcript.
+              45+ shows and cite the exact episode — click any [S#] to open
+              the source transcript in a new tab.
             </p>
             <div className="mt-6 grid w-full max-w-xl gap-2 sm:grid-cols-2">
               {STARTERS.map((s) => (
@@ -381,6 +383,8 @@ function Bubble({ message }: { message: ChatMessage }) {
                 <Link
                   key={s.id}
                   href={s.url}
+                  target="_blank"
+                  rel="noopener"
                   className="flex items-start gap-2.5 rounded-md p-1.5 transition-colors hover:bg-white/5"
                 >
                   <span className="mt-0.5 inline-flex shrink-0 items-center gap-1 rounded bg-primary/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-primary">

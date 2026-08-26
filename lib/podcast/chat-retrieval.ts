@@ -123,6 +123,12 @@ export async function retrievePodcastSources(
 ): Promise<PodcastSource[]> {
   const terms = tokenize(question);
 
+  // "What's new / latest / trending" questions should favor recent episodes.
+  const recencyBias =
+    /\b(latest|newest|recent|recently|news|trending|trends?|this (year|month|week)|20(2[5-9]))\b/i.test(
+      question,
+    );
+
   // Typo corrections learned from fuzzy title matches (e.g. "teri" → "terri").
   const corrected = new Map<string, string>();
   // True when episode titles fuzzy-match EVERY query word (name lookup).
@@ -132,7 +138,7 @@ export async function retrievePodcastSources(
   const semanticPromise = semanticSearch(question);
 
   if (terms.length === 0) {
-    return buildOutput(new Map(), await semanticPromise, max);
+    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias);
   }
 
   // --- Step 1: Episode-level search ---
@@ -305,7 +311,7 @@ export async function retrievePodcastSources(
   const allChunks = [...allChunkMap.values()];
 
   if (allChunks.length === 0 && ftsEpIds.size === 0) {
-    return buildOutput(new Map(), await semanticPromise, max);
+    return buildOutput(new Map(), await semanticPromise, max, [], recencyBias);
   }
 
   // --- Step 3: Get episode + show info ---
@@ -447,6 +453,7 @@ export async function retrievePodcastSources(
     await semanticPromise,
     max,
     nameMatchMode ? termRes : [],
+    recencyBias,
   );
 }
 
@@ -461,7 +468,7 @@ interface ChunkRow {
  * Merge keyword candidates with semantic hits, dedupe duplicate-ingested
  * episodes by normalized title, and build the final source list.
  */
-function buildOutput(
+async function buildOutput(
   keywordBest: Map<
     string,
     { chunk: ChunkRow; ep?: { title: string; showName: string } | undefined; score: number }
@@ -474,7 +481,9 @@ function buildOutput(
    * Ross Walker chunks that are merely embedding-adjacent.
    */
   mustMatch: RegExp[] = [],
-): PodcastSource[] {
+  /** Boost recently-published episodes (for "latest / what's new" questions). */
+  recencyBias = false,
+): Promise<PodcastSource[]> {
   const merged = new Map<
     string,
     { chunk: ChunkRow; title: string; showName: string; score: number }
@@ -519,6 +528,31 @@ function buildOutput(
     }
   }
 
+  // Look up publish dates for the candidate episodes — cited answers should
+  // be date-anchored, and recency-biased questions rank recent episodes up.
+  const dateByEpisode = new Map<string, string | null>();
+  const candidateIds = [...merged.keys()].slice(0, 100);
+  if (candidateIds.length > 0) {
+    const { data } = await rag
+      .from("podcast_episodes")
+      .select("id, published_date")
+      .in("id", candidateIds);
+    for (const row of (data ?? []) as { id: string; published_date: string | null }[]) {
+      dateByEpisode.set(row.id, row.published_date);
+    }
+  }
+
+  if (recencyBias) {
+    const now = Date.now();
+    for (const [epId, cand] of merged) {
+      const date = dateByEpisode.get(epId);
+      if (!date) continue;
+      const ageDays = (now - new Date(date).getTime()) / 86_400_000;
+      if (ageDays <= 120) cand.score += 8;
+      else if (ageDays <= 365) cand.score += 4;
+    }
+  }
+
   // Collapse duplicate ingestions of the same episode (same title, different
   // row) — keep the highest-scoring copy.
   const byTitle = new Map<string, { chunk: ChunkRow; title: string; showName: string; score: number }>();
@@ -536,6 +570,7 @@ function buildOutput(
 
   const out: PodcastSource[] = [];
   for (const { chunk, title, showName } of sorted) {
+    const publishedDate = dateByEpisode.get(chunk.episode_id) ?? null;
     out.push({
       id: `S${out.length + 1}`,
       title: cleanTitle(title),
@@ -544,7 +579,8 @@ function buildOutput(
       episodeId: chunk.episode_id,
       chunkIndex: chunk.chunk_index,
       url: `/podcast/episodes/${chunk.episode_id}`,
-      meta: showName,
+      meta: publishedDate ? `${showName} · ${publishedDate}` : showName,
+      publishedDate,
     });
     if (out.length >= max) break;
   }

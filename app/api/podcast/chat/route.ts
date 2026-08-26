@@ -87,6 +87,9 @@ export async function POST(req: NextRequest) {
               system: buildSystemPrompt(agent, sources),
               prompt: `${convo}Question: ${q}\n\nAnswer using ONLY the sources above, citing [S#] for every claim:`,
               maxTokens: 800,
+              // Low temperature: the same question should produce a stable,
+              // consistent answer run-to-run.
+              temperature: 0.3,
             });
             for await (const delta of gen) {
               fullText += delta;
