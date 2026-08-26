@@ -591,7 +591,7 @@ async function buildOutput(
       chunk: { id: `recent-${r.episode_id}`, episode_id: r.episode_id, chunk_index: 0, chunk_text: r.text },
       title: r.title,
       showName: r.showName,
-      score: 3, // base floor; the recency date-boost below is what lets these compete
+      score: 6, // base floor; the recency decay below (up to 1.6x) is what lets these compete
     });
   }
 
@@ -609,14 +609,28 @@ async function buildOutput(
     }
   }
 
+  // For recency-biased questions, apply a decay MULTIPLIER (not just a bonus)
+  // to every candidate. An additive bonus alone left old-but-strongly-matching
+  // chunks (e.g. a 2023 deep-dive that says "semaglutide" 20 times) outranking
+  // genuinely recent, on-topic episodes — exactly the "gave me 2023 episodes
+  // for a 'what's new' question" failure. Decaying old scores down (not just
+  // boosting new ones up) fixes that even when the old chunk is a strong
+  // keyword/semantic match.
   if (recencyBias) {
     const now = Date.now();
     for (const [epId, cand] of merged) {
       const date = dateByEpisode.get(epId);
-      if (!date) continue;
+      if (!date) {
+        cand.score *= 0.85; // mild penalty: unknown-date content shouldn't win a recency question by default
+        continue;
+      }
       const ageDays = (now - new Date(date).getTime()) / 86_400_000;
-      if (ageDays <= 120) cand.score += 8;
-      else if (ageDays <= 365) cand.score += 4;
+      if (ageDays <= 30) cand.score *= 1.6;
+      else if (ageDays <= 90) cand.score *= 1.3;
+      else if (ageDays <= 180) cand.score *= 1.05;
+      else if (ageDays <= 365) cand.score *= 0.85;
+      else if (ageDays <= 730) cand.score *= 0.55;
+      else cand.score *= 0.3;
     }
   }
 
