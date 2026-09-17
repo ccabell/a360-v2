@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+# Advisory review guidance only. Required checks and human approvals remain separate controls.
+# Adapted from the a360-ihs configuration (2026-09-17).
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    # Draft PRs ARE reviewed. CodeRabbit's default is false, which produces a green
+    # check that means "skipped" rather than "passed" - see a360-web-app PR #653.
+    drafts: true
+    # The default branch is reviewed automatically; no base_branches override needed here.
+    auto_incremental_review: true
+    # Pause after two reviewed commits so small follow-up pushes cannot exhaust quota.
+    auto_pause_after_reviewed_commits: 2
+    labels:
+      - "!coderabbit-skip"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "renovate[bot]"
+  # Preserve quota for meaningful changes. Do not exclude migrations, workflows,
+  # security, tenancy, contracts, or governance files.
+  path_filters:
+    - "!**/package-lock.json"
+    - "!**/pnpm-lock.yaml"
+    - "!**/yarn.lock"
+    - "!**/uv.lock"
+    - "!**/dist/**"
+    - "!**/coverage/**"
+    - "!**/.vite/**"
+  path_instructions:
+    - path: ".github/workflows/**"
+      instructions: |
+        Treat workflow changes as high scrutiny. Check least-privilege permissions,
+        immutable action pins, untrusted-input handling, and that no workflow
+        auto-commits or stores credentials where OIDC is required. Flag deployment
+        coupling, but do not treat this review as deployment verification.
+    - path: "**/*contract*"
+      instructions: |
+        Treat integration and capability contracts as high scrutiny. Require typed,
+        discriminated boundaries; immutable fixture and gateway returns; bounded
+        discounts; defined money rounding; capture linkage; and executable tests.
+        Identify uncertainty rather than inventing product behavior.
+    - path: "**/*{auth,security,tenant,tenancy}*"
+      instructions: |
+        Treat security, authentication, authorization, and tenancy changes as high
+        scrutiny. Do not allow secrets or PHI in code, logs, or fixtures; fixtures
+        must be synthetic. Tenant scope must be derived from trusted server-side
+        context, never client-controlled input.
+    - path: "**/migrations/**"
+      instructions: |
+        Treat migrations as high scrutiny and effectively irreversible. Check that
+        changes are additive where possible, that destructive operations are called
+        out explicitly, that constraints and indexes match the stated intent, and
+        that a populated table is never altered without a stated backfill plan.
+    - path: "**/tools/**"
+      instructions: |
+        Treat tools and automation as high scrutiny. Check input validation,
+        least privilege, deterministic behavior, safe failure modes, and the
+        prohibition on secrets or PHI in outputs and fixtures.
+
+chat:
+  auto_reply: true
