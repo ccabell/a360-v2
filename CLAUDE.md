@@ -4,9 +4,23 @@
 
 ---
 
+**STALE CONTENT WARNING (flagged 2026-09-18, not yet corrected):** this file describes the
+app as of 2026-06-14/07-04. Real commits since then (verified via `git log`, most recently
+2026-08-26) added substantial surfaces this file never mentions: Podcast Navigator
+(`app/dashboard/podcasts`, heavily worked through 08-26), Command Center / portfolio registry
+(`app/dashboard/portfolio`), Global Library (`app/dashboard/global-library`), Agent Exchange
+tooling (`app/dashboard/agent-tester`, `agent-runs`, `agents`), plus `lpoa`, `studio`, `tube`,
+`products`, `academy`, `age-progression`, `before-after`, `fuel-library`, `history`,
+`intelligence`, `library` — `app/dashboard/` now has 22 subdirectories against the "two
+products" description below. The Supabase/data-architecture sections and "Rules for This
+Project" were spot-checked and still look structurally accurate (referenced files still
+exist), but the "Data Depth" numbers are dated 2026-06-14 and were not re-verified live.
+**This needs a real content pass by someone who knows what each new surface actually does —
+not a guess from git history.** Treat "What This Project Is" below as incomplete, not wrong.
+
 ## What This Project Is
 
-**Two products in one Next.js app:**
+**Two products in one Next.js app (plus newer surfaces — see warning above):**
 
 - **Product A — Consultation Intelligence**: Patient workspace with AI-extracted consultation intelligence and post-consultation agent reports. Pages: `/dashboard/patients`, `/dashboard/patients/[id]`
 - **Product B — Evidence Ask**: Clinical Q&A grounded in PubMed, FDA labels, podcasts, YouTube, and GL dossiers. Pages: `/ask`, `/embed/ask`, `/dashboard/research`
